@@ -196,7 +196,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuItemAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("JTessBoxEditor");
+        setTitle("jTessBoxEditor");
 
         jToolBar1.setRollover(true);
 
@@ -465,10 +465,10 @@ public class Gui extends javax.swing.JFrame {
             this.setTitle("JTessBoxEditor - " + selectedFile.getName());
         } catch (Exception e) {
         }
-//        if (imageList == null) {
-//            JOptionPane.showMessageDialog(this, bundle.getString("Cannotloadimage"), APP_NAME, JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
+        if (imageList == null) {
+            JOptionPane.showMessageDialog(this, bundle.getString("Cannotloadimage"), APP_NAME, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 //
 //        imageTotal = imageList.size();
 //        imageIndex = 0;
