@@ -52,7 +52,7 @@ public class Gui extends javax.swing.JFrame {
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
     static final String UTF8 = "UTF-8";
     ResourceBundle bundle;
-    static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/jtessboxeditor");
+    static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/tessboxeditor");
     private final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
     private int filterIndex;
     private FileFilter[] fileFilters;
@@ -93,17 +93,13 @@ public class Gui extends javax.swing.JFrame {
         filterIndex = prefs.getInt("filterIndex", 0);
         FileFilter bmpFilter = new SimpleFilter("bmp", "Bitmap");
         FileFilter pngFilter = new SimpleFilter("png", "PNG");
-        FileFilter pnmFilter = new SimpleFilter("pnm;pbm;pgm;ppm", "PNM");
         FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
-
-//        FileFilter pdfFilter = new SimpleFilter("pdf", "PDF");
-        FileFilter textFilter = new SimpleFilter("txt", bundle.getString("UTF-8_Text"));
+        FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
 
         jFileChooser.setAcceptAllFileFilterUsed(false);
 //        jFileChooser.addChoosableFileFilter(allImageFilter);
         jFileChooser.addChoosableFileFilter(bmpFilter);
         jFileChooser.addChoosableFileFilter(pngFilter);
-        jFileChooser.addChoosableFileFilter(pnmFilter);
         jFileChooser.addChoosableFileFilter(tiffFilter);
         jFileChooser.addChoosableFileFilter(textFilter);
         fileFilters = jFileChooser.getChoosableFileFilters();
@@ -167,24 +163,25 @@ public class Gui extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser = new javax.swing.JFileChooser();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane2.getVerticalScrollBar().setUnitIncrement(20);
-        jScrollPane2.getHorizontalScrollBar().setUnitIncrement(20);
-        jLabelImage = new JImageLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jButtonOpen = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jButtonReload = new javax.swing.JButton();
+        jPanelStatus = new javax.swing.JPanel();
+        jLabelStatus = new javax.swing.JLabel();
+        jProgressBar = new javax.swing.JProgressBar();
         jButtonPrevPage = new javax.swing.JButton();
         jButtonNextPage = new javax.swing.JButton();
         jLabelPageNbr = new javax.swing.JLabel();
-        jPanelStatus = new javax.swing.JPanel();
-        jLabelStatus = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        jTabbedPaneBoxData = new javax.swing.JTabbedPane();
+        jScrollPaneCoord = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPaneBoxData = new javax.swing.JScrollPane();
+        jTextArea = new javax.swing.JTextArea();
+        jScrollPaneImage = new javax.swing.JScrollPane();
+        jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
+        jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
+        jLabelImage = new JImageLabel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -200,36 +197,6 @@ public class Gui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JTessBoxEditor");
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane2.setViewportView(jLabelImage);
-
-        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setMaximumSize(new java.awt.Dimension(300, 400));
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 275));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jTable1.setFillsViewportHeight(true);
-        jTable1.setPreferredSize(new java.awt.Dimension(100, 100));
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jTable1);
-
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.WEST);
-
-        getContentPane().add(jPanel2, java.awt.BorderLayout.WEST);
 
         jToolBar1.setRollover(true);
 
@@ -266,6 +233,11 @@ public class Gui extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonReload);
 
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+        jPanelStatus.add(jLabelStatus);
+        jPanelStatus.add(jProgressBar);
+
         jButtonPrevPage.setText("Previous");
         jButtonPrevPage.setFocusable(false);
         jButtonPrevPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -275,7 +247,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonPrevPageActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonPrevPage);
+        jPanelStatus.add(jButtonPrevPage);
 
         jButtonNextPage.setText("Next");
         jButtonNextPage.setFocusable(false);
@@ -286,15 +258,39 @@ public class Gui extends javax.swing.JFrame {
                 jButtonNextPageActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonNextPage);
-        jToolBar1.add(jLabelPageNbr);
-
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
-
-        jPanelStatus.add(jLabelStatus);
-        jPanelStatus.add(jProgressBar1);
+        jPanelStatus.add(jButtonNextPage);
+        jPanelStatus.add(jLabelPageNbr);
 
         getContentPane().add(jPanelStatus, java.awt.BorderLayout.SOUTH);
+
+        jScrollPaneCoord.setPreferredSize(new java.awt.Dimension(200, 275));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1.setFillsViewportHeight(true);
+        jTable1.setPreferredSize(new java.awt.Dimension(100, 100));
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPaneCoord.setViewportView(jTable1);
+
+        jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
+
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
+        jScrollPaneBoxData.setViewportView(jTextArea);
+
+        jTabbedPaneBoxData.addTab("Box Data", jScrollPaneBoxData);
+
+        getContentPane().add(jTabbedPaneBoxData, java.awt.BorderLayout.WEST);
+
+        jScrollPaneImage.setViewportView(jLabelImage);
+
+        getContentPane().add(jScrollPaneImage, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setText("File");
 
@@ -378,10 +374,34 @@ public class Gui extends javax.swing.JFrame {
             return;
         }
 
+//        // if text file, load it into textarea
+//        if (selectedFile.getName().endsWith(".txt") || selectedFile.getName().endsWith(".box")) {
+//            if (!promptToSave()) {
+//                return;
+//            }
+//            try {
+//                BufferedReader in = new BufferedReader(new InputStreamReader(
+//                        new FileInputStream(selectedFile), "UTF8"));
+//                this.jTextArea.read(in, null);
+//                in.close();
+//                this.boxFile = selectedFile;
+//                javax.swing.text.Document doc = this.jTextArea.getDocument();
+//                if (doc.getText(0, 1).equals("\uFEFF")) {
+//                    doc.remove(0, 1); // remove BOM
+//                }
+////                doc.addUndoableEditListener(rawListener);
+//                updateMRUList(selectedFile.getPath());
+////                updateSave(false);
+//                this.jTextArea.requestFocusInWindow();
+//            } catch (Exception e) {
+//            }
+//            return;
+//        }
+
 //        jLabelStatus.setText(bundle.getString("Loading_image..."));
-        jProgressBar1.setIndeterminate(true);
-        jProgressBar1.setString(bundle.getString("Loading_image..."));
-        jProgressBar1.setVisible(true);
+        jProgressBar.setIndeterminate(true);
+        jProgressBar.setString(bundle.getString("Loading_image..."));
+        jProgressBar.setVisible(true);
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
@@ -394,12 +414,12 @@ public class Gui extends javax.swing.JFrame {
 
             @Override
             protected void done() {
-                jProgressBar1.setIndeterminate(false);
+                jProgressBar.setIndeterminate(false);
 
                 try {
                     loadImage(get());
                     jLabelStatus.setText(bundle.getString("Loading_completed"));
-                    jProgressBar1.setString(bundle.getString("Loading_completed"));
+                    jProgressBar.setString(bundle.getString("Loading_completed"));
                     updateMRUList(selectedFile.getPath());
                     // read box file
                     readBoxFile(selectedFile);
@@ -407,7 +427,7 @@ public class Gui extends javax.swing.JFrame {
                 } catch (InterruptedException ignore) {
 //                    ignore.printStackTrace();
                     jLabelStatus.setText("Loading canceled.");
-                    jProgressBar1.setString("Loading canceled.");
+                    jProgressBar.setString("Loading canceled.");
                 } catch (java.util.concurrent.ExecutionException e) {
                     String why = null;
                     Throwable cause = e.getCause();
@@ -422,9 +442,9 @@ public class Gui extends javax.swing.JFrame {
                     }
                     e.printStackTrace();
 //                    jLabelStatus.setText(null);
-//                    jProgressBar1.setString(null);
+                    jProgressBar.setString(null);
                     JOptionPane.showMessageDialog(Gui.this, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
-                    jProgressBar1.setVisible(false);
+                    jProgressBar.setVisible(false);
                 } finally {
                     getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     getGlassPane().setVisible(false);
@@ -477,15 +497,24 @@ public class Gui extends javax.swing.JFrame {
                 return;
             }
 
-
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"));
-                String str;
-                chrs.clear();
+                // load into textarea first
+                this.jTextArea.read(in, null);
+                in.close();
 
+                // load into coordinate tab
+                chrs.clear();
+                String[] boxes = this.jTextArea.getText().split("\\n");
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
-                while ((str = in.readLine()) != null) {
-                    String[] items = str.split(" ");
+                for (String box : boxes) {
+                    String[] items = box.split("\\s+");
+                    
+                    // skip invalid data
+                    if (items.length < 5 || items.length > 6) {
+                        continue;
+                    }
+
                     int x = Integer.parseInt(items[1]);
                     int y = Integer.parseInt(items[2]);
                     int w = Integer.parseInt(items[3]) - x;
@@ -501,7 +530,6 @@ public class Gui extends javax.swing.JFrame {
                     }
                     chrs.add(new CharEntity(items[0], new Rectangle(x, y, w, h), page));
                 }
-                in.close();
 
                 DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
                 model.setDataVector(dataList.toArray(new String[0][6]), new String[]{"Char", "X", "Y", "Width", "Height"});
@@ -527,7 +555,7 @@ public class Gui extends javax.swing.JFrame {
 //showCell(0, 0);
     void showCell(int row, int column) {
         Rectangle rect = this.jTable1.getCellRect(row, column, true);
-        this.jScrollPane1.scrollRectToVisible(rect);
+        this.jScrollPaneCoord.scrollRectToVisible(rect);
         this.jTable1.clearSelection();
         this.jTable1.setRowSelectionInterval(row, row);
         ((DefaultTableModel) this.jTable1.getModel()).fireTableDataChanged(); // notify the model
@@ -565,7 +593,7 @@ public class Gui extends javax.swing.JFrame {
 
     boolean saveFileDlg() {
         JFileChooser saveChooser = new JFileChooser(outputDirectory);
-        FileFilter textFilter = new SimpleFilter("txt", bundle.getString("UTF-8_Text"));
+        FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
         saveChooser.addChoosableFileFilter(textFilter);
         saveChooser.setDialogTitle(bundle.getString("Save_As"));
         if (boxFile != null) {
@@ -576,8 +604,8 @@ public class Gui extends javax.swing.JFrame {
             outputDirectory = saveChooser.getCurrentDirectory().getPath();
             File f = saveChooser.getSelectedFile();
             if (saveChooser.getFileFilter() == textFilter) {
-                if (!f.getName().endsWith(".txt")) {
-                    f = new File(f.getPath() + ".txt");
+                if (!f.getName().endsWith(".box")) {
+                    f = new File(f.getPath() + ".box");
                 }
                 if (boxFile != null && boxFile.getPath().equals(f.getPath())) {
                     if (JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(
@@ -683,7 +711,7 @@ public class Gui extends javax.swing.JFrame {
     }
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        // TODO add your handling code here:
+        saveAction();
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
@@ -839,15 +867,16 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelStatus;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JProgressBar jProgressBar;
+    private javax.swing.JScrollPane jScrollPaneBoxData;
+    private javax.swing.JScrollPane jScrollPaneCoord;
+    private javax.swing.JScrollPane jScrollPaneImage;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPaneBoxData;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
