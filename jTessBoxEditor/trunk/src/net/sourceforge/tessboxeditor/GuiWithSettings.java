@@ -16,9 +16,7 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Font;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import net.sourceforge.vietpad.components.FontDialog;
