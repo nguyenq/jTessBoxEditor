@@ -75,26 +75,7 @@ public class Gui extends javax.swing.JFrame {
         dataList = new ArrayList<String[]>();
 
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
-        currentDirectory = prefs.get("currentDirectory", null);
-        outputDirectory = prefs.get("outputDirectory", null);
-        jFileChooser.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
-        filterIndex = prefs.getInt("filterIndex", 0);
-        FileFilter bmpFilter = new SimpleFilter("bmp", "Bitmap");
-        FileFilter pngFilter = new SimpleFilter("png", "PNG");
-        FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
-        FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
-
-        jFileChooser.setAcceptAllFileFilterUsed(false);
-//        jFileChooser.addChoosableFileFilter(allImageFilter);
-        jFileChooser.addChoosableFileFilter(bmpFilter);
-        jFileChooser.addChoosableFileFilter(pngFilter);
-        jFileChooser.addChoosableFileFilter(tiffFilter);
-        jFileChooser.addChoosableFileFilter(textFilter);
-        fileFilters = jFileChooser.getChoosableFileFilters();
-        if (filterIndex < fileFilters.length) {
-            jFileChooser.setFileFilter(fileFilters[filterIndex]);
-        }
-
+        
         this.addWindowListener(
                 new WindowAdapter() {
 
@@ -185,12 +166,37 @@ public class Gui extends javax.swing.JFrame {
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui"); // NOI18N
+        jFileChooser.setDialogTitle(bundle.getString("jButtonOpen.ToolTipText")); // NOI18N
+
+        currentDirectory = prefs.get("currentDirectory", null);
+        outputDirectory = prefs.get("outputDirectory", null);
+        jFileChooser.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
+        filterIndex = prefs.getInt("filterIndex", 0);
+        FileFilter allImageFilter = new SimpleFilter("bmp;png;tif;tiff", bundle.getString("All_Image_Files"));
+        FileFilter bmpFilter = new SimpleFilter("bmp", "Bitmap");
+        FileFilter pngFilter = new SimpleFilter("png", "PNG");
+        FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
+        FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
+
+        jFileChooser.setAcceptAllFileFilterUsed(false);
+        jFileChooser.addChoosableFileFilter(allImageFilter);
+        jFileChooser.addChoosableFileFilter(bmpFilter);
+        jFileChooser.addChoosableFileFilter(pngFilter);
+        jFileChooser.addChoosableFileFilter(tiffFilter);
+        jFileChooser.addChoosableFileFilter(textFilter);
+        fileFilters = jFileChooser.getChoosableFileFilters();
+        if (filterIndex < fileFilters.length) {
+            jFileChooser.setFileFilter(fileFilters[filterIndex]);
+        }
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("jTessBoxEditor");
 
         jToolBar1.setRollover(true);
 
-        jButtonOpen.setText("Open");
+        jButtonOpen.setText(bundle.getString("jButtonOpen.Text")); // NOI18N
+        jButtonOpen.setToolTipText(bundle.getString("jButtonOpen.ToolTipText")); // NOI18N
         jButtonOpen.setFocusable(false);
         jButtonOpen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonOpen.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -201,7 +207,8 @@ public class Gui extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonOpen);
 
-        jButtonSave.setText("Save");
+        jButtonSave.setText(bundle.getString("jButtonSave.Text")); // NOI18N
+        jButtonSave.setToolTipText(bundle.getString("jButtonSave.ToolTipText")); // NOI18N
         jButtonSave.setFocusable(false);
         jButtonSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -213,6 +220,7 @@ public class Gui extends javax.swing.JFrame {
         jToolBar1.add(jButtonSave);
 
         jButtonReload.setText("Reload");
+        jButtonReload.setToolTipText("Reload Box File");
         jButtonReload.setFocusable(false);
         jButtonReload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonReload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -272,7 +280,6 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jTable1.setFillsViewportHeight(true);
-        jTable1.setPreferredSize(new java.awt.Dimension(100, 100));
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPaneCoord.setViewportView(jTable1);
 
@@ -291,7 +298,6 @@ public class Gui extends javax.swing.JFrame {
         getContentPane().add(jScrollPaneImage, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuFile.Mnemonic").charAt(0));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui"); // NOI18N
         jMenuFile.setText(bundle.getString("jMenuFile.Text")); // NOI18N
 
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
