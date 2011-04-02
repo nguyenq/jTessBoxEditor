@@ -50,6 +50,7 @@ public class GuiWithAction extends GuiWithLaF {
 
         model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         this.jLabelImage.repaint();
+        updateSave(true);
     }
 
     @Override
@@ -65,6 +66,7 @@ public class GuiWithAction extends GuiWithLaF {
 
         model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         this.jLabelImage.repaint();
+        updateSave(true);
     }
 
     /**

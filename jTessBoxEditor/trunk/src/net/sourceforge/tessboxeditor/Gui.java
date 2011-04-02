@@ -51,7 +51,7 @@ public class Gui extends javax.swing.JFrame {
     private File selectedFile, boxFile;
     private String currentDirectory;
     private String outputDirectory;
-    private boolean boxChanged = false;
+    private boolean boxChanged = true;
     private java.util.List<String> mruList = new java.util.ArrayList<String>();
     private String strClearRecentFiles;
     protected TessBoxCollection boxes;
@@ -105,7 +105,7 @@ public class Gui extends javax.swing.JFrame {
 
                     @Override
                     public void windowOpened(WindowEvent e) {
-//                        updateSave(false);
+                        updateSave(false);
                         setExtendedState(prefs.getInt("windowState", Frame.NORMAL));
                         populateMRUList();
                     }
@@ -175,6 +175,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
+        jMenuItemSaveAs = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuRecentFiles = new javax.swing.JMenu();
         jSeparatorExit = new javax.swing.JPopupMenu.Separator();
@@ -364,6 +365,15 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuFile.add(jMenuItemSave);
+
+        jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemSaveAs.Mnemonic").charAt(0));
+        jMenuItemSaveAs.setText(bundle.getString("jMenuItemSaveAs.Text")); // NOI18N
+        jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveAsActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemSaveAs);
         jMenuFile.add(jSeparator1);
 
         jMenuRecentFiles.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuRecentFiles.Mnemonic").charAt(0));
@@ -604,8 +614,7 @@ public class Gui extends javax.swing.JFrame {
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
                 this.boxFile = selectedFile;
                 updateMRUList(selectedFile.getPath());
-//                updateSave(false);
-
+                updateSave(false);
             } catch (Exception e) {
             }
             return;
@@ -700,7 +709,7 @@ public class Gui extends javax.swing.JFrame {
             out.write("");
             out.close();
             updateMRUList(boxFile.getPath());
-//            updateSave(false);
+            updateSave(false);
         } catch (OutOfMemoryError oome) {
 //            oome.printStackTrace();
             JOptionPane.showMessageDialog(this, oome.getMessage(), bundle.getString("OutOfMemoryError"), JOptionPane.ERROR_MESSAGE);
@@ -863,6 +872,21 @@ public class Gui extends javax.swing.JFrame {
         ((JImageLabel) this.jLabelImage).setPage(imageIndex);
     }
 
+    /**
+     *  Updates the Save action.
+     *
+     *@param  modified  whether file has been modified
+     */
+    void updateSave(boolean modified) {
+        if (boxChanged != modified) {
+            boxChanged = modified;
+            this.jButtonSave.setEnabled(modified);
+            this.jMenuItemSave.setEnabled(modified);
+            rootPane.putClientProperty("windowModified", Boolean.valueOf(modified));
+            // see http://developer.apple.com/qa/qa2001/qa1146.html
+        }
+    }
+
     void setButton() {
         if (imageIndex == 0) {
             this.jButtonPrevPage.setEnabled(false);
@@ -894,7 +918,9 @@ public class Gui extends javax.swing.JFrame {
     private void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFontActionPerformed
         openFontDialog();
     }//GEN-LAST:event_jMenuItemFontActionPerformed
-
+    void openFontDialog() {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
     private void jButtonMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMergeActionPerformed
         mergeAction();
     }//GEN-LAST:event_jButtonMergeActionPerformed
@@ -904,7 +930,9 @@ public class Gui extends javax.swing.JFrame {
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         deleteAction();
     }//GEN-LAST:event_jButtonDeleteActionPerformed
-
+    void deleteAction() {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
     private void jMenuItemHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHelpActionPerformed
         final String readme = bundle.getString("readme");
         if (MAC_OS_X && new File(readme).exists()) {
@@ -926,13 +954,10 @@ public class Gui extends javax.swing.JFrame {
             helptopicsFrame.setVisible(true);
         }
     }//GEN-LAST:event_jMenuItemHelpActionPerformed
-    void deleteAction() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
 
-    void openFontDialog() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
+    private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
+        saveFileDlg();
+    }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -966,6 +991,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;
+    private javax.swing.JMenuItem jMenuItemSaveAs;
     protected javax.swing.JMenu jMenuLookAndFeel;
     private javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
