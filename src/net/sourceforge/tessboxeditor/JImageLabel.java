@@ -16,7 +16,8 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.*;
-import java.util.List;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 
 /**
@@ -24,21 +25,22 @@ import javax.swing.JLabel;
  * @author Quan Nguyen (nguyenq@users.sf.net)
  *
  */
-public class JImageLabel extends JLabel {
+public class JImageLabel extends JLabel implements MouseListener {
 
-    private List<CharEntity> chrs;
-    short s;
+    private TessBoxCollection boxes;
+    short page;
 
     /** Creates a new instance of JImageLabel */
     public JImageLabel() {
+        this.addMouseListener(JImageLabel.this);
     }
 
-    public void setRects(List<CharEntity> chrs) {
-        this.chrs = chrs;
+    public void setBoxes(TessBoxCollection boxes) {
+        this.boxes = boxes;
     }
 
-    public void setPage(short s) {
-        this.s = s;
+    public void setPage(short page) {
+        this.page = page;
     }
 
     @Override
@@ -46,17 +48,54 @@ public class JImageLabel extends JLabel {
         // automatically called when repaint
         super.paintComponent(g);
 
-        if (chrs != null) {
+        if (boxes != null) {
             Graphics2D g2d = (Graphics2D) g;
 
             g2d.setColor(Color.BLUE);
+            boolean resetColor = false;
 
-            for (CharEntity ch : chrs) {
-                if (ch.page == s) {
-                    Rectangle rect = ch.rect;
+            for (TessBox box : boxes.toList()) {
+                if (box.page == page) {
+                    Rectangle rect = box.rect;
+                    if (box.isSelected()) {
+                        g2d.setColor(Color.RED);
+                        resetColor = true;
+                    }
                     g2d.draw(rect);
+                    if (resetColor) {
+                        g2d.setColor(Color.BLUE);
+                        resetColor = false;
+                    }
                 }
             }
         }
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void mousePressed(MouseEvent e) {
+        TessBox o = boxes.hitObject(e.getPoint());
+        if (o == null) {
+            boxes.deselectAll();
+        } else {
+            if (!e.isControlDown()) {
+                boxes.deselectAll();
+            }
+            o.setSelected(true);
+        }
+        repaint();
+    }
+
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void mouseExited(MouseEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }
