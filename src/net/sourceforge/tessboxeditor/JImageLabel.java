@@ -17,6 +17,9 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JViewport;
@@ -31,6 +34,7 @@ public class JImageLabel extends JLabel {
     private TessBoxCollection boxes;
     short page;
     private JTable table;
+    private JLabel jLabelSubimage;
 
     /** Creates a new instance of JImageLabel */
     public JImageLabel() {
@@ -44,6 +48,7 @@ public class JImageLabel extends JLabel {
                         boxes.deselectAll();
                         repaint();
                         table.clearSelection();
+                        jLabelSubimage.setIcon(null);
                     }
                 } else {
                     if (!me.isControlDown()) {
@@ -57,6 +62,9 @@ public class JImageLabel extends JLabel {
                     table.setRowSelectionInterval(index, index);
                     Rectangle rect = table.getCellRect(index, 0, true);
                     ((JViewport) table.getParent()).scrollRectToVisible(rect);
+                    Icon icon = getIcon();
+                    Image subImage = ((BufferedImage)((ImageIcon)icon).getImage()).getSubimage(o.rect.x, o.rect.y, o.rect.width, o.rect.height);
+                    jLabelSubimage.setIcon(new ImageIcon(subImage));
                 }
             }
         });
@@ -104,5 +112,12 @@ public class JImageLabel extends JLabel {
      */
     public void setTable(JTable table) {
         this.table = table;
+    }
+
+    /**
+     * @param subImage the subImage to set
+     */
+    public void setLabelSubimage(JLabel jLabelSubimage) {
+        this.jLabelSubimage = jLabelSubimage;
     }
 }

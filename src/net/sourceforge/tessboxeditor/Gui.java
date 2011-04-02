@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.dnd.DropTarget;
 import java.awt.event.*;
@@ -157,6 +158,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonReload = new javax.swing.JButton();
         jButtonMerge = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
+        jLabelSubimage = new javax.swing.JLabel();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
         jButtonPrevPage = new javax.swing.JButton();
@@ -275,6 +277,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonDelete);
+        jToolBar1.add(jLabelSubimage);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -618,6 +621,7 @@ public class Gui extends javax.swing.JFrame {
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
                 ((JImageLabel) this.jLabelImage).setTable(jTable1);
+                ((JImageLabel) this.jLabelImage).setLabelSubimage(this.jLabelSubimage);
                 this.boxFile = selectedFile;
                 updateMRUList(selectedFile.getPath());
                 updateSave(false);
@@ -972,6 +976,9 @@ public class Gui extends javax.swing.JFrame {
         selectedBox.setSelected(true);
         this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
         this.jLabelImage.repaint();
+        Icon icon = jLabelImage.getIcon();
+        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(selectedBox.rect.x, selectedBox.rect.y, selectedBox.rect.width, selectedBox.rect.height);
+        this.jLabelSubimage.setIcon(new ImageIcon(subImage));
     }//GEN-LAST:event_jTable1MousePressed
 
     /**
@@ -997,6 +1004,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
     private javax.swing.JLabel jLabelStatus;
+    private javax.swing.JLabel jLabelSubimage;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
