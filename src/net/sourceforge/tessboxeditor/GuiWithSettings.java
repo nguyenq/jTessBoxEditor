@@ -30,6 +30,8 @@ public class GuiWithSettings extends Gui {
                 prefs.get("fontName", MAC_OS_X ? "Lucida Grande" : "Tahoma"),
                 prefs.getInt("fontStyle", Font.PLAIN),
                 prefs.getInt("fontSize", 12));
+        jTextArea.setFont(font);
+        jTextArea.validate();
     }
 
     @Override

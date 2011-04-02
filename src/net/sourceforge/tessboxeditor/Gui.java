@@ -260,9 +260,17 @@ public class Gui extends javax.swing.JFrame {
 
             },
             new String [] {
-
+                "Char", "X", "Y", "Width", "Height"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setFillsViewportHeight(true);
         jTable1.setPreferredSize(new java.awt.Dimension(100, 100));
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -828,7 +836,9 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReloadActionPerformed
-        readBoxFile(selectedFile);
+        if (selectedFile != null) {
+            readBoxFile(selectedFile);
+        }
     }//GEN-LAST:event_jButtonReloadActionPerformed
 
     private void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFontActionPerformed
