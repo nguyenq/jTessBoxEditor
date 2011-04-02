@@ -21,7 +21,7 @@ import java.util.List;
 
 public class TessBoxCollection {
 
-    List<TessBox> list;
+    private List<TessBox> list;
 
     public TessBoxCollection() {
         list = new ArrayList<TessBox>();
@@ -74,6 +74,10 @@ public class TessBoxCollection {
 
     boolean remove(TessBox box) {
         return list.remove(box);
+    }
+
+    TessBox remove(int index) {
+        return list.remove(index);
     }
 
     List<String[]> getTableDataList() {

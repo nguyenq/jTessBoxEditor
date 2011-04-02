@@ -62,7 +62,7 @@ public class Gui extends javax.swing.JFrame {
     String langCode = "eng";
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
     final String[] headers = {"Char", "X", "Y", "Width", "Height"};
-    DefaultTableModel model;
+    DefaultTableModel tableModel;
 
     /** Creates new form JTessBoxEditor */
     public Gui() {
@@ -89,7 +89,7 @@ public class Gui extends javax.swing.JFrame {
 //            this.jMenuSettings.remove(this.jMenuItemOptions);
         }
 
-        model = (DefaultTableModel) this.jTable1.getModel();
+        tableModel = (DefaultTableModel) this.jTable1.getModel();
         boxes = new TessBoxCollection();
 
         // DnD support
@@ -327,6 +327,11 @@ public class Gui extends javax.swing.JFrame {
         });
         jTable1.setFillsViewportHeight(true);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTable1MousePressed(evt);
+            }
+        });
         jScrollPaneCoord.setViewportView(jTable1);
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
@@ -608,7 +613,7 @@ public class Gui extends javax.swing.JFrame {
                     this.boxes.add(new TessBox(items[0], new Rectangle(x, y, w, h), page));
                 }
 
-                model.setDataVector(this.boxes.getTableDataList().toArray(new String[0][5]), headers);
+                tableModel.setDataVector(this.boxes.getTableDataList().toArray(new String[0][5]), headers);
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
@@ -633,7 +638,7 @@ public class Gui extends javax.swing.JFrame {
         this.jScrollPaneCoord.scrollRectToVisible(rect);
         this.jTable1.clearSelection();
         this.jTable1.setRowSelectionInterval(row, row);
-        model.fireTableDataChanged(); // notify the model
+        tableModel.fireTableDataChanged(); // notify the model
     }
 
     /**
@@ -958,6 +963,15 @@ public class Gui extends javax.swing.JFrame {
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
         saveFileDlg();
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
+
+    private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed
+        int index = this.jTable1.getSelectedRow();
+        this.boxes.deselectAll();
+        TessBox selectedBox = this.boxes.toList().get(index);
+        selectedBox.setSelected(true);
+        this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
+        this.jLabelImage.repaint();
+    }//GEN-LAST:event_jTable1MousePressed
 
     /**
      * @param args the command line arguments
