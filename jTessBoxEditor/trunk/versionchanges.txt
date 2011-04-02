@@ -1,0 +1,5 @@
+jTessBoxEditor Change Summary
+
+Version 0.1 (1 April 2011):
+- Proof-of-concept design
+- Implement box select, merge operations

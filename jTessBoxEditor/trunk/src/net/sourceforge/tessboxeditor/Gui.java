@@ -15,10 +15,12 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.dnd.DropTarget;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -31,6 +33,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import net.sourceforge.vietocr.utilities.ImageIOHelper;
 import net.sourceforge.vietocr.utilities.Utilities;
+import net.sourceforge.vietpad.components.HtmlPane;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class Gui extends javax.swing.JFrame {
@@ -52,7 +55,6 @@ public class Gui extends javax.swing.JFrame {
     private java.util.List<String> mruList = new java.util.ArrayList<String>();
     private String strClearRecentFiles;
     protected TessBoxCollection boxes;
-    protected List<String[]> dataList;
     BufferedImage image;
     protected short imageIndex;
     private List<BufferedImage> imageList;
@@ -60,6 +62,7 @@ public class Gui extends javax.swing.JFrame {
     String langCode = "eng";
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
     final String[] headers = {"Char", "X", "Y", "Width", "Height"};
+    DefaultTableModel model;
 
     /** Creates new form JTessBoxEditor */
     public Gui() {
@@ -68,14 +71,29 @@ public class Gui extends javax.swing.JFrame {
         } catch (Exception e) {
             // keep default LAF
         }
+        bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
+        if (MAC_OS_X) {
+            new MacOSXApplication(Gui.this);
+
+            // remove Exit menuitem
+            this.jMenuFile.remove(this.jSeparatorExit);
+            this.jMenuFile.remove(this.jMenuItemExit);
+
+            // remove About menuitem
+            this.jMenuHelp.remove(this.jSeparatorAbout);
+            this.jMenuHelp.remove(this.jMenuItemAbout);
+
+//            // remove Options menuitem
+//            this.jMenuSettings.remove(this.jSeparatorOptions);
+//            this.jMenuSettings.remove(this.jMenuItemOptions);
+        }
+
+        model = (DefaultTableModel) this.jTable1.getModel();
+        boxes = new TessBoxCollection();
 
         // DnD support
-//        new DropTarget(this.jImageLabel, new FileDropTargetListener(JTessBoxEditor.this));
-        boxes = new TessBoxCollection();
-        dataList = new ArrayList<String[]>();
-
-        bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
+        new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
         this.addWindowListener(
                 new WindowAdapter() {
@@ -160,13 +178,15 @@ public class Gui extends javax.swing.JFrame {
         jMenuItemSave = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuRecentFiles = new javax.swing.JMenu();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jSeparatorExit = new javax.swing.JPopupMenu.Separator();
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuLookAndFeel = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
+        jMenuItemHelp = new javax.swing.JMenuItem();
+        jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui"); // NOI18N
@@ -349,7 +369,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuRecentFiles.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuRecentFiles.Mnemonic").charAt(0));
         jMenuRecentFiles.setText(bundle.getString("jMenuRecentFiles.Text")); // NOI18N
         jMenuFile.add(jMenuRecentFiles);
-        jMenuFile.add(jSeparator2);
+        jMenuFile.add(jSeparatorExit);
 
         jMenuItemExit.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemExit.Mnemonic").charAt(0));
         jMenuItemExit.setText(bundle.getString("jMenuItemExit.Text")); // NOI18N
@@ -384,6 +404,16 @@ public class Gui extends javax.swing.JFrame {
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuHelp.Mnemonic").charAt(0));
         jMenuHelp.setText(bundle.getString("jMenuHelp.Text")); // NOI18N
+
+        jMenuItemHelp.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemHelp.Mnemonic").charAt(0));
+        jMenuItemHelp.setText(bundle.getString("jMenuItemHelp.Text")); // NOI18N
+        jMenuItemHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHelpActionPerformed(evt);
+            }
+        });
+        jMenuHelp.add(jMenuItemHelp);
+        jMenuHelp.add(jSeparatorAbout);
 
         jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemAbout.Mnemonic").charAt(0));
         jMenuItemAbout.setText(bundle.getString("jMenuItemAbout.Text")); // NOI18N
@@ -567,7 +597,6 @@ public class Gui extends javax.swing.JFrame {
                     int w = Integer.parseInt(items[3]) - x;
                     int h = Integer.parseInt(items[4]) - y;
                     y = image.getHeight() - y - h; // flip the y-coordinate
-                    dataList.add(items);
 
                     short page;
                     if (items.length == 6) {
@@ -578,8 +607,8 @@ public class Gui extends javax.swing.JFrame {
                     this.boxes.addBox(new TessBox(items[0], new Rectangle(x, y, w, h), page));
                 }
 
-                DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
-                model.setDataVector(dataList.toArray(new String[0][6]), headers);
+
+                model.setDataVector(this.boxes.getTableDataList().toArray(new String[0][6]), headers);
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
@@ -605,7 +634,7 @@ public class Gui extends javax.swing.JFrame {
         this.jScrollPaneCoord.scrollRectToVisible(rect);
         this.jTable1.clearSelection();
         this.jTable1.setRowSelectionInterval(row, row);
-        ((DefaultTableModel) this.jTable1.getModel()).fireTableDataChanged(); // notify the model
+        model.fireTableDataChanged(); // notify the model
     }
 
     /**
@@ -885,6 +914,28 @@ public class Gui extends javax.swing.JFrame {
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         deleteAction();
     }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jMenuItemHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHelpActionPerformed
+        final String readme = bundle.getString("readme");
+        if (MAC_OS_X && new File(readme).exists()) {
+            try {
+                Runtime.getRuntime().exec(new String[]{"open", "-a", "Help Viewer", readme});
+            } catch (IOException x) {
+                x.printStackTrace();
+            }
+        } else {
+            if (helptopicsFrame == null) {
+                helptopicsFrame = new JFrame(jMenuItemHelp.getText());
+                helptopicsFrame.getContentPane().setLayout(new BorderLayout());
+                HtmlPane helpPane = new HtmlPane(readme);
+                helptopicsFrame.getContentPane().add(helpPane, BorderLayout.CENTER);
+                helptopicsFrame.getContentPane().add(helpPane.getStatusBar(), BorderLayout.SOUTH);
+                helptopicsFrame.pack();
+                helptopicsFrame.setLocation((screen.width - helptopicsFrame.getWidth()) / 2, 40);
+            }
+            helptopicsFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItemHelpActionPerformed
     void deleteAction() {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
@@ -922,6 +973,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemFont;
+    private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;
     protected javax.swing.JMenu jMenuLookAndFeel;
@@ -933,11 +985,13 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneCoord;
     private javax.swing.JScrollPane jScrollPaneImage;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparatorAbout;
+    private javax.swing.JPopupMenu.Separator jSeparatorExit;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
     protected javax.swing.JTable jTable1;
     protected javax.swing.JTextArea jTextArea;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+    private JFrame helptopicsFrame;
 }

@@ -6,7 +6,6 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Rectangle;
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
 
 public class GuiWithAction extends GuiWithLaF {
 
@@ -37,8 +36,6 @@ public class GuiWithAction extends GuiWithLaF {
             this.boxes.addBox(index, new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page));
         }
 
-        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
-        // need to recreate the tabledata here!
         model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
     }
