@@ -159,7 +159,6 @@ public class Gui extends javax.swing.JFrame {
         jButtonDelete = new javax.swing.JButton();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
-        jProgressBar = new javax.swing.JProgressBar();
         jButtonPrevPage = new javax.swing.JButton();
         jButtonNextPage = new javax.swing.JButton();
         jLabelPageNbr = new javax.swing.JLabel();
@@ -279,7 +278,6 @@ public class Gui extends javax.swing.JFrame {
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jPanelStatus.add(jLabelStatus);
-        jPanelStatus.add(jProgressBar);
 
         jButtonPrevPage.setText("Previous");
         jButtonPrevPage.setFocusable(false);
@@ -302,6 +300,8 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanelStatus.add(jButtonNextPage);
+
+        jLabelPageNbr.setText("Page: ");
         jPanelStatus.add(jLabelPageNbr);
 
         getContentPane().add(jPanelStatus, java.awt.BorderLayout.SOUTH);
@@ -476,9 +476,6 @@ public class Gui extends javax.swing.JFrame {
 //        }
 
 //        jLabelStatus.setText(bundle.getString("Loading_image..."));
-        jProgressBar.setIndeterminate(true);
-        jProgressBar.setString(bundle.getString("Loading_image..."));
-        jProgressBar.setVisible(true);
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
@@ -491,20 +488,17 @@ public class Gui extends javax.swing.JFrame {
 
             @Override
             protected void done() {
-                jProgressBar.setIndeterminate(false);
 
                 try {
                     loadImage(get());
                     jLabelStatus.setText(bundle.getString("Loading_completed"));
-                    jProgressBar.setString(bundle.getString("Loading_completed"));
                     updateMRUList(selectedFile.getPath());
                     // read box file
                     readBoxFile(selectedFile);
-                    jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
+                    jLabelPageNbr.setText("    Page: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
                 } catch (InterruptedException ignore) {
 //                    ignore.printStackTrace();
                     jLabelStatus.setText("Loading canceled.");
-                    jProgressBar.setString("Loading canceled.");
                 } catch (java.util.concurrent.ExecutionException e) {
                     String why = null;
                     Throwable cause = e.getCause();
@@ -517,11 +511,8 @@ public class Gui extends javax.swing.JFrame {
                     } else {
                         why = e.getMessage();
                     }
-                    e.printStackTrace();
 //                    jLabelStatus.setText(null);
-                    jProgressBar.setString(null);
                     JOptionPane.showMessageDialog(Gui.this, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
-                    jProgressBar.setVisible(false);
                 } finally {
                     getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     getGlassPane().setVisible(false);
@@ -604,11 +595,10 @@ public class Gui extends javax.swing.JFrame {
                     } else {
                         page = 0; // Tess 2.0x format
                     }
-                    this.boxes.addBox(new TessBox(items[0], new Rectangle(x, y, w, h), page));
+                    this.boxes.add(new TessBox(items[0], new Rectangle(x, y, w, h), page));
                 }
 
-
-                model.setDataVector(this.boxes.getTableDataList().toArray(new String[0][6]), headers);
+                model.setDataVector(this.boxes.getTableDataList().toArray(new String[0][5]), headers);
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
@@ -980,7 +970,6 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelStatus;
-    private javax.swing.JProgressBar jProgressBar;
     private javax.swing.JScrollPane jScrollPaneBoxData;
     private javax.swing.JScrollPane jScrollPaneCoord;
     private javax.swing.JScrollPane jScrollPaneImage;

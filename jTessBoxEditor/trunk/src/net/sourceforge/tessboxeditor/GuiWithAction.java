@@ -1,6 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright @ 2011 Quan Nguyen
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.sourceforge.tessboxeditor;
 
@@ -11,10 +22,11 @@ public class GuiWithAction extends GuiWithLaF {
 
     @Override
     void mergeAction() {
-        mergeBoxes(boxes.getSelectedBoxes());
-    }
+        List<TessBox> selected = boxes.getSelectedBoxes();
+        if (selected.size() <= 1) {
+            return;
+        }
 
-    void mergeBoxes(List<TessBox> selected) {
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = 0, maxY = 0;
 
         String ch = null;
@@ -33,15 +45,26 @@ public class GuiWithAction extends GuiWithLaF {
         }
 
         if (ch != null) {
-            this.boxes.addBox(index, new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page));
+            this.boxes.add(index, new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page));
         }
 
         model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
-        ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
+        this.jLabelImage.repaint();
     }
 
     @Override
     void deleteAction() {
+        List<TessBox> selected = boxes.getSelectedBoxes();
+        if (selected.size() <= 0) {
+            return;
+        }
+        
+        for (TessBox box : selected) {
+            this.boxes.remove(box);
+        }
+
+        model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+        this.jLabelImage.repaint();
     }
 
     /**

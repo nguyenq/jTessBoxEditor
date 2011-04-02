@@ -10,6 +10,42 @@
 <project name="jTessBoxEditor" default="default" basedir=".">
     <description>Builds, tests, and runs the project jTessBoxEditor.</description>
     <import file="nbproject/build-impl.xml"/>
+    <property name="version" value="0.1"/>
+    
+     <target name="-post-compile">
+        <copy todir="${build.classes.dir}">
+            <fileset dir="." includes="readme*.html"/>
+        </copy>
+    </target>
+    <target name="-post-jar">
+        <move todir="./">
+            <fileset dir="${dist.dir}" includes="${ant.project.name}.jar" />
+        </move>
+        <delete dir="${dist.dir}/lib"/>
+    </target>
+    <target name="-post-clean">
+        <delete file="${ant.project.name}.jar"/>
+    </target>
+    <target name="dist" depends="clean,jar"
+            description="create binary and source distribution archives">
+        <mkdir dir="${dist.dir}"/>
+        <zip zipfile="${dist.dir}/${ant.project.name}-${version}-src.zip">
+            <zipfileset dir="." prefix="${ant.project.name}">
+                <exclude name="**/.*"/>
+                <exclude name="${dist.dir}/**"/>
+                <exclude name="${build.dir}/**"/>
+                <exclude name="doc/**"/>
+                <exclude name="${ant.project.name}.jar"/>
+            </zipfileset>
+        </zip>
+        <zip zipfile="${dist.dir}/${ant.project.name}-${version}.zip">
+            <zipfileset dir="." includes="*,lib/**,data/**,tools/**" prefix="${ant.project.name}"
+                        excludes="build.xml,src,build,dist,doc,test,nbproject">
+                <exclude name="*.mf"/>
+            </zipfileset>
+        </zip>
+        <delete dir="${dist.dir}/lib"/>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
