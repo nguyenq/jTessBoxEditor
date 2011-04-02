@@ -37,14 +37,17 @@ public class JImageLabel extends JLabel {
             public void mousePressed(MouseEvent me) {
                 TessBox o = boxes.hitObject(me.getPoint());
                 if (o == null) {
-                    boxes.deselectAll();
+                    if (!me.isControlDown()) {
+                        boxes.deselectAll();
+                        repaint();
+                    }
                 } else {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
                     }
                     o.setSelected(true);
+                    repaint();
                 }
-                repaint();
             }
         });
     }

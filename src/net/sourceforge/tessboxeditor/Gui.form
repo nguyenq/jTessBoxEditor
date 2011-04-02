@@ -283,8 +283,6 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabelStatus">
         </Component>
-        <Component class="javax.swing.JProgressBar" name="jProgressBar">
-        </Component>
         <Component class="javax.swing.JButton" name="jButtonPrevPage">
           <Properties>
             <Property name="text" type="java.lang.String" value="Previous"/>
@@ -308,6 +306,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelPageNbr">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Page: "/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
