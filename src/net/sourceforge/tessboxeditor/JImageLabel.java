@@ -42,8 +42,8 @@ public class JImageLabel extends JLabel {
 
             @Override
             public void mousePressed(MouseEvent me) {
-                TessBox o = boxes.hitObject(me.getPoint());
-                if (o == null) {
+                TessBox box = boxes.hitObject(me.getPoint());
+                if (box == null) {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
                         repaint();
@@ -55,15 +55,16 @@ public class JImageLabel extends JLabel {
                         boxes.deselectAll();
                         table.clearSelection();
                     }
-                    o.setSelected(!o.isSelected()); // toggle selection
+                    box.setSelected(!box.isSelected()); // toggle selection
                     repaint();
-                    int index = boxes.toList().indexOf(o);
+                    int index = boxes.toList().indexOf(box);
                     table.clearSelection();
                     table.setRowSelectionInterval(index, index);
                     Rectangle rect = table.getCellRect(index, 0, true);
                     ((JViewport) table.getParent()).scrollRectToVisible(rect);
+
                     Icon icon = getIcon();
-                    Image subImage = ((BufferedImage)((ImageIcon)icon).getImage()).getSubimage(o.rect.x, o.rect.y, o.rect.width, o.rect.height);
+                    Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
                     jLabelSubimage.setIcon(new ImageIcon(subImage));
                 }
             }
