@@ -16,8 +16,7 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import javax.swing.JLabel;
 
 /**
@@ -25,18 +24,34 @@ import javax.swing.JLabel;
  * @author Quan Nguyen (nguyenq@users.sf.net)
  *
  */
-public class JImageLabel extends JLabel implements MouseListener {
+public class JImageLabel extends JLabel {
 
     private TessBoxCollection boxes;
     short page;
 
     /** Creates a new instance of JImageLabel */
     public JImageLabel() {
-        this.addMouseListener(JImageLabel.this);
+        this.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                TessBox o = boxes.hitObject(me.getPoint());
+                if (o == null) {
+                    boxes.deselectAll();
+                } else {
+                    if (!me.isControlDown()) {
+                        boxes.deselectAll();
+                    }
+                    o.setSelected(true);
+                }
+                repaint();
+            }
+        });
     }
 
     public void setBoxes(TessBoxCollection boxes) {
         this.boxes = boxes;
+        repaint();
     }
 
     public void setPage(short page) {
@@ -69,33 +84,5 @@ public class JImageLabel extends JLabel implements MouseListener {
                 }
             }
         }
-    }
-
-    public void mouseClicked(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void mousePressed(MouseEvent e) {
-        TessBox o = boxes.hitObject(e.getPoint());
-        if (o == null) {
-            boxes.deselectAll();
-        } else {
-            if (!e.isControlDown()) {
-                boxes.deselectAll();
-            }
-            o.setSelected(true);
-        }
-        repaint();
-    }
-
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    public void mouseEntered(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void mouseExited(MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 }
