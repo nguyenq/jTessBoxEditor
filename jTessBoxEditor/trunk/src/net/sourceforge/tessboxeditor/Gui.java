@@ -192,6 +192,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuLookAndFeel = new javax.swing.JMenu();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -292,9 +294,12 @@ public class Gui extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPaneImage, java.awt.BorderLayout.CENTER);
 
-        jMenuFile.setText("File");
+        jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuFile.Mnemonic").charAt(0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui"); // NOI18N
+        jMenuFile.setText(bundle.getString("jMenuFile.Text")); // NOI18N
 
-        jMenuItemOpen.setText("Open");
+        jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemOpen.Mnemonic").charAt(0));
+        jMenuItemOpen.setText(bundle.getString("jMenuItemOpen.Text")); // NOI18N
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemOpenActionPerformed(evt);
@@ -302,7 +307,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemOpen);
 
-        jMenuItemSave.setText("Save");
+        jMenuItemSave.setText(bundle.getString("jMenuItemSave.Text")); // NOI18N
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemSaveActionPerformed(evt);
@@ -311,11 +316,13 @@ public class Gui extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemSave);
         jMenuFile.add(jSeparator1);
 
-        jMenuRecentFiles.setText("Recent Files");
+        jMenuRecentFiles.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuRecentFiles.Mnemonic").charAt(0));
+        jMenuRecentFiles.setText(bundle.getString("jMenuRecentFiles.Text")); // NOI18N
         jMenuFile.add(jMenuRecentFiles);
         jMenuFile.add(jSeparator2);
 
-        jMenuItemExit.setText("Exit");
+        jMenuItemExit.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemExit.Mnemonic").charAt(0));
+        jMenuItemExit.setText(bundle.getString("jMenuItemExit.Text")); // NOI18N
         jMenuItemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemExitActionPerformed(evt);
@@ -327,19 +334,27 @@ public class Gui extends javax.swing.JFrame {
 
         jMenuSettings.setText("Settings");
 
-        jMenuItemFont.setText("Font");
+        jMenuItemFont.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemFont.Mnemonic").charAt(0));
+        jMenuItemFont.setText(bundle.getString("jMenuItemFont.Text")); // NOI18N
         jMenuItemFont.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemFontActionPerformed(evt);
             }
         });
         jMenuSettings.add(jMenuItemFont);
+        jMenuSettings.add(jSeparator3);
+
+        jMenuLookAndFeel.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuLookAndFeel.Mnemonic").charAt(0));
+        jMenuLookAndFeel.setText(bundle.getString("jMenuLookAndFeel.Text")); // NOI18N
+        jMenuSettings.add(jMenuLookAndFeel);
 
         jMenuBar.add(jMenuSettings);
 
-        jMenuHelp.setText("Help");
+        jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuHelp.Mnemonic").charAt(0));
+        jMenuHelp.setText(bundle.getString("jMenuHelp.Text")); // NOI18N
 
-        jMenuItemAbout.setText("About");
+        jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemAbout.Mnemonic").charAt(0));
+        jMenuItemAbout.setText(bundle.getString("jMenuItemAbout.Text")); // NOI18N
         jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemAboutActionPerformed(evt);
@@ -865,6 +880,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemFont;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;
+    protected javax.swing.JMenu jMenuLookAndFeel;
     private javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanelStatus;
@@ -874,9 +890,10 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneImage;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea;
+    protected javax.swing.JTextArea jTextArea;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
