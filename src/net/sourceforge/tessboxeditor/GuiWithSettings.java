@@ -15,6 +15,7 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +24,15 @@ import javax.swing.JOptionPane;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithSettings extends Gui {
+
+    private Font font;
+
+    public GuiWithSettings() {
+        font = new Font(
+                prefs.get("fontName", MAC_OS_X ? "Lucida Grande" : "Tahoma"),
+                prefs.getInt("fontStyle", Font.PLAIN),
+                prefs.getInt("fontSize", 12));
+    }
 
     @Override
     void openFontDialog() {
@@ -47,6 +57,15 @@ public class GuiWithSettings extends Gui {
             jTextArea.setFont(font = dlg.getFont());
             jTextArea.validate();
         }
+    }
+
+    @Override
+    void quit() {
+        prefs.put("fontName", font.getName());
+        prefs.putInt("fontSize", font.getSize());
+        prefs.putInt("fontStyle", font.getStyle());
+
+        super.quit();
     }
 
     /**

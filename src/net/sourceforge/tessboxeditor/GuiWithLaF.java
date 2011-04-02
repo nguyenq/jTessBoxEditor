@@ -69,6 +69,13 @@ public class GuiWithLaF extends GuiWithSettings {
 //        SwingUtilities.updateComponentTreeUI(jFileChooser);
     }
 
+    @Override
+    void quit() {
+        prefs.put("lookAndFeel", UIManager.getLookAndFeel().getClass().getName());
+
+        super.quit();
+    }
+
     /**
      * @param args the command line arguments
      */
