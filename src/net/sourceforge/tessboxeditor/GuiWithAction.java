@@ -36,7 +36,7 @@ public class GuiWithAction extends GuiWithLaF {
         for (TessBox box : selected) {
             ch = box.ch;
             page = box.page;
-            index = this.boxes.list.indexOf(box);
+            index = this.boxes.toList().indexOf(box);
             minX = Math.min(minX, box.rect.x);
             minY = Math.min(minY, box.rect.y);
             maxX = Math.max(maxX, box.rect.x + box.rect.width);
@@ -48,7 +48,7 @@ public class GuiWithAction extends GuiWithLaF {
             this.boxes.add(index, new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page));
         }
 
-        model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+        tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         this.jLabelImage.repaint();
         updateSave(true);
     }
@@ -61,10 +61,12 @@ public class GuiWithAction extends GuiWithLaF {
         }
         
         for (TessBox box : selected) {
-            this.boxes.remove(box);
+            int index = this.boxes.toList().indexOf(box);
+            this.boxes.remove(index);
+            tableModel.removeRow(index);
         }
 
-        model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+//        model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         this.jLabelImage.repaint();
         updateSave(true);
     }
