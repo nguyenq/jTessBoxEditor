@@ -3,6 +3,14 @@
 <Form version="1.6" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.JFileChooser" name="jFileChooser">
+      <Properties>
+        <Property name="dialogTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="net/sourceforge/tessboxeditor/Gui.properties" key="jButtonOpen.ToolTipText" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xa;        currentDirectory = prefs.get(&quot;currentDirectory&quot;, null);&#xa;        outputDirectory = prefs.get(&quot;outputDirectory&quot;, null);&#xa;        jFileChooser.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));&#xa;        filterIndex = prefs.getInt(&quot;filterIndex&quot;, 0);&#xa;        FileFilter allImageFilter = new SimpleFilter(&quot;bmp;png;tif;tiff&quot;, bundle.getString(&quot;All_Image_Files&quot;));&#xa;        FileFilter bmpFilter = new SimpleFilter(&quot;bmp&quot;, &quot;Bitmap&quot;);&#xa;        FileFilter pngFilter = new SimpleFilter(&quot;png&quot;, &quot;PNG&quot;);&#xa;        FileFilter tiffFilter = new SimpleFilter(&quot;tif;tiff&quot;, &quot;TIFF&quot;);&#xa;        FileFilter textFilter = new SimpleFilter(&quot;box;txt&quot;, &quot;Box Files&quot;);&#xa;&#xa;        jFileChooser.setAcceptAllFileFilterUsed(false);&#xa;        jFileChooser.addChoosableFileFilter(allImageFilter);&#xa;        jFileChooser.addChoosableFileFilter(bmpFilter);&#xa;        jFileChooser.addChoosableFileFilter(pngFilter);&#xa;        jFileChooser.addChoosableFileFilter(tiffFilter);&#xa;        jFileChooser.addChoosableFileFilter(textFilter);&#xa;        fileFilters = jFileChooser.getChoosableFileFilters();&#xa;        if (filterIndex &lt; fileFilters.length) {&#xa;            jFileChooser.setFileFilter(fileFilters[filterIndex]);&#xa;        }&#xa;"/>
+      </AuxValues>
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar">
       <SubComponents>
@@ -183,7 +191,12 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jButtonOpen">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Open"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="net/sourceforge/tessboxeditor/Gui.properties" key="jButtonOpen.Text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="net/sourceforge/tessboxeditor/Gui.properties" key="jButtonOpen.ToolTipText" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -194,7 +207,12 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonSave">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Save"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="net/sourceforge/tessboxeditor/Gui.properties" key="jButtonSave.Text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="net/sourceforge/tessboxeditor/Gui.properties" key="jButtonSave.ToolTipText" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -206,6 +224,7 @@
         <Component class="javax.swing.JButton" name="jButtonReload">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reload"/>
+            <Property name="toolTipText" type="java.lang.String" value="Reload Box File"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -295,9 +314,6 @@
                   </Table>
                 </Property>
                 <Property name="fillsViewportHeight" type="boolean" value="true"/>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[100, 100]"/>
-                </Property>
                 <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
                   <JTableSelectionModel selectionMode="0"/>
                 </Property>
