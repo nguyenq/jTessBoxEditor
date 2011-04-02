@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import javax.swing.JOptionPane;
-import net.sourceforge.tessboxeditor.GuiWithSettings;
+import net.sourceforge.tessboxeditor.GuiWithLaF;
 
 public class JTessBoxEditor {
 
@@ -30,6 +30,6 @@ public class JTessBoxEditor {
         }
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
-        GuiWithSettings.main(args);
+        GuiWithLaF.main(args);
     }
 }

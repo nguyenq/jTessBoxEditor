@@ -44,11 +44,12 @@ public class GuiWithSettings extends Gui {
 
         dlg.setVisible(true);
         if (dlg.succeeded()) {
-            font = dlg.getFont();
+            jTextArea.setFont(font = dlg.getFont());
+            jTextArea.validate();
         }
     }
 
-        /**
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
