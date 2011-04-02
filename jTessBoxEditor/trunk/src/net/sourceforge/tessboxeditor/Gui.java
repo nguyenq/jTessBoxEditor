@@ -51,7 +51,7 @@ public class Gui extends javax.swing.JFrame {
     private boolean boxChanged = false;
     private java.util.List<String> mruList = new java.util.ArrayList<String>();
     private String strClearRecentFiles;
-    private List<CharEntity> chrs;
+    private TessBoxCollection boxes;
     private List<String[]> dataList;
     BufferedImage image;
     protected short imageIndex;
@@ -71,7 +71,7 @@ public class Gui extends javax.swing.JFrame {
 
         // DnD support
 //        new DropTarget(this.jImageLabel, new FileDropTargetListener(JTessBoxEditor.this));
-        chrs = new ArrayList<CharEntity>();
+        boxes = new TessBoxCollection();
         dataList = new ArrayList<String[]>();
 
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
@@ -526,7 +526,7 @@ public class Gui extends javax.swing.JFrame {
                 in.close();
 
                 // load into coordinate tab
-                chrs.clear();
+                boxes.clear();
                 String[] boxes = this.jTextArea.getText().split("\\n");
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
                 for (String box : boxes) {
@@ -550,13 +550,13 @@ public class Gui extends javax.swing.JFrame {
                     } else {
                         page = 0; // Tess 2.0x format
                     }
-                    chrs.add(new CharEntity(items[0], new Rectangle(x, y, w, h), page));
+                    this.boxes.addBox(new TessBox(items[0], new Rectangle(x, y, w, h), page));
                 }
 
                 DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
                 model.setDataVector(dataList.toArray(new String[0][6]), new String[]{"Char", "X", "Y", "Width", "Height"});
 
-                ((JImageLabel) this.jLabelImage).setRects(chrs);
+                ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
                 this.boxFile = selectedFile;
                 updateMRUList(selectedFile.getPath());
