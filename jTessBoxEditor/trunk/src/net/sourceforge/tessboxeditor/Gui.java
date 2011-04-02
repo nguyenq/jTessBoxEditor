@@ -16,7 +16,6 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -57,7 +56,6 @@ public class Gui extends javax.swing.JFrame {
     private int filterIndex;
     private FileFilter[] fileFilters;
     private File selectedFile, boxFile;
-    protected Font font;
     private String currentDirectory;
     private String outputDirectory;
     private boolean boxChanged = false;
@@ -74,6 +72,11 @@ public class Gui extends javax.swing.JFrame {
 
     /** Creates new form JTessBoxEditor */
     public Gui() {
+        try {
+            UIManager.setLookAndFeel(prefs.get("lookAndFeel", UIManager.getSystemLookAndFeelClassName()));
+        } catch (Exception e) {
+            // keep default LAF
+        }
         initComponents();
 
         // DnD support
@@ -82,11 +85,6 @@ public class Gui extends javax.swing.JFrame {
         dataList = new ArrayList<String[]>();
 
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
-        font = new Font(
-                prefs.get("fontName", MAC_OS_X ? "Lucida Grande" : "Tahoma"),
-                prefs.getInt("fontStyle", Font.PLAIN),
-                prefs.getInt("fontSize", 12));
-
         currentDirectory = prefs.get("currentDirectory", null);
         outputDirectory = prefs.get("outputDirectory", null);
         jFileChooser.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
@@ -477,7 +475,7 @@ public class Gui extends javax.swing.JFrame {
             image = imageList.get(imageIndex);
             this.jLabelImage.setIcon(new ImageIcon(image));
             setButton();
-            this.setTitle("JTessBoxEditor - " + selectedFile.getName());
+            this.setTitle("jTessBoxEditor - " + selectedFile.getName());
         } catch (Exception e) {
         }
         if (imageList == null) {
@@ -524,7 +522,7 @@ public class Gui extends javax.swing.JFrame {
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
                 for (String box : boxes) {
                     String[] items = box.split("\\s+");
-                    
+
                     // skip invalid data
                     if (items.length < 5 || items.length > 6) {
                         continue;
@@ -745,11 +743,6 @@ public class Gui extends javax.swing.JFrame {
             prefs.put("outputDirectory", outputDirectory);
         }
 
-        prefs.put("lookAndFeel", UIManager.getLookAndFeel().getClass().getName());
-        prefs.put("fontName", font.getName());
-        prefs.putInt("fontSize", font.getSize());
-        prefs.putInt("fontStyle", font.getStyle());
-        prefs.put("lookAndFeel", UIManager.getLookAndFeel().getClass().getName());
         prefs.putInt("windowState", getExtendedState());
 
         StringBuilder buf = new StringBuilder();
