@@ -617,6 +617,7 @@ public class Gui extends javax.swing.JFrame {
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
+                ((JImageLabel) this.jLabelImage).setTable(jTable1);
                 this.boxFile = selectedFile;
                 updateMRUList(selectedFile.getPath());
                 updateSave(false);

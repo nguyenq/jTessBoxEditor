@@ -18,6 +18,8 @@ package net.sourceforge.tessboxeditor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JViewport;
 
 /**
  *
@@ -28,6 +30,7 @@ public class JImageLabel extends JLabel {
 
     private TessBoxCollection boxes;
     short page;
+    private JTable table;
 
     /** Creates a new instance of JImageLabel */
     public JImageLabel() {
@@ -40,25 +43,23 @@ public class JImageLabel extends JLabel {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
                         repaint();
+                        table.clearSelection();
                     }
                 } else {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
+                        table.clearSelection();
                     }
-                    o.setSelected(true);
+                    o.setSelected(!o.isSelected()); // toggle selection
                     repaint();
+                    int index = boxes.toList().indexOf(o);
+                    table.clearSelection();
+                    table.setRowSelectionInterval(index, index);
+                    Rectangle rect = table.getCellRect(index, 0, true);
+                    ((JViewport) table.getParent()).scrollRectToVisible(rect);
                 }
             }
         });
-    }
-
-    public void setBoxes(TessBoxCollection boxes) {
-        this.boxes = boxes;
-        repaint();
-    }
-
-    public void setPage(short page) {
-        this.page = page;
     }
 
     @Override
@@ -87,5 +88,21 @@ public class JImageLabel extends JLabel {
                 }
             }
         }
+    }
+
+    public void setBoxes(TessBoxCollection boxes) {
+        this.boxes = boxes;
+        repaint();
+    }
+
+    public void setPage(short page) {
+        this.page = page;
+    }
+
+    /**
+     * @param table the table to set
+     */
+    public void setTable(JTable table) {
+        this.table = table;
     }
 }
