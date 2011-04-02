@@ -51,14 +51,15 @@ public class Gui extends javax.swing.JFrame {
     private boolean boxChanged = false;
     private java.util.List<String> mruList = new java.util.ArrayList<String>();
     private String strClearRecentFiles;
-    private TessBoxCollection boxes;
-    private List<String[]> dataList;
+    protected TessBoxCollection boxes;
+    protected List<String[]> dataList;
     BufferedImage image;
     protected short imageIndex;
     private List<BufferedImage> imageList;
     int curIndex;
     String langCode = "eng";
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
+    final String[] headers = {"Char", "X", "Y", "Width", "Height"};
 
     /** Creates new form JTessBoxEditor */
     public Gui() {
@@ -75,7 +76,7 @@ public class Gui extends javax.swing.JFrame {
         dataList = new ArrayList<String[]>();
 
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
-        
+
         this.addWindowListener(
                 new WindowAdapter() {
 
@@ -136,6 +137,8 @@ public class Gui extends javax.swing.JFrame {
         jButtonOpen = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jButtonReload = new javax.swing.JButton();
+        jButtonMerge = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
         jProgressBar = new javax.swing.JProgressBar();
@@ -230,6 +233,28 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonReload);
+
+        jButtonMerge.setText("Merge");
+        jButtonMerge.setFocusable(false);
+        jButtonMerge.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonMerge.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonMerge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMergeActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonMerge);
+
+        jButtonDelete.setText("Delete");
+        jButtonDelete.setFocusable(false);
+        jButtonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonDelete);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -527,9 +552,9 @@ public class Gui extends javax.swing.JFrame {
 
                 // load into coordinate tab
                 boxes.clear();
-                String[] boxes = this.jTextArea.getText().split("\\n");
+                String[] boxdata = this.jTextArea.getText().split("\\n");
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
-                for (String box : boxes) {
+                for (String box : boxdata) {
                     String[] items = box.split("\\s+");
 
                     // skip invalid data
@@ -554,7 +579,7 @@ public class Gui extends javax.swing.JFrame {
                 }
 
                 DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
-                model.setDataVector(dataList.toArray(new String[0][6]), new String[]{"Char", "X", "Y", "Width", "Height"});
+                model.setDataVector(dataList.toArray(new String[0][6]), headers);
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
@@ -851,6 +876,19 @@ public class Gui extends javax.swing.JFrame {
         openFontDialog();
     }//GEN-LAST:event_jMenuItemFontActionPerformed
 
+    private void jButtonMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMergeActionPerformed
+        mergeAction();
+    }//GEN-LAST:event_jButtonMergeActionPerformed
+    void mergeAction() {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        deleteAction();
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+    void deleteAction() {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
+
     void openFontDialog() {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
@@ -867,13 +905,15 @@ public class Gui extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonMerge;
     private javax.swing.JButton jButtonNextPage;
     private javax.swing.JButton jButtonOpen;
     private javax.swing.JButton jButtonPrevPage;
     private javax.swing.JButton jButtonReload;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JFileChooser jFileChooser;
-    private javax.swing.JLabel jLabelImage;
+    protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
     private javax.swing.JLabel jLabelStatus;
     private javax.swing.JMenuBar jMenuBar;
@@ -896,7 +936,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
-    private javax.swing.JTable jTable1;
+    protected javax.swing.JTable jTable1;
     protected javax.swing.JTextArea jTextArea;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
