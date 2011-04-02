@@ -47,5 +47,4 @@ public class TessBox {
     boolean contains(int x, int y) {
         return this.rect.contains(x, y);
     }
-
 }

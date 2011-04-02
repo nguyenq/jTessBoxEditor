@@ -17,6 +17,7 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Rectangle;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class GuiWithAction extends GuiWithLaF {
 
@@ -45,10 +46,38 @@ public class GuiWithAction extends GuiWithLaF {
         }
 
         if (ch != null) {
-            this.boxes.add(index, new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page));
+            TessBox newBox = new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page);
+            newBox.setSelected(true);
+            boxes.add(index, newBox);
+            tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         }
 
-        tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+        this.jLabelImage.repaint();
+        updateSave(true);
+    }
+
+    @Override
+    void splitAction() {
+        List<TessBox> selected = boxes.getSelectedBoxes();
+        if (selected.size() <= 0) {
+            return;
+        } else if (selected.size() > 1) {
+            JOptionPane.showMessageDialog(this, "Select only one box for Split operation.");
+            return;
+        }
+
+        TessBox box = selected.get(0);
+        int index = this.boxes.toList().indexOf(box);
+        box.rect.width /= 2;
+        tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), index, 3);
+
+        TessBox newBox = new TessBox(box.ch, new Rectangle(box.rect), box.page);
+        newBox.rect.x += newBox.rect.width;
+        newBox.setSelected(true);
+        boxes.add(index, newBox);
+        Object[] newRow = {newBox.ch, newBox.rect.x, newBox.rect.y, newBox.rect.x + newBox.rect.width, newBox.rect.y + newBox.rect.height};
+        tableModel.insertRow(index, newRow);
+
         this.jLabelImage.repaint();
         updateSave(true);
     }
@@ -59,14 +88,13 @@ public class GuiWithAction extends GuiWithLaF {
         if (selected.size() <= 0) {
             return;
         }
-        
+
         for (TessBox box : selected) {
             int index = this.boxes.toList().indexOf(box);
             this.boxes.remove(index);
             tableModel.removeRow(index);
         }
 
-//        model.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
         this.jLabelImage.repaint();
         updateSave(true);
     }
