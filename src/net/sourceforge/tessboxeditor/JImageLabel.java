@@ -34,7 +34,6 @@ public class JImageLabel extends JLabel {
     private TessBoxCollection boxes;
     short page;
     private JTable table;
-    private JLabel jLabelSubimage;
 
     /** Creates a new instance of JImageLabel */
     public JImageLabel() {
@@ -42,13 +41,16 @@ public class JImageLabel extends JLabel {
 
             @Override
             public void mousePressed(MouseEvent me) {
+                if (boxes == null) {
+                    return;
+                }
+
                 TessBox box = boxes.hitObject(me.getPoint());
                 if (box == null) {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
                         repaint();
                         table.clearSelection();
-                        jLabelSubimage.setIcon(null);
                     }
                 } else {
                     if (!me.isControlDown()) {
@@ -58,14 +60,9 @@ public class JImageLabel extends JLabel {
                     box.setSelected(!box.isSelected()); // toggle selection
                     repaint();
                     int index = boxes.toList().indexOf(box);
-                    table.clearSelection();
                     table.setRowSelectionInterval(index, index);
                     Rectangle rect = table.getCellRect(index, 0, true);
                     ((JViewport) table.getParent()).scrollRectToVisible(rect);
-
-                    Icon icon = getIcon();
-                    Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
-                    jLabelSubimage.setIcon(new ImageIcon(subImage));
                 }
             }
         });
@@ -76,27 +73,29 @@ public class JImageLabel extends JLabel {
         // automatically called when repaint
         super.paintComponent(g);
 
-        if (boxes != null) {
-            Graphics2D g2d = (Graphics2D) g;
+        if (boxes == null) {
+            return;
+        }
 
-            g2d.setColor(Color.BLUE);
-            boolean resetColor = false;
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLUE);
+        boolean resetColor = false;
 
-            for (TessBox box : boxes.toList()) {
-                if (box.page == page) {
-                    Rectangle rect = box.rect;
-                    if (box.isSelected()) {
-                        g2d.setColor(Color.RED);
-                        resetColor = true;
-                    }
-                    g2d.draw(rect);
-                    if (resetColor) {
-                        g2d.setColor(Color.BLUE);
-                        resetColor = false;
-                    }
+        for (TessBox box : boxes.toList()) {
+            if (box.page == page) {
+                Rectangle rect = box.rect;
+                if (box.isSelected()) {
+                    g2d.setColor(Color.RED);
+                    resetColor = true;
+                }
+                g2d.draw(rect);
+                if (resetColor) {
+                    g2d.setColor(Color.BLUE);
+                    resetColor = false;
                 }
             }
         }
+
     }
 
     public void setBoxes(TessBoxCollection boxes) {
@@ -113,12 +112,5 @@ public class JImageLabel extends JLabel {
      */
     public void setTable(JTable table) {
         this.table = table;
-    }
-
-    /**
-     * @param subImage the subImage to set
-     */
-    public void setLabelSubimage(JLabel jLabelSubimage) {
-        this.jLabelSubimage = jLabelSubimage;
     }
 }

@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import net.sourceforge.vietocr.utilities.ImageIOHelper;
@@ -49,7 +51,7 @@ public class Gui extends javax.swing.JFrame {
     private final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
     private int filterIndex;
     private FileFilter[] fileFilters;
-    private File selectedFile, boxFile;
+    private File boxFile;
     private String currentDirectory;
     private String outputDirectory;
     private boolean boxChanged = true;
@@ -90,8 +92,28 @@ public class Gui extends javax.swing.JFrame {
 //            this.jMenuSettings.remove(this.jMenuItemOptions);
         }
 
-        tableModel = (DefaultTableModel) this.jTable1.getModel();
         boxes = new TessBoxCollection();
+
+        tableModel = (DefaultTableModel) this.jTable.getModel();
+        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
+        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int index = jTable.getSelectedRow();
+                    if (index == -1) {
+                        jTextFieldChar.setText(null);
+                        jLabelSubimage.setIcon(null);
+                    } else {
+                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
+                        Icon icon = jLabelImage.getIcon();
+                        TessBox box = boxes.toList().get(index);
+                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
+                        jLabelSubimage.setIcon(new ImageIcon(subImage));
+                    }
+                }
+            }
+        });
 
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
@@ -157,7 +179,10 @@ public class Gui extends javax.swing.JFrame {
         jButtonSave = new javax.swing.JButton();
         jButtonReload = new javax.swing.JButton();
         jButtonMerge = new javax.swing.JButton();
+        jButtonSplit = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
+        jLabelChar = new javax.swing.JLabel();
+        jTextFieldChar = new javax.swing.JTextField();
         jLabelSubimage = new javax.swing.JLabel();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
@@ -166,7 +191,7 @@ public class Gui extends javax.swing.JFrame {
         jLabelPageNbr = new javax.swing.JLabel();
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
         jScrollPaneCoord = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
         jScrollPaneBoxData = new javax.swing.JScrollPane();
         jTextArea = new javax.swing.JTextArea();
         jScrollPaneImage = new javax.swing.JScrollPane();
@@ -267,6 +292,17 @@ public class Gui extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonMerge);
 
+        jButtonSplit.setText("Split");
+        jButtonSplit.setFocusable(false);
+        jButtonSplit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonSplit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonSplit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSplitActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonSplit);
+
         jButtonDelete.setText("Delete");
         jButtonDelete.setFocusable(false);
         jButtonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -277,6 +313,10 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonDelete);
+
+        jLabelChar.setText("Character");
+        jToolBar1.add(jLabelChar);
+        jToolBar1.add(jTextFieldChar);
         jToolBar1.add(jLabelSubimage);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
@@ -312,7 +352,7 @@ public class Gui extends javax.swing.JFrame {
 
         jScrollPaneCoord.setPreferredSize(new java.awt.Dimension(200, 275));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -328,14 +368,14 @@ public class Gui extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFillsViewportHeight(true);
-        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTable.setFillsViewportHeight(true);
+        jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jTable1MousePressed(evt);
+                jTableMousePressed(evt);
             }
         });
-        jScrollPaneCoord.setViewportView(jTable1);
+        jScrollPaneCoord.setViewportView(jTable);
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
@@ -452,7 +492,6 @@ public class Gui extends javax.swing.JFrame {
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             currentDirectory = jFileChooser.getCurrentDirectory().getPath();
-            selectedFile = jFileChooser.getSelectedFile();
             openFile(jFileChooser.getSelectedFile());
 
             for (int i = 0; i < fileFilters.length; i++) {
@@ -512,7 +551,9 @@ public class Gui extends javax.swing.JFrame {
                     jLabelStatus.setText(bundle.getString("Loading_completed"));
                     updateMRUList(selectedFile.getPath());
                     // read box file
-                    readBoxFile(selectedFile);
+                    int lastDot = selectedFile.getName().lastIndexOf(".");
+                    boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
+                    readBoxFile(boxFile);
                     jLabelPageNbr.setText("    Page: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
                 } catch (InterruptedException ignore) {
 //                    ignore.printStackTrace();
@@ -574,10 +615,7 @@ public class Gui extends javax.swing.JFrame {
         }
     }
 
-    void readBoxFile(final File selectedFile) {
-        int lastDot = selectedFile.getName().lastIndexOf(".");
-        boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
-
+    void readBoxFile(final File boxFile) {
         if (boxFile.exists()) {
             if (!promptToSave()) {
                 return;
@@ -620,30 +658,11 @@ public class Gui extends javax.swing.JFrame {
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setPage(imageIndex);
-                ((JImageLabel) this.jLabelImage).setTable(jTable1);
-                ((JImageLabel) this.jLabelImage).setLabelSubimage(this.jLabelSubimage);
-                this.boxFile = selectedFile;
-                updateMRUList(selectedFile.getPath());
+                ((JImageLabel) this.jLabelImage).setTable(jTable);
                 updateSave(false);
             } catch (Exception e) {
             }
-            return;
         }
-    }
-
-    // in the your JTable
-//   jump to last row
-//rowCount =  table.getRowCount () - 1;
-//showCell(rowcount, 0);
-//
-////   jump to first row
-//showCell(0, 0);
-    void showCell(int row, int column) {
-        Rectangle rect = this.jTable1.getCellRect(row, column, true);
-        this.jScrollPaneCoord.scrollRectToVisible(rect);
-        this.jTable1.clearSelection();
-        this.jTable1.setRowSelectionInterval(row, row);
-        tableModel.fireTableDataChanged(); // notify the model
     }
 
     /**
@@ -860,7 +879,6 @@ public class Gui extends javax.swing.JFrame {
             --imageIndex;
             jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
             loadImage();
-            showCell(0, 0);
         }
     }//GEN-LAST:event_jButtonPrevPageActionPerformed
 
@@ -869,7 +887,6 @@ public class Gui extends javax.swing.JFrame {
             ++imageIndex;
             jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
             loadImage();
-            showCell(100, 0);
         }
     }//GEN-LAST:event_jButtonNextPageActionPerformed
 
@@ -920,8 +937,8 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReloadActionPerformed
-        if (selectedFile != null) {
-            readBoxFile(selectedFile);
+        if (boxFile != null) {
+            readBoxFile(boxFile);
         }
     }//GEN-LAST:event_jButtonReloadActionPerformed
 
@@ -969,17 +986,21 @@ public class Gui extends javax.swing.JFrame {
         saveFileDlg();
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
 
-    private void jTable1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MousePressed
-        int index = this.jTable1.getSelectedRow();
+    private void jTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMousePressed
+        int index = this.jTable.getSelectedRow();
         this.boxes.deselectAll();
         TessBox selectedBox = this.boxes.toList().get(index);
         selectedBox.setSelected(true);
         this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
         this.jLabelImage.repaint();
-        Icon icon = jLabelImage.getIcon();
-        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(selectedBox.rect.x, selectedBox.rect.y, selectedBox.rect.width, selectedBox.rect.height);
-        this.jLabelSubimage.setIcon(new ImageIcon(subImage));
-    }//GEN-LAST:event_jTable1MousePressed
+    }//GEN-LAST:event_jTableMousePressed
+
+    private void jButtonSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSplitActionPerformed
+        splitAction();
+    }//GEN-LAST:event_jButtonSplitActionPerformed
+    void splitAction() {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
 
     /**
      * @param args the command line arguments
@@ -1000,7 +1021,9 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonPrevPage;
     private javax.swing.JButton jButtonReload;
     private javax.swing.JButton jButtonSave;
+    private javax.swing.JButton jButtonSplit;
     private javax.swing.JFileChooser jFileChooser;
+    private javax.swing.JLabel jLabelChar;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
     private javax.swing.JLabel jLabelStatus;
@@ -1027,8 +1050,9 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparatorAbout;
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
-    protected javax.swing.JTable jTable1;
+    protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
+    private javax.swing.JTextField jTextFieldChar;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
     private JFrame helptopicsFrame;
