@@ -153,10 +153,10 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldChar = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabelSubimage = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
-        jSpinner4 = new javax.swing.JSpinner();
+        jSpinnerX = new javax.swing.JSpinner();
+        jSpinnerY = new javax.swing.JSpinner();
+        jSpinnerW = new javax.swing.JSpinner();
+        jSpinnerH = new javax.swing.JSpinner();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
         jLabelPageNbr = new javax.swing.JLabel();
@@ -292,13 +292,44 @@ public class Gui extends javax.swing.JFrame {
         jToolBar1.add(jLabelChar);
 
         jTextFieldChar.setColumns(1);
+        jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldCharActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jTextFieldChar);
+        jTextFieldChar.setPreferredSize(new java.awt.Dimension(10, 10));
+        jToolBar1.add(Box.createHorizontalGlue());
 
         jPanel1.add(jLabelSubimage);
-        jPanel1.add(jSpinner1);
-        jPanel1.add(jSpinner2);
-        jPanel1.add(jSpinner3);
-        jPanel1.add(jSpinner4);
+
+        jSpinnerX.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerXStateChanged(evt);
+            }
+        });
+        jPanel1.add(jSpinnerX);
+
+        jSpinnerY.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerYStateChanged(evt);
+            }
+        });
+        jPanel1.add(jSpinnerY);
+
+        jSpinnerW.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerWStateChanged(evt);
+            }
+        });
+        jPanel1.add(jSpinnerW);
+
+        jSpinnerH.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerHStateChanged(evt);
+            }
+        });
+        jPanel1.add(jSpinnerH);
 
         jToolBar1.add(jPanel1);
 
@@ -376,6 +407,10 @@ public class Gui extends javax.swing.JFrame {
                         TessBox box = boxes.toList().get(index);
                         Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
                         jLabelSubimage.setIcon(new ImageIcon(subImage));
+                        jSpinnerX.setValue(box.rect.x);
+                        jSpinnerY.setValue(box.rect.y);
+                        jSpinnerW.setValue(box.rect.width);
+                        jSpinnerH.setValue(box.rect.height);
                     }
                 }
             }
@@ -997,6 +1032,41 @@ public class Gui extends javax.swing.JFrame {
     void splitAction() {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
+    private void jSpinnerXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerXStateChanged
+        stateChanged(evt);
+    }//GEN-LAST:event_jSpinnerXStateChanged
+
+    private void jSpinnerYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerYStateChanged
+        stateChanged(evt);
+    }//GEN-LAST:event_jSpinnerYStateChanged
+
+    private void jSpinnerWStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerWStateChanged
+        stateChanged(evt);
+    }//GEN-LAST:event_jSpinnerWStateChanged
+
+    private void jSpinnerHStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerHStateChanged
+        stateChanged(evt);
+    }//GEN-LAST:event_jSpinnerHStateChanged
+    void stateChanged(javax.swing.event.ChangeEvent evt) {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
+    private void jTextFieldCharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCharActionPerformed
+        List<TessBox> selected = boxes.getSelectedBoxes();
+        if (selected.size() <= 0) {
+            return;
+        } else if (selected.size() > 1) {
+            JOptionPane.showMessageDialog(this, "Select only one box for Spinner operation.");
+            return;
+        }
+
+        TessBox box = selected.get(0);
+        int index = this.boxes.toList().indexOf(box);
+
+        if (!box.chrs.equals(this.jTextFieldChar.getText())) {
+            box.chrs = this.jTextFieldChar.getText();
+            tableModel.setValueAt(box.chrs, index, 0);
+        }
+    }//GEN-LAST:event_jTextFieldCharActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1046,14 +1116,14 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparatorAbout;
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
+    protected javax.swing.JSpinner jSpinnerH;
+    protected javax.swing.JSpinner jSpinnerW;
+    protected javax.swing.JSpinner jSpinnerX;
+    protected javax.swing.JSpinner jSpinnerY;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
     protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
-    private javax.swing.JTextField jTextFieldChar;
+    protected javax.swing.JTextField jTextFieldChar;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
     private JFrame helptopicsFrame;

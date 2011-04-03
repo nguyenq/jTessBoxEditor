@@ -306,6 +306,13 @@
           <Properties>
             <Property name="columns" type="int" value="1"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldCharActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jTextFieldChar.setPreferredSize(new java.awt.Dimension(10, 10));&#xd;&#xa;jToolBar1.add(Box.createHorizontalGlue());"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+          </AuxValues>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel1">
 
@@ -313,13 +320,37 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabelSubimage">
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner1">
+            <Component class="javax.swing.JSpinner" name="jSpinnerX">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerXStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner2">
+            <Component class="javax.swing.JSpinner" name="jSpinnerY">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerYStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner3">
+            <Component class="javax.swing.JSpinner" name="jSpinnerW">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerWStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner4">
+            <Component class="javax.swing.JSpinner" name="jSpinnerH">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerHStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -424,7 +455,7 @@
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int index = jTable.getSelectedRow();&#xa;                    if (index == -1) {&#xa;                        jTextFieldChar.setText(null);&#xa;                        jLabelSubimage.setIcon(null);&#xa;                    } else {&#xa;                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));&#xa;                        Icon icon = jLabelImage.getIcon();&#xa;                        TessBox box = boxes.toList().get(index);&#xa;                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);&#xa;                        jLabelSubimage.setIcon(new ImageIcon(subImage));&#xa;                    }&#xa;                }&#xa;            }&#xa;        });"/>
+                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int index = jTable.getSelectedRow();&#xa;                    if (index == -1) {&#xa;                        jTextFieldChar.setText(null);&#xa;                        jLabelSubimage.setIcon(null);&#xa;                    } else {&#xa;                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));&#xa;                        Icon icon = jLabelImage.getIcon();&#xa;                        TessBox box = boxes.toList().get(index);&#xa;                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);&#xa;                        jLabelSubimage.setIcon(new ImageIcon(subImage));&#xa;                        jSpinnerX.setValue(box.rect.x);&#xa;                        jSpinnerY.setValue(box.rect.y);&#xa;                        jSpinnerW.setValue(box.rect.width);&#xa;                        jSpinnerH.setValue(box.rect.height);&#xa;                    }&#xa;                }&#xa;            }&#xa;        });"/>
               </AuxValues>
             </Component>
           </SubComponents>
