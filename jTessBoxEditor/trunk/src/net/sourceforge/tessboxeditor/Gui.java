@@ -428,12 +428,7 @@ public class Gui extends javax.swing.JFrame {
                 if (!e.getValueIsAdjusting()) {
                     int index = jTable.getSelectedRow();
                     if (index == -1) {
-                        jTextFieldChar.setText(null);
-                        jSpinnerH.setValue(0);
-                        jSpinnerW.setValue(0);
-                        jSpinnerX.setValue(0);
-                        jSpinnerY.setValue(0);
-                        jLabelSubimage.setIcon(null);
+
                     } else {
                         jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
                         Icon icon = jLabelImage.getIcon();
@@ -627,6 +622,7 @@ public class Gui extends javax.swing.JFrame {
                     readImageFile(get());
                     updateMRUList(selectedFile.getPath());
                     // read box file
+                    boxes.clear();
                     int lastDot = selectedFile.getName().lastIndexOf(".");
                     boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
                     readBoxFile(boxFile);
@@ -830,7 +826,7 @@ public class Gui extends javax.swing.JFrame {
     String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < imageList.size(); i++) {
-            int pageHeight = ((BufferedImage)imageList.get(i)).getHeight(); // each page (in an image) can have different height
+            int pageHeight = ((BufferedImage) imageList.get(i)).getHeight(); // each page (in an image) can have different height
             for (TessBox box : boxes.toList(i)) {
                 Rectangle rect = box.rect;
                 sb.append(String.format("%s %d %d %d %d %d", box.chrs, rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
@@ -922,6 +918,7 @@ public class Gui extends javax.swing.JFrame {
         this.jLabelPageNbr.setText(String.format("Page: %d of %d", imageIndex + 1, imageList.size()));
         setButton();
         boxes.deselectAll();
+        resetReadout();
     }
 
     void setButton() {
@@ -936,6 +933,15 @@ public class Gui extends javax.swing.JFrame {
         } else {
             this.jButtonNextPage.setEnabled(true);
         }
+    }
+
+    void resetReadout() {
+        jTextFieldChar.setText(null);
+        jSpinnerH.setValue(0);
+        jSpinnerW.setValue(0);
+        jSpinnerX.setValue(0);
+        jSpinnerY.setValue(0);
+        jLabelSubimage.setIcon(null);
     }
 
     /**

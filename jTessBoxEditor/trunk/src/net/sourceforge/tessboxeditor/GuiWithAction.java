@@ -50,6 +50,9 @@ public class GuiWithAction extends GuiWithLaF {
             newBox.setSelected(true);
             boxes.add(index, newBox);
             tableModel.setDataVector(boxes.getTableDataList(page).toArray(new String[0][5]), headers);
+            this.jTable.setRowSelectionInterval(index, index);
+            Rectangle rect = this.jTable.getCellRect(index, 0, true);
+            this.jTable.scrollRectToVisible(rect);
         }
 
         this.jLabelImage.repaint();
@@ -95,6 +98,7 @@ public class GuiWithAction extends GuiWithLaF {
             tableModel.removeRow(index);
         }
 
+        resetReadout();
         this.jLabelImage.repaint();
         updateSave(true);
     }
