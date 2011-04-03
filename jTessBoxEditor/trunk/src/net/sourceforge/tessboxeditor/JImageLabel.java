@@ -76,14 +76,16 @@ public class JImageLabel extends JLabel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLUE);
         boolean resetColor = false;
+//        int height = getHeight();
 
         for (TessBox box : boxes.toList(page)) {
-            Rectangle rect = box.rect;
             if (box.isSelected()) {
                 g2d.setColor(Color.RED);
                 resetColor = true;
             }
+            Rectangle rect = box.rect;
             g2d.draw(rect);
+//            g2d.drawRect(rect.x, height - rect.y - rect.height, rect.width, rect.height);
             if (resetColor) {
                 g2d.setColor(Color.BLUE);
                 resetColor = false;
