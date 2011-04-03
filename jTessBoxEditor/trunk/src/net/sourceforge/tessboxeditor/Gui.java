@@ -25,24 +25,21 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.*;
 import java.util.prefs.Preferences;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import net.sourceforge.vietocr.utilities.ImageIOHelper;
-import net.sourceforge.vietocr.utilities.Utilities;
-import net.sourceforge.vietpad.components.HtmlPane;
-import net.sourceforge.vietpad.components.SimpleFilter;
+import net.sourceforge.vietocr.utilities.*;
+import net.sourceforge.vietpad.components.*;
 
 public class Gui extends javax.swing.JFrame {
 
     public static final String APP_NAME = "jTessBoxEditor";
     public static final String TO_BE_IMPLEMENTED = "To be implemented in subclass";
+    final String[] headers = {"Char", "X", "Y", "Width", "Height"};
     static final boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
     static final String UTF8 = "UTF-8";
@@ -52,19 +49,14 @@ public class Gui extends javax.swing.JFrame {
     private int filterIndex;
     private FileFilter[] fileFilters;
     private File boxFile;
-    private String currentDirectory;
-    private String outputDirectory;
+    private String currentDirectory, outputDirectory, strClearRecentFiles;
     private boolean boxChanged = true;
     private java.util.List<String> mruList = new java.util.ArrayList<String>();
-    private String strClearRecentFiles;
     protected TessBoxCollection boxes;
-    BufferedImage image;
     protected short imageIndex;
     private List<BufferedImage> imageList;
-    int curIndex;
     String langCode = "eng";
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
-    final String[] headers = {"Char", "X", "Y", "Width", "Height"};
     DefaultTableModel tableModel;
 
     /** Creates new form JTessBoxEditor */
@@ -76,6 +68,7 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
+        
         if (MAC_OS_X) {
             new MacOSXApplication(Gui.this);
 
@@ -86,34 +79,9 @@ public class Gui extends javax.swing.JFrame {
             // remove About menuitem
             this.jMenuHelp.remove(this.jSeparatorAbout);
             this.jMenuHelp.remove(this.jMenuItemAbout);
-
-//            // remove Options menuitem
-//            this.jMenuSettings.remove(this.jSeparatorOptions);
-//            this.jMenuSettings.remove(this.jMenuItemOptions);
         }
 
         boxes = new TessBoxCollection();
-
-        tableModel = (DefaultTableModel) this.jTable.getModel();
-        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
-        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int index = jTable.getSelectedRow();
-                    if (index == -1) {
-                        jTextFieldChar.setText(null);
-                        jLabelSubimage.setIcon(null);
-                    } else {
-                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
-                        Icon icon = jLabelImage.getIcon();
-                        TessBox box = boxes.toList().get(index);
-                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
-                        jLabelSubimage.setIcon(new ImageIcon(subImage));
-                    }
-                }
-            }
-        });
 
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
@@ -322,6 +290,8 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelChar.setText("Character");
         jToolBar1.add(jLabelChar);
+
+        jTextFieldChar.setColumns(1);
         jToolBar1.add(jTextFieldChar);
 
         jPanel1.add(jLabelSubimage);
@@ -389,6 +359,26 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jScrollPaneCoord.setViewportView(jTable);
+        tableModel = (DefaultTableModel) this.jTable.getModel();
+        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
+        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int index = jTable.getSelectedRow();
+                    if (index == -1) {
+                        jTextFieldChar.setText(null);
+                        jLabelSubimage.setIcon(null);
+                    } else {
+                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
+                        Icon icon = jLabelImage.getIcon();
+                        TessBox box = boxes.toList().get(index);
+                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
+                        jLabelSubimage.setIcon(new ImageIcon(subImage));
+                    }
+                }
+            }
+        });
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
@@ -625,6 +615,9 @@ public class Gui extends javax.swing.JFrame {
                 boxes.clear();
                 String[] boxdata = this.jTextArea.getText().split("\\n");
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
+                // In computer graphics realm, (0,0) is defined at top-left.
+                int pageHeight = imageList.get(imageIndex).getHeight();
+
                 for (String box : boxdata) {
                     String[] items = box.split("\\s+");
 
@@ -638,7 +631,7 @@ public class Gui extends javax.swing.JFrame {
                     int y = Integer.parseInt(items[2]);
                     int w = Integer.parseInt(items[3]) - x;
                     int h = Integer.parseInt(items[4]) - y;
-                    y = image.getHeight() - y - h; // flip the y-coordinate
+                    y = pageHeight - y - h; // flip the y-coordinate
 
                     short page;
                     if (items.length == 6) {
@@ -658,7 +651,7 @@ public class Gui extends javax.swing.JFrame {
             } catch (Exception e) {
             }
         } else {
-            tableModel.setDataVector((Vector) null, (Vector) null);
+            tableModel.setDataVector((Object[][]) null, (Object[]) null);
             ((JImageLabel) this.jLabelImage).setBoxes(null);
         }
     }
@@ -897,8 +890,7 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNextPageActionPerformed
 
     void loadImage() {
-        image = imageList.get(imageIndex);
-        this.jLabelImage.setIcon(new ImageIcon(image));
+        this.jLabelImage.setIcon(new ImageIcon(imageList.get(imageIndex)));
         setButton();
     }
 
