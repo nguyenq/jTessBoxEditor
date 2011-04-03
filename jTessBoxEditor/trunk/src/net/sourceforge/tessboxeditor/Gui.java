@@ -68,7 +68,7 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
-        
+
         if (MAC_OS_X) {
             new MacOSXApplication(Gui.this);
 
@@ -551,13 +551,12 @@ public class Gui extends javax.swing.JFrame {
 
                 try {
                     readImageFile(get());
-                    jLabelStatus.setText(bundle.getString("Loading_completed"));
                     updateMRUList(selectedFile.getPath());
                     // read box file
                     int lastDot = selectedFile.getName().lastIndexOf(".");
                     boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
                     readBoxFile(boxFile);
-                    jLabelPageNbr.setText("    Page: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
+//                    jLabelStatus.setText(bundle.getString("Loading_completed"));
                 } catch (InterruptedException ignore) {
 //                    ignore.printStackTrace();
                     jLabelStatus.setText("Loading canceled.");
@@ -594,6 +593,7 @@ public class Gui extends javax.swing.JFrame {
             }
             imageIndex = 0;
             loadImage();
+            this.jLabelPageNbr.setText("    Page: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
             this.setTitle(APP_NAME + " - " + selectedFile.getName());
         } catch (Exception e) {
         }
@@ -894,6 +894,20 @@ public class Gui extends javax.swing.JFrame {
         setButton();
     }
 
+    void setButton() {
+        if (imageIndex == 0) {
+            this.jButtonPrevPage.setEnabled(false);
+        } else {
+            this.jButtonPrevPage.setEnabled(true);
+        }
+
+        if (imageIndex == imageList.size() - 1) {
+            this.jButtonNextPage.setEnabled(false);
+        } else {
+            this.jButtonNextPage.setEnabled(true);
+        }
+    }
+
     /**
      *  Updates the Save action.
      *
@@ -906,20 +920,6 @@ public class Gui extends javax.swing.JFrame {
             this.jMenuItemSave.setEnabled(modified);
             rootPane.putClientProperty("windowModified", Boolean.valueOf(modified));
             // see http://developer.apple.com/qa/qa2001/qa1146.html
-        }
-    }
-
-    void setButton() {
-        if (imageIndex == 0) {
-            this.jButtonPrevPage.setEnabled(false);
-        } else {
-            this.jButtonPrevPage.setEnabled(true);
-        }
-
-        if (imageIndex == imageList.size() - 1) {
-            this.jButtonNextPage.setEnabled(false);
-        } else {
-            this.jButtonNextPage.setEnabled(true);
         }
     }
 
