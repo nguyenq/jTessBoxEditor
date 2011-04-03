@@ -71,4 +71,73 @@ public class TextUtilities {
     public static String removeLineBreaks(String text) {
         return text.replaceAll("(?<=\n|^)[\t ]+|[\t ]+(?=$|\n)", "").replaceAll("(?<=.)\n(?=.)", " ");
     }
+
+    /**
+     *  Converts Numeric Character References and Unicode escape sequences to Unicode.
+     */
+    String convertNCR(String str) {
+        final String[] NCRs = {"&#x", "&#", "\\u", "U+", "#x", "#"};
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < NCRs.length; i++) {
+            int radix;
+            int foundIndex;
+            int startIndex = 0;
+            final int STR_LENGTH = str.length();
+            final String NCR = NCRs[i];
+            final int NCR_LENGTH = NCR.length();
+
+            if (NCR.equals("&#") || NCR.equals("#")) {
+                radix = 10;
+            } else {
+                radix = 16;
+            }
+
+            while (startIndex < STR_LENGTH) {
+                foundIndex = str.indexOf(NCR, startIndex);
+
+                if (foundIndex == -1) {
+                    result.append(str.substring(startIndex));
+                    break;
+                }
+
+                result.append(str.substring(startIndex, foundIndex));
+                if (NCR.equals("\\u") || NCR.equals("U+")) {
+                    startIndex = foundIndex + 6;
+                    if (startIndex > str.length()) startIndex = -1; // for invalid Unicode escape sequences
+                } else {
+                    startIndex = str.indexOf(";", foundIndex);
+                }
+
+                if (startIndex == -1) {
+                    result.append(str.substring(foundIndex));
+                    break;
+                }
+
+                String tok = str.substring(foundIndex + NCR_LENGTH, startIndex);
+
+                try {
+                    result.append((char) Integer.parseInt(tok, radix));
+                } catch (NumberFormatException nfe) {
+                    try {
+                        if (NCR.equals("\\u") || NCR.equals("U+")) {
+                            result.append(NCR).append(tok);
+                        } else {
+                            result.append(NCR).append(tok).append(str.charAt(startIndex));
+                        }
+                    } catch (StringIndexOutOfBoundsException sioobe) {
+                        result.append(NCR).append(tok);
+                    }
+                }
+
+                if (!NCR.equals("\\u") && !NCR.equals("U+")) {
+                    startIndex++;
+                }
+            }
+
+            str = result.toString();
+            result.setLength(0);
+        }
+        return str;
+    }
 }
