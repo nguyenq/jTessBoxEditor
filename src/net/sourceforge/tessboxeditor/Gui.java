@@ -35,6 +35,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
+import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
 
 public class Gui extends javax.swing.JFrame {
 
@@ -147,6 +148,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabelChar = new javax.swing.JLabel();
         jTextFieldChar = new javax.swing.JTextField();
+        jTextFieldChar.setDocument(new LimitedLengthDocument(6));
         jLabelSubimage = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
@@ -296,6 +298,8 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabelChar);
 
         jTextFieldChar.setColumns(2);
+        jTextFieldChar.setMargin(new java.awt.Insets(0, 2, 0, 2));
+        jTextFieldChar.setPreferredSize(new java.awt.Dimension(22, 26));
         jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCharActionPerformed(evt);
