@@ -59,7 +59,7 @@ public class JImageLabel extends JLabel {
                     int index = boxes.toList(page).indexOf(box);
                     table.setRowSelectionInterval(index, index);
                     Rectangle rect = table.getCellRect(index, 0, true);
-                    ((JViewport) table.getParent()).scrollRectToVisible(rect);
+                    table.scrollRectToVisible(rect);
                 }
             }
         });
