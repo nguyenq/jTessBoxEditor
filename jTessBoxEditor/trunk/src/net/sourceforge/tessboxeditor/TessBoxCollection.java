@@ -49,13 +49,9 @@ public class TessBoxCollection {
         list.clear();
     }
 
-    TessBox hitObject(Point p) {
-        return hitObject(p.x, p.y);
-    }
-
-    TessBox hitObject(int x, int y) {
+    TessBox hitObject(Point p, short page) {
         for (TessBox box : list) {
-            if (box.contains(x, y)) {
+            if (box.page == page && box.contains(p)) {
                 return box;
             }
         }

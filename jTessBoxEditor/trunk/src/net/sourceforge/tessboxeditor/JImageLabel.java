@@ -42,7 +42,7 @@ public class JImageLabel extends JLabel {
                     return;
                 }
 
-                TessBox box = boxes.hitObject(me.getPoint());
+                TessBox box = boxes.hitObject(me.getPoint(), page);
                 if (box == null) {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
