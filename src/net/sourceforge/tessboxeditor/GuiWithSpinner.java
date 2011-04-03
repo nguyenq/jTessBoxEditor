@@ -16,38 +16,39 @@
 package net.sourceforge.tessboxeditor;
 
 import java.util.List;
-import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 
 public class GuiWithSpinner extends GuiWithAction {
 
     @Override
     void stateChanged(javax.swing.event.ChangeEvent evt) {
+
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;
         } else if (selected.size() > 1) {
-            JOptionPane.showMessageDialog(this, "Select only one box for Spinner operation.");
+//            JOptionPane.showMessageDialog(this, "Select only one box for Spinner operation.");
             return;
         }
 
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
 
-//        box.chrs = this.jTextFieldChar.getText();
-//        tableModel.setValueAt(box.chrs, index, 0);
-        
-        if (evt.getSource() == this.jSpinnerX) {
+        box.chrs = this.jTextFieldChar.getText();
+        tableModel.setValueAt(box.chrs, index, 0);
+        JSpinner sp = (JSpinner)evt.getSource();
+        if (sp == this.jSpinnerX) {
             box.rect.x = (Integer) this.jSpinnerX.getValue();
             tableModel.setValueAt(String.valueOf(box.rect.x), index, 1);
-        } else if (evt.getSource() == this.jSpinnerY) {
+        } else if (sp == this.jSpinnerY) {
             box.rect.y = (Integer) this.jSpinnerY.getValue();
             tableModel.setValueAt(String.valueOf(box.rect.y), index, 2);
-        } else if (evt.getSource() == this.jSpinnerW) {
+        } else if (sp == this.jSpinnerW) {
             box.rect.width = (Integer) this.jSpinnerW.getValue();
-            tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), index, 3);
-        } else if (evt.getSource() == this.jSpinnerH) {
+            tableModel.setValueAt(String.valueOf(box.rect.width), index, 3);
+        } else if (sp == this.jSpinnerH) {
             box.rect.height = (Integer) this.jSpinnerH.getValue();
-            tableModel.setValueAt(String.valueOf(box.rect.y + box.rect.height), index, 4);
+            tableModel.setValueAt(String.valueOf(box.rect.height), index, 4);
         }
 
         this.jLabelImage.repaint();
