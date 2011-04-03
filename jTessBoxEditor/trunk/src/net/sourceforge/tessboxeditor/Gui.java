@@ -254,7 +254,8 @@ public class Gui extends javax.swing.JFrame {
         jToolBar1.add(jButtonReload);
         jToolBar1.add(Box.createHorizontalStrut(150));
 
-        jButtonMerge.setText("Merge");
+        jButtonMerge.setText(bundle.getString("jButtonMerge.Text")); // NOI18N
+        jButtonMerge.setToolTipText(bundle.getString("jButtonMerge.ToolTipText")); // NOI18N
         jButtonMerge.setFocusable(false);
         jButtonMerge.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonMerge.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -265,7 +266,8 @@ public class Gui extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonMerge);
 
-        jButtonSplit.setText("Split");
+        jButtonSplit.setText(bundle.getString("jButtonSplit.Text")); // NOI18N
+        jButtonSplit.setToolTipText(bundle.getString("jButtonSplit.ToolTipText")); // NOI18N
         jButtonSplit.setFocusable(false);
         jButtonSplit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonSplit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -276,7 +278,8 @@ public class Gui extends javax.swing.JFrame {
         });
         jToolBar1.add(jButtonSplit);
 
-        jButtonDelete.setText("Delete");
+        jButtonDelete.setText(bundle.getString("jButtonDelete.Text")); // NOI18N
+        jButtonDelete.setToolTipText(bundle.getString("jButtonDelete.ToolTipText")); // NOI18N
         jButtonDelete.setFocusable(false);
         jButtonDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1024,6 +1027,9 @@ public class Gui extends javax.swing.JFrame {
 
     private void jTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMousePressed
         int index = this.jTable.getSelectedRow();
+        if (index == -1) {
+            return;
+        }
         this.boxes.deselectAll();
         final TessBox selectedBox = this.boxes.toList(imageIndex).get(index);
         selectedBox.setSelected(true);
