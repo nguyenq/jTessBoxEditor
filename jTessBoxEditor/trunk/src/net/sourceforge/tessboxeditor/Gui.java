@@ -43,6 +43,7 @@ public class Gui extends javax.swing.JFrame {
     final String[] headers = {"Char", "X", "Y", "Width", "Height"};
     static final boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
+    static final String EOL = System.getProperty("line.separator");
     static final String UTF8 = "UTF-8";
     protected ResourceBundle bundle;
     static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/tessboxeditor");
@@ -428,6 +429,10 @@ public class Gui extends javax.swing.JFrame {
                     int index = jTable.getSelectedRow();
                     if (index == -1) {
                         jTextFieldChar.setText(null);
+                        jSpinnerH.setValue(0);
+                        jSpinnerW.setValue(0);
+                        jSpinnerX.setValue(0);
+                        jSpinnerY.setValue(0);
                         jLabelSubimage.setIcon(null);
                     } else {
                         jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
@@ -799,11 +804,7 @@ public class Gui extends javax.swing.JFrame {
 
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8));
-            StringBuilder sb = new StringBuilder();
-            for (TessBox box : boxes.toList()) {
-                sb.append(box.toString()).append("\n");
-            }
-            out.write(sb.toString());
+            out.write(formatOutputString());
             out.close();
             updateMRUList(boxFile.getPath());
             updateSave(false);
@@ -824,6 +825,18 @@ public class Gui extends javax.swing.JFrame {
         }
 
         return true;
+    }
+
+    String formatOutputString() {
+        StringBuilder sb = new StringBuilder();
+        for (short i = 0; i < imageList.size(); i++) {
+            int pageHeight = ((BufferedImage)imageList.get(i)).getHeight(); // each page (in an image) can have different height
+            for (TessBox box : boxes.toList(i)) {
+                Rectangle rect = box.rect;
+                sb.append(String.format("%s %d %d %d %d %d", box.chrs, rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
+            }
+        }
+        return sb.toString();
     }
 
     /**
