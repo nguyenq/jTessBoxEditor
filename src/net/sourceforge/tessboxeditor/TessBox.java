@@ -15,6 +15,7 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
 public class TessBox {
@@ -46,6 +47,10 @@ public class TessBox {
 
     boolean contains(int x, int y) {
         return this.rect.contains(x, y);
+    }
+    
+    boolean contains(Point p) {
+        return this.rect.contains(p);
     }
 
     @Override
