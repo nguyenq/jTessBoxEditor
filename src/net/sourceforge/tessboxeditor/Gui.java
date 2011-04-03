@@ -623,6 +623,7 @@ public class Gui extends javax.swing.JFrame {
                     updateMRUList(selectedFile.getPath());
                     // read box file
                     boxes.clear();
+                    jTextArea.setText(null);
                     int lastDot = selectedFile.getName().lastIndexOf(".");
                     boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
                     readBoxFile(boxFile);
@@ -685,7 +686,7 @@ public class Gui extends javax.swing.JFrame {
                 boxes.clear();
                 String[] boxdata = this.jTextArea.getText().split("\\n");
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
-                // In computer graphics realm, (0,0) is defined at top-left.
+                // On computer graphics device, (0,0) is defined as top-left.
                 int pageHeight = imageList.get(imageIndex).getHeight();
 
                 for (String box : boxdata) {
