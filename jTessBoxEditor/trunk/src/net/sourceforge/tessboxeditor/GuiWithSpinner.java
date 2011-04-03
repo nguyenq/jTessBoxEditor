@@ -22,7 +22,9 @@ public class GuiWithSpinner extends GuiWithAction {
 
     @Override
     void stateChanged(javax.swing.event.ChangeEvent evt) {
-
+        if (tableSelectAction) {
+            return;
+        }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;
