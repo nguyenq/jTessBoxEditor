@@ -183,7 +183,12 @@ public class Gui extends javax.swing.JFrame {
         jButtonDelete = new javax.swing.JButton();
         jLabelChar = new javax.swing.JLabel();
         jTextFieldChar = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
         jLabelSubimage = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
+        jSpinner2 = new javax.swing.JSpinner();
+        jSpinner3 = new javax.swing.JSpinner();
+        jSpinner4 = new javax.swing.JSpinner();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
         jButtonPrevPage = new javax.swing.JButton();
@@ -280,6 +285,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonReload);
+        jToolBar1.add(Box.createHorizontalStrut(80));
 
         jButtonMerge.setText("Merge");
         jButtonMerge.setFocusable(false);
@@ -317,7 +323,14 @@ public class Gui extends javax.swing.JFrame {
         jLabelChar.setText("Character");
         jToolBar1.add(jLabelChar);
         jToolBar1.add(jTextFieldChar);
-        jToolBar1.add(jLabelSubimage);
+
+        jPanel1.add(jLabelSubimage);
+        jPanel1.add(jSpinner1);
+        jPanel1.add(jSpinner2);
+        jPanel1.add(jSpinner3);
+        jPanel1.add(jSpinner4);
+
+        jToolBar1.add(jPanel1);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -720,7 +733,11 @@ public class Gui extends javax.swing.JFrame {
 
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8));
-            out.write("");
+            StringBuilder sb = new StringBuilder();
+            for (TessBox box : boxes.toList()) {
+                sb.append(box.toString()).append("\n");
+            }
+            out.write(sb.toString());
             out.close();
             updateMRUList(boxFile.getPath());
             updateSave(false);
@@ -1027,6 +1044,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuLookAndFeel;
     private javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelStatus;
     private javax.swing.JScrollPane jScrollPaneBoxData;
     private javax.swing.JScrollPane jScrollPaneCoord;
@@ -1035,6 +1053,10 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparatorAbout;
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JSpinner jSpinner3;
+    private javax.swing.JSpinner jSpinner4;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
     protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
