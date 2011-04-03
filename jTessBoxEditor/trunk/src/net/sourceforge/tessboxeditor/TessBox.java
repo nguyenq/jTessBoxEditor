@@ -19,13 +19,13 @@ import java.awt.Rectangle;
 
 public class TessBox {
 
-    String ch;
+    String chrs;
     Rectangle rect;
     short page;
     private boolean selected;
 
-    TessBox(String ch, Rectangle rect, short page) {
-        this.ch = ch;
+    TessBox(String chrs, Rectangle rect, short page) {
+        this.chrs = chrs;
         this.rect = rect;
         this.page = page;
     }

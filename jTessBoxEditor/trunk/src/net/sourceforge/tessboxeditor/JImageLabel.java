@@ -17,9 +17,6 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JViewport;
@@ -100,11 +97,11 @@ public class JImageLabel extends JLabel {
 
     public void setBoxes(TessBoxCollection boxes) {
         this.boxes = boxes;
-        repaint();
     }
 
     public void setPage(short page) {
         this.page = page;
+        repaint();
     }
 
     /**
