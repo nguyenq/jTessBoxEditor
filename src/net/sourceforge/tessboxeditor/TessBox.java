@@ -47,4 +47,9 @@ public class TessBox {
     boolean contains(int x, int y) {
         return this.rect.contains(x, y);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %d %d %d %d %d", chrs, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, page);
+    }
 }
