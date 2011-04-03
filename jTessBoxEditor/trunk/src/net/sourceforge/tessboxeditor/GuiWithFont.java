@@ -31,8 +31,10 @@ public class GuiWithFont extends GuiWithMRU {
                 prefs.get("fontName", MAC_OS_X ? "Lucida Grande" : "Tahoma"),
                 prefs.getInt("fontStyle", Font.PLAIN),
                 prefs.getInt("fontSize", 12));
-        jTextArea.setFont(font);
-        jTextArea.validate();
+        this.jTextArea.setFont(font);
+        this.jTextArea.validate();
+        this.jTextFieldChar.setFont(font);
+        this.jTextFieldChar.validate();
     }
 
     @Override
@@ -55,8 +57,10 @@ public class GuiWithFont extends GuiWithMRU {
 
         dlg.setVisible(true);
         if (dlg.succeeded()) {
-            jTextArea.setFont(font = dlg.getFont());
-            jTextArea.validate();
+            this.jTextArea.setFont(font = dlg.getFont());
+            this.jTextArea.validate();
+            this.jTextFieldChar.setFont(font);
+            this.jTextFieldChar.validate();
         }
     }
 
