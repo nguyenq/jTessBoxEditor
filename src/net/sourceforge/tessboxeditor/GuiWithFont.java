@@ -21,7 +21,7 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import net.sourceforge.vietpad.components.FontDialog;
 
-public class GuiWithFont extends Gui {
+public class GuiWithFont extends GuiWithMRU {
 
     private Font font;
 
