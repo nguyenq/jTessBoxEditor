@@ -1003,7 +1003,8 @@ public class Gui extends javax.swing.JFrame {
         this.boxes.deselectAll();
         final TessBox selectedBox = this.boxes.toList(imageIndex).get(index);
         selectedBox.setSelected(true);
-        this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
+//        this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
+        this.jLabelImage.scrollRectToVisible(selectedBox.rect);
         this.jLabelImage.repaint();
     }//GEN-LAST:event_jTableMousePressed
 
