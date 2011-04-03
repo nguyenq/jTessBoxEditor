@@ -250,7 +250,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonReload);
-        jToolBar1.add(Box.createHorizontalStrut(80));
+        jToolBar1.add(Box.createHorizontalStrut(150));
 
         jButtonMerge.setText("Merge");
         jButtonMerge.setFocusable(false);
@@ -284,26 +284,31 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonDelete);
+        jToolBar1.add(Box.createHorizontalStrut(80));
 
+        jLabelChar.setLabelFor(jTextFieldChar);
         jLabelChar.setText("Character");
         jPanel1.add(jLabelChar);
 
-        jTextFieldChar.setColumns(1);
+        jTextFieldChar.setColumns(2);
         jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCharActionPerformed(evt);
             }
         });
         jPanel1.add(jTextFieldChar);
+        jPanel1.add(Box.createHorizontalStrut(20));
 
         jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.add(jLabelSubimage);
         this.jLabelSubimage.setVisible(false);
 
+        jLabel1.setLabelFor(jSpinnerX);
         jLabel1.setText("X");
         jPanel1.add(jLabel1);
 
         jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
+        jSpinnerX.setPreferredSize(new java.awt.Dimension(50, 20));
         jSpinnerX.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerXStateChanged(evt);
@@ -311,10 +316,12 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerX);
 
+        jLabel2.setLabelFor(jSpinnerY);
         jLabel2.setText("Y");
         jPanel1.add(jLabel2);
 
         jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
+        jSpinnerY.setPreferredSize(new java.awt.Dimension(50, 20));
         jSpinnerY.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerYStateChanged(evt);
@@ -322,11 +329,13 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerY);
 
+        jLabel3.setLabelFor(jSpinnerW);
         jLabel3.setText("W");
         jPanel1.add(jLabel3);
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
+        jSpinnerW.setPreferredSize(new java.awt.Dimension(50, 20));
         jSpinnerW.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerWStateChanged(evt);
@@ -334,11 +343,13 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerW);
 
+        jLabel4.setLabelFor(jSpinnerH);
         jLabel4.setText("H");
         jPanel1.add(jLabel4);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
+        jSpinnerH.setPreferredSize(new java.awt.Dimension(50, 20));
         jSpinnerH.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerHStateChanged(evt);
@@ -429,6 +440,7 @@ public class Gui extends javax.swing.JFrame {
                         jSpinnerX.setValue(box.rect.x);
                         jSpinnerY.setValue(box.rect.y);
                         tableSelectAction = false;
+
                     }
                 }
             }

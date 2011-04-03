@@ -56,7 +56,7 @@ public class JImageLabel extends JLabel {
                     }
                     box.setSelected(!box.isSelected()); // toggle selection
                     repaint();
-                    int index = boxes.toList().indexOf(box);
+                    int index = boxes.toList(page).indexOf(box);
                     table.setRowSelectionInterval(index, index);
                     Rectangle rect = table.getCellRect(index, 0, true);
                     ((JViewport) table.getParent()).scrollRectToVisible(rect);

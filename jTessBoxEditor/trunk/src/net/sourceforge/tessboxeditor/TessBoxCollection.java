@@ -45,6 +45,16 @@ public class TessBoxCollection {
         return list;
     }
 
+    List<TessBox> toList(short page) {
+        List<TessBox> subList = new ArrayList<TessBox>();
+        for (TessBox box : list) {
+            if (box.page == page) {
+                subList.add(box);
+            }
+        }
+        return subList;
+    }
+
     void clear() {
         list.clear();
     }
