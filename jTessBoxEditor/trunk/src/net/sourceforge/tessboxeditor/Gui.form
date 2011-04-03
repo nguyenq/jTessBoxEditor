@@ -335,21 +335,37 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextFieldChar">
               <Properties>
-                <Property name="columns" type="int" value="2"/>
+                <Property name="columns" type="int" value="4"/>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 2, 0, 2]"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[22, 26]"/>
+                  <Dimension value="[38, 24]"/>
                 </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldCharActionPerformed"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jPanel1.add(Box.createHorizontalStrut(20));"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldChar.setDocument(new LimitedLengthDocument(6));"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldChar.setDocument(new LimitedLengthDocument(8));"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonConvert">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/net/sourceforge/tessboxeditor/icons/tools.png"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Convert NCR and Escape&lt;br/&gt;Sequence to Unicode&lt;/html&gt;"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[20, 20]"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConvertActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jPanel1.add(Box.createHorizontalStrut(20));"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelSubimage">
@@ -378,7 +394,7 @@
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[50, 20]"/>
+                  <Dimension value="[54, 20]"/>
                 </Property>
               </Properties>
               <Events>
@@ -402,7 +418,7 @@
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[50, 20]"/>
+                  <Dimension value="[54, 20]"/>
                 </Property>
               </Properties>
               <Events>
@@ -429,7 +445,7 @@
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[50, 20]"/>
+                  <Dimension value="[42, 20]"/>
                 </Property>
               </Properties>
               <Events>
@@ -456,7 +472,7 @@
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[50, 20]"/>
+                  <Dimension value="[42, 20]"/>
                 </Property>
               </Properties>
               <Events>

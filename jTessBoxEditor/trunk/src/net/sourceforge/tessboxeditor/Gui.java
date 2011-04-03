@@ -36,6 +36,7 @@ import javax.swing.table.*;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
+import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class Gui extends javax.swing.JFrame {
 
@@ -148,7 +149,8 @@ public class Gui extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabelChar = new javax.swing.JLabel();
         jTextFieldChar = new javax.swing.JTextField();
-        jTextFieldChar.setDocument(new LimitedLengthDocument(6));
+        jTextFieldChar.setDocument(new LimitedLengthDocument(8));
+        jButtonConvert = new javax.swing.JButton();
         jLabelSubimage = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
@@ -297,15 +299,25 @@ public class Gui extends javax.swing.JFrame {
         jLabelChar.setText("Character");
         jPanel1.add(jLabelChar);
 
-        jTextFieldChar.setColumns(2);
+        jTextFieldChar.setColumns(4);
         jTextFieldChar.setMargin(new java.awt.Insets(0, 2, 0, 2));
-        jTextFieldChar.setPreferredSize(new java.awt.Dimension(22, 26));
+        jTextFieldChar.setPreferredSize(new java.awt.Dimension(38, 24));
         jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCharActionPerformed(evt);
             }
         });
         jPanel1.add(jTextFieldChar);
+
+        jButtonConvert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/tools.png"))); // NOI18N
+        jButtonConvert.setToolTipText("<html>Convert NCR and Escape<br/>Sequence to Unicode</html>");
+        jButtonConvert.setPreferredSize(new java.awt.Dimension(20, 20));
+        jButtonConvert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConvertActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButtonConvert);
         jPanel1.add(Box.createHorizontalStrut(20));
 
         jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -317,7 +329,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
 
         jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
-        jSpinnerX.setPreferredSize(new java.awt.Dimension(50, 20));
+        jSpinnerX.setPreferredSize(new java.awt.Dimension(54, 20));
         jSpinnerX.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerXStateChanged(evt);
@@ -330,7 +342,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
 
         jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
-        jSpinnerY.setPreferredSize(new java.awt.Dimension(50, 20));
+        jSpinnerY.setPreferredSize(new java.awt.Dimension(54, 20));
         jSpinnerY.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerYStateChanged(evt);
@@ -344,7 +356,7 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
-        jSpinnerW.setPreferredSize(new java.awt.Dimension(50, 20));
+        jSpinnerW.setPreferredSize(new java.awt.Dimension(42, 20));
         jSpinnerW.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerWStateChanged(evt);
@@ -358,7 +370,7 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
-        jSpinnerH.setPreferredSize(new java.awt.Dimension(50, 20));
+        jSpinnerH.setPreferredSize(new java.awt.Dimension(42, 20));
         jSpinnerH.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerHStateChanged(evt);
@@ -1084,6 +1096,11 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
 
+    private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
+        // Converts NCR or escape sequence to Unicode.
+        this.jTextFieldChar.setText(TextUtilities.convertNCR(this.jTextFieldChar.getText()));
+    }//GEN-LAST:event_jButtonConvertActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1096,6 +1113,7 @@ public class Gui extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonConvert;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonMerge;
     private javax.swing.JButton jButtonNextPage;
