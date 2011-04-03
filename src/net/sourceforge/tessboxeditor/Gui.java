@@ -32,7 +32,7 @@ import java.util.prefs.Preferences;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
 
@@ -446,6 +446,10 @@ public class Gui extends javax.swing.JFrame {
                 }
             }
         });
+
+        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
+        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
+        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
