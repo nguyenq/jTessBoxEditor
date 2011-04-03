@@ -19,7 +19,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JViewport;
 
 /**
  *
@@ -78,21 +77,18 @@ public class JImageLabel extends JLabel {
         g2d.setColor(Color.BLUE);
         boolean resetColor = false;
 
-        for (TessBox box : boxes.toList()) {
-            if (box.page == page) {
-                Rectangle rect = box.rect;
-                if (box.isSelected()) {
-                    g2d.setColor(Color.RED);
-                    resetColor = true;
-                }
-                g2d.draw(rect);
-                if (resetColor) {
-                    g2d.setColor(Color.BLUE);
-                    resetColor = false;
-                }
+        for (TessBox box : boxes.toList(page)) {
+            Rectangle rect = box.rect;
+            if (box.isSelected()) {
+                g2d.setColor(Color.RED);
+                resetColor = true;
+            }
+            g2d.draw(rect);
+            if (resetColor) {
+                g2d.setColor(Color.BLUE);
+                resetColor = false;
             }
         }
-
     }
 
     public void setBoxes(TessBoxCollection boxes) {
