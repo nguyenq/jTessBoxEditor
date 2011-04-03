@@ -21,11 +21,11 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import net.sourceforge.vietpad.components.FontDialog;
 
-public class GuiWithSettings extends Gui {
+public class GuiWithFont extends Gui {
 
     private Font font;
 
-    public GuiWithSettings() {
+    public GuiWithFont() {
         font = new Font(
                 prefs.get("fontName", MAC_OS_X ? "Lucida Grande" : "Tahoma"),
                 prefs.getInt("fontStyle", Font.PLAIN),
@@ -75,7 +75,7 @@ public class GuiWithSettings extends Gui {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new GuiWithSettings().setVisible(true);
+                new GuiWithFont().setVisible(true);
             }
         });
     }

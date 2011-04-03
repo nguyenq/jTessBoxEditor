@@ -19,7 +19,7 @@ import java.awt.Window;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GuiWithLaF extends GuiWithSettings {
+public class GuiWithLaF extends GuiWithFont {
 
     public GuiWithLaF() {
         initComponents();
