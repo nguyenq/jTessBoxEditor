@@ -293,8 +293,10 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldChar.setPreferredSize(new java.awt.Dimension(10, 10));
         jToolBar1.add(Box.createHorizontalGlue());
 
+        jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.add(jLabelSubimage);
 
+        jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
         jSpinnerX.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerXStateChanged(evt);
@@ -302,6 +304,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerX);
 
+        jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
         jSpinnerY.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerYStateChanged(evt);
@@ -309,6 +312,8 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerY);
 
+        jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
+        jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
         jSpinnerW.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerWStateChanged(evt);
@@ -316,6 +321,8 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerW);
 
+        jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
+        jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
         jSpinnerH.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerHStateChanged(evt);
@@ -411,7 +418,9 @@ public class Gui extends javax.swing.JFrame {
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
         jTextArea.setColumns(20);
+        jTextArea.setEditable(false);
         jTextArea.setRows(5);
+        jTextArea.setMargin(new java.awt.Insets(8, 8, 2, 2));
         jScrollPaneBoxData.setViewportView(jTextArea);
 
         jTabbedPaneBoxData.addTab("Box Data", jScrollPaneBoxData);
@@ -993,7 +1002,7 @@ public class Gui extends javax.swing.JFrame {
         if (selected.size() <= 0) {
             return;
         } else if (selected.size() > 1) {
-            JOptionPane.showMessageDialog(this, "Select only one box for Spinner operation.");
+            JOptionPane.showMessageDialog(this, "Select only one box to apply the change.");
             return;
         }
 

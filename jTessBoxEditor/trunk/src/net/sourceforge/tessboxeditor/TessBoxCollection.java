@@ -89,8 +89,8 @@ public class TessBoxCollection {
                 item[0] = box.chrs;
                 item[1] = String.valueOf(box.rect.x);
                 item[2] = String.valueOf(box.rect.y);
-                item[3] = String.valueOf(box.rect.x + box.rect.width);
-                item[4] = String.valueOf(box.rect.y + box.rect.height);
+                item[3] = String.valueOf(box.rect.width);
+                item[4] = String.valueOf(box.rect.height);
                 dataList.add(item);
             }
         }
