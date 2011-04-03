@@ -24,6 +24,7 @@ import net.sourceforge.vietpad.components.FontDialog;
 public class GuiWithFont extends GuiWithMRU {
 
     private Font font;
+    private String langCode = "eng";
 
     public GuiWithFont() {
         font = new Font(

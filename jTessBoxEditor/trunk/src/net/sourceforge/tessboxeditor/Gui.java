@@ -43,7 +43,7 @@ public class Gui extends javax.swing.JFrame {
     static final boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
     static final String UTF8 = "UTF-8";
-    ResourceBundle bundle;
+    protected ResourceBundle bundle;
     static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/tessboxeditor");
     private final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
     private int filterIndex;
@@ -54,7 +54,6 @@ public class Gui extends javax.swing.JFrame {
     protected TessBoxCollection boxes;
     protected short imageIndex;
     private List<BufferedImage> imageList;
-    String langCode = "eng";
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
     DefaultTableModel tableModel;
 
@@ -122,7 +121,7 @@ public class Gui extends javax.swing.JFrame {
      * Populates MRU List.
      */
     protected void populateMRUList() {
-
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
 
     /** This method is called from within the constructor to
@@ -622,7 +621,6 @@ public class Gui extends javax.swing.JFrame {
             }
             imageIndex = 0;
             loadImage();
-            this.jLabelPageNbr.setText("    Page: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
             this.setTitle(APP_NAME + " - " + selectedFile.getName());
         } catch (Exception e) {
         }
@@ -671,18 +669,22 @@ public class Gui extends javax.swing.JFrame {
                     this.boxes.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
                 }
 
-                tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
-                ((JImageLabel) this.jLabelImage).setPage(imageIndex);
-
+                loadTable();
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
                 ((JImageLabel) this.jLabelImage).setTable(jTable);
                 updateSave(false);
             } catch (Exception e) {
             }
         } else {
+            // clear table and box display
             tableModel.setDataVector((Object[][]) null, (Object[]) null);
             ((JImageLabel) this.jLabelImage).setBoxes(null);
         }
+    }
+
+    void loadTable() {
+        tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
+        ((JImageLabel) this.jLabelImage).setPage(imageIndex);
     }
 
     /**
@@ -788,7 +790,6 @@ public class Gui extends javax.swing.JFrame {
      * @param fileName
      */
     protected void updateMRUList(String fileName) {
-
     }
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
@@ -848,25 +849,22 @@ public class Gui extends javax.swing.JFrame {
     private void jButtonPrevPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevPageActionPerformed
         if (imageList != null && imageIndex > 0) {
             --imageIndex;
-            jLabelPageNbr.setText(String.format("Image: %d of %d", imageIndex + 1, imageList.size()));
             loadImage();
-            tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
-            ((JImageLabel) this.jLabelImage).setPage(imageIndex);
+            loadTable();
         }
     }//GEN-LAST:event_jButtonPrevPageActionPerformed
 
     private void jButtonNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextPageActionPerformed
         if (imageList != null && imageIndex < imageList.size() - 1) {
             ++imageIndex;
-            jLabelPageNbr.setText(String.format("Image: %d of %d", imageIndex + 1, imageList.size()));
             loadImage();
-            tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
-            ((JImageLabel) this.jLabelImage).setPage(imageIndex);
+            loadTable();
         }
     }//GEN-LAST:event_jButtonNextPageActionPerformed
 
     void loadImage() {
         this.jLabelImage.setIcon(new ImageIcon(imageList.get(imageIndex)));
+        this.jLabelPageNbr.setText(String.format("Page: %d of %d", imageIndex + 1, imageList.size()));
         setButton();
     }
 
