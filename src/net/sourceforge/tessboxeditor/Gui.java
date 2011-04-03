@@ -20,6 +20,7 @@ import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DropTarget;
 import java.awt.event.*;
@@ -431,7 +432,7 @@ public class Gui extends javax.swing.JFrame {
                     } else {
                         jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
                         Icon icon = jLabelImage.getIcon();
-                        TessBox box = boxes.toList().get(index);
+                        TessBox box = boxes.toList(imageIndex).get(index);
                         Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
                         jLabelSubimage.setIcon(new ImageIcon(subImage));
                         tableSelectAction = true;
@@ -661,6 +662,7 @@ public class Gui extends javax.swing.JFrame {
             }
             imageIndex = 0;
             loadImage();
+            this.jScrollPaneImage.getViewport().setViewPosition(new Point(0, 0));
             this.setTitle(APP_NAME + " - " + selectedFile.getName());
         } catch (Exception e) {
         }
@@ -710,7 +712,7 @@ public class Gui extends javax.swing.JFrame {
                 }
 
                 loadTable();
-                ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
+                ((JImageLabel) this.jLabelImage).setBoxes(boxes);
                 ((JImageLabel) this.jLabelImage).setTable(jTable);
                 updateSave(false);
             } catch (Exception e) {
@@ -906,6 +908,7 @@ public class Gui extends javax.swing.JFrame {
         this.jLabelImage.setIcon(new ImageIcon(imageList.get(imageIndex)));
         this.jLabelPageNbr.setText(String.format("Page: %d of %d", imageIndex + 1, imageList.size()));
         setButton();
+        boxes.deselectAll();
     }
 
     void setButton() {
@@ -998,7 +1001,7 @@ public class Gui extends javax.swing.JFrame {
     private void jTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMousePressed
         int index = this.jTable.getSelectedRow();
         this.boxes.deselectAll();
-        TessBox selectedBox = this.boxes.toList().get(index);
+        final TessBox selectedBox = this.boxes.toList(imageIndex).get(index);
         selectedBox.setSelected(true);
         this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
         this.jLabelImage.repaint();
@@ -1038,7 +1041,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         TessBox box = selected.get(0);
-        int index = this.boxes.toList().indexOf(box);
+        int index = this.boxes.toList(imageIndex).indexOf(box);
 
         if (!box.chrs.equals(this.jTextFieldChar.getText())) {
             box.chrs = this.jTextFieldChar.getText();
