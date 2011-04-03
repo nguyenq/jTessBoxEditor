@@ -159,9 +159,9 @@ public class Gui extends javax.swing.JFrame {
         jSpinner4 = new javax.swing.JSpinner();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
+        jLabelPageNbr = new javax.swing.JLabel();
         jButtonPrevPage = new javax.swing.JButton();
         jButtonNextPage = new javax.swing.JButton();
-        jLabelPageNbr = new javax.swing.JLabel();
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
         jScrollPaneCoord = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
@@ -305,8 +305,11 @@ public class Gui extends javax.swing.JFrame {
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jPanelStatus.add(jLabelStatus);
+        jPanelStatus.add(jLabelPageNbr);
+        this.jPanelStatus.add(Box.createHorizontalStrut(10));
 
-        jButtonPrevPage.setText("Previous");
+        jButtonPrevPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/PrevPage.gif"))); // NOI18N
+        jButtonPrevPage.setToolTipText(bundle.getString("jButtonPrevPage.ToolTipText")); // NOI18N
         jButtonPrevPage.setFocusable(false);
         jButtonPrevPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonPrevPage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -317,7 +320,8 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanelStatus.add(jButtonPrevPage);
 
-        jButtonNextPage.setText("Next");
+        jButtonNextPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/NextPage.gif"))); // NOI18N
+        jButtonNextPage.setToolTipText(bundle.getString("jButtonNextPage.ToolTipText")); // NOI18N
         jButtonNextPage.setFocusable(false);
         jButtonNextPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonNextPage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -327,9 +331,6 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanelStatus.add(jButtonNextPage);
-
-        jLabelPageNbr.setText("Page: ");
-        jPanelStatus.add(jLabelPageNbr);
 
         getContentPane().add(jPanelStatus, java.awt.BorderLayout.SOUTH);
 
@@ -870,9 +871,9 @@ public class Gui extends javax.swing.JFrame {
         }
     }
     private void jButtonPrevPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevPageActionPerformed
-        if (imageIndex > 0) {
+        if (imageList != null && imageIndex > 0) {
             --imageIndex;
-            jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
+            jLabelPageNbr.setText(String.format("Image: %d of %d", imageIndex + 1, imageList.size()));
             loadImage();
             tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
             ((JImageLabel) this.jLabelImage).setPage(imageIndex);
@@ -880,9 +881,9 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPrevPageActionPerformed
 
     private void jButtonNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextPageActionPerformed
-        if (imageIndex < imageList.size() - 1) {
+        if (imageList != null && imageIndex < imageList.size() - 1) {
             ++imageIndex;
-            jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
+            jLabelPageNbr.setText(String.format("Image: %d of %d", imageIndex + 1, imageList.size()));
             loadImage();
             tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
             ((JImageLabel) this.jLabelImage).setPage(imageIndex);
