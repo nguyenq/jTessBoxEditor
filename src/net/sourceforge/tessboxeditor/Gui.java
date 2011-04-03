@@ -547,7 +547,7 @@ public class Gui extends javax.swing.JFrame {
             protected void done() {
 
                 try {
-                    loadImage(get());
+                    readImageFile(get());
                     jLabelStatus.setText(bundle.getString("Loading_completed"));
                     updateMRUList(selectedFile.getPath());
                     // read box file
@@ -582,36 +582,17 @@ public class Gui extends javax.swing.JFrame {
         loadWorker.execute();
     }
 
-    void loadImage(File selectedFile) {
+    void readImageFile(File selectedFile) {
         try {
             imageList = ImageIOHelper.getImageList(selectedFile);
+            if (imageList == null) {
+                JOptionPane.showMessageDialog(this, bundle.getString("Cannotloadimage"), APP_NAME, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             imageIndex = 0;
-            image = imageList.get(imageIndex);
-            this.jLabelImage.setIcon(new ImageIcon(image));
-            setButton();
-            this.setTitle("jTessBoxEditor - " + selectedFile.getName());
+            loadImage();
+            this.setTitle(APP_NAME + " - " + selectedFile.getName());
         } catch (Exception e) {
-        }
-        if (imageList == null) {
-            JOptionPane.showMessageDialog(this, bundle.getString("Cannotloadimage"), APP_NAME, JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-//
-//        imageTotal = imageList.size();
-//        imageIndex = 0;
-//
-//        displayImage();
-//
-//        this.setTitle(selectedFile.getName() + " - " + APP_NAME);
-//
-//        ((JImageLabel) jImageLabel).deselect();
-//
-        if (imageList.size() == 1) {
-            this.jButtonNextPage.setEnabled(false);
-            this.jButtonPrevPage.setEnabled(false);
-        } else {
-            this.jButtonNextPage.setEnabled(true);
-            this.jButtonPrevPage.setEnabled(true);
         }
     }
 
@@ -639,6 +620,7 @@ public class Gui extends javax.swing.JFrame {
                         continue;
                     }
 
+                    String chrs = items[0];
                     int x = Integer.parseInt(items[1]);
                     int y = Integer.parseInt(items[2]);
                     int w = Integer.parseInt(items[3]) - x;
@@ -651,17 +633,20 @@ public class Gui extends javax.swing.JFrame {
                     } else {
                         page = 0; // Tess 2.0x format
                     }
-                    this.boxes.add(new TessBox(items[0], new Rectangle(x, y, w, h), page));
+                    this.boxes.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
                 }
 
-                tableModel.setDataVector(this.boxes.getTableDataList().toArray(new String[0][5]), headers);
+                tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
+                ((JImageLabel) this.jLabelImage).setPage(imageIndex);
 
                 ((JImageLabel) this.jLabelImage).setBoxes(this.boxes);
-                ((JImageLabel) this.jLabelImage).setPage(imageIndex);
                 ((JImageLabel) this.jLabelImage).setTable(jTable);
                 updateSave(false);
             } catch (Exception e) {
             }
+        } else {
+            tableModel.setDataVector((Vector) null, (Vector) null);
+            ((JImageLabel) this.jLabelImage).setBoxes(null);
         }
     }
 
@@ -879,6 +864,8 @@ public class Gui extends javax.swing.JFrame {
             --imageIndex;
             jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
             loadImage();
+            tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
+            ((JImageLabel) this.jLabelImage).setPage(imageIndex);
         }
     }//GEN-LAST:event_jButtonPrevPageActionPerformed
 
@@ -887,16 +874,15 @@ public class Gui extends javax.swing.JFrame {
             ++imageIndex;
             jLabelPageNbr.setText("    Image: " + String.valueOf(imageIndex + 1) + " of " + imageList.size());
             loadImage();
+            tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
+            ((JImageLabel) this.jLabelImage).setPage(imageIndex);
         }
     }//GEN-LAST:event_jButtonNextPageActionPerformed
 
     void loadImage() {
-        if (imageIndex >= 0 || imageIndex < imageList.size() - 1) {
-            image = imageList.get(imageIndex);
-            this.jLabelImage.setIcon(new ImageIcon(image));
-        }
+        image = imageList.get(imageIndex);
+        this.jLabelImage.setIcon(new ImageIcon(image));
         setButton();
-        ((JImageLabel) this.jLabelImage).setPage(imageIndex);
     }
 
     /**

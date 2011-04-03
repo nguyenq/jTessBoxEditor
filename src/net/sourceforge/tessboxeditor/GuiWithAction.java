@@ -30,12 +30,12 @@ public class GuiWithAction extends GuiWithLaF {
 
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = 0, maxY = 0;
 
-        String ch = null;
+        String chrs = null;
         short page = 0;
         int index = 0;
 
         for (TessBox box : selected) {
-            ch = box.ch;
+            chrs = box.chrs;
             page = box.page;
             index = this.boxes.toList().indexOf(box);
             minX = Math.min(minX, box.rect.x);
@@ -45,11 +45,11 @@ public class GuiWithAction extends GuiWithLaF {
             this.boxes.remove(box);
         }
 
-        if (ch != null) {
-            TessBox newBox = new TessBox(ch, new Rectangle(minX, minY, maxX - minX, maxY - minY), page);
+        if (chrs != null) {
+            TessBox newBox = new TessBox(chrs, new Rectangle(minX, minY, maxX - minX, maxY - minY), page);
             newBox.setSelected(true);
             boxes.add(index, newBox);
-            tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+            tableModel.setDataVector(boxes.getTableDataList(page).toArray(new String[0][5]), headers);
         }
 
         this.jLabelImage.repaint();
@@ -71,11 +71,11 @@ public class GuiWithAction extends GuiWithLaF {
         box.rect.width /= 2;
         tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), index, 3);
 
-        TessBox newBox = new TessBox(box.ch, new Rectangle(box.rect), box.page);
+        TessBox newBox = new TessBox(box.chrs, new Rectangle(box.rect), box.page);
         newBox.rect.x += newBox.rect.width;
         newBox.setSelected(true);
         boxes.add(index, newBox);
-        Object[] newRow = {newBox.ch, newBox.rect.x, newBox.rect.y, newBox.rect.x + newBox.rect.width, newBox.rect.y + newBox.rect.height};
+        Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.x + newBox.rect.width, newBox.rect.y + newBox.rect.height};
         tableModel.insertRow(index, newRow);
 
         this.jLabelImage.repaint();

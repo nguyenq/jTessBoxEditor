@@ -80,17 +80,23 @@ public class TessBoxCollection {
         return list.remove(index);
     }
 
-    List<String[]> getTableDataList() {
+    /**
+     * Gets coordinate data for each page.
+     * @param page
+     * @return
+     */
+    List<String[]> getTableDataList(short page) {
         List<String[]> dataList = new ArrayList<String[]>();
         for (TessBox box : list) {
-            String[] item = new String[6];
-            item[0] = box.ch;
-            item[1] = String.valueOf(box.rect.x);
-            item[2] = String.valueOf(box.rect.y);
-            item[3] = String.valueOf(box.rect.x + box.rect.width);
-            item[4] = String.valueOf(box.rect.y + box.rect.height);
-            item[5] = String.valueOf(box.page);
-            dataList.add(item);
+            if (box.page == page) {
+                String[] item = new String[5];
+                item[0] = box.chrs;
+                item[1] = String.valueOf(box.rect.x);
+                item[2] = String.valueOf(box.rect.y);
+                item[3] = String.valueOf(box.rect.x + box.rect.width);
+                item[4] = String.valueOf(box.rect.y + box.rect.height);
+                dataList.add(item);
+            }
         }
         return dataList;
     }
