@@ -4,3 +4,4 @@ Version 0.1 (4 April 2011):
 - Proof-of-concept design
 - Implement box select, merge operations
 - Implement box size change function
+- Add a Unicode convert function
