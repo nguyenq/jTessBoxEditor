@@ -85,7 +85,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         boxes = new TessBoxCollection();
-
+  
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
@@ -433,11 +433,6 @@ public class Gui extends javax.swing.JFrame {
         });
         jTable.setFillsViewportHeight(true);
         jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jTableMousePressed(evt);
-            }
-        });
         jScrollPaneCoord.setViewportView(jTable);
         tableModel = (DefaultTableModel) this.jTable.getModel();
         ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
@@ -446,21 +441,28 @@ public class Gui extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     int index = jTable.getSelectedRow();
-                    if (index == -1) {
-
-                    } else {
+                    if (index != -1) {
+                        boxes.deselectAll();
+                        TessBox curBox = boxes.toList(imageIndex).get(index);
+                        // select current box
+                        curBox.setSelected(true);
+                        jLabelImage.scrollRectToVisible(curBox.rect);
+                        jLabelImage.repaint();
+                        // update Character field
                         jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
+                        // update subimage label
                         Icon icon = jLabelImage.getIcon();
-                        TessBox box = boxes.toList(imageIndex).get(index);
-                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
+                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
                         jLabelSubimage.setIcon(new ImageIcon(subImage));
+                        // mark this as table action event to prevent cyclic firing of events by spinners
                         tableSelectAction = true;
-                        jSpinnerH.setValue(box.rect.height);
-                        jSpinnerW.setValue(box.rect.width);
-                        jSpinnerX.setValue(box.rect.x);
-                        jSpinnerY.setValue(box.rect.y);
+                        // update spinners
+                        Rectangle rect = curBox.rect;
+                        jSpinnerH.setValue(rect.height);
+                        jSpinnerW.setValue(rect.width);
+                        jSpinnerX.setValue(rect.x);
+                        jSpinnerY.setValue(rect.y);
                         tableSelectAction = false;
-
                     }
                 }
             }
@@ -1040,19 +1042,6 @@ public class Gui extends javax.swing.JFrame {
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
         saveFileDlg();
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
-
-    private void jTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMousePressed
-        int index = this.jTable.getSelectedRow();
-        if (index == -1) {
-            return;
-        }
-        this.boxes.deselectAll();
-        final TessBox selectedBox = this.boxes.toList(imageIndex).get(index);
-        selectedBox.setSelected(true);
-//        this.jScrollPaneImage.getViewport().scrollRectToVisible(selectedBox.rect);
-        this.jLabelImage.scrollRectToVisible(selectedBox.rect);
-        this.jLabelImage.repaint();
-    }//GEN-LAST:event_jTableMousePressed
 
     private void jButtonSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSplitActionPerformed
         splitAction();
