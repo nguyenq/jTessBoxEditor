@@ -30,6 +30,7 @@ public class JImageLabel extends JLabel {
     private TessBoxCollection boxes;
     short page;
     private JTable table;
+    private boolean boxClickAction;
 
     /** Creates a new instance of JImageLabel */
     public JImageLabel() {
@@ -56,7 +57,9 @@ public class JImageLabel extends JLabel {
                     box.setSelected(!box.isSelected()); // toggle selection
                     repaint();
                     int index = boxes.toList(page).indexOf(box);
+                    boxClickAction = true;
                     table.setRowSelectionInterval(index, index);
+                    boxClickAction = false;
                     Rectangle rect = table.getCellRect(index, 0, true);
                     table.scrollRectToVisible(rect);
                 }
@@ -107,5 +110,12 @@ public class JImageLabel extends JLabel {
      */
     public void setTable(JTable table) {
         this.table = table;
+    }
+
+    /**
+     * @return the boxClickAction
+     */
+    public boolean isBoxClickAction() {
+        return boxClickAction;
     }
 }

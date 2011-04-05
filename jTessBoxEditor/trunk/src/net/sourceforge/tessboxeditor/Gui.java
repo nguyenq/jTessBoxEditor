@@ -153,13 +153,13 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldChar.setDocument(new LimitedLengthDocument(8));
         jButtonConvert = new javax.swing.JButton();
         jLabelSubimage = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelX = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelY = new javax.swing.JLabel();
         jSpinnerY = new javax.swing.JSpinner();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelW = new javax.swing.JLabel();
         jSpinnerW = new javax.swing.JSpinner();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelH = new javax.swing.JLabel();
         jSpinnerH = new javax.swing.JSpinner();
         jPanelStatus = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
@@ -257,7 +257,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonReload);
-        jToolBar1.add(Box.createHorizontalStrut(150));
+        jToolBar1.add(Box.createHorizontalGlue());
 
         jButtonMerge.setText(bundle.getString("jButtonMerge.Text")); // NOI18N
         jButtonMerge.setToolTipText(bundle.getString("jButtonMerge.ToolTipText")); // NOI18N
@@ -294,7 +294,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonDelete);
-        jToolBar1.add(Box.createHorizontalStrut(80));
+        jToolBar1.add(Box.createHorizontalGlue());
 
         jLabelChar.setLabelFor(jTextFieldChar);
         jLabelChar.setText("Character");
@@ -325,9 +325,9 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabelSubimage);
         this.jLabelSubimage.setVisible(false);
 
-        jLabel1.setLabelFor(jSpinnerX);
-        jLabel1.setText("X");
-        jPanel1.add(jLabel1);
+        jLabelX.setLabelFor(jSpinnerX);
+        jLabelX.setText("X");
+        jPanel1.add(jLabelX);
 
         jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
         jSpinnerX.setPreferredSize(new java.awt.Dimension(54, 20));
@@ -338,9 +338,9 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerX);
 
-        jLabel2.setLabelFor(jSpinnerY);
-        jLabel2.setText("Y");
-        jPanel1.add(jLabel2);
+        jLabelY.setLabelFor(jSpinnerY);
+        jLabelY.setText("Y");
+        jPanel1.add(jLabelY);
 
         jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
         jSpinnerY.setPreferredSize(new java.awt.Dimension(54, 20));
@@ -351,9 +351,9 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerY);
 
-        jLabel3.setLabelFor(jSpinnerW);
-        jLabel3.setText("W");
-        jPanel1.add(jLabel3);
+        jLabelW.setLabelFor(jSpinnerW);
+        jLabelW.setText("W");
+        jPanel1.add(jLabelW);
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
@@ -365,9 +365,9 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel1.add(jSpinnerW);
 
-        jLabel4.setLabelFor(jSpinnerH);
-        jLabel4.setText("H");
-        jPanel1.add(jLabel4);
+        jLabelH.setLabelFor(jSpinnerH);
+        jLabelH.setText("H");
+        jPanel1.add(jLabelH);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
@@ -443,7 +443,9 @@ public class Gui extends javax.swing.JFrame {
                 if (!e.getValueIsAdjusting()) {
                     int index = jTable.getSelectedRow();
                     if (index != -1) {
-                        boxes.deselectAll();
+                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) {
+                            boxes.deselectAll();
+                        }
                         TessBox curBox = boxes.toList(imageIndex).get(index);
                         // select current box
                         curBox.setSelected(true);
@@ -1121,15 +1123,15 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSplit;
     private javax.swing.JFileChooser jFileChooser;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelChar;
+    private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
     private javax.swing.JLabel jLabelStatus;
     private javax.swing.JLabel jLabelSubimage;
+    private javax.swing.JLabel jLabelW;
+    private javax.swing.JLabel jLabelX;
+    private javax.swing.JLabel jLabelY;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
