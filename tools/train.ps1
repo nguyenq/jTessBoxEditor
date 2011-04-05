@@ -3,7 +3,7 @@
 Automate Tesseract 3.01 language data pack generation process.
 
 @author: Quan Nguyen
-@date: 27 Mar 2011
+@date: 28 Mar 2011
 @version: 1.0
 
 The script file should be placed in the same directory as Tesseract's binary executables.

@@ -61,6 +61,7 @@ public class Gui extends javax.swing.JFrame {
     private List<BufferedImage> imageList;
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
     DefaultTableModel tableModel;
+    private boolean isTess2_0Format;
 
     /** Creates new form JTessBoxEditor */
     public Gui() {
@@ -85,7 +86,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         boxes = new TessBoxCollection();
-  
+
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
@@ -511,6 +512,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemSave);
 
+        jMenuItemSaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemSaveAs.Mnemonic").charAt(0));
         jMenuItemSaveAs.setText(bundle.getString("jMenuItemSaveAs.Text")); // NOI18N
         jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
@@ -710,6 +712,10 @@ public class Gui extends javax.swing.JFrame {
                 // load into coordinate tab
                 boxes.clear();
                 String[] boxdata = this.jTextArea.getText().split("\\n");
+                if (boxdata.length > 0) {
+                    // if only 5 fields, it's Tess 2.0x format
+                    isTess2_0Format = boxdata[0].split("\\s+").length == 5;
+                }
                 // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
                 // On computer graphics device, (0,0) is defined as top-left.
                 int pageHeight = imageList.get(imageIndex).getHeight();
@@ -857,6 +863,9 @@ public class Gui extends javax.swing.JFrame {
                 Rectangle rect = box.rect;
                 sb.append(String.format("%s %d %d %d %d %d", box.chrs, rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
             }
+        }
+        if (isTess2_0Format) {
+            return sb.toString().replace(" 0" + EOL, EOL); // strip the ending zeroes
         }
         return sb.toString();
     }
