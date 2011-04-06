@@ -204,14 +204,14 @@ public class Gui extends javax.swing.JFrame {
         FileFilter bmpFilter = new SimpleFilter("bmp", "Bitmap");
         FileFilter pngFilter = new SimpleFilter("png", "PNG");
         FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
-        FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
+        //FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
 
         jFileChooser.setAcceptAllFileFilterUsed(false);
         jFileChooser.addChoosableFileFilter(allImageFilter);
         jFileChooser.addChoosableFileFilter(bmpFilter);
         jFileChooser.addChoosableFileFilter(pngFilter);
         jFileChooser.addChoosableFileFilter(tiffFilter);
-        jFileChooser.addChoosableFileFilter(textFilter);
+        //jFileChooser.addChoosableFileFilter(textFilter);
         fileFilters = jFileChooser.getChoosableFileFilters();
         if (filterIndex < fileFilters.length) {
             jFileChooser.setFileFilter(fileFilters[filterIndex]);
@@ -862,7 +862,7 @@ public class Gui extends javax.swing.JFrame {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8));
             out.write(formatOutputString());
             out.close();
-            updateMRUList(boxFile.getPath());
+//            updateMRUList(boxFile.getPath());
             updateSave(false);
         } catch (OutOfMemoryError oome) {
 //            oome.printStackTrace();
