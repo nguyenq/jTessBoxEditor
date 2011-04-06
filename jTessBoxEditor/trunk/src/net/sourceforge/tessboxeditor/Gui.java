@@ -86,7 +86,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         boxes = new TessBoxCollection();
-
+  
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
@@ -301,6 +301,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabelChar);
 
         jTextFieldChar.setColumns(4);
+        jTextFieldChar.setEnabled(false);
         jTextFieldChar.setMargin(new java.awt.Insets(0, 2, 0, 2));
         jTextFieldChar.setPreferredSize(new java.awt.Dimension(38, 24));
         jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
@@ -330,6 +331,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabelX);
 
         jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
+        jSpinnerX.setEnabled(false);
         jSpinnerX.setPreferredSize(new java.awt.Dimension(54, 20));
         jSpinnerX.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -343,6 +345,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel1.add(jLabelY);
 
         jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
+        jSpinnerY.setEnabled(false);
         jSpinnerY.setPreferredSize(new java.awt.Dimension(54, 20));
         jSpinnerY.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -357,6 +360,7 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
+        jSpinnerW.setEnabled(false);
         jSpinnerW.setPreferredSize(new java.awt.Dimension(42, 20));
         jSpinnerW.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -371,6 +375,7 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
+        jSpinnerH.setEnabled(false);
         jSpinnerH.setPreferredSize(new java.awt.Dimension(42, 20));
         jSpinnerH.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -433,7 +438,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jTable.setFillsViewportHeight(true);
-        jTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPaneCoord.setViewportView(jTable);
         tableModel = (DefaultTableModel) this.jTable.getModel();
         ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
@@ -441,30 +446,51 @@ public class Gui extends javax.swing.JFrame {
 
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    int index = jTable.getSelectedRow();
-                    if (index != -1) {
-                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) {
+                    int selectedIndex = jTable.getSelectedRow();
+                    if (selectedIndex != -1) {
+                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click
                             boxes.deselectAll();
                         }
-                        TessBox curBox = boxes.toList(imageIndex).get(index);
-                        // select current box
-                        curBox.setSelected(true);
-                        jLabelImage.scrollRectToVisible(curBox.rect);
+                        List<TessBox> boxesOfCurPage = boxes.toList(imageIndex); // boxes of current page
+                        for (int index : jTable.getSelectedRows()) {
+                            TessBox box = boxesOfCurPage.get(index);
+                            // select box
+                            box.setSelected(true);
+                            jLabelImage.scrollRectToVisible(box.rect);
+                        }
                         jLabelImage.repaint();
-                        // update Character field
-                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));
-                        // update subimage label
-                        Icon icon = jLabelImage.getIcon();
-                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
-                        jLabelSubimage.setIcon(new ImageIcon(subImage));
-                        // mark this as table action event to prevent cyclic firing of events by spinners
+
+                        if (jTable.getSelectedRows().length == 1) {
+                            enableReadout(true);
+                            // update Character field
+                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
+                            // update subimage label
+                            Icon icon = jLabelImage.getIcon();
+                            TessBox curBox = boxesOfCurPage.get(selectedIndex);
+                            try {
+                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
+                                jLabelSubimage.setIcon(new ImageIcon(subImage));
+                            } catch (Exception exc) {
+                                //ignore
+                            }
+                            // mark this as table action event to prevent cyclic firing of events by spinners
+                            tableSelectAction = true;
+                            // update spinners
+                            Rectangle rect = curBox.rect;
+                            jSpinnerX.setValue(rect.x);
+                            jSpinnerY.setValue(rect.y);
+                            jSpinnerH.setValue(rect.height);
+                            jSpinnerW.setValue(rect.width);
+                            tableSelectAction = false;
+                        } else {
+                            enableReadout(false);
+                        }
+                    } else {
+                        boxes.deselectAll();
+                        jLabelImage.repaint();
+                        enableReadout(false);
                         tableSelectAction = true;
-                        // update spinners
-                        Rectangle rect = curBox.rect;
-                        jSpinnerH.setValue(rect.height);
-                        jSpinnerW.setValue(rect.width);
-                        jSpinnerX.setValue(rect.x);
-                        jSpinnerY.setValue(rect.y);
+                        resetReadout();
                         tableSelectAction = false;
                     }
                 }
@@ -979,6 +1005,14 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerX.setValue(0);
         jSpinnerY.setValue(0);
         jLabelSubimage.setIcon(null);
+    }
+
+    void enableReadout(boolean enabled) {
+        jTextFieldChar.setEnabled(enabled);
+        jSpinnerX.setEnabled(enabled);
+        jSpinnerY.setEnabled(enabled);
+        jSpinnerH.setEnabled(enabled);
+        jSpinnerW.setEnabled(enabled);
     }
 
     /**

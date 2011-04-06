@@ -56,12 +56,16 @@ public class JImageLabel extends JLabel {
                     }
                     box.setSelected(!box.isSelected()); // toggle selection
                     repaint();
-                    int index = boxes.toList(page).indexOf(box);
+                    // select corresponding table rows
                     boxClickAction = true;
-                    table.setRowSelectionInterval(index, index);
+                    java.util.List<TessBox> boxesOfCurPage = boxes.toList(page); // boxes of current page
+                    for (TessBox selectedBoxe : boxes.getSelectedBoxes()) {
+                        int index = boxesOfCurPage.indexOf(selectedBoxe);
+                        table.addRowSelectionInterval(index, index);
+                        Rectangle rect = table.getCellRect(index, 0, true);
+                        table.scrollRectToVisible(rect);
+                    }
                     boxClickAction = false;
-                    Rectangle rect = table.getCellRect(index, 0, true);
-                    table.scrollRectToVisible(rect);
                 }
             }
         });
