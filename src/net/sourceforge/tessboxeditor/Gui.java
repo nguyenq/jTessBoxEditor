@@ -1127,6 +1127,7 @@ public class Gui extends javax.swing.JFrame {
         if (!box.chrs.equals(this.jTextFieldChar.getText())) {
             box.chrs = this.jTextFieldChar.getText();
             tableModel.setValueAt(box.chrs, index, 0);
+            updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
 
