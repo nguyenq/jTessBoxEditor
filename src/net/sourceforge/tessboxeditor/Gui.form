@@ -339,6 +339,7 @@
             <Component class="javax.swing.JTextField" name="jTextFieldChar">
               <Properties>
                 <Property name="columns" type="int" value="4"/>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 2, 0, 2]"/>
                 </Property>
@@ -396,6 +397,7 @@
                 <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[54, 20]"/>
                 </Property>
@@ -420,6 +422,7 @@
                 <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[54, 20]"/>
                 </Property>
@@ -447,6 +450,7 @@
                 <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[42, 20]"/>
                 </Property>
@@ -474,6 +478,7 @@
                 <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
+                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[42, 20]"/>
                 </Property>
@@ -580,12 +585,12 @@
                 </Property>
                 <Property name="fillsViewportHeight" type="boolean" value="true"/>
                 <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
-                  <JTableSelectionModel selectionMode="0"/>
+                  <JTableSelectionModel selectionMode="2"/>
                 </Property>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="      tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int index = jTable.getSelectedRow();&#xa;                    if (index != -1) {&#xa;                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) {&#xa;                            boxes.deselectAll();&#xa;                        }&#xa;                        TessBox curBox = boxes.toList(imageIndex).get(index);&#xa;                        // select current box&#xa;                        curBox.setSelected(true);&#xa;                        jLabelImage.scrollRectToVisible(curBox.rect);&#xa;                        jLabelImage.repaint();&#xa;                        // update Character field&#xa;                        jTextFieldChar.setText((String) tableModel.getValueAt(index, 0));&#xa;                        // update subimage label&#xa;                        Icon icon = jLabelImage.getIcon();&#xa;                        Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);&#xa;                        jLabelSubimage.setIcon(new ImageIcon(subImage));&#xa;                        // mark this as table action event to prevent cyclic firing of events by spinners&#xa;                        tableSelectAction = true;&#xa;                        // update spinners&#xa;                        Rectangle rect = curBox.rect;&#xa;                        jSpinnerH.setValue(rect.height);&#xa;                        jSpinnerW.setValue(rect.width);&#xa;                        jSpinnerX.setValue(rect.x);&#xa;                        jSpinnerY.setValue(rect.y);&#xa;                        tableSelectAction = false;&#xa;                    }&#xa;                }&#xa;            }&#xa;        });&#xa;&#xa;        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);&#xa;        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;&#xa;        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);"/>
+                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="      tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int selectedIndex = jTable.getSelectedRow();&#xa;                    if (selectedIndex != -1) {&#xa;                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click&#xa;                            boxes.deselectAll();&#xa;                        }&#xa;                        List&lt;TessBox&gt; boxesOfCurPage = boxes.toList(imageIndex); // boxes of current page&#xa;                        for (int index : jTable.getSelectedRows()) {&#xa;                            TessBox box = boxesOfCurPage.get(index);&#xa;                            // select box&#xa;                            box.setSelected(true);&#xa;                            jLabelImage.scrollRectToVisible(box.rect);&#xa;                        }&#xa;                        jLabelImage.repaint();&#xa;&#xa;                        if (jTable.getSelectedRows().length == 1) {&#xa;                            enableReadout(true);&#xa;                            // update Character field&#xa;                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));&#xa;                            // update subimage label&#xa;                            Icon icon = jLabelImage.getIcon();&#xa;                            TessBox curBox = boxesOfCurPage.get(selectedIndex);&#xa;                            try {&#xa;                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);&#xa;                                jLabelSubimage.setIcon(new ImageIcon(subImage));&#xa;                            } catch (Exception excg) {&#xa;                                //ignore&#xa;                            }&#xa;                            // mark this as table action event to prevent cyclic firing of events by spinners&#xa;                            tableSelectAction = true;&#xa;                            // update spinners&#xa;                            Rectangle rect = curBox.rect;&#xa;                            jSpinnerX.setValue(rect.x);&#xa;                            jSpinnerY.setValue(rect.y);&#xa;                            jSpinnerH.setValue(rect.height);&#xa;                            jSpinnerW.setValue(rect.width);&#xa;                            tableSelectAction = false;&#xa;                        } else {&#xa;                            enableReadout(false);&#xa;                        }&#xa;                    } else {&#xa;                        boxes.deselectAll();&#xa;                        jLabelImage.repaint();&#xa;                        enableReadout(false);&#xa;                        tableSelectAction = true;&#xa;                        resetReadout();&#xa;                        tableSelectAction = false;&#xa;                    }&#xa;                }&#xa;            }&#xa;        });&#xa;&#xa;        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);&#xa;        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;&#xa;        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);"/>
               </AuxValues>
             </Component>
           </SubComponents>
