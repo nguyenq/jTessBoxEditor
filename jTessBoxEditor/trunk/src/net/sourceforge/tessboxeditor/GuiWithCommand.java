@@ -19,7 +19,7 @@ import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class GuiWithAction extends GuiWithLaF {
+public class GuiWithCommand extends GuiWithLaF {
 
     @Override
     void mergeAction() {
@@ -37,7 +37,7 @@ public class GuiWithAction extends GuiWithLaF {
         for (TessBox box : selected) {
             chrs = box.chrs;
             page = box.page;
-            index = this.boxes.toList().indexOf(box);
+            index = this.boxes.toList(imageIndex).indexOf(box);
             minX = Math.min(minX, box.rect.x);
             minY = Math.min(minY, box.rect.y);
             maxX = Math.max(maxX, box.rect.x + box.rect.width);
@@ -70,7 +70,7 @@ public class GuiWithAction extends GuiWithLaF {
         }
 
         TessBox box = selected.get(0);
-        int index = this.boxes.toList().indexOf(box);
+        int index = this.boxes.toList(imageIndex).indexOf(box);
         box.rect.width /= 2;
         tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), index, 3);
 
@@ -93,7 +93,7 @@ public class GuiWithAction extends GuiWithLaF {
         }
 
         for (TessBox box : selected) {
-            int index = this.boxes.toList().indexOf(box);
+            int index = this.boxes.toList(imageIndex).indexOf(box);
             this.boxes.remove(index);
             tableModel.removeRow(index);
         }
@@ -110,7 +110,7 @@ public class GuiWithAction extends GuiWithLaF {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new GuiWithAction().setVisible(true);
+                new GuiWithCommand().setVisible(true);
             }
         });
     }

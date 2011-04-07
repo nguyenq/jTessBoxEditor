@@ -184,6 +184,10 @@ public class Gui extends javax.swing.JFrame {
         jMenuRecentFiles = new javax.swing.JMenu();
         jSeparatorExit = new javax.swing.JPopupMenu.Separator();
         jMenuItemExit = new javax.swing.JMenuItem();
+        jMenuCommand = new javax.swing.JMenu();
+        jMenuItemMerge = new javax.swing.JMenuItem();
+        jMenuItemSplit = new javax.swing.JMenuItem();
+        jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
@@ -470,7 +474,7 @@ public class Gui extends javax.swing.JFrame {
                             try {
                                 Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
                                 jLabelSubimage.setIcon(new ImageIcon(subImage));
-                            } catch (Exception exc) {
+                            } catch (Exception excg) {
                                 //ignore
                             }
                             // mark this as table action event to prevent cyclic firing of events by spinners
@@ -566,6 +570,38 @@ public class Gui extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemExit);
 
         jMenuBar.add(jMenuFile);
+
+        jMenuCommand.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuCommand.Mnemonic").charAt(0));
+        jMenuCommand.setText(bundle.getString("jMenuCommand.Text")); // NOI18N
+
+        jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemMerge.setText("Merge");
+        jMenuItemMerge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMergeActionPerformed(evt);
+            }
+        });
+        jMenuCommand.add(jMenuItemMerge);
+
+        jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSplit.setText("Split");
+        jMenuItemSplit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSplitActionPerformed(evt);
+            }
+        });
+        jMenuCommand.add(jMenuItemSplit);
+
+        jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemDelete.setText("Delete");
+        jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDeleteActionPerformed(evt);
+            }
+        });
+        jMenuCommand.add(jMenuItemDelete);
+
+        jMenuBar.add(jMenuCommand);
 
         jMenuSettings.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuSettings.Mnemonic").charAt(0));
         jMenuSettings.setText("Settings");
@@ -1136,6 +1172,18 @@ public class Gui extends javax.swing.JFrame {
         this.jTextFieldChar.setText(TextUtilities.convertNCR(this.jTextFieldChar.getText()));
     }//GEN-LAST:event_jButtonConvertActionPerformed
 
+    private void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeActionPerformed
+        mergeAction();
+    }//GEN-LAST:event_jMenuItemMergeActionPerformed
+
+    private void jMenuItemSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSplitActionPerformed
+        splitAction();
+    }//GEN-LAST:event_jMenuItemSplitActionPerformed
+
+    private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
+        deleteAction();
+    }//GEN-LAST:event_jMenuItemDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1168,15 +1216,19 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelX;
     private javax.swing.JLabel jLabelY;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenu jMenuCommand;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;
+    private javax.swing.JMenuItem jMenuItemDelete;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemFont;
     private javax.swing.JMenuItem jMenuItemHelp;
+    private javax.swing.JMenuItem jMenuItemMerge;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
+    private javax.swing.JMenuItem jMenuItemSplit;
     protected javax.swing.JMenu jMenuLookAndFeel;
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
