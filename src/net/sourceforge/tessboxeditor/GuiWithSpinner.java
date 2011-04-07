@@ -18,7 +18,7 @@ package net.sourceforge.tessboxeditor;
 import java.util.List;
 import javax.swing.JSpinner;
 
-public class GuiWithSpinner extends GuiWithAction {
+public class GuiWithSpinner extends GuiWithCommand {
 
     @Override
     void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -34,7 +34,7 @@ public class GuiWithSpinner extends GuiWithAction {
         }
 
         TessBox box = selected.get(0);
-        int index = this.boxes.toList().indexOf(box);
+        int index = this.boxes.toList(imageIndex).indexOf(box);
 
         box.chrs = this.jTextFieldChar.getText();
         tableModel.setValueAt(box.chrs, index, 0);
