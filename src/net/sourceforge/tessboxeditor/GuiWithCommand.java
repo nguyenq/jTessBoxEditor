@@ -19,7 +19,7 @@ import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class GuiWithCommand extends GuiWithLaF {
+public class GuiWithCommand extends GuiWithMRU {
 
     @Override
     void mergeAction() {
