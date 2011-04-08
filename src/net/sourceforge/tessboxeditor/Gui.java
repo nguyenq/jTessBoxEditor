@@ -89,67 +89,6 @@ public class Gui extends javax.swing.JFrame {
         boxPages = new ArrayList<TessBoxCollection>();
         ((JImageLabel) this.jLabelImage).setTable(jTable);
 
-        tableModel = (DefaultTableModel) this.jTable.getModel();
-        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
-        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedIndex = jTable.getSelectedRow();
-                    if (selectedIndex != -1) {
-                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click
-                            boxes.deselectAll();
-                        }
-                        List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
-                        for (int index : jTable.getSelectedRows()) {
-                            TessBox box = boxesOfCurPage.get(index);
-                            // select box
-                            box.setSelected(true);
-                            jLabelImage.scrollRectToVisible(box.rect);
-                        }
-                        jLabelImage.repaint();
-
-                        if (jTable.getSelectedRows().length == 1) {
-                            enableReadout(true);
-                            // update Character field
-                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            // update subimage label
-                            Icon icon = jLabelImage.getIcon();
-                            TessBox curBox = boxesOfCurPage.get(selectedIndex);
-                            try {
-                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
-                                jLabelSubimage.setIcon(new ImageIcon(subImage));
-                            } catch (Exception exc) {
-                                //ignore
-                            }
-                            // mark this as table action event to prevent cyclic firing of events by spinners
-                            tableSelectAction = true;
-                            // update spinners
-                            Rectangle rect = curBox.rect;
-                            jSpinnerX.setValue(rect.x);
-                            jSpinnerY.setValue(rect.y);
-                            jSpinnerH.setValue(rect.height);
-                            jSpinnerW.setValue(rect.width);
-                            tableSelectAction = false;
-                        } else {
-                            enableReadout(false);
-                        }
-                    } else {
-//                        boxes.deselectAll();
-                        jLabelImage.repaint();
-                        enableReadout(false);
-                        tableSelectAction = true;
-                        resetReadout();
-                        tableSelectAction = false;
-                    }
-                }
-            }
-        });
-
-        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
-        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
-        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
-
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
@@ -507,6 +446,66 @@ public class Gui extends javax.swing.JFrame {
         jTable.setFillsViewportHeight(true);
         jTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPaneCoord.setViewportView(jTable);
+        tableModel = (DefaultTableModel) this.jTable.getModel();
+        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
+        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedIndex = jTable.getSelectedRow();
+                    if (selectedIndex != -1) {
+                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click
+                            boxes.deselectAll();
+                        }
+                        List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
+                        for (int index : jTable.getSelectedRows()) {
+                            TessBox box = boxesOfCurPage.get(index);
+                            // select box
+                            box.setSelected(true);
+                            jLabelImage.scrollRectToVisible(box.rect);
+                        }
+                        jLabelImage.repaint();
+
+                        if (jTable.getSelectedRows().length == 1) {
+                            enableReadout(true);
+                            // update Character field
+                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
+                            // update subimage label
+                            Icon icon = jLabelImage.getIcon();
+                            TessBox curBox = boxesOfCurPage.get(selectedIndex);
+                            try {
+                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
+                                jLabelSubimage.setIcon(new ImageIcon(subImage));
+                            } catch (Exception exc) {
+                                //ignore
+                            }
+                            // mark this as table action event to prevent cyclic firing of events by spinners
+                            tableSelectAction = true;
+                            // update spinners
+                            Rectangle rect = curBox.rect;
+                            jSpinnerX.setValue(rect.x);
+                            jSpinnerY.setValue(rect.y);
+                            jSpinnerH.setValue(rect.height);
+                            jSpinnerW.setValue(rect.width);
+                            tableSelectAction = false;
+                        } else {
+                            enableReadout(false);
+                        }
+                    } else {
+                        boxes.deselectAll();
+                        jLabelImage.repaint();
+                        enableReadout(false);
+                        tableSelectAction = true;
+                        resetReadout();
+                        tableSelectAction = false;
+                    }
+                }
+            }
+        });
+
+        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
+        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
+        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
@@ -778,7 +777,7 @@ public class Gui extends javax.swing.JFrame {
 
                 // load into coordinate tab
                 boxPages.clear();
-                
+
                 String[] boxdata = this.jTextArea.getText().split("\\n");
                 if (boxdata.length > 0) {
                     // if only 5 fields, it's Tess 2.0x format
@@ -786,7 +785,7 @@ public class Gui extends javax.swing.JFrame {
                 }
 
                 int startBoxIndex = 0;
-                
+
                 for (int curPage = 0; curPage < imageList.size(); curPage++) {
                     TessBoxCollection boxCol = new TessBoxCollection();
                     // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
@@ -1026,9 +1025,15 @@ public class Gui extends javax.swing.JFrame {
 
     void loadImage() {
         this.jLabelImage.setIcon(new ImageIcon(imageList.get(imageIndex)));
+        if (boxes != null) {
+            boxes.deselectAll();
+        }
+        this.jLabelImage.repaint();
         this.jLabelPageNbr.setText(String.format("Page: %d of %d", imageIndex + 1, imageList.size()));
         setButton();
+        tableSelectAction = true;
         resetReadout();
+        tableSelectAction = false;
     }
 
     void setButton() {
