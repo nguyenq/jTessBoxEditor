@@ -28,7 +28,6 @@ import javax.swing.JTable;
 public class JImageLabel extends JLabel {
 
     private TessBoxCollection boxes;
-    short page;
     private JTable table;
     private boolean boxClickAction;
 
@@ -42,7 +41,7 @@ public class JImageLabel extends JLabel {
                     return;
                 }
 
-                TessBox box = boxes.hitObject(me.getPoint(), page);
+                TessBox box = boxes.hitObject(me.getPoint());
                 if (box == null) {
                     if (!me.isControlDown()) {
                         boxes.deselectAll();
@@ -58,7 +57,7 @@ public class JImageLabel extends JLabel {
                     repaint();
                     // select corresponding table rows
                     boxClickAction = true;
-                    java.util.List<TessBox> boxesOfCurPage = boxes.toList(page); // boxes of current page
+                    java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
                     for (TessBox selectedBoxe : boxes.getSelectedBoxes()) {
                         int index = boxesOfCurPage.indexOf(selectedBoxe);
                         table.addRowSelectionInterval(index, index);
@@ -85,7 +84,7 @@ public class JImageLabel extends JLabel {
         boolean resetColor = false;
 //        int height = getHeight();
 
-        for (TessBox box : boxes.toList(page)) {
+        for (TessBox box : boxes.toList()) {
             if (box.isSelected()) {
                 g2d.setColor(Color.RED);
                 resetColor = true;
@@ -102,10 +101,6 @@ public class JImageLabel extends JLabel {
 
     public void setBoxes(TessBoxCollection boxes) {
         this.boxes = boxes;
-    }
-
-    public void setPage(short page) {
-        this.page = page;
         repaint();
     }
 
