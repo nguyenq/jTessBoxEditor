@@ -56,7 +56,8 @@ public class Gui extends javax.swing.JFrame {
     private String currentDirectory, outputDirectory;
     private boolean boxChanged = true;
     protected boolean tableSelectAction;
-    protected TessBoxCollection boxes;
+    private List<TessBoxCollection> boxPages;
+    protected TessBoxCollection boxes; // boxes of current page
     protected short imageIndex;
     private List<BufferedImage> imageList;
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
@@ -85,8 +86,70 @@ public class Gui extends javax.swing.JFrame {
             this.jMenuHelp.remove(this.jMenuItemAbout);
         }
 
-        boxes = new TessBoxCollection();
-  
+        boxPages = new ArrayList<TessBoxCollection>();
+        ((JImageLabel) this.jLabelImage).setTable(jTable);
+
+        tableModel = (DefaultTableModel) this.jTable.getModel();
+        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
+        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedIndex = jTable.getSelectedRow();
+                    if (selectedIndex != -1) {
+                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click
+                            boxes.deselectAll();
+                        }
+                        List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
+                        for (int index : jTable.getSelectedRows()) {
+                            TessBox box = boxesOfCurPage.get(index);
+                            // select box
+                            box.setSelected(true);
+                            jLabelImage.scrollRectToVisible(box.rect);
+                        }
+                        jLabelImage.repaint();
+
+                        if (jTable.getSelectedRows().length == 1) {
+                            enableReadout(true);
+                            // update Character field
+                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
+                            // update subimage label
+                            Icon icon = jLabelImage.getIcon();
+                            TessBox curBox = boxesOfCurPage.get(selectedIndex);
+                            try {
+                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
+                                jLabelSubimage.setIcon(new ImageIcon(subImage));
+                            } catch (Exception exc) {
+                                //ignore
+                            }
+                            // mark this as table action event to prevent cyclic firing of events by spinners
+                            tableSelectAction = true;
+                            // update spinners
+                            Rectangle rect = curBox.rect;
+                            jSpinnerX.setValue(rect.x);
+                            jSpinnerY.setValue(rect.y);
+                            jSpinnerH.setValue(rect.height);
+                            jSpinnerW.setValue(rect.width);
+                            tableSelectAction = false;
+                        } else {
+                            enableReadout(false);
+                        }
+                    } else {
+//                        boxes.deselectAll();
+                        jLabelImage.repaint();
+                        enableReadout(false);
+                        tableSelectAction = true;
+                        resetReadout();
+                        tableSelectAction = false;
+                    }
+                }
+            }
+        });
+
+        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
+        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
+        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
@@ -444,66 +507,6 @@ public class Gui extends javax.swing.JFrame {
         jTable.setFillsViewportHeight(true);
         jTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPaneCoord.setViewportView(jTable);
-        tableModel = (DefaultTableModel) this.jTable.getModel();
-        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
-        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedIndex = jTable.getSelectedRow();
-                    if (selectedIndex != -1) {
-                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click
-                            boxes.deselectAll();
-                        }
-                        List<TessBox> boxesOfCurPage = boxes.toList(imageIndex); // boxes of current page
-                        for (int index : jTable.getSelectedRows()) {
-                            TessBox box = boxesOfCurPage.get(index);
-                            // select box
-                            box.setSelected(true);
-                            jLabelImage.scrollRectToVisible(box.rect);
-                        }
-                        jLabelImage.repaint();
-
-                        if (jTable.getSelectedRows().length == 1) {
-                            enableReadout(true);
-                            // update Character field
-                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            // update subimage label
-                            Icon icon = jLabelImage.getIcon();
-                            TessBox curBox = boxesOfCurPage.get(selectedIndex);
-                            try {
-                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
-                                jLabelSubimage.setIcon(new ImageIcon(subImage));
-                            } catch (Exception excg) {
-                                //ignore
-                            }
-                            // mark this as table action event to prevent cyclic firing of events by spinners
-                            tableSelectAction = true;
-                            // update spinners
-                            Rectangle rect = curBox.rect;
-                            jSpinnerX.setValue(rect.x);
-                            jSpinnerY.setValue(rect.y);
-                            jSpinnerH.setValue(rect.height);
-                            jSpinnerW.setValue(rect.width);
-                            tableSelectAction = false;
-                        } else {
-                            enableReadout(false);
-                        }
-                    } else {
-                        boxes.deselectAll();
-                        jLabelImage.repaint();
-                        enableReadout(false);
-                        tableSelectAction = true;
-                        resetReadout();
-                        tableSelectAction = false;
-                    }
-                }
-            }
-        });
-
-        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
-        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
-        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
@@ -574,7 +577,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuCommand.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuCommand.Mnemonic").charAt(0));
         jMenuCommand.setText(bundle.getString("jMenuCommand.Text")); // NOI18N
 
-        jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemMerge.setText("Merge");
         jMenuItemMerge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -583,7 +586,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuCommand.add(jMenuItemMerge);
 
-        jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSplit.setText("Split");
         jMenuItemSplit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -592,7 +595,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuCommand.add(jMenuItemSplit);
 
-        jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemDelete.setText("Delete");
         jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -713,7 +716,7 @@ public class Gui extends javax.swing.JFrame {
                     readImageFile(get());
                     updateMRUList(selectedFile.getPath());
                     // read box file
-                    boxes.clear();
+                    boxPages.clear();
                     jTextArea.setText(null);
                     int lastDot = selectedFile.getName().lastIndexOf(".");
                     boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
@@ -774,43 +777,51 @@ public class Gui extends javax.swing.JFrame {
                 in.close();
 
                 // load into coordinate tab
-                boxes.clear();
+                boxPages.clear();
+                
                 String[] boxdata = this.jTextArea.getText().split("\\n");
                 if (boxdata.length > 0) {
                     // if only 5 fields, it's Tess 2.0x format
                     isTess2_0Format = boxdata[0].split("\\s+").length == 5;
                 }
-                // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
-                // On computer graphics device, (0,0) is defined as top-left.
-                int pageHeight = imageList.get(imageIndex).getHeight();
 
-                for (String box : boxdata) {
-                    String[] items = box.split("\\s+");
+                int startBoxIndex = 0;
+                
+                for (int curPage = 0; curPage < imageList.size(); curPage++) {
+                    TessBoxCollection boxCol = new TessBoxCollection();
+                    // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
+                    // On computer graphics device, (0,0) is defined as top-left.
+                    int pageHeight = imageList.get(curPage).getHeight();
+                    for (int i = startBoxIndex; i < boxdata.length; i++) {
+                        String[] items = boxdata[i].split("\\s+");
 
-                    // skip invalid data
-                    if (items.length < 5 || items.length > 6) {
-                        continue;
+                        // skip invalid data
+                        if (items.length < 5 || items.length > 6) {
+                            continue;
+                        }
+
+                        String chrs = items[0];
+                        int x = Integer.parseInt(items[1]);
+                        int y = Integer.parseInt(items[2]);
+                        int w = Integer.parseInt(items[3]) - x;
+                        int h = Integer.parseInt(items[4]) - y;
+                        y = pageHeight - y - h; // flip the y-coordinate
+
+                        short page;
+                        if (items.length == 6) {
+                            page = Short.parseShort(items[5]); // Tess 3.0x format
+                        } else {
+                            page = 0; // Tess 2.0x format
+                        }
+                        if (page > curPage) {
+                            startBoxIndex = i; // mark begin of next page
+                            break;
+                        }
+                        boxCol.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
                     }
-
-                    String chrs = items[0];
-                    int x = Integer.parseInt(items[1]);
-                    int y = Integer.parseInt(items[2]);
-                    int w = Integer.parseInt(items[3]) - x;
-                    int h = Integer.parseInt(items[4]) - y;
-                    y = pageHeight - y - h; // flip the y-coordinate
-
-                    short page;
-                    if (items.length == 6) {
-                        page = Short.parseShort(items[5]); // Tess 3.0x format
-                    } else {
-                        page = 0; // Tess 2.0x format
-                    }
-                    this.boxes.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
+                    boxPages.add(boxCol); // add the last page
                 }
-
                 loadTable();
-                ((JImageLabel) this.jLabelImage).setBoxes(boxes);
-                ((JImageLabel) this.jLabelImage).setTable(jTable);
                 updateSave(false);
             } catch (Exception e) {
             }
@@ -822,8 +833,9 @@ public class Gui extends javax.swing.JFrame {
     }
 
     void loadTable() {
-        tableModel.setDataVector(this.boxes.getTableDataList(imageIndex).toArray(new String[0][5]), headers);
-        ((JImageLabel) this.jLabelImage).setPage(imageIndex);
+        boxes = this.boxPages.get(imageIndex);
+        tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+        ((JImageLabel) this.jLabelImage).setBoxes(boxes);
     }
 
     /**
@@ -923,7 +935,7 @@ public class Gui extends javax.swing.JFrame {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < imageList.size(); i++) {
             int pageHeight = ((BufferedImage) imageList.get(i)).getHeight(); // each page (in an image) can have different height
-            for (TessBox box : boxes.toList(i)) {
+            for (TessBox box : boxPages.get(i).toList()) {
                 Rectangle rect = box.rect;
                 sb.append(String.format("%s %d %d %d %d %d", box.chrs, rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
             }
@@ -1016,7 +1028,6 @@ public class Gui extends javax.swing.JFrame {
         this.jLabelImage.setIcon(new ImageIcon(imageList.get(imageIndex)));
         this.jLabelPageNbr.setText(String.format("Page: %d of %d", imageIndex + 1, imageList.size()));
         setButton();
-        boxes.deselectAll();
         resetReadout();
     }
 
@@ -1149,7 +1160,7 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
     private void jTextFieldCharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCharActionPerformed
-        List<TessBox> selected = boxes.getSelectedBoxes();
+        List<TessBox> selected = this.boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;
         } else if (selected.size() > 1) {
@@ -1158,7 +1169,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         TessBox box = selected.get(0);
-        int index = this.boxes.toList(imageIndex).indexOf(box);
+        int index = this.boxes.toList().indexOf(box);
 
         if (!box.chrs.equals(this.jTextFieldChar.getText())) {
             box.chrs = this.jTextFieldChar.getText();

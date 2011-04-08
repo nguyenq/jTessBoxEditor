@@ -45,23 +45,13 @@ public class TessBoxCollection {
         return list;
     }
 
-    List<TessBox> toList(short page) {
-        List<TessBox> subList = new ArrayList<TessBox>();
-        for (TessBox box : list) {
-            if (box.page == page) {
-                subList.add(box);
-            }
-        }
-        return subList;
-    }
-
     void clear() {
         list.clear();
     }
 
-    TessBox hitObject(Point p, short page) {
+    TessBox hitObject(Point p) {
         for (TessBox box : list) {
-            if (box.page == page && box.contains(p)) {
+            if (box.contains(p)) {
                 return box;
             }
         }
@@ -91,10 +81,9 @@ public class TessBoxCollection {
      * @param page
      * @return
      */
-    List<String[]> getTableDataList(short page) {
+    List<String[]> getTableDataList() {
         List<String[]> dataList = new ArrayList<String[]>();
         for (TessBox box : list) {
-            if (box.page == page) {
                 String[] item = new String[5];
                 item[0] = box.chrs;
                 item[1] = String.valueOf(box.rect.x);
@@ -102,7 +91,6 @@ public class TessBoxCollection {
                 item[3] = String.valueOf(box.rect.width);
                 item[4] = String.valueOf(box.rect.height);
                 dataList.add(item);
-            }
         }
         return dataList;
     }

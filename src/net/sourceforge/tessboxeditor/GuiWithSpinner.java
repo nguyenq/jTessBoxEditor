@@ -34,7 +34,7 @@ public class GuiWithSpinner extends GuiWithCommand {
         }
 
         TessBox box = selected.get(0);
-        int index = this.boxes.toList(imageIndex).indexOf(box);
+        int index = this.boxes.toList().indexOf(box);
 
         box.chrs = this.jTextFieldChar.getText();
         tableModel.setValueAt(box.chrs, index, 0);

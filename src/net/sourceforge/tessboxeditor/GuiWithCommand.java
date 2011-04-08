@@ -37,7 +37,7 @@ public class GuiWithCommand extends GuiWithMRU {
         for (TessBox box : selected) {
             chrs = box.chrs;
             page = box.page;
-            index = this.boxes.toList(imageIndex).indexOf(box);
+            index = this.boxes.toList().indexOf(box);
             minX = Math.min(minX, box.rect.x);
             minY = Math.min(minY, box.rect.y);
             maxX = Math.max(maxX, box.rect.x + box.rect.width);
@@ -49,9 +49,10 @@ public class GuiWithCommand extends GuiWithMRU {
             TessBox newBox = new TessBox(chrs, new Rectangle(minX, minY, maxX - minX, maxY - minY), page);
             newBox.setSelected(true);
             boxes.add(index, newBox);
-            tableModel.setDataVector(boxes.getTableDataList(page).toArray(new String[0][5]), headers);
-            this.jTable.setRowSelectionInterval(index, index);
-            Rectangle rect = this.jTable.getCellRect(index, 0, true);
+            int tableIndex = this.boxes.toList().indexOf(newBox);
+            tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+            this.jTable.setRowSelectionInterval(tableIndex, tableIndex);
+            Rectangle rect = this.jTable.getCellRect(tableIndex, 0, true);
             this.jTable.scrollRectToVisible(rect);
         }
 
@@ -70,16 +71,17 @@ public class GuiWithCommand extends GuiWithMRU {
         }
 
         TessBox box = selected.get(0);
-        int index = this.boxes.toList(imageIndex).indexOf(box);
+        int index = this.boxes.toList().indexOf(box);
+        int tableIndex = this.boxes.toList().indexOf(box);
         box.rect.width /= 2;
-        tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), index, 3);
+        tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), tableIndex, 3);
 
         TessBox newBox = new TessBox(box.chrs, new Rectangle(box.rect), box.page);
         newBox.rect.x += newBox.rect.width;
         newBox.setSelected(true);
         boxes.add(index, newBox);
         Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.x + newBox.rect.width, newBox.rect.y + newBox.rect.height};
-        tableModel.insertRow(index, newRow);
+        tableModel.insertRow(tableIndex, newRow);
 
         this.jLabelImage.repaint();
         updateSave(true);
@@ -93,8 +95,8 @@ public class GuiWithCommand extends GuiWithMRU {
         }
 
         for (TessBox box : selected) {
-            int index = this.boxes.toList(imageIndex).indexOf(box);
-            this.boxes.remove(index);
+            int index = this.boxes.toList().indexOf(box);
+            this.boxes.remove(box);
             tableModel.removeRow(index);
         }
 
