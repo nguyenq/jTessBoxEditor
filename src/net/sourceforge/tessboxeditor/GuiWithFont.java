@@ -38,7 +38,7 @@ public class GuiWithFont extends GuiWithSpinner {
     }
 
     @Override
-    void openFontDialog() {
+    protected void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {
         FontDialog dlg = new FontDialog(this);
         dlg.setAttributes(font);
 
