@@ -148,6 +148,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonReload = new javax.swing.JButton();
         jButtonMerge = new javax.swing.JButton();
         jButtonSplit = new javax.swing.JButton();
+        jButtonInsert = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabelChar = new javax.swing.JLabel();
@@ -189,6 +190,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuEdit = new javax.swing.JMenu();
         jMenuItemMerge = new javax.swing.JMenuItem();
         jMenuItemSplit = new javax.swing.JMenuItem();
+        jMenuItemInsert = new javax.swing.JMenuItem();
         jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
@@ -288,6 +290,18 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButtonSplit);
+
+        jButtonInsert.setText(bundle.getString("jButtonInsert.Text")); // NOI18N
+        jButtonInsert.setToolTipText(bundle.getString("jButtonInsert.ToolTipText")); // NOI18N
+        jButtonInsert.setFocusable(false);
+        jButtonInsert.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonInsert.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInsertActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonInsert);
 
         jButtonDelete.setText(bundle.getString("jButtonDelete.Text")); // NOI18N
         jButtonDelete.setToolTipText(bundle.getString("jButtonDelete.ToolTipText")); // NOI18N
@@ -593,6 +607,16 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuEdit.add(jMenuItemSplit);
+
+        jMenuItemInsert.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemInsert.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemInsert.Mnemonic").charAt(0));
+        jMenuItemInsert.setText(bundle.getString("jMenuItemInsert.Text")); // NOI18N
+        jMenuItemInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemInsertActionPerformed(evt);
+            }
+        });
+        jMenuEdit.add(jMenuItemInsert);
 
         jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemDelete.setText("Delete");
@@ -1200,6 +1224,17 @@ public class Gui extends javax.swing.JFrame {
         deleteAction();
     }//GEN-LAST:event_jMenuItemDeleteActionPerformed
 
+    private void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertActionPerformed
+        insertAction();
+    }//GEN-LAST:event_jMenuItemInsertActionPerformed
+
+    private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
+        insertAction();
+    }//GEN-LAST:event_jButtonInsertActionPerformed
+    void insertAction() {
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1214,6 +1249,7 @@ public class Gui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConvert;
     private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonMerge;
     private javax.swing.JButton jButtonNextPage;
     private javax.swing.JButton jButtonOpen;
@@ -1240,6 +1276,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemFont;
     private javax.swing.JMenuItem jMenuItemHelp;
+    private javax.swing.JMenuItem jMenuItemInsert;
     private javax.swing.JMenuItem jMenuItemMerge;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;

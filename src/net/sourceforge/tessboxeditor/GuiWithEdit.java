@@ -89,6 +89,30 @@ public class GuiWithEdit extends GuiWithMRU {
     }
 
     @Override
+    void insertAction() {
+        List<TessBox> selected = boxes.getSelectedBoxes();
+        if (selected.size() <= 0) {
+            return;
+        } else if (selected.size() > 1) {
+            JOptionPane.showMessageDialog(this, "Select only one box for Insert operation.");
+            return;
+        }
+
+        TessBox box = selected.get(0);
+        int index = this.boxes.toList().indexOf(box);
+        index++;
+        TessBox newBox = new TessBox(box.chrs, new Rectangle(box.rect), box.page);
+        newBox.rect.x += newBox.rect.width - 5;
+        newBox.setSelected(true);
+        boxes.add(index, newBox);
+        Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.width, newBox.rect.height};
+        tableModel.insertRow(index, newRow);
+        jTable.setRowSelectionInterval(index, index);
+        this.jLabelImage.repaint();
+        updateSave(true);
+    }
+
+    @Override
     void deleteAction() {
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
