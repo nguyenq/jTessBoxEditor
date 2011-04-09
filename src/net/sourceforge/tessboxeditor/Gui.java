@@ -186,7 +186,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuRecentFiles = new javax.swing.JMenu();
         jSeparatorExit = new javax.swing.JPopupMenu.Separator();
         jMenuItemExit = new javax.swing.JMenuItem();
-        jMenuCommand = new javax.swing.JMenu();
+        jMenuEdit = new javax.swing.JMenu();
         jMenuItemMerge = new javax.swing.JMenuItem();
         jMenuItemSplit = new javax.swing.JMenuItem();
         jMenuItemDelete = new javax.swing.JMenuItem();
@@ -573,8 +573,8 @@ public class Gui extends javax.swing.JFrame {
 
         jMenuBar.add(jMenuFile);
 
-        jMenuCommand.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuCommand.Mnemonic").charAt(0));
-        jMenuCommand.setText(bundle.getString("jMenuCommand.Text")); // NOI18N
+        jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuEdit.Mnemonic").charAt(0));
+        jMenuEdit.setText(bundle.getString("jMenuEdit.Text")); // NOI18N
 
         jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemMerge.setText("Merge");
@@ -583,7 +583,7 @@ public class Gui extends javax.swing.JFrame {
                 jMenuItemMergeActionPerformed(evt);
             }
         });
-        jMenuCommand.add(jMenuItemMerge);
+        jMenuEdit.add(jMenuItemMerge);
 
         jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSplit.setText("Split");
@@ -592,7 +592,7 @@ public class Gui extends javax.swing.JFrame {
                 jMenuItemSplitActionPerformed(evt);
             }
         });
-        jMenuCommand.add(jMenuItemSplit);
+        jMenuEdit.add(jMenuItemSplit);
 
         jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemDelete.setText("Delete");
@@ -601,9 +601,9 @@ public class Gui extends javax.swing.JFrame {
                 jMenuItemDeleteActionPerformed(evt);
             }
         });
-        jMenuCommand.add(jMenuItemDelete);
+        jMenuEdit.add(jMenuItemDelete);
 
-        jMenuBar.add(jMenuCommand);
+        jMenuBar.add(jMenuEdit);
 
         jMenuSettings.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuSettings.Mnemonic").charAt(0));
         jMenuSettings.setText("Settings");
@@ -1232,7 +1232,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelX;
     private javax.swing.JLabel jLabelY;
     private javax.swing.JMenuBar jMenuBar;
-    private javax.swing.JMenu jMenuCommand;
+    private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;

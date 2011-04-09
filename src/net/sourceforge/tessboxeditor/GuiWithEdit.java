@@ -19,7 +19,7 @@ import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class GuiWithCommand extends GuiWithMRU {
+public class GuiWithEdit extends GuiWithMRU {
 
     @Override
     void mergeAction() {
@@ -112,7 +112,7 @@ public class GuiWithCommand extends GuiWithMRU {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new GuiWithCommand().setVisible(true);
+                new GuiWithEdit().setVisible(true);
             }
         });
     }

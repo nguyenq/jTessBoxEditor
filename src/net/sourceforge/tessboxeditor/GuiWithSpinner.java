@@ -18,7 +18,7 @@ package net.sourceforge.tessboxeditor;
 import java.util.List;
 import javax.swing.JSpinner;
 
-public class GuiWithSpinner extends GuiWithCommand {
+public class GuiWithSpinner extends GuiWithEdit {
 
     @Override
     void stateChanged(javax.swing.event.ChangeEvent evt) {
