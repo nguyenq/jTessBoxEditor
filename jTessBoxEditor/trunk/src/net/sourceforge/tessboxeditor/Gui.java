@@ -1136,7 +1136,7 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonOpenActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        this.jMenuItemSaveActionPerformed(evt);
+        jMenuItemSaveActionPerformed(evt);
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReloadActionPerformed
@@ -1145,24 +1145,10 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonReloadActionPerformed
 
-    private void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFontActionPerformed
-        openFontDialog();
+    protected void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFontActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemFontActionPerformed
-    void openFontDialog() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
-    private void jButtonMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMergeActionPerformed
-        mergeAction();
-    }//GEN-LAST:event_jButtonMergeActionPerformed
-    void mergeAction() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
-    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        deleteAction();
-    }//GEN-LAST:event_jButtonDeleteActionPerformed
-    void deleteAction() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
+
     private void jMenuItemHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHelpActionPerformed
         final String readme = bundle.getString("readme");
         if (MAC_OS_X && new File(readme).exists()) {
@@ -1189,12 +1175,6 @@ public class Gui extends javax.swing.JFrame {
         saveFileDlg();
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
 
-    private void jButtonSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSplitActionPerformed
-        splitAction();
-    }//GEN-LAST:event_jButtonSplitActionPerformed
-    void splitAction() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
     private void jSpinnerXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerXStateChanged
         stateChanged(evt);
     }//GEN-LAST:event_jSpinnerXStateChanged
@@ -1237,26 +1217,33 @@ public class Gui extends javax.swing.JFrame {
         this.jTextFieldChar.setText(TextUtilities.convertNCR(this.jTextFieldChar.getText()));
     }//GEN-LAST:event_jButtonConvertActionPerformed
 
-    private void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeActionPerformed
-        mergeAction();
+    protected void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMergeActionPerformed
 
-    private void jMenuItemSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSplitActionPerformed
-        splitAction();
+    protected void jMenuItemSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSplitActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemSplitActionPerformed
 
-    private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
-        deleteAction();
+    protected void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemDeleteActionPerformed
 
-    private void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertActionPerformed
-        insertAction();
+    protected void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemInsertActionPerformed
-
+    private void jButtonMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMergeActionPerformed
+        jMenuItemMergeActionPerformed(evt);
+    }//GEN-LAST:event_jButtonMergeActionPerformed
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        jMenuItemDeleteActionPerformed(evt);
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+    private void jButtonSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSplitActionPerformed
+        jMenuItemSplitActionPerformed(evt);
+    }//GEN-LAST:event_jButtonSplitActionPerformed
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
-        insertAction();
+        jMenuItemInsertActionPerformed(evt);
     }//GEN-LAST:event_jButtonInsertActionPerformed
-
     private void jButtonFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFindActionPerformed
         if (imageList == null) {
             return;
@@ -1280,9 +1267,6 @@ public class Gui extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButtonFindActionPerformed
-    void insertAction() {
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }
 
     /**
      * @param args the command line arguments
