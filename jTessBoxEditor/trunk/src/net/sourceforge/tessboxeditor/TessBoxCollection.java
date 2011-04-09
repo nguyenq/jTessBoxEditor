@@ -45,6 +45,15 @@ public class TessBoxCollection {
         return list;
     }
 
+    TessBox select(TessBox findBox) {
+        for (TessBox box : list) {
+            if (box.rect.equals(findBox.rect)) {
+                return box;
+            }
+        }
+        return null;
+    }
+
     void clear() {
         list.clear();
     }
@@ -84,13 +93,13 @@ public class TessBoxCollection {
     List<String[]> getTableDataList() {
         List<String[]> dataList = new ArrayList<String[]>();
         for (TessBox box : list) {
-                String[] item = new String[5];
-                item[0] = box.chrs;
-                item[1] = String.valueOf(box.rect.x);
-                item[2] = String.valueOf(box.rect.y);
-                item[3] = String.valueOf(box.rect.width);
-                item[4] = String.valueOf(box.rect.height);
-                dataList.add(item);
+            String[] item = new String[5];
+            item[0] = box.chrs;
+            item[1] = String.valueOf(box.rect.x);
+            item[2] = String.valueOf(box.rect.y);
+            item[3] = String.valueOf(box.rect.width);
+            item[4] = String.valueOf(box.rect.height);
+            dataList.add(item);
         }
         return dataList;
     }
