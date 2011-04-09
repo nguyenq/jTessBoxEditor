@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 public class GuiWithEdit extends GuiWithMRU {
 
     @Override
-    protected void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {
+    void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {
         if (boxes == null) {
             return;
         }
@@ -65,7 +65,7 @@ public class GuiWithEdit extends GuiWithMRU {
     }
 
     @Override
-    protected void jMenuItemSplitActionPerformed(java.awt.event.ActionEvent evt) {
+    void jMenuItemSplitActionPerformed(java.awt.event.ActionEvent evt) {
         if (boxes == null) {
             return;
         }
@@ -95,7 +95,7 @@ public class GuiWithEdit extends GuiWithMRU {
     }
 
     @Override
-    protected void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt) {
+    void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt) {
         if (boxes == null) {
             return;
         }
@@ -122,7 +122,7 @@ public class GuiWithEdit extends GuiWithMRU {
     }
 
     @Override
-    protected void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {
+    void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         if (boxes == null) {
             return;
         }
