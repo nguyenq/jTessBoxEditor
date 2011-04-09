@@ -87,8 +87,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         boxPages = new ArrayList<TessBoxCollection>();
-        ((JImageLabel) this.jLabelImage).setTable(jTable);
-
+ 
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
 
@@ -520,6 +519,10 @@ public class Gui extends javax.swing.JFrame {
         TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
         DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
         dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        ((JImageLabel) this.jLabelImage).setTable(jTable);
+        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control C"), "none");
+        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control X"), "none");
+        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control V"), "none");
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jScrollPaneCoord);
 
@@ -590,7 +593,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuEdit.Mnemonic").charAt(0));
         jMenuEdit.setText(bundle.getString("jMenuEdit.Text")); // NOI18N
 
-        jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemMerge.setText("Merge");
         jMenuItemMerge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -599,7 +602,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuEdit.add(jMenuItemMerge);
 
-        jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSplit.setText("Split");
         jMenuItemSplit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -608,7 +611,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuEdit.add(jMenuItemSplit);
 
-        jMenuItemInsert.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemInsert.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemInsert.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemInsert.Mnemonic").charAt(0));
         jMenuItemInsert.setText(bundle.getString("jMenuItemInsert.Text")); // NOI18N
         jMenuItemInsert.addActionListener(new java.awt.event.ActionListener() {
@@ -618,7 +621,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuEdit.add(jMenuItemInsert);
 
-        jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
         jMenuItemDelete.setText("Delete");
         jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
