@@ -23,6 +23,9 @@ public class GuiWithEdit extends GuiWithMRU {
 
     @Override
     void mergeAction() {
+        if (boxes == null) {
+            return;
+        }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 1) {
             JOptionPane.showMessageDialog(this, "Select more than one box for Merge operation.");
@@ -63,6 +66,9 @@ public class GuiWithEdit extends GuiWithMRU {
 
     @Override
     void splitAction() {
+        if (boxes == null) {
+            return;
+        }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;
@@ -90,6 +96,9 @@ public class GuiWithEdit extends GuiWithMRU {
 
     @Override
     void insertAction() {
+        if (boxes == null) {
+            return;
+        }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;
@@ -114,6 +123,9 @@ public class GuiWithEdit extends GuiWithMRU {
 
     @Override
     void deleteAction() {
+        if (boxes == null) {
+            return;
+        }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;

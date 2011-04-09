@@ -169,10 +169,10 @@ public class Gui extends javax.swing.JFrame {
         jButtonPrevPage = new javax.swing.JButton();
         jButtonNextPage = new javax.swing.JButton();
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
+        jPanelCoord = new javax.swing.JPanel();
         jScrollPaneCoord = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        jPanelFind = new javax.swing.JPanel();
         jTextFieldFind = new javax.swing.JTextField();
         jButtonFind = new javax.swing.JButton();
         jScrollPaneBoxData = new javax.swing.JScrollPane();
@@ -442,7 +442,7 @@ public class Gui extends javax.swing.JFrame {
 
         getContentPane().add(jPanelStatus, java.awt.BorderLayout.SOUTH);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanelCoord.setLayout(new java.awt.BorderLayout());
 
         jScrollPaneCoord.setPreferredSize(new java.awt.Dimension(200, 275));
 
@@ -530,23 +530,23 @@ public class Gui extends javax.swing.JFrame {
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control X"), "none");
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control V"), "none");
 
-        jPanel2.add(jScrollPaneCoord, java.awt.BorderLayout.CENTER);
+        jPanelCoord.add(jScrollPaneCoord, java.awt.BorderLayout.CENTER);
 
         jTextFieldFind.setPreferredSize(new java.awt.Dimension(200, 20));
-        jPanel3.add(jTextFieldFind);
+        jPanelFind.add(jTextFieldFind);
 
-        jButtonFind.setText("Find");
-        jButtonFind.setToolTipText("Find Box with Coordinates (x1 y1 x2 y2)");
+        jButtonFind.setText(bundle.getString("jButtonFind.Text")); // NOI18N
+        jButtonFind.setToolTipText(bundle.getString("jButtonFind.ToolTipText")); // NOI18N
         jButtonFind.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonFindActionPerformed(evt);
             }
         });
-        jPanel3.add(jButtonFind);
+        jPanelFind.add(jButtonFind);
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.SOUTH);
+        jPanelCoord.add(jPanelFind, java.awt.BorderLayout.SOUTH);
 
-        jTabbedPaneBoxData.addTab("Box Coordinates", jPanel2);
+        jTabbedPaneBoxData.addTab("Box Coordinates", jPanelCoord);
 
         jTextArea.setColumns(20);
         jTextArea.setEditable(false);
@@ -1258,6 +1258,9 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFindActionPerformed
+        if (imageList == null) {
+            return;
+        }
         int pageHeight = imageList.get(imageIndex).getHeight();
         String[] items = this.jTextFieldFind.getText().split("\\s+");
         try {
@@ -1273,7 +1276,7 @@ public class Gui extends javax.swing.JFrame {
                 this.jTable.setRowSelectionInterval(index, index);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Please enter the coordinate (x1 y1 x2 y2).");
+            JOptionPane.showMessageDialog(this, "Please enter the box coordinates in format: x1 y1 x2 y2");
         }
 
     }//GEN-LAST:event_jButtonFindActionPerformed
@@ -1333,8 +1336,8 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanelCoord;
+    private javax.swing.JPanel jPanelFind;
     private javax.swing.JPanel jPanelStatus;
     private javax.swing.JScrollPane jScrollPaneBoxData;
     private javax.swing.JScrollPane jScrollPaneCoord;
