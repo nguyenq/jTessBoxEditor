@@ -1174,19 +1174,15 @@ public class Gui extends javax.swing.JFrame {
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
         saveFileDlg();
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
-
     private void jSpinnerXStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerXStateChanged
         stateChanged(evt);
     }//GEN-LAST:event_jSpinnerXStateChanged
-
     private void jSpinnerYStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerYStateChanged
         stateChanged(evt);
     }//GEN-LAST:event_jSpinnerYStateChanged
-
     private void jSpinnerWStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerWStateChanged
         stateChanged(evt);
     }//GEN-LAST:event_jSpinnerWStateChanged
-
     private void jSpinnerHStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerHStateChanged
         stateChanged(evt);
     }//GEN-LAST:event_jSpinnerHStateChanged
@@ -1256,6 +1252,8 @@ public class Gui extends javax.swing.JFrame {
             if (findBox != null) {
                 int index = boxes.toList().indexOf(findBox);
                 this.jTable.setRowSelectionInterval(index, index);
+                Rectangle rect = this.jTable.getCellRect(index, 0, true);
+                this.jTable.scrollRectToVisible(rect);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Please enter the box coordinates in format: x1 y1 x2 y2");
