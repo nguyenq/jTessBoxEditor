@@ -21,7 +21,7 @@ import java.util.Properties;
 import javax.swing.JOptionPane;
 import net.sourceforge.vietpad.components.FontDialog;
 
-public class GuiWithFont extends GuiWithCommand {
+public class GuiWithFont extends GuiWithSpinner {
 
     private Font font;
     private String langCode = "eng";
