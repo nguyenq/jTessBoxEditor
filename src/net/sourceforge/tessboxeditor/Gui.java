@@ -343,10 +343,13 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButtonConvert);
-        jPanel1.add(Box.createHorizontalStrut(20));
 
+        jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabelSubimage.setPreferredSize(new java.awt.Dimension(45, 55));
+        jPanel1.add(Box.createHorizontalStrut(10));
         jPanel1.add(jLabelSubimage);
+        jPanel1.add(Box.createHorizontalStrut(10));
         this.jLabelSubimage.setVisible(false);
 
         jLabelX.setLabelFor(jSpinnerX);
@@ -533,6 +536,11 @@ public class Gui extends javax.swing.JFrame {
         jPanelCoord.add(jScrollPaneCoord, java.awt.BorderLayout.CENTER);
 
         jTextFieldFind.setPreferredSize(new java.awt.Dimension(200, 20));
+        jTextFieldFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldFindActionPerformed(evt);
+            }
+        });
         jPanelFind.add(jTextFieldFind);
 
         jButtonFind.setText(bundle.getString("jButtonFind.Text")); // NOI18N
@@ -1254,11 +1262,18 @@ public class Gui extends javax.swing.JFrame {
                 this.jTable.setRowSelectionInterval(index, index);
                 Rectangle rect = this.jTable.getCellRect(index, 0, true);
                 this.jTable.scrollRectToVisible(rect);
+            } else {
+                this.jTable.clearSelection();
+                JOptionPane.showMessageDialog(this, "No box with the specified coordinates was found.");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Please enter the box coordinates in format: x1 y1 x2 y2");
         }
     }//GEN-LAST:event_jButtonFindActionPerformed
+
+    private void jTextFieldFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFindActionPerformed
+        jButtonFindActionPerformed(evt);
+    }//GEN-LAST:event_jTextFieldFindActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1289,7 +1304,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
     private javax.swing.JLabel jLabelStatus;
-    private javax.swing.JLabel jLabelSubimage;
+    protected javax.swing.JLabel jLabelSubimage;
     private javax.swing.JLabel jLabelW;
     private javax.swing.JLabel jLabelX;
     private javax.swing.JLabel jLabelY;

@@ -15,7 +15,11 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
 
 public class GuiWithSpinner extends GuiWithEdit {
@@ -38,7 +42,7 @@ public class GuiWithSpinner extends GuiWithEdit {
 
         box.chrs = this.jTextFieldChar.getText();
         tableModel.setValueAt(box.chrs, index, 0);
-        JSpinner sp = (JSpinner)evt.getSource();
+        JSpinner sp = (JSpinner) evt.getSource();
         if (sp == this.jSpinnerX) {
             box.rect.x = (Integer) this.jSpinnerX.getValue();
             tableModel.setValueAt(String.valueOf(box.rect.x), index, 1);
@@ -53,6 +57,13 @@ public class GuiWithSpinner extends GuiWithEdit {
             tableModel.setValueAt(String.valueOf(box.rect.height), index, 4);
         }
 
+        Icon icon = jLabelImage.getIcon();
+        try {
+            Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
+            jLabelSubimage.setIcon(new ImageIcon(subImage));
+        } catch (Exception exc) {
+            //ignore
+        }
         this.jLabelImage.repaint();
         updateSave(true);
     }
