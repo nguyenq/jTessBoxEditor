@@ -25,6 +25,7 @@ public class GuiWithEdit extends GuiWithMRU {
     void mergeAction() {
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 1) {
+            JOptionPane.showMessageDialog(this, "Select more than one box for Merge operation.");
             return;
         }
 
@@ -72,17 +73,17 @@ public class GuiWithEdit extends GuiWithMRU {
 
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
-        int tableIndex = this.boxes.toList().indexOf(box);
         box.rect.width /= 2;
-        tableModel.setValueAt(String.valueOf(box.rect.x + box.rect.width), tableIndex, 3);
+        tableModel.setValueAt(String.valueOf(box.rect.width), index, 3);
 
         TessBox newBox = new TessBox(box.chrs, new Rectangle(box.rect), box.page);
         newBox.rect.x += newBox.rect.width;
         newBox.setSelected(true);
-        boxes.add(index, newBox);
-        Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.x + newBox.rect.width, newBox.rect.y + newBox.rect.height};
-        tableModel.insertRow(tableIndex, newRow);
-
+        boxes.add(index + 1, newBox);
+        Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.width, newBox.rect.height};
+        tableModel.insertRow(index + 1, newRow);
+        jTable.setRowSelectionInterval(index, index + 1);
+        resetReadout();
         this.jLabelImage.repaint();
         updateSave(true);
     }
