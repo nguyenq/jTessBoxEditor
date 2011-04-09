@@ -1145,7 +1145,7 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonReloadActionPerformed
 
-    protected void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFontActionPerformed
+    void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFontActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemFontActionPerformed
 
