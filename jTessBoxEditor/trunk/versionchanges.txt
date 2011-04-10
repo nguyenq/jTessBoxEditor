@@ -1,7 +1,8 @@
 jTessBoxEditor Change Summary
 
-Version 0.1 (4 April 2011):
-- Proof-of-concept design
-- Implement box select, merge operations
-- Implement box size change function
-- Add a Unicode convert function
+Version 0.1 (10 April 2011):
+- Support editing box data of both Tesseract 2.0x and 3.0x formats
+- Implement box select & merge/split/insert/delete operations
+- Implement box size change function via spinners
+- Support Unicode conversion
+- Include box search function
