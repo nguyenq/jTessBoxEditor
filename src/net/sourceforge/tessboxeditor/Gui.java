@@ -528,6 +528,7 @@ public class Gui extends javax.swing.JFrame {
         TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
         DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
         dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        ((JLabel) jTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         ((JImageLabel) this.jLabelImage).setTable(jTable);
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control C"), "none");
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control X"), "none");
