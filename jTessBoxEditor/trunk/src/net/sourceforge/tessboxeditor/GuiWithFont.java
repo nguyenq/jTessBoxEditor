@@ -16,6 +16,8 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
+import javax.swing.SwingUtilities;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithFont extends GuiWithSpinner {
@@ -30,6 +32,8 @@ public class GuiWithFont extends GuiWithSpinner {
         this.jTextArea.setFont(font);
         this.jTextFieldChar.setFont(font);
         this.jTable.setFont(font);
+        FontMetrics metrics = this.jTable.getFontMetrics(font);
+        this.jTable.setRowHeight(metrics.getHeight()); // set row height to match font
     }
 
     @Override
@@ -44,8 +48,10 @@ public class GuiWithFont extends GuiWithSpinner {
             this.jTextArea.validate();
             this.jTextFieldChar.setFont(font);
             this.jTextFieldChar.validate();
-            this.jTable.setFont(font);
-            this.jTable.validate();
+            jTable.setFont(font);
+            FontMetrics metrics = jTable.getFontMetrics(font);
+            jTable.setRowHeight(metrics.getHeight()); // set row height to match font
+            jPanelCoord.revalidate();
         }
     }
 
