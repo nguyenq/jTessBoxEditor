@@ -12,6 +12,7 @@ package net.sourceforge.vietpad.components;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -22,11 +23,12 @@ import javax.swing.event.ListSelectionListener;
  *  Font Dialog
  *
  *@author     Quan Nguyen
- *@version    1.2.1, January 9, 2011
+ *@version    1.3, April 12, 2011
  *@see        <a href="http://vietpad.sourceforge.net">VietPad</a>
  */
 public class FontDialog extends JDialog {
 
+    final static boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     private OpenList m_lstFontName;
     private OpenList m_lstFontStyle;
     private OpenList m_lstFontSize;
@@ -34,7 +36,7 @@ public class FontDialog extends JDialog {
     private ResourceBundle bundle;
     private Font curFont;
     private boolean m_succeeded = false;
-    final static boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
+    private JComboBox combo;
 
     /**
      *  Constructor for the FontDialog object.
@@ -152,6 +154,28 @@ public class FontDialog extends JDialog {
 
         p = new JPanel(null);
         p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+
+        final Properties prop = new Properties();
+
+        try {
+            File xmlFile = new File("data/pangram.xml");
+            prop.loadFromXML(new FileInputStream(xmlFile));
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(this, ioe.getMessage(), "Font Dialog", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception exc) {
+        }
+        Object[] langNames = prop.stringPropertyNames().toArray();
+        Arrays.sort(langNames);
+        combo = new JComboBox(langNames);
+        combo.setSelectedItem("English");
+        combo.setToolTipText("Language");
+        combo.addActionListener(new java.awt.event.ActionListener() {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_preview.setText(prop.getProperty(combo.getSelectedItem().toString()));
+            }
+        });
+        p.add(combo);
         p.add(Box.createHorizontalGlue());
 
         JButton btOK = new JButton(bundle.getString("btOK.Text"));
@@ -263,5 +287,14 @@ public class FontDialog extends JDialog {
      */
     public void setPreviewText(String text) {
         m_preview.setText(text);
+    }
+
+    /**
+     * Sets the selected language.
+     *
+     * @param lang
+     */
+    public void setSelectedLanguage(String lang) {
+        combo.setSelectedItem(lang);
     }
 }
