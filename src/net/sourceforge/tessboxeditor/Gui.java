@@ -1328,7 +1328,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanelCoord;
+    protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelFind;
     private javax.swing.JPanel jPanelStatus;
     private javax.swing.JScrollPane jScrollPaneBoxData;
