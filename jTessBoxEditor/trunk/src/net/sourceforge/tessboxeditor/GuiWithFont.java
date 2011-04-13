@@ -16,15 +16,11 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Font;
-import java.io.*;
-import java.util.Properties;
-import javax.swing.JOptionPane;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithFont extends GuiWithSpinner {
 
     private Font font;
-    private String langCode = "eng";
 
     public GuiWithFont() {
         font = new Font(
@@ -32,35 +28,24 @@ public class GuiWithFont extends GuiWithSpinner {
                 prefs.getInt("fontStyle", Font.PLAIN),
                 prefs.getInt("fontSize", 12));
         this.jTextArea.setFont(font);
-        this.jTextArea.validate();
         this.jTextFieldChar.setFont(font);
-        this.jTextFieldChar.validate();
+        this.jTable.setFont(font);
     }
 
     @Override
     void jMenuItemFontActionPerformed(java.awt.event.ActionEvent evt) {
         FontDialog dlg = new FontDialog(this);
         dlg.setAttributes(font);
-
-        Properties prop = new Properties();
-
-        try {
-            File xmlFile = new File(baseDir, "data/pangram.xml");
-            prop.loadFromXML(new FileInputStream(xmlFile));
-            dlg.setPreviewText(prop.getProperty(langCode));
-        } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, ioe.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
-            ioe.printStackTrace();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-
         dlg.setVisible(true);
+
         if (dlg.succeeded()) {
-            this.jTextArea.setFont(font = dlg.getFont());
+            font = dlg.getFont();
+            this.jTextArea.setFont(font);
             this.jTextArea.validate();
             this.jTextFieldChar.setFont(font);
             this.jTextFieldChar.validate();
+            this.jTable.setFont(font);
+            this.jTable.validate();
         }
     }
 
