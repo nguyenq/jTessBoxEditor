@@ -1217,8 +1217,13 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
     private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
-        // Converts NCR or escape sequence to Unicode.
+        String curChar = this.jTextFieldChar.getText();
+        // Convert NCR or escape sequence to Unicode.
         this.jTextFieldChar.setText(TextUtilities.convertNCR(this.jTextFieldChar.getText()));
+        // Commit the change, if no conversion.
+        if (curChar.equals(this.jTextFieldChar.getText())) {
+            jTextFieldCharActionPerformed(evt);
+        }
     }//GEN-LAST:event_jButtonConvertActionPerformed
     void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
