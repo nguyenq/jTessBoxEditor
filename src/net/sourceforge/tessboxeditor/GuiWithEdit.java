@@ -28,7 +28,7 @@ public class GuiWithEdit extends GuiWithMRU {
         }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 1) {
-            JOptionPane.showMessageDialog(this, "Select more than one box for Merge operation.");
+            JOptionPane.showMessageDialog(this, "Please select more than one box for Merge operation.");
             return;
         }
 
@@ -71,9 +71,10 @@ public class GuiWithEdit extends GuiWithMRU {
         }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
+            JOptionPane.showMessageDialog(this, "Please select a box to split.");
             return;
         } else if (selected.size() > 1) {
-            JOptionPane.showMessageDialog(this, "Select only one box for Split operation.");
+            JOptionPane.showMessageDialog(this, "Please select only one box for Split operation.");
             return;
         }
 
@@ -101,9 +102,10 @@ public class GuiWithEdit extends GuiWithMRU {
         }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
+            JOptionPane.showMessageDialog(this, "Please select the box to insert after.");
             return;
         } else if (selected.size() > 1) {
-            JOptionPane.showMessageDialog(this, "Select only one box for Insert operation.");
+            JOptionPane.showMessageDialog(this, "Please select only one box for Insert operation.");
             return;
         }
 
@@ -128,6 +130,7 @@ public class GuiWithEdit extends GuiWithMRU {
         }
         List<TessBox> selected = boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
+            JOptionPane.showMessageDialog(this, "Please select a box or more to delete.");
             return;
         }
 
