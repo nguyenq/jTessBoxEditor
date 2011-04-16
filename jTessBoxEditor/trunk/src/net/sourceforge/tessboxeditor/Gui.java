@@ -1203,7 +1203,7 @@ public class Gui extends javax.swing.JFrame {
         if (selected.size() <= 0) {
             return;
         } else if (selected.size() > 1) {
-            JOptionPane.showMessageDialog(this, "Select only one box to apply the change.");
+            JOptionPane.showMessageDialog(this, "Please select only one box to apply the change.");
             return;
         }
 
