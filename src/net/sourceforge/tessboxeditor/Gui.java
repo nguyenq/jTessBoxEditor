@@ -1199,6 +1199,9 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
     private void jTextFieldCharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCharActionPerformed
+        if (boxes == null) {
+            return;
+        }
         List<TessBox> selected = this.boxes.getSelectedBoxes();
         if (selected.size() <= 0) {
             return;
@@ -1218,6 +1221,9 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldCharActionPerformed
     private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
         String curChar = this.jTextFieldChar.getText();
+        if (curChar.trim().length() == 0) {
+            return;
+        }
         // Convert NCR or escape sequence to Unicode.
         this.jTextFieldChar.setText(TextUtilities.convertNCR(this.jTextFieldChar.getText()));
         // Commit the change, if no conversion.
