@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sourceforge.tessboxeditor;
+package net.sourceforge.tessboxeditor.datamodel;
 
 import java.awt.Point;
 import java.awt.Rectangle;
 
 public class TessBox {
 
-    String chrs;
-    Rectangle rect;
-    short page;
+    private String chrs;
+    private Rectangle rect;
+    private short page;
     private boolean selected;
 
-    TessBox(String chrs, Rectangle rect, short page) {
+    public TessBox(String chrs, Rectangle rect, short page) {
         this.chrs = chrs;
         this.rect = rect;
         this.page = page;
@@ -46,16 +46,16 @@ public class TessBox {
     }
 
     boolean contains(int x, int y) {
-        return this.rect.contains(x, y);
+        return this.getRect().contains(x, y);
     }
     
     boolean contains(Point p) {
-        return this.rect.contains(p);
+        return this.getRect().contains(p);
     }
 
     @Override
     public String toString() {
-        return String.format("%s %d %d %d %d %d", chrs, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, page);
+        return String.format("%s %d %d %d %d %d", getChrs(), getRect().x, getRect().y, getRect().x + getRect().width, getRect().y + getRect().height, getPage());
     }
 
     /**
@@ -63,5 +63,33 @@ public class TessBox {
      */
     public Rectangle getRect() {
         return rect;
+    }
+
+    /**
+     * @return the chrs
+     */
+    public String getChrs() {
+        return chrs;
+    }
+
+    /**
+     * @param chrs the chrs to set
+     */
+    public void setChrs(String chrs) {
+        this.chrs = chrs;
+    }
+
+    /**
+     * @return the page
+     */
+    public short getPage() {
+        return page;
+    }
+
+    /**
+     * @param page the page to set
+     */
+    public void setPage(short page) {
+        this.page = page;
     }
 }

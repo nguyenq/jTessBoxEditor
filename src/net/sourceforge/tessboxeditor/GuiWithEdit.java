@@ -18,6 +18,7 @@ package net.sourceforge.tessboxeditor;
 import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.JOptionPane;
+import net.sourceforge.tessboxeditor.datamodel.TessBox;
 
 public class GuiWithEdit extends GuiWithMRU {
 
@@ -39,13 +40,14 @@ public class GuiWithEdit extends GuiWithMRU {
         int index = 0;
 
         for (TessBox box : selected) {
-            chrs = box.chrs;
-            page = box.page;
+            chrs = box.getChrs();
+            page = box.getPage();
             index = this.boxes.toList().indexOf(box);
-            minX = Math.min(minX, box.rect.x);
-            minY = Math.min(minY, box.rect.y);
-            maxX = Math.max(maxX, box.rect.x + box.rect.width);
-            maxY = Math.max(maxY, box.rect.y + box.rect.height);
+            Rectangle rect = box.getRect();
+            minX = Math.min(minX, rect.x);
+            minY = Math.min(minY, rect.y);
+            maxX = Math.max(maxX, rect.x + rect.width);
+            maxY = Math.max(maxY, rect.y + rect.height);
             this.boxes.remove(box);
         }
 
@@ -80,14 +82,15 @@ public class GuiWithEdit extends GuiWithMRU {
 
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
-        box.rect.width /= 2;
-        tableModel.setValueAt(String.valueOf(box.rect.width), index, 3);
+        box.getRect().width /= 2;
+        tableModel.setValueAt(String.valueOf(box.getRect().width), index, 3);
 
-        TessBox newBox = new TessBox(box.chrs, new Rectangle(box.rect), box.page);
-        newBox.rect.x += newBox.rect.width;
+        TessBox newBox = new TessBox(box.getChrs(), new Rectangle(box.getRect()), box.getPage());
+        Rectangle newRect = newBox.getRect();
+        newRect.x += newRect.width;
         newBox.setSelected(true);
         boxes.add(index + 1, newBox);
-        Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.width, newBox.rect.height};
+        Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index + 1, newRow);
         jTable.setRowSelectionInterval(index, index + 1);
         resetReadout();
@@ -112,11 +115,11 @@ public class GuiWithEdit extends GuiWithMRU {
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
         index++;
-        TessBox newBox = new TessBox(box.chrs, new Rectangle(box.rect), box.page);
-        newBox.rect.x += newBox.rect.width - 5;
+        TessBox newBox = new TessBox(box.getChrs(), new Rectangle(box.getRect()), box.getPage());
+        newBox.getRect().x += newBox.getRect().width - 5;
         newBox.setSelected(true);
         boxes.add(index, newBox);
-        Object[] newRow = {newBox.chrs, newBox.rect.x, newBox.rect.y, newBox.rect.width, newBox.rect.height};
+        Object[] newRow = {newBox.getChrs(), newBox.getRect().x, newBox.getRect().y, newBox.getRect().width, newBox.getRect().height};
         tableModel.insertRow(index, newRow);
         jTable.setRowSelectionInterval(index, index);
         this.jLabelImage.repaint();

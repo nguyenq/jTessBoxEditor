@@ -16,12 +16,14 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
 import net.sourceforge.tessboxeditor.components.ImageIconScalable;
+import net.sourceforge.tessboxeditor.datamodel.TessBox;
 
 public class GuiWithSpinner extends GuiWithEdit {
 
@@ -41,26 +43,27 @@ public class GuiWithSpinner extends GuiWithEdit {
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
 
-        box.chrs = this.jTextFieldChar.getText();
-        tableModel.setValueAt(box.chrs, index, 0);
+        box.setChrs(this.jTextFieldChar.getText());
+        tableModel.setValueAt(box.getChrs(), index, 0);
+        Rectangle rect = box.getRect();
         JSpinner sp = (JSpinner) evt.getSource();
         if (sp == this.jSpinnerX) {
-            box.rect.x = (Integer) this.jSpinnerX.getValue();
-            tableModel.setValueAt(String.valueOf(box.rect.x), index, 1);
+            rect.x = (Integer) this.jSpinnerX.getValue();
+            tableModel.setValueAt(String.valueOf(rect.x), index, 1);
         } else if (sp == this.jSpinnerY) {
-            box.rect.y = (Integer) this.jSpinnerY.getValue();
-            tableModel.setValueAt(String.valueOf(box.rect.y), index, 2);
+            rect.y = (Integer) this.jSpinnerY.getValue();
+            tableModel.setValueAt(String.valueOf(rect.y), index, 2);
         } else if (sp == this.jSpinnerW) {
-            box.rect.width = (Integer) this.jSpinnerW.getValue();
-            tableModel.setValueAt(String.valueOf(box.rect.width), index, 3);
+            rect.width = (Integer) this.jSpinnerW.getValue();
+            tableModel.setValueAt(String.valueOf(rect.width), index, 3);
         } else if (sp == this.jSpinnerH) {
-            box.rect.height = (Integer) this.jSpinnerH.getValue();
-            tableModel.setValueAt(String.valueOf(box.rect.height), index, 4);
+            rect.height = (Integer) this.jSpinnerH.getValue();
+            tableModel.setValueAt(String.valueOf(rect.height), index, 4);
         }
 
         Icon icon = jLabelImage.getIcon();
         try {
-            Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
+            Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width,rect.height);
             ImageIconScalable subIcon = new ImageIconScalable(subImage);
             subIcon.setScaledFactor(4);
             jLabelSubimage.setIcon(subIcon);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sourceforge.tessboxeditor;
+package net.sourceforge.tessboxeditor.datamodel;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class TessBoxCollection {
         list = new ArrayList<TessBox>();
     }
 
-    void add(TessBox box) {
+    public void add(TessBox box) {
         list.add(box);
     }
 
-    void add(int index, TessBox box) {
+    public void add(int index, TessBox box) {
         list.add(index, box);
     }
 
@@ -45,9 +45,9 @@ public class TessBoxCollection {
         return list;
     }
 
-    TessBox select(TessBox findBox) {
+    public TessBox select(TessBox findBox) {
         for (TessBox box : list) {
-            if (box.rect.equals(findBox.rect)) {
+            if (box.getRect().equals(findBox.getRect())) {
                 return box;
             }
         }
@@ -77,11 +77,11 @@ public class TessBoxCollection {
         return selected;
     }
 
-    boolean remove(TessBox box) {
+    public boolean remove(TessBox box) {
         return list.remove(box);
     }
 
-    TessBox remove(int index) {
+    public TessBox remove(int index) {
         return list.remove(index);
     }
 
@@ -90,15 +90,15 @@ public class TessBoxCollection {
      * @param page
      * @return
      */
-    List<String[]> getTableDataList() {
+    public List<String[]> getTableDataList() {
         List<String[]> dataList = new ArrayList<String[]>();
         for (TessBox box : list) {
             String[] item = new String[5];
-            item[0] = box.chrs;
-            item[1] = String.valueOf(box.rect.x);
-            item[2] = String.valueOf(box.rect.y);
-            item[3] = String.valueOf(box.rect.width);
-            item[4] = String.valueOf(box.rect.height);
+            item[0] = box.getChrs();
+            item[1] = String.valueOf(box.getRect().x);
+            item[2] = String.valueOf(box.getRect().y);
+            item[3] = String.valueOf(box.getRect().width);
+            item[4] = String.valueOf(box.getRect().height);
             dataList.add(item);
         }
         return dataList;
