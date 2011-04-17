@@ -33,6 +33,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
+import net.sourceforge.vietocr.ImageIconScalable;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
@@ -149,12 +150,11 @@ public class Gui extends javax.swing.JFrame {
         jButtonSplit = new javax.swing.JButton();
         jButtonInsert = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelSpinner = new javax.swing.JPanel();
         jLabelChar = new javax.swing.JLabel();
         jTextFieldChar = new javax.swing.JTextField();
         jTextFieldChar.setDocument(new LimitedLengthDocument(8));
         jButtonConvert = new javax.swing.JButton();
-        jLabelSubimage = new javax.swing.JLabel();
         jLabelX = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
         jLabelY = new javax.swing.JLabel();
@@ -177,6 +177,8 @@ public class Gui extends javax.swing.JFrame {
         jButtonFind = new javax.swing.JButton();
         jScrollPaneBoxData = new javax.swing.JScrollPane();
         jTextArea = new javax.swing.JTextArea();
+        jPanelBoxView = new javax.swing.JPanel();
+        jLabelSubimage = new javax.swing.JLabel();
         jScrollPaneImage = new javax.swing.JScrollPane();
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
         jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
@@ -321,7 +323,7 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelChar.setLabelFor(jTextFieldChar);
         jLabelChar.setText("Character");
-        jPanel1.add(jLabelChar);
+        jPanelSpinner.add(jLabelChar);
 
         jTextFieldChar.setColumns(4);
         jTextFieldChar.setEnabled(false);
@@ -332,7 +334,7 @@ public class Gui extends javax.swing.JFrame {
                 jTextFieldCharActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextFieldChar);
+        jPanelSpinner.add(jTextFieldChar);
 
         jButtonConvert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/tools.png"))); // NOI18N
         jButtonConvert.setToolTipText("<html>Convert NCR and Escape<br/>Sequence to Unicode</html>");
@@ -342,19 +344,12 @@ public class Gui extends javax.swing.JFrame {
                 jButtonConvertActionPerformed(evt);
             }
         });
-        jPanel1.add(jButtonConvert);
-
-        jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jLabelSubimage.setPreferredSize(new java.awt.Dimension(45, 55));
-        jPanel1.add(Box.createHorizontalStrut(10));
-        jPanel1.add(jLabelSubimage);
-        jPanel1.add(Box.createHorizontalStrut(10));
-        this.jLabelSubimage.setVisible(false);
+        jPanelSpinner.add(jButtonConvert);
+        jPanelSpinner.add(Box.createHorizontalStrut(10));
 
         jLabelX.setLabelFor(jSpinnerX);
         jLabelX.setText("X");
-        jPanel1.add(jLabelX);
+        jPanelSpinner.add(jLabelX);
 
         jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
         jSpinnerX.setEnabled(false);
@@ -364,11 +359,11 @@ public class Gui extends javax.swing.JFrame {
                 jSpinnerXStateChanged(evt);
             }
         });
-        jPanel1.add(jSpinnerX);
+        jPanelSpinner.add(jSpinnerX);
 
         jLabelY.setLabelFor(jSpinnerY);
         jLabelY.setText("Y");
-        jPanel1.add(jLabelY);
+        jPanelSpinner.add(jLabelY);
 
         jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
         jSpinnerY.setEnabled(false);
@@ -378,11 +373,11 @@ public class Gui extends javax.swing.JFrame {
                 jSpinnerYStateChanged(evt);
             }
         });
-        jPanel1.add(jSpinnerY);
+        jPanelSpinner.add(jSpinnerY);
 
         jLabelW.setLabelFor(jSpinnerW);
         jLabelW.setText("W");
-        jPanel1.add(jLabelW);
+        jPanelSpinner.add(jLabelW);
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
@@ -393,11 +388,11 @@ public class Gui extends javax.swing.JFrame {
                 jSpinnerWStateChanged(evt);
             }
         });
-        jPanel1.add(jSpinnerW);
+        jPanelSpinner.add(jSpinnerW);
 
         jLabelH.setLabelFor(jSpinnerH);
         jLabelH.setText("H");
-        jPanel1.add(jLabelH);
+        jPanelSpinner.add(jLabelH);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
@@ -408,9 +403,9 @@ public class Gui extends javax.swing.JFrame {
                 jSpinnerHStateChanged(evt);
             }
         });
-        jPanel1.add(jSpinnerH);
+        jPanelSpinner.add(jSpinnerH);
 
-        jToolBar1.add(jPanel1);
+        jToolBar1.add(jPanelSpinner);
         jToolBar1.add(Box.createHorizontalGlue());
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
@@ -497,7 +492,9 @@ public class Gui extends javax.swing.JFrame {
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
                             try {
                                 Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
-                                jLabelSubimage.setIcon(new ImageIcon(subImage));
+                                ImageIconScalable subIcon = new ImageIconScalable(subImage);
+                                subIcon.setScaledFactor(4);
+                                jLabelSubimage.setIcon(subIcon);
                             } catch (Exception exc) {
                                 //ignore
                             }
@@ -564,6 +561,14 @@ public class Gui extends javax.swing.JFrame {
         jScrollPaneBoxData.setViewportView(jTextArea);
 
         jTabbedPaneBoxData.addTab("Box Data", jScrollPaneBoxData);
+
+        jPanelBoxView.setLayout(new java.awt.BorderLayout());
+
+        jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
+
+        jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
         getContentPane().add(jTabbedPaneBoxData, java.awt.BorderLayout.WEST);
 
@@ -1338,9 +1343,10 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuLookAndFeel;
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelBoxView;
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelFind;
+    private javax.swing.JPanel jPanelSpinner;
     private javax.swing.JPanel jPanelStatus;
     private javax.swing.JScrollPane jScrollPaneBoxData;
     private javax.swing.JScrollPane jScrollPaneCoord;
