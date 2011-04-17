@@ -19,8 +19,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import net.sourceforge.tessboxeditor.TessBox;
-import net.sourceforge.tessboxeditor.TessBoxCollection;
+import net.sourceforge.tessboxeditor.datamodel.TessBox;
+import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 
 public class JImageLabel extends JLabel {
 

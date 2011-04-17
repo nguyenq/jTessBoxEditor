@@ -36,6 +36,7 @@ import javax.swing.table.*;
 import net.sourceforge.tessboxeditor.components.*;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
+import net.sourceforge.tessboxeditor.datamodel.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
@@ -479,7 +480,7 @@ public class Gui extends javax.swing.JFrame {
                             TessBox box = boxesOfCurPage.get(index);
                             // select box
                             box.setSelected(true);
-                            jLabelImage.scrollRectToVisible(box.rect);
+                            jLabelImage.scrollRectToVisible(box.getRect());
                         }
                         jLabelImage.repaint();
 
@@ -490,8 +491,9 @@ public class Gui extends javax.swing.JFrame {
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
+                            Rectangle rect = curBox.getRect();
                             try {
-                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(curBox.rect.x, curBox.rect.y, curBox.rect.width, curBox.rect.height);
+                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width, rect.height);
                                 ImageIconScalable subIcon = new ImageIconScalable(subImage);
                                 subIcon.setScaledFactor(4);
                                 jLabelSubimage.setIcon(subIcon);
@@ -501,7 +503,6 @@ public class Gui extends javax.swing.JFrame {
                             // mark this as table action event to prevent cyclic firing of events by spinners
                             tableSelectAction = true;
                             // update spinners
-                            Rectangle rect = curBox.rect;
                             jSpinnerX.setValue(rect.x);
                             jSpinnerY.setValue(rect.y);
                             jSpinnerH.setValue(rect.height);
@@ -998,8 +999,8 @@ public class Gui extends javax.swing.JFrame {
         for (short i = 0; i < imageList.size(); i++) {
             int pageHeight = ((BufferedImage) imageList.get(i)).getHeight(); // each page (in an image) can have different height
             for (TessBox box : boxPages.get(i).toList()) {
-                Rectangle rect = box.rect;
-                sb.append(String.format("%s %d %d %d %d %d", box.chrs, rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
+                Rectangle rect = box.getRect();
+                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
             }
         }
         if (isTess2_0Format) {
@@ -1218,9 +1219,9 @@ public class Gui extends javax.swing.JFrame {
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
 
-        if (!box.chrs.equals(this.jTextFieldChar.getText())) {
-            box.chrs = this.jTextFieldChar.getText();
-            tableModel.setValueAt(box.chrs, index, 0);
+        if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
+            box.setChrs(this.jTextFieldChar.getText());
+            tableModel.setValueAt(box.getChrs(), index, 0);
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
