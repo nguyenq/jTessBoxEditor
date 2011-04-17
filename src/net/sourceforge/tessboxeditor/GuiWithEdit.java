@@ -82,14 +82,15 @@ public class GuiWithEdit extends GuiWithMRU {
 
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
-        box.getRect().width /= 2;
-        tableModel.setValueAt(String.valueOf(box.getRect().width), index, 3);
+        Rectangle rect = box.getRect();
+        rect.width /= 2;
+        tableModel.setValueAt(String.valueOf(rect.width), index, 3);
 
-        TessBox newBox = new TessBox(box.getChrs(), new Rectangle(box.getRect()), box.getPage());
-        Rectangle newRect = newBox.getRect();
-        newRect.x += newRect.width;
+        TessBox newBox = new TessBox(box.getChrs(), new Rectangle(rect), box.getPage());
         newBox.setSelected(true);
         boxes.add(index + 1, newBox);
+        Rectangle newRect = newBox.getRect();
+        newRect.x += newRect.width;
         Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index + 1, newRow);
         jTable.setRowSelectionInterval(index, index + 1);
@@ -116,10 +117,11 @@ public class GuiWithEdit extends GuiWithMRU {
         int index = this.boxes.toList().indexOf(box);
         index++;
         TessBox newBox = new TessBox(box.getChrs(), new Rectangle(box.getRect()), box.getPage());
-        newBox.getRect().x += newBox.getRect().width - 5;
         newBox.setSelected(true);
         boxes.add(index, newBox);
-        Object[] newRow = {newBox.getChrs(), newBox.getRect().x, newBox.getRect().y, newBox.getRect().width, newBox.getRect().height};
+        Rectangle newRect = newBox.getRect();
+        newRect.x += 10; // offset the new box 10 pixel from the base one
+        Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index, newRow);
         jTable.setRowSelectionInterval(index, index);
         this.jLabelImage.repaint();

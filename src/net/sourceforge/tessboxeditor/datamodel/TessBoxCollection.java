@@ -16,6 +16,7 @@
 package net.sourceforge.tessboxeditor.datamodel;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,10 +53,6 @@ public class TessBoxCollection {
             }
         }
         return null;
-    }
-
-    void clear() {
-        list.clear();
     }
 
     public TessBox hitObject(Point p) {
@@ -95,10 +92,11 @@ public class TessBoxCollection {
         for (TessBox box : list) {
             String[] item = new String[5];
             item[0] = box.getChrs();
-            item[1] = String.valueOf(box.getRect().x);
-            item[2] = String.valueOf(box.getRect().y);
-            item[3] = String.valueOf(box.getRect().width);
-            item[4] = String.valueOf(box.getRect().height);
+            Rectangle rect = box.getRect();
+            item[1] = String.valueOf(rect.x);
+            item[2] = String.valueOf(rect.y);
+            item[3] = String.valueOf(rect.width);
+            item[4] = String.valueOf(rect.height);
             dataList.add(item);
         }
         return dataList;

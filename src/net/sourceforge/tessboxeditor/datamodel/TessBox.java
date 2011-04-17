@@ -46,16 +46,16 @@ public class TessBox {
     }
 
     boolean contains(int x, int y) {
-        return this.getRect().contains(x, y);
+        return this.rect.contains(x, y);
     }
-    
+
     boolean contains(Point p) {
-        return this.getRect().contains(p);
+        return this.rect.contains(p);
     }
 
     @Override
     public String toString() {
-        return String.format("%s %d %d %d %d %d", getChrs(), getRect().x, getRect().y, getRect().x + getRect().width, getRect().y + getRect().height, getPage());
+        return String.format("%s %d %d %d %d %d", chrs, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, page);
     }
 
     /**
