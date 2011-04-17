@@ -34,9 +34,9 @@ import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
 import net.sourceforge.tessboxeditor.components.*;
+import net.sourceforge.tessboxeditor.datamodel.*;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
-import net.sourceforge.tessboxeditor.datamodel.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
