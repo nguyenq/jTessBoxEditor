@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sourceforge.tessboxeditor;
+package net.sourceforge.tessboxeditor.components;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import net.sourceforge.tessboxeditor.TessBox;
+import net.sourceforge.tessboxeditor.TessBoxCollection;
 
-/**
- *
- * @author Quan Nguyen (nguyenq@users.sf.net)
- *
- */
 public class JImageLabel extends JLabel {
 
     private TessBoxCollection boxes;
@@ -89,7 +86,7 @@ public class JImageLabel extends JLabel {
                 g2d.setColor(Color.RED);
                 resetColor = true;
             }
-            Rectangle rect = box.rect;
+            Rectangle rect = box.getRect();
             g2d.draw(rect);
 //            g2d.drawRect(rect.x, height - rect.y - rect.height, rect.width, rect.height);
             if (resetColor) {

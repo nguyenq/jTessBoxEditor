@@ -33,7 +33,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
-import net.sourceforge.vietocr.ImageIconScalable;
+import net.sourceforge.tessboxeditor.components.*;
 import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;

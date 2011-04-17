@@ -21,7 +21,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
-import net.sourceforge.vietocr.ImageIconScalable;
+import net.sourceforge.tessboxeditor.components.ImageIconScalable;
 
 public class GuiWithSpinner extends GuiWithEdit {
 

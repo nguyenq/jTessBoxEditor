@@ -1,4 +1,4 @@
-package net.sourceforge.vietocr;
+package net.sourceforge.tessboxeditor.components;
 
 /**
  * Core Java Technologies Tech Tips, February 20, 2003: Providing a Scalable Image Icon
