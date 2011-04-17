@@ -21,6 +21,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
+import net.sourceforge.vietocr.ImageIconScalable;
 
 public class GuiWithSpinner extends GuiWithEdit {
 
@@ -60,7 +61,9 @@ public class GuiWithSpinner extends GuiWithEdit {
         Icon icon = jLabelImage.getIcon();
         try {
             Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(box.rect.x, box.rect.y, box.rect.width, box.rect.height);
-            jLabelSubimage.setIcon(new ImageIcon(subImage));
+            ImageIconScalable subIcon = new ImageIconScalable(subImage);
+            subIcon.setScaledFactor(4);
+            jLabelSubimage.setIcon(subIcon);
         } catch (Exception exc) {
             //ignore
         }

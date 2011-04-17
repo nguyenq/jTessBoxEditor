@@ -11,3 +11,6 @@ Version 0.2 (14 April 2011):
 - Add a provision to set font for the Box Coordinates table
 - Set table row height to match font
 - Incorporate a pangram into the Font dialog
+
+Version 0.3 (16 April 2011):
+- Provide a close-up view of current box
