@@ -57,4 +57,11 @@ public class TessBox {
     public String toString() {
         return String.format("%s %d %d %d %d %d", chrs, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, page);
     }
+
+    /**
+     * @return the rect
+     */
+    public Rectangle getRect() {
+        return rect;
+    }
 }

@@ -35,13 +35,13 @@ public class TessBoxCollection {
         list.add(index, box);
     }
 
-    void deselectAll() {
+    public void deselectAll() {
         for (TessBox box : list) {
             box.setSelected(false);
         }
     }
 
-    List<TessBox> toList() {
+    public List<TessBox> toList() {
         return list;
     }
 
@@ -58,7 +58,7 @@ public class TessBoxCollection {
         list.clear();
     }
 
-    TessBox hitObject(Point p) {
+    public TessBox hitObject(Point p) {
         for (TessBox box : list) {
             if (box.contains(p)) {
                 return box;
@@ -67,7 +67,7 @@ public class TessBoxCollection {
         return null;
     }
 
-    List<TessBox> getSelectedBoxes() {
+    public List<TessBox> getSelectedBoxes() {
         List<TessBox> selected = new ArrayList<TessBox>();
         for (TessBox box : list) {
             if (box.isSelected()) {
