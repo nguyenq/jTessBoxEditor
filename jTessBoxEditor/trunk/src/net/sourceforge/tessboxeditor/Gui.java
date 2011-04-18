@@ -92,6 +92,8 @@ public class Gui extends javax.swing.JFrame {
 
         // DnD support
         new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
+        new DropTarget(this.jTabbedPaneBoxData, new FileDropTargetListener(Gui.this));
+        new DropTarget(this.jTextArea, new FileDropTargetListener(Gui.this));
 
         this.addWindowListener(
                 new WindowAdapter() {
