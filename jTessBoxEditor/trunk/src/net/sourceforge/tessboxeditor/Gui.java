@@ -563,10 +563,10 @@ public class Gui extends javax.swing.JFrame {
 
         jTabbedPaneBoxData.addTab("Box Data", jScrollPaneBoxData);
 
+        jPanelBoxView.setBackground(java.awt.Color.lightGray);
         jPanelBoxView.setLayout(new java.awt.BorderLayout());
 
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelSubimage.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
