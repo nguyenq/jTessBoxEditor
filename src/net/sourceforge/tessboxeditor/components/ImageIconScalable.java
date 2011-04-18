@@ -5,7 +5,6 @@ package net.sourceforge.tessboxeditor.components;
  * http://java.sun.com/developer/JDCTechTips/2003/tt0220.html#2
  */
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
 import java.net.*;
 
