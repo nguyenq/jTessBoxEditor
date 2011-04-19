@@ -120,7 +120,7 @@ public class GuiWithEdit extends GuiWithMRU {
         newBox.setSelected(true);
         boxes.add(index, newBox);
         Rectangle newRect = newBox.getRect();
-        newRect.x += 10; // offset the new box 10 pixel from the base one
+        newRect.x += 15; // offset the new box 15 pixel from the base one
         Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index, newRow);
         jTable.setRowSelectionInterval(index, index);
