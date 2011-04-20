@@ -182,6 +182,7 @@ public class Gui extends javax.swing.JFrame {
         jTextArea = new javax.swing.JTextArea();
         jPanelBoxView = new javax.swing.JPanel();
         jLabelSubimage = new javax.swing.JLabel();
+        jLabelCodepoint = new javax.swing.JLabel();
         jScrollPaneImage = new javax.swing.JScrollPane();
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
         jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
@@ -490,6 +491,7 @@ public class Gui extends javax.swing.JFrame {
                             enableReadout(true);
                             // update Character field
                             jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
+                            jLabelCodepoint.setText(" Codepoint: " + toHex(jTextFieldChar.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -570,6 +572,9 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
+
+        jLabelCodepoint.setText(" Codepoint:");
+        jPanelBoxView.add(jLabelCodepoint, java.awt.BorderLayout.NORTH);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
@@ -1118,6 +1123,7 @@ public class Gui extends javax.swing.JFrame {
 
     void resetReadout() {
         jTextFieldChar.setText(null);
+        jLabelCodepoint.setText(null);
         jSpinnerH.setValue(0);
         jSpinnerW.setValue(0);
         jSpinnerX.setValue(0);
@@ -1295,6 +1301,18 @@ public class Gui extends javax.swing.JFrame {
         jButtonFindActionPerformed(evt);
     }//GEN-LAST:event_jTextFieldFindActionPerformed
 
+    String toHex(String source) {
+        StringBuilder sb = new StringBuilder();
+        for (char ch : source.toCharArray()) {
+            sb.append("U+").append(padLeft(ch, 4));
+        }
+        return sb.toString();
+    }
+
+    public static String padLeft(int source, int n) {
+        return String.format("%1$0"+ n + "X", source);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1320,6 +1338,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSplit;
     private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JLabel jLabelChar;
+    private javax.swing.JLabel jLabelCodepoint;
     private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
