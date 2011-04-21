@@ -183,6 +183,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelBoxView = new javax.swing.JPanel();
         jLabelSubimage = new javax.swing.JLabel();
         jLabelCodepoint = new javax.swing.JLabel();
+        jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));
         jScrollPaneImage = new javax.swing.JScrollPane();
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
         jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
