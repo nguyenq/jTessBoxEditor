@@ -1231,6 +1231,7 @@ public class Gui extends javax.swing.JFrame {
         if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
             box.setChrs(this.jTextFieldChar.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
+            jLabelCodepoint.setText(" Codepoint: " + toHex(this.jTextFieldChar.getText()));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
