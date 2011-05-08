@@ -358,7 +358,7 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerX.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerX, "#"));
         jSpinnerX.setEnabled(false);
-        jSpinnerX.setPreferredSize(new java.awt.Dimension(54, 20));
+        jSpinnerX.setPreferredSize(new java.awt.Dimension(63, 20));
         jSpinnerX.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerXStateChanged(evt);
@@ -372,7 +372,7 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerY.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerY, "#"));
         jSpinnerY.setEnabled(false);
-        jSpinnerY.setPreferredSize(new java.awt.Dimension(54, 20));
+        jSpinnerY.setPreferredSize(new java.awt.Dimension(63, 20));
         jSpinnerY.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerYStateChanged(evt);
@@ -387,7 +387,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
         jSpinnerW.setEnabled(false);
-        jSpinnerW.setPreferredSize(new java.awt.Dimension(42, 20));
+        jSpinnerW.setPreferredSize(new java.awt.Dimension(48, 20));
         jSpinnerW.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerWStateChanged(evt);
@@ -402,7 +402,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel());
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
         jSpinnerH.setEnabled(false);
-        jSpinnerH.setPreferredSize(new java.awt.Dimension(42, 20));
+        jSpinnerH.setPreferredSize(new java.awt.Dimension(48, 20));
         jSpinnerH.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerHStateChanged(evt);
