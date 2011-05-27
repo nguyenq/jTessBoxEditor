@@ -85,8 +85,6 @@ public class ImageIOHelper {
      * @throws Exception
      */
     public static List<IIOImage> getIIOImageList(File imageFile) throws IOException {
-        File workingTiffFile = null;
-
         ImageReader reader = null;
         ImageInputStream iis = null;
 
@@ -129,9 +127,6 @@ public class ImageIOHelper {
                 }
             } catch (Exception e) {
                 // ignore
-            }
-            if (workingTiffFile != null && workingTiffFile.exists()) {
-                workingTiffFile.delete();
             }
         }
     }
