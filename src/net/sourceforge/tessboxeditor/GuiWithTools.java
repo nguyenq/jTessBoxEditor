@@ -115,6 +115,7 @@ public class GuiWithTools extends GuiWithLaF {
                         } finally {
                             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                             getGlassPane().setVisible(false);
+                            jLabelStatus.setText(null);
                         }
                     }
                 };
