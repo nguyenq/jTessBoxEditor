@@ -206,6 +206,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuItemFont = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuLookAndFeel = new javax.swing.JMenu();
+        jMenuTools = new javax.swing.JMenu();
+        jMenuItemMergeTiff = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
@@ -574,7 +576,7 @@ public class Gui extends javax.swing.JFrame {
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
 
-        jLabelCodepoint.setText(" Codepoint:");
+        jLabelCodepoint.setText("\u0020Codepoint:");
         jPanelBoxView.add(jLabelCodepoint, java.awt.BorderLayout.NORTH);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
@@ -696,6 +698,20 @@ public class Gui extends javax.swing.JFrame {
         jMenuSettings.add(jMenuLookAndFeel);
 
         jMenuBar.add(jMenuSettings);
+
+        jMenuTools.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuTools.Mnemonic").charAt(0));
+        jMenuTools.setText(bundle.getString("jMenuTools.Text")); // NOI18N
+
+        jMenuItemMergeTiff.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemMergeTiff.Mnemonic").charAt(0));
+        jMenuItemMergeTiff.setText(bundle.getString("jMenuItemMergeTiff.Text")); // NOI18N
+        jMenuItemMergeTiff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMergeTiffActionPerformed(evt);
+            }
+        });
+        jMenuTools.add(jMenuItemMergeTiff);
+
+        jMenuBar.add(jMenuTools);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuHelp.Mnemonic").charAt(0));
         jMenuHelp.setText(bundle.getString("jMenuHelp.Text")); // NOI18N
@@ -1303,6 +1319,10 @@ public class Gui extends javax.swing.JFrame {
         jButtonFindActionPerformed(evt);
     }//GEN-LAST:event_jTextFieldFindActionPerformed
 
+    void jMenuItemMergeTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeTiffActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
+
     String toHex(String source) {
         StringBuilder sb = new StringBuilder();
         for (char ch : source.toCharArray()) {
@@ -1312,7 +1332,7 @@ public class Gui extends javax.swing.JFrame {
     }
 
     public static String padLeft(int source, int n) {
-        return String.format("%1$0"+ n + "X", source);
+        return String.format("%1$0" + n + "X", source);
     }
 
     /**
@@ -1344,7 +1364,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
-    private javax.swing.JLabel jLabelStatus;
+    protected javax.swing.JLabel jLabelStatus;
     protected javax.swing.JLabel jLabelSubimage;
     private javax.swing.JLabel jLabelW;
     private javax.swing.JLabel jLabelX;
@@ -1360,6 +1380,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemInsert;
     private javax.swing.JMenuItem jMenuItemMerge;
+    private javax.swing.JMenuItem jMenuItemMergeTiff;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
@@ -1367,6 +1388,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuLookAndFeel;
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
+    private javax.swing.JMenu jMenuTools;
     private javax.swing.JPanel jPanelBoxView;
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelFind;
