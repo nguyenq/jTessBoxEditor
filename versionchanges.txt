@@ -14,3 +14,6 @@ Version 0.2 (14 April 2011):
 
 Version 0.3 (25 April 2011):
 - Provide a close-up view of current box
+
+Version 0.4 (28 May 2011):
+- Add a utility function for merging images into a multi-page TIFF
