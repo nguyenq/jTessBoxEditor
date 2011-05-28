@@ -155,7 +155,7 @@ public class ImageIOHelper {
 
         //Set up the writeParam
         TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+//        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED); // comment out to preserve original sizes
 
         //Get the stream metadata
         IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
