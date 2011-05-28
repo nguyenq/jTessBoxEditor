@@ -920,9 +920,11 @@ public class Gui extends javax.swing.JFrame {
     }
 
     void loadTable() {
-        boxes = this.boxPages.get(imageIndex);
-        tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
-        ((JImageLabel) this.jLabelImage).setBoxes(boxes);
+        if (!this.boxPages.isEmpty()) {
+            boxes = this.boxPages.get(imageIndex);
+            tableModel.setDataVector(boxes.getTableDataList().toArray(new String[0][5]), headers);
+            ((JImageLabel) this.jLabelImage).setBoxes(boxes);
+        }
     }
 
     /**
