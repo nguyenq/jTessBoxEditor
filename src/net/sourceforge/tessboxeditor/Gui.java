@@ -848,6 +848,7 @@ public class Gui extends javax.swing.JFrame {
             this.jScrollPaneImage.getViewport().setViewPosition(new Point(0, 0));
             this.setTitle(APP_NAME + " - " + selectedFile.getName());
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
         }
     }
 
