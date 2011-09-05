@@ -19,6 +19,7 @@ import java.io.*;
 import java.net.*;
 
 public class Utilities {
+
     /**
      *
      * @return the directory of the running jar
@@ -38,5 +39,28 @@ public class Utilities {
             use.printStackTrace();
         }
         return dbDir;
+    }
+
+    /**
+     * Outputs Unicode codepoint representation.
+     * @param source
+     * @return 
+     */
+    public static String toHex(String source) {
+        StringBuilder sb = new StringBuilder();
+        for (char ch : source.toCharArray()) {
+            sb.append("U+").append(padLeft(ch, 4));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Helper method to add padding for Unicode codepoint.
+     * @param source
+     * @param n
+     * @return 
+     */
+    static String padLeft(int source, int n) {
+        return String.format("%1$0" + n + "X", source);
     }
 }

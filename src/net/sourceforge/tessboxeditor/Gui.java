@@ -494,7 +494,7 @@ public class Gui extends javax.swing.JFrame {
                             enableReadout(true);
                             // update Character field
                             jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            jLabelCodepoint.setText(" Codepoint: " + toHex(jTextFieldChar.getText()));
+                            jLabelCodepoint.setText(" Char/Codepoint: " + jTextFieldChar.getText() + "  " + Utilities.toHex(jTextFieldChar.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -576,7 +576,7 @@ public class Gui extends javax.swing.JFrame {
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
 
-        jLabelCodepoint.setText("\u0020Codepoint:");
+        jLabelCodepoint.setText(" Char/Codepoint:");
         jPanelBoxView.add(jLabelCodepoint, java.awt.BorderLayout.NORTH);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
@@ -1250,7 +1250,7 @@ public class Gui extends javax.swing.JFrame {
         if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
             box.setChrs(this.jTextFieldChar.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
-            jLabelCodepoint.setText(" Codepoint: " + toHex(this.jTextFieldChar.getText()));
+            jLabelCodepoint.setText(" Char/Codepoint: " + this.jTextFieldChar.getText() + "  " + Utilities.toHex(this.jTextFieldChar.getText()));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
@@ -1325,18 +1325,6 @@ public class Gui extends javax.swing.JFrame {
     void jMenuItemMergeTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeTiffActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
-
-    String toHex(String source) {
-        StringBuilder sb = new StringBuilder();
-        for (char ch : source.toCharArray()) {
-            sb.append("U+").append(padLeft(ch, 4));
-        }
-        return sb.toString();
-    }
-
-    public static String padLeft(int source, int n) {
-        return String.format("%1$0" + n + "X", source);
-    }
 
     /**
      * @param args the command line arguments
