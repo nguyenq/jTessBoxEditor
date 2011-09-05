@@ -1090,7 +1090,7 @@ public class Gui extends javax.swing.JFrame {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             Date releaseDate = sdf.parse(config.getProperty("ReleaseDate"));
 
-            JOptionPane.showMessageDialog(this, APP_NAME + ", " + version + " \u00a9 2011\n"
+            JOptionPane.showMessageDialog(this, APP_NAME + " " + version + " \u00a9 2011\n"
                     + "Box Editor for Tesseract OCR Data\n"
                     + DateFormat.getDateInstance(DateFormat.LONG).format(releaseDate)
                     + "\nhttp://vietocr.sourceforge.net", jMenuItemAbout.getText(), JOptionPane.INFORMATION_MESSAGE);
