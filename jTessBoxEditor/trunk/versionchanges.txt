@@ -17,3 +17,6 @@ Version 0.3 (25 April 2011):
 
 Version 0.4 (28 May 2011):
 - Add a utility function for merging images into a multi-page TIFF
+
+Version 0.5 (5 September 2011)
+- Display informational tooltip for currently hovered over character in image panel
