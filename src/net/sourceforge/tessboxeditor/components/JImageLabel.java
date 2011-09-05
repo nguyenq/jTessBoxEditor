@@ -17,10 +17,9 @@ package net.sourceforge.tessboxeditor.components;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import net.sourceforge.tessboxeditor.datamodel.TessBox;
-import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
+import javax.swing.*;
+import net.sourceforge.tessboxeditor.datamodel.*;
+import net.sourceforge.vietocr.utilities.Utilities;
 
 public class JImageLabel extends JLabel {
 
@@ -94,6 +93,20 @@ public class JImageLabel extends JLabel {
                 resetColor = false;
             }
         }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        if (this.boxes != null) {
+            TessBox curBox = this.boxes.hitObject(new Point(x, y));
+            if (curBox != null) {
+                String curChrs = curBox.getChrs();
+                setToolTipText(String.format("<html><h1>%s : %s</h1></html>", curChrs, Utilities.toHex(curChrs)));
+            } else {
+                setToolTipText(null);
+            }
+        }
+        return super.contains(x, y);
     }
 
     public void setBoxes(TessBoxCollection boxes) {
