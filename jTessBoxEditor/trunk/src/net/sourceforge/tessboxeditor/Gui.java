@@ -494,7 +494,7 @@ public class Gui extends javax.swing.JFrame {
                             enableReadout(true);
                             // update Character field
                             jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            jLabelCodepoint.setText(" Char/Codepoint: " + jTextFieldChar.getText() + "  " + Utilities.toHex(jTextFieldChar.getText()));
+                            jLabelCodepoint.setText("Char/Codepoint: " + jTextFieldChar.getText() + "  " + Utilities.toHex(jTextFieldChar.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -576,7 +576,8 @@ public class Gui extends javax.swing.JFrame {
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
 
-        jLabelCodepoint.setText(" Char/Codepoint:");
+        jLabelCodepoint.setText("Char/Codepoint:");
+        jLabelCodepoint.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 1, 1));
         jPanelBoxView.add(jLabelCodepoint, java.awt.BorderLayout.NORTH);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
@@ -1143,7 +1144,7 @@ public class Gui extends javax.swing.JFrame {
 
     void resetReadout() {
         jTextFieldChar.setText(null);
-        jLabelCodepoint.setText(null);
+        jLabelCodepoint.setText("Char/Codepoint:");
         jSpinnerH.setValue(0);
         jSpinnerW.setValue(0);
         jSpinnerX.setValue(0);
@@ -1250,7 +1251,7 @@ public class Gui extends javax.swing.JFrame {
         if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
             box.setChrs(this.jTextFieldChar.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
-            jLabelCodepoint.setText(" Char/Codepoint: " + this.jTextFieldChar.getText() + "  " + Utilities.toHex(this.jTextFieldChar.getText()));
+            jLabelCodepoint.setText("Char/Codepoint: " + this.jTextFieldChar.getText() + "  " + Utilities.toHex(this.jTextFieldChar.getText()));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
