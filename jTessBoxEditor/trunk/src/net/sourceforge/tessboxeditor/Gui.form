@@ -695,7 +695,7 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int selectedIndex = jTable.getSelectedRow();&#xa;                    if (selectedIndex != -1) {&#xa;                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click&#xa;                            boxes.deselectAll();&#xa;                        }&#xa;                        List&lt;TessBox&gt; boxesOfCurPage = boxes.toList(); // boxes of current page&#xa;                        for (int index : jTable.getSelectedRows()) {&#xa;                            TessBox box = boxesOfCurPage.get(index);&#xa;                            // select box&#xa;                            box.setSelected(true);&#xa;                            jLabelImage.scrollRectToVisible(box.getRect());&#xa;                        }&#xa;                        jLabelImage.repaint();&#xa;&#xa;                        if (jTable.getSelectedRows().length == 1) {&#xa;                            enableReadout(true);&#xa;                            // update Character field&#xa;                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));&#xa;                            jLabelCodepoint.setText(&quot;Char/Codepoint: &quot; + jTextFieldChar.getText() + &quot;  &quot; + Utilities.toHex(jTextFieldChar.getText()));&#xa;                            // update subimage label&#xa;                            Icon icon = jLabelImage.getIcon();&#xa;                            TessBox curBox = boxesOfCurPage.get(selectedIndex);&#xa;                            Rectangle rect = curBox.getRect();&#xa;                            try {&#xa;                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width, rect.height);&#xa;                                ImageIconScalable subIcon = new ImageIconScalable(subImage);&#xa;                                subIcon.setScaledFactor(4);&#xa;                                jLabelSubimage.setIcon(subIcon);&#xa;                            } catch (Exception exc) {&#xa;                                //ignore&#xa;                            }&#xa;                            // mark this as table action event to prevent cyclic firing of events by spinners&#xa;                            tableSelectAction = true;&#xa;                            // update spinners&#xa;                            jSpinnerX.setValue(rect.x);&#xa;                            jSpinnerY.setValue(rect.y);&#xa;                            jSpinnerH.setValue(rect.height);&#xa;                            jSpinnerW.setValue(rect.width);&#xa;                            tableSelectAction = false;&#xa;                        } else {&#xa;                            enableReadout(false);&#xa;                        }&#xa;                    } else {&#xa;                        boxes.deselectAll();&#xa;                        jLabelImage.repaint();&#xa;                        enableReadout(false);&#xa;                        tableSelectAction = true;&#xa;                        resetReadout();&#xa;                        tableSelectAction = false;&#xa;                    }&#xa;                }&#xa;            }&#xa;        });&#xa;&#xa;        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);&#xa;        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;&#xa;        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);&#xa;        ((JLabel) jTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);&#xa;       ((JImageLabel) this.jLabelImage).setTable(jTable);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control C&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control X&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control V&quot;), &quot;none&quot;);&#xa;"/>
+                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int selectedIndex = jTable.getSelectedRow();&#xa;                    if (selectedIndex != -1) {&#xa;                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click&#xa;                            boxes.deselectAll();&#xa;                        }&#xa;                        List&lt;TessBox&gt; boxesOfCurPage = boxes.toList(); // boxes of current page&#xa;                        for (int index : jTable.getSelectedRows()) {&#xa;                            TessBox box = boxesOfCurPage.get(index);&#xa;                            // select box&#xa;                            box.setSelected(true);&#xa;                            jLabelImage.scrollRectToVisible(box.getRect());&#xa;                        }&#xa;                        jLabelImage.repaint();&#xa;&#xa;                        if (jTable.getSelectedRows().length == 1) {&#xa;                            enableReadout(true);&#xa;                            // update Character field&#xa;                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));&#xa;                            jLabelCodepointValue.setText(jTextFieldChar.getText() + &quot;  &quot; + Utilities.toHex(jTextFieldChar.getText()));&#xa;                            // update subimage label&#xa;                            Icon icon = jLabelImage.getIcon();&#xa;                            TessBox curBox = boxesOfCurPage.get(selectedIndex);&#xa;                            Rectangle rect = curBox.getRect();&#xa;                            try {&#xa;                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width, rect.height);&#xa;                                ImageIconScalable subIcon = new ImageIconScalable(subImage);&#xa;                                subIcon.setScaledFactor(4);&#xa;                                jLabelSubimage.setIcon(subIcon);&#xa;                            } catch (Exception exc) {&#xa;                                //ignore&#xa;                            }&#xa;                            // mark this as table action event to prevent cyclic firing of events by spinners&#xa;                            tableSelectAction = true;&#xa;                            // update spinners&#xa;                            jSpinnerX.setValue(rect.x);&#xa;                            jSpinnerY.setValue(rect.y);&#xa;                            jSpinnerH.setValue(rect.height);&#xa;                            jSpinnerW.setValue(rect.width);&#xa;                            tableSelectAction = false;&#xa;                        } else {&#xa;                            enableReadout(false);&#xa;                        }&#xa;                    } else {&#xa;                        boxes.deselectAll();&#xa;                        jLabelImage.repaint();&#xa;                        enableReadout(false);&#xa;                        tableSelectAction = true;&#xa;                        resetReadout();&#xa;                        tableSelectAction = false;&#xa;                    }&#xa;                }&#xa;            }&#xa;        });&#xa;&#xa;        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);&#xa;        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;&#xa;        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);&#xa;        ((JLabel) jTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);&#xa;       ((JImageLabel) this.jLabelImage).setTable(jTable);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control C&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control X&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control V&quot;), &quot;none&quot;);&#xa;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -781,6 +781,38 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
           <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel1">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="North"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                <Property name="alignment" type="int" value="0"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabelCodepoint">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Char/Codepoint:"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));"/>
+                    <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Gui_jLabelCodepoint"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelCodepointValue">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jLabelCodepointValue.setFont(jLabelCodepointValue.getFont().deriveFont(14.0f));"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
             <Component class="javax.swing.JLabel" name="jLabelSubimage">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
@@ -791,25 +823,6 @@
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                   <BorderConstraints direction="Center"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabelCodepoint">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Char/Codepoint:"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder bottom="1" left="4" right="1" top="2"/>
-                  </Border>
-                </Property>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));"/>
-                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Gui_jLabelCodepoint"/>
-              </AuxValues>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="North"/>
                 </Constraint>
               </Constraints>
             </Component>

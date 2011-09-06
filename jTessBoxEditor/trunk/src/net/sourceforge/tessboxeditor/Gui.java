@@ -181,9 +181,12 @@ public class Gui extends javax.swing.JFrame {
         jScrollPaneBoxData = new javax.swing.JScrollPane();
         jTextArea = new javax.swing.JTextArea();
         jPanelBoxView = new javax.swing.JPanel();
-        jLabelSubimage = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabelCodepoint = new javax.swing.JLabel();
         jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));
+        jLabelCodepointValue = new javax.swing.JLabel();
+        jLabelCodepointValue.setFont(jLabelCodepointValue.getFont().deriveFont(14.0f));
+        jLabelSubimage = new javax.swing.JLabel();
         jScrollPaneImage = new javax.swing.JScrollPane();
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
         jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
@@ -494,7 +497,7 @@ public class Gui extends javax.swing.JFrame {
                             enableReadout(true);
                             // update Character field
                             jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            jLabelCodepoint.setText("Char/Codepoint: " + jTextFieldChar.getText() + "  " + Utilities.toHex(jTextFieldChar.getText()));
+                            jLabelCodepointValue.setText(jTextFieldChar.getText() + "  " + Utilities.toHex(jTextFieldChar.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -573,12 +576,17 @@ public class Gui extends javax.swing.JFrame {
         jPanelBoxView.setBackground(java.awt.Color.lightGray);
         jPanelBoxView.setLayout(new java.awt.BorderLayout());
 
-        jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
+        jPanel1.setBackground(java.awt.Color.lightGray);
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelCodepoint.setText("Char/Codepoint:");
-        jLabelCodepoint.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 1, 1));
-        jPanelBoxView.add(jLabelCodepoint, java.awt.BorderLayout.NORTH);
+        jPanel1.add(jLabelCodepoint);
+        jPanel1.add(jLabelCodepointValue);
+
+        jPanelBoxView.add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
@@ -1144,7 +1152,7 @@ public class Gui extends javax.swing.JFrame {
 
     void resetReadout() {
         jTextFieldChar.setText(null);
-        jLabelCodepoint.setText("Char/Codepoint:");
+        jLabelCodepointValue.setText(null);
         jSpinnerH.setValue(0);
         jSpinnerW.setValue(0);
         jSpinnerX.setValue(0);
@@ -1251,7 +1259,7 @@ public class Gui extends javax.swing.JFrame {
         if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
             box.setChrs(this.jTextFieldChar.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
-            jLabelCodepoint.setText("Char/Codepoint: " + this.jTextFieldChar.getText() + "  " + Utilities.toHex(this.jTextFieldChar.getText()));
+            jLabelCodepointValue.setText(this.jTextFieldChar.getText() + "  " + Utilities.toHex(this.jTextFieldChar.getText()));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
@@ -1353,6 +1361,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JLabel jLabelChar;
     private javax.swing.JLabel jLabelCodepoint;
+    private javax.swing.JLabel jLabelCodepointValue;
     private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
@@ -1381,6 +1390,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JMenu jMenuTools;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBoxView;
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelFind;
