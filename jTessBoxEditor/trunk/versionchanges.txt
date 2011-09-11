@@ -20,3 +20,6 @@ Version 0.4 (28 May 2011):
 
 Version 0.5 (5 September 2011)
 - Display informational tooltip for boxed characters in image pane
+
+Version 0.5.1 (12 September 2011)
+- Correct an issue with (small) image vertically centering in the image pane; align it to top of pane
