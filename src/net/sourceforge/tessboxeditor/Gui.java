@@ -592,6 +592,7 @@ public class Gui extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPaneBoxData, java.awt.BorderLayout.WEST);
 
+        jLabelImage.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jScrollPaneImage.setViewportView(jLabelImage);
 
         getContentPane().add(jScrollPaneImage, java.awt.BorderLayout.CENTER);
