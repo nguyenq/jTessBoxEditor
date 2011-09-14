@@ -211,6 +211,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuLookAndFeel = new javax.swing.JMenu();
         jMenuTools = new javax.swing.JMenu();
         jMenuItemMergeTiff = new javax.swing.JMenuItem();
+        jMenuItemGenerateTiffBox = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
@@ -720,6 +721,14 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuTools.add(jMenuItemMergeTiff);
+
+        jMenuItemGenerateTiffBox.setText("Generate TIFF/Box");
+        jMenuItemGenerateTiffBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGenerateTiffBoxActionPerformed(evt);
+            }
+        });
+        jMenuTools.add(jMenuItemGenerateTiffBox);
 
         jMenuBar.add(jMenuTools);
 
@@ -1336,6 +1345,10 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
 
+    void jMenuItemGenerateTiffBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGenerateTiffBoxActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jMenuItemGenerateTiffBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1379,6 +1392,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemDelete;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemFont;
+    private javax.swing.JMenuItem jMenuItemGenerateTiffBox;
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemInsert;
     private javax.swing.JMenuItem jMenuItemMerge;

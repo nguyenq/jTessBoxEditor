@@ -126,6 +126,12 @@ public class GuiWithTools extends GuiWithLaF {
     }
 
     @Override
+    void jMenuItemGenerateTiffBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        JDialog dialog = new TiffBoxDialog(this, true);
+        dialog.setVisible(true);
+    }
+
+    @Override
     void quit() {
         prefs.put("ImageFolder", imageFolder.getPath());
         super.quit();
