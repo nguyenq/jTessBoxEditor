@@ -1,5 +1,6 @@
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Window;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.io.*;
@@ -13,19 +14,20 @@ import java.net.URI;
  *@see        http://vietpad.sourceforge.net
  */
 public class FileDropTargetListener extends DropTargetAdapter {
-    private Gui holder;
+
+    private Window holder;
     private File droppedFile;
-    
+
     /**
      *  Constructor for the FileDropTargetListener object
      *
      *
-     * @param holder  instance of Gui
+     * @param holder  instance of Window
      */
-    public FileDropTargetListener(Gui holder) {
+    public FileDropTargetListener(Window holder) {
         this.holder = holder;
     }
-    
+
     /**
      *  Gives visual feedback
      *
@@ -35,7 +37,7 @@ public class FileDropTargetListener extends DropTargetAdapter {
     public void dragOver(DropTargetDragEvent dtde) {
         if (droppedFile == null) {
             DataFlavor[] flavors = dtde.getCurrentDataFlavors();
-            for (int i = 0; i < flavors.length; i++) {               
+            for (int i = 0; i < flavors.length; i++) {
                 if (flavors[i].isFlavorJavaFileListType()) {
                     dtde.acceptDrag(DnDConstants.ACTION_COPY);
                     return;
@@ -44,7 +46,7 @@ public class FileDropTargetListener extends DropTargetAdapter {
         }
         dtde.rejectDrag();
     }
-    
+
     /**
      *  Handles dropped files
      *
@@ -54,14 +56,14 @@ public class FileDropTargetListener extends DropTargetAdapter {
     public void drop(DropTargetDropEvent dtde) {
         Transferable transferable = dtde.getTransferable();
         DataFlavor[] flavors = transferable.getTransferDataFlavors();
-        
+
         final boolean LINUX = System.getProperty("os.name").equals("Linux");
-        
+
         for (int i = 0; i < flavors.length; i++) {
             try {
                 if (flavors[i].equals(DataFlavor.javaFileListFlavor) || (LINUX && flavors[i].getPrimaryType().equals("text") && flavors[i].getSubType().equals("uri-list"))) {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY);
-                    
+
                     // Missing DataFlavor.javaFileListFlavor on Linux (Bug ID: 4899516)
                     if (flavors[i].equals(DataFlavor.javaFileListFlavor)) {
                         java.util.List fileList = (java.util.List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
@@ -73,19 +75,24 @@ public class FileDropTargetListener extends DropTargetAdapter {
                         URI uri = new URI(string.substring(0, string.indexOf('\n')));
                         droppedFile = new File(uri);
                     }
-                    
+
                     // Note: On Windows, Java 1.4.2 can't recognize a Unicode file name
                     // (Bug ID 4896217). Fixed in Java 1.5.
-                    
+
                     // Processes one dropped file at a time in a separate thread
                     new Thread() {
+
                         @Override
                         public void run() {
-                            holder.openFile(droppedFile);
+                            if (holder instanceof Gui) {
+                                ((Gui) holder).openFile(droppedFile);
+                            } else if (holder instanceof TiffBoxDialog) {
+                                ((TiffBoxDialog) holder).openFile(droppedFile);
+                            }
                             droppedFile = null;
                         }
                     }.start();
-                    
+
                     dtde.dropComplete(true);
                     return;
                 }
