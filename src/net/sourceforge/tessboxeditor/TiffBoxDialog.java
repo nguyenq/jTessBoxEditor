@@ -11,15 +11,23 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Font;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 import net.sourceforge.vietpad.components.FontDialog;
+import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class TiffBoxDialog extends javax.swing.JDialog {
 
@@ -29,6 +37,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         initComponents();
         Font font = this.jTextArea1.getFont();
         this.jButtonFont.setText(fontDesc(font));
+
+        FileFilter textFilter = new SimpleFilter("txt", "Text Files");
+        jFileChooser1.addChoosableFileFilter(textFilter);
+        jFileChooser1.setAcceptAllFileFilterUsed(false);
+
+        // DnD support
+        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
         setLocationRelativeTo(getOwner());
 
@@ -67,13 +82,14 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jSpinnerH = new javax.swing.JSpinner();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jButtonGenerate = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        jButtonClear = new javax.swing.JButton();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
         setTitle("Generate TIFF/Box");
         setMinimumSize(new java.awt.Dimension(550, 400));
-        setResizable(false);
 
         jToolBar1.setRollover(true);
 
@@ -124,12 +140,26 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jButtonGenerate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonGenerate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButtonGenerate);
+        jToolBar1.add(filler7);
+
+        jButtonClear.setText("Clear");
+        jButtonClear.setToolTipText("Clear Textarea");
+        jButtonClear.setFocusable(false);
+        jButtonClear.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonClear.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButtonClear);
         jToolBar1.add(filler6);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setMargin(new java.awt.Insets(5, 5, 2, 2));
         jScrollPane1.setViewportView(jTextArea1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -139,9 +169,19 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
     private void jButtonFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFileActionPerformed
         if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            openFile(jFileChooser1.getSelectedFile());
         }
     }//GEN-LAST:event_jButtonFileActionPerformed
 
+    void openFile(final File selectedFile) {
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"));
+            this.jTextArea1.read(in, null);
+            in.close();
+        } catch (IOException e) {
+        }
+    }
+    
     private void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed
         FontDialog dlg = new FontDialog((JFrame) this.getParent());
         Font font = this.jTextArea1.getFont();
@@ -155,6 +195,10 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             this.jButtonFont.setText(fontDesc(font));
         }
     }//GEN-LAST:event_jButtonFontActionPerformed
+
+    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        this.jTextArea1.setText(null);
+    }//GEN-LAST:event_jButtonClearActionPerformed
 
     private String fontDesc(Font font) {
         return font.getName() + (font.isBold() ? " Bold" : "") + (font.isItalic() ? " Italic" : "") + " " + font.getSize() + "pt";
@@ -208,6 +252,8 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonFile;
     private javax.swing.JButton jButtonFont;
     private javax.swing.JButton jButtonGenerate;
