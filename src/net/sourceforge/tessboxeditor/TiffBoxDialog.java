@@ -80,7 +80,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jFileChooser1.addChoosableFileFilter(textFilter);
         jFileChooser1.setAcceptAllFileFilterUsed(false);
         jToolBar1 = new javax.swing.JToolBar();
-        jButtonFile = new javax.swing.JButton();
+        jButtonInput = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jButtonFont = new javax.swing.JButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
@@ -95,30 +95,27 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));
-        // DnD support
-        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
         setTitle("Generate TIFF/Box");
         setMinimumSize(new java.awt.Dimension(550, 400));
 
         jToolBar1.setRollover(true);
 
-        jButtonFile.setText("File");
-        jButtonFile.setToolTipText("Open Text File");
-        jButtonFile.setFocusable(false);
-        jButtonFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonFile.addActionListener(new java.awt.event.ActionListener() {
+        jButtonInput.setText("Input");
+        jButtonInput.setToolTipText("Load Text File");
+        jButtonInput.setFocusable(false);
+        jButtonInput.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonInput.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonFileActionPerformed(evt);
+                jButtonInputActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonFile);
+        jToolBar1.add(jButtonInput);
         jToolBar1.add(filler3);
 
         jButtonFont.setText("Font");
-        jButtonFont.setToolTipText("Set Font");
+        jButtonFont.setToolTipText("Select Font");
         jButtonFont.setFocusable(false);
         jButtonFont.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonFont.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -134,6 +131,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelW.setToolTipText("Image Width");
         jToolBar1.add(jLabelW);
 
+        jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(600, 300, 1000, 1));
         jSpinnerW.setPreferredSize(new java.awt.Dimension(55, 20));
         jToolBar1.add(jSpinnerW);
 
@@ -141,6 +139,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelH.setToolTipText("Image Height");
         jToolBar1.add(jLabelH);
 
+        jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(400, 200, 1000, 1));
         jSpinnerH.setPreferredSize(new java.awt.Dimension(55, 20));
         jToolBar1.add(jSpinnerH);
         jToolBar1.add(filler4);
@@ -177,17 +176,20 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jTextArea1.setMargin(new java.awt.Insets(5, 5, 2, 2));
         jScrollPane1.setViewportView(jTextArea1);
+        this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));
+        // DnD support
+        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFileActionPerformed
+    private void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
         if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             openFile(jFileChooser1.getSelectedFile());
         }
-    }//GEN-LAST:event_jButtonFileActionPerformed
+    }//GEN-LAST:event_jButtonInputActionPerformed
 
     void openFile(final File selectedFile) {
         try {
@@ -218,31 +220,36 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
     private void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
         if (this.jTextArea1.getText().trim().length() == 0) {
-            
+            JOptionPane.showMessageDialog(this, "Please load some text.");
             return;
         }
-        
+
+        imageList.clear();
+        drawImage();
+        saveImageBox();
+    }//GEN-LAST:event_jButtonGenerateActionPerformed
+
+    public void drawImage() {
         map.put(TextAttribute.FONT, this.jTextArea1.getFont());
         astr = new AttributedString(this.jTextArea1.getText(), map);
         AttributedCharacterIterator paragraph = astr.getIterator();
         paragraphStart = paragraph.getBeginIndex();
         paragraphEnd = paragraph.getEndIndex();
 
-        // Create a new LineBreakMeasurer from the paragraph.
-        lineMeasurer = new LineBreakMeasurer(paragraph, new FontRenderContext(null, false, false));
 
-    }//GEN-LAST:event_jButtonGenerateActionPerformed
-
-    public void paintComponent(Graphics g) {
-        BufferedImage bi = new BufferedImage(Integer.valueOf(this.jSpinnerW.getValue().toString()), Integer.valueOf(this.jSpinnerH.getValue().toString()), BufferedImage.TYPE_BYTE_GRAY);
-
-        setBackground(Color.white);
-        Graphics2D graphics2D = (Graphics2D) g;
-
+        BufferedImage bi = new BufferedImage((Integer) this.jSpinnerW.getValue(), (Integer) this.jSpinnerH.getValue(), BufferedImage.TYPE_BYTE_GRAY);
+        Graphics2D g2 = bi.createGraphics();
+//        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //VALUE_TEXT_ANTIALIAS_LCD_HRGB
         // Set formatting width to width of Component.
-        Dimension size = getSize();
-        float formatWidth = (float) size.width - 2 * margin;
+        g2.setBackground(Color.white);
+        g2.clearRect(0, 0, bi.getWidth(), bi.getHeight());
+        g2.setColor(Color.black);
+        Font font = this.jTextArea1.getFont();
+        g2.setFont(font);
+        float formatWidth = bi.getWidth(); // - 2 * margin;
         float drawPosY = margin;
+        // Create a new LineBreakMeasurer from the paragraph.
+        lineMeasurer = new LineBreakMeasurer(paragraph, g2.getFontRenderContext());
         lineMeasurer.setPosition(paragraphStart);
 
         // Get lines from lineMeasurer until the entire
@@ -258,7 +265,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             float drawPosX = layout.isLeftToRight()
                     ? margin : formatWidth - layout.getAdvance();
             // Draw the TextLayout at (drawPosX, drawPosY).
-//            layout.draw(graphics2D, drawPosX, drawPosY);
+            layout.draw(g2, drawPosX, drawPosY);
             // Move y-coordinate in preparation for next layout.
             drawPosY += layout.getDescent() + layout.getLeading();
         }
@@ -266,19 +273,18 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         boxPages.clear();
         TessBoxCollection boxCol = new TessBoxCollection();
 
-        String text = "in.,;";
+        String text = this.jTextArea1.getText();
         // get the visual center of the component.
-        int centerX = getWidth() / 2;
-        int centerY = getHeight() / 2;
-        Font font = graphics2D.getFont().deriveFont(44f);
-        graphics2D.setFont(font);
+        int centerX = bi.getWidth() / 2;
+        int centerY = bi.getHeight() / 2;
+
 // get the bounds of the string to draw.
-        FontMetrics fontMetrics = graphics2D.getFontMetrics();
-        Rectangle stringBounds = fontMetrics.getStringBounds(text, graphics2D).getBounds();
+        FontMetrics fontMetrics = g2.getFontMetrics();
+        Rectangle stringBounds = fontMetrics.getStringBounds(text, g2).getBounds();
 
 // get the visual bounds of the text using a GlyphVector.
 
-        FontRenderContext renderContext = graphics2D.getFontRenderContext();
+        FontRenderContext renderContext = g2.getFontRenderContext();
         GlyphVector glyphVector = font.createGlyphVector(renderContext, text);
         Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
 //        Rectangle pixelBounds = glyphVector.getPixelBounds(renderContext, drawPosY, drawPosY).getBounds();
@@ -299,18 +305,16 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 //             Shape s = glyphVector.getGlyphOutline(i, (float) p.getX(), (float) p.getY());
 //            Rectangle s = glyphVector.getGlyphPixelBounds(i, null, (float) p.getX(), (float) p.getY());
             Shape s = glyphVector.getGlyphVisualBounds(i); // too wide
-
-
             GlyphMetrics metrics = glyphVector.getGlyphMetrics(i);
 //            graphics2D.draw(s);
             int glyphX = (int) p.getX() + textX + (int) metrics.getLSB();
             int glyphY = (int) p.getY() + textY + s.getBounds().y;
-            int glyphW = metrics.getBounds2D().getBounds().width;
-            int glyphH = metrics.getBounds2D().getBounds().height;
+            int glyphW = (int) metrics.getBounds2D().getWidth();
+            int glyphH = (int) metrics.getBounds2D().getHeight();
             short page = 0;
             String chrs = String.valueOf(text.charAt(i));
 
-            graphics2D.drawRect(glyphX, glyphY, glyphW, glyphH);
+            g2.drawRect(glyphX, glyphY, glyphW, glyphH);
 //            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
 
             if (!chrs.equals(" ")) {
@@ -319,8 +323,10 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             }
         }
         this.boxPages.add(boxCol);
-        graphics2D.drawString(text, textX, textY);
+//        g2.drawString(text, textX, textY);
 //        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
+        g2.dispose();
+        imageList.add(bi);
     }
 
     String formatOutputString() {
@@ -340,12 +346,8 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         return sb.toString();
     }
 
-    void createImage() {
-        BufferedImage bi = new BufferedImage(Integer.valueOf(this.jSpinnerW.getValue().toString()), Integer.valueOf(this.jSpinnerH.getValue().toString()), BufferedImage.TYPE_BYTE_GRAY);
-        Graphics g = bi.createGraphics();
-        this.paint(g);
-        g.dispose();
-        imageList.add(bi);
+    void saveImageBox() {
+        BufferedImage bi = imageList.get(0);
 
         try {
             ImageIO.write(bi, "png", new File("test.png"));
@@ -411,9 +413,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.JButton jButtonClear;
-    private javax.swing.JButton jButtonFile;
     private javax.swing.JButton jButtonFont;
     private javax.swing.JButton jButtonGenerate;
+    private javax.swing.JButton jButtonInput;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabelH;
     private javax.swing.JLabel jLabelW;
