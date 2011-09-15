@@ -83,6 +83,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonFontActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButtonFont.setText(fontDesc(UIManager.getFont(&quot;TextArea.font&quot;)));"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler5">
           <Properties>
@@ -212,7 +215,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));&#xd;&#xa;        // DnD support&#xd;&#xa;        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));"/>
+            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        // DnD support&#xd;&#xa;        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));"/>
           </AuxValues>
         </Component>
       </SubComponents>
