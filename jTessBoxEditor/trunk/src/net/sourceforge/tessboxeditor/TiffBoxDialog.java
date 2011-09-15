@@ -119,6 +119,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jButtonFont.setFocusable(false);
         jButtonFont.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonFont.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonFont.setText(fontDesc(UIManager.getFont("TextArea.font")));
         jButtonFont.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonFontActionPerformed(evt);
@@ -176,7 +177,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jTextArea1.setMargin(new java.awt.Insets(5, 5, 2, 2));
         jScrollPane1.setViewportView(jTextArea1);
-        this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));
         // DnD support
         new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
