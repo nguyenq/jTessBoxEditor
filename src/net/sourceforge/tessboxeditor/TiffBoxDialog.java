@@ -10,40 +10,45 @@
  */
 package net.sourceforge.tessboxeditor;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.KeyStroke;
+import java.awt.font.*;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import net.sourceforge.tessboxeditor.datamodel.TessBox;
+import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.vietpad.components.FontDialog;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class TiffBoxDialog extends javax.swing.JDialog {
 
+    static final String EOL = System.getProperty("line.separator");
+    private LineBreakMeasurer lineMeasurer;
+    // the first character in the paragraph.
+    private int paragraphStart;
+    // the first character after the end of the paragraph.
+    private int paragraphEnd;
+    private final Hashtable<TextAttribute, Object> map = new Hashtable<TextAttribute, Object>();
+    private AttributedString astr;
+    private int margin = 20;
+    private List<TessBoxCollection> boxPages = new ArrayList<TessBoxCollection>();
+    private List<BufferedImage> imageList = new ArrayList<BufferedImage>();
+
     /** Creates new form TiffBoxDialog */
     public TiffBoxDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        Font font = this.jTextArea1.getFont();
-        this.jButtonFont.setText(fontDesc(font));
-
-        FileFilter textFilter = new SimpleFilter("txt", "Text Files");
-        jFileChooser1.addChoosableFileFilter(textFilter);
-        jFileChooser1.setAcceptAllFileFilterUsed(false);
-
-        // DnD support
-        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
         setLocationRelativeTo(getOwner());
 
@@ -71,6 +76,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
+        FileFilter textFilter = new SimpleFilter("txt", "Text Files");
+        jFileChooser1.addChoosableFileFilter(textFilter);
+        jFileChooser1.setAcceptAllFileFilterUsed(false);
         jToolBar1 = new javax.swing.JToolBar();
         jButtonFile = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
@@ -87,6 +95,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));
+        // DnD support
+        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
         setTitle("Generate TIFF/Box");
         setMinimumSize(new java.awt.Dimension(550, 400));
@@ -139,6 +150,11 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jButtonGenerate.setFocusable(false);
         jButtonGenerate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonGenerate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonGenerate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerateActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButtonGenerate);
         jToolBar1.add(filler7);
 
@@ -181,7 +197,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         } catch (IOException e) {
         }
     }
-    
+
     private void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed
         FontDialog dlg = new FontDialog((JFrame) this.getParent());
         Font font = this.jTextArea1.getFont();
@@ -199,6 +215,147 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
         this.jTextArea1.setText(null);
     }//GEN-LAST:event_jButtonClearActionPerformed
+
+    private void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
+        if (this.jTextArea1.getText().trim().length() == 0) {
+            
+            return;
+        }
+        
+        map.put(TextAttribute.FONT, this.jTextArea1.getFont());
+        astr = new AttributedString(this.jTextArea1.getText(), map);
+        AttributedCharacterIterator paragraph = astr.getIterator();
+        paragraphStart = paragraph.getBeginIndex();
+        paragraphEnd = paragraph.getEndIndex();
+
+        // Create a new LineBreakMeasurer from the paragraph.
+        lineMeasurer = new LineBreakMeasurer(paragraph, new FontRenderContext(null, false, false));
+
+    }//GEN-LAST:event_jButtonGenerateActionPerformed
+
+    public void paintComponent(Graphics g) {
+        BufferedImage bi = new BufferedImage(Integer.valueOf(this.jSpinnerW.getValue().toString()), Integer.valueOf(this.jSpinnerH.getValue().toString()), BufferedImage.TYPE_BYTE_GRAY);
+
+        setBackground(Color.white);
+        Graphics2D graphics2D = (Graphics2D) g;
+
+        // Set formatting width to width of Component.
+        Dimension size = getSize();
+        float formatWidth = (float) size.width - 2 * margin;
+        float drawPosY = margin;
+        lineMeasurer.setPosition(paragraphStart);
+
+        // Get lines from lineMeasurer until the entire
+        // paragraph has been displayed.
+        while (lineMeasurer.getPosition() < paragraphEnd) {
+            // Retrieve next layout.
+            TextLayout layout = lineMeasurer.nextLayout(formatWidth);
+            // Move y-coordinate by the ascent of the layout.
+            drawPosY += layout.getAscent();
+            // Compute pen x position. If the paragraph is
+            // right-to-left, we want to align the TextLayouts
+            // to the right edge of the panel.
+            float drawPosX = layout.isLeftToRight()
+                    ? margin : formatWidth - layout.getAdvance();
+            // Draw the TextLayout at (drawPosX, drawPosY).
+//            layout.draw(graphics2D, drawPosX, drawPosY);
+            // Move y-coordinate in preparation for next layout.
+            drawPosY += layout.getDescent() + layout.getLeading();
+        }
+
+        boxPages.clear();
+        TessBoxCollection boxCol = new TessBoxCollection();
+
+        String text = "in.,;";
+        // get the visual center of the component.
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
+        Font font = graphics2D.getFont().deriveFont(44f);
+        graphics2D.setFont(font);
+// get the bounds of the string to draw.
+        FontMetrics fontMetrics = graphics2D.getFontMetrics();
+        Rectangle stringBounds = fontMetrics.getStringBounds(text, graphics2D).getBounds();
+
+// get the visual bounds of the text using a GlyphVector.
+
+        FontRenderContext renderContext = graphics2D.getFontRenderContext();
+        GlyphVector glyphVector = font.createGlyphVector(renderContext, text);
+        Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
+//        Rectangle pixelBounds = glyphVector.getPixelBounds(renderContext, drawPosY, drawPosY).getBounds();
+        int num = glyphVector.getNumGlyphs();
+
+// calculate the lower left point at which to draw the string. note that this we
+// give the graphics context the y corridinate at which we want the baseline to
+// be placed. use the visual bounds height to center on in conjuction with the
+// position returned in the visual bounds. the vertical position given back in the
+// visualBounds is a negative offset from the basline of the text.
+        int textX = centerX - stringBounds.width / 2;
+        int textY = centerY - visualBounds.height / 2 - visualBounds.y;
+
+        for (int i = 0; i < num; i++) {
+            Point2D p = glyphVector.getGlyphPosition(i);
+//            Shape s = glyphVector.getGlyphOutline(i);
+//            Shape s = glyphVector.getGlyphLogicalBounds(i);
+//             Shape s = glyphVector.getGlyphOutline(i, (float) p.getX(), (float) p.getY());
+//            Rectangle s = glyphVector.getGlyphPixelBounds(i, null, (float) p.getX(), (float) p.getY());
+            Shape s = glyphVector.getGlyphVisualBounds(i); // too wide
+
+
+            GlyphMetrics metrics = glyphVector.getGlyphMetrics(i);
+//            graphics2D.draw(s);
+            int glyphX = (int) p.getX() + textX + (int) metrics.getLSB();
+            int glyphY = (int) p.getY() + textY + s.getBounds().y;
+            int glyphW = metrics.getBounds2D().getBounds().width;
+            int glyphH = metrics.getBounds2D().getBounds().height;
+            short page = 0;
+            String chrs = String.valueOf(text.charAt(i));
+
+            graphics2D.drawRect(glyphX, glyphY, glyphW, glyphH);
+//            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
+
+            if (!chrs.equals(" ")) {
+                boxCol.add(new TessBox(chrs, new Rectangle(glyphX, glyphY, glyphW, glyphH), page));
+//                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
+            }
+        }
+        this.boxPages.add(boxCol);
+        graphics2D.drawString(text, textX, textY);
+//        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
+    }
+
+    String formatOutputString() {
+        StringBuilder sb = new StringBuilder();
+        for (short i = 0; i < imageList.size(); i++) {
+            BufferedImage bi = imageList.get(i);
+            int pageHeight = bi.getHeight(); // each page (in an image) can have different height
+            for (TessBox box : boxPages.get(i).toList()) {
+                Rectangle rect = box.getRect();
+//                tightenBoundingBox(rect, bi);
+                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
+            }
+        }
+//        if (isTess2_0Format) {
+//            return sb.toString().replace(" 0" + EOL, EOL); // strip the ending zeroes
+//        }
+        return sb.toString();
+    }
+
+    void createImage() {
+        BufferedImage bi = new BufferedImage(Integer.valueOf(this.jSpinnerW.getValue().toString()), Integer.valueOf(this.jSpinnerH.getValue().toString()), BufferedImage.TYPE_BYTE_GRAY);
+        Graphics g = bi.createGraphics();
+        this.paint(g);
+        g.dispose();
+        imageList.add(bi);
+
+        try {
+            ImageIO.write(bi, "png", new File("test.png"));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("test.box"), "UTF8"));
+            out.write(formatOutputString());
+            out.close();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
     private String fontDesc(Font font) {
         return font.getName() + (font.isBold() ? " Bold" : "") + (font.isItalic() ? " Italic" : "") + " " + font.getSize() + "pt";

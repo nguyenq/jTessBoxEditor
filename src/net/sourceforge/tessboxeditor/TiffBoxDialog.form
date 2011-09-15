@@ -3,6 +3,9 @@
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.JFileChooser" name="jFileChooser1">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="        FileFilter textFilter = new SimpleFilter(&quot;txt&quot;, &quot;Text Files&quot;);&#xa;        jFileChooser1.addChoosableFileFilter(textFilter);&#xa;        jFileChooser1.setAcceptAllFileFilterUsed(false);"/>
+      </AuxValues>
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -141,6 +144,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGenerateActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler7">
           <Properties>
@@ -199,6 +205,9 @@
               <Insets value="[5, 5, 2, 2]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));&#xd;&#xa;        // DnD support&#xd;&#xa;        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
