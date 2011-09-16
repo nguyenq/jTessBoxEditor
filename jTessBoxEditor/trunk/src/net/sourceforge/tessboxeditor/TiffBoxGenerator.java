@@ -8,14 +8,11 @@ import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import javax.imageio.ImageIO;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
@@ -29,7 +26,7 @@ public class TiffBoxGenerator {
     private int paragraphStart;
     // the first character after the end of the paragraph.
     private int paragraphEnd;
-    private final Hashtable<TextAttribute, Object> map = new Hashtable<TextAttribute, Object>();
+    private final HashMap<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
     private AttributedString astr;
     private final List<TessBoxCollection> boxPages = new ArrayList<TessBoxCollection>();
     private final List<BufferedImage> imageList = new ArrayList<BufferedImage>();
@@ -67,7 +64,7 @@ public class TiffBoxGenerator {
         g2.clearRect(0, 0, bi.getWidth(), bi.getHeight());
         g2.setColor(Color.black);
         g2.setFont(font);
-        float formatWidth = bi.getWidth(); // - 2 * margin;
+        float formatWidth = bi.getWidth() - 2 * margin;
         float drawPosY = margin;
         // Create a new LineBreakMeasurer from the paragraph.
         lineMeasurer = new LineBreakMeasurer(paragraph, g2.getFontRenderContext());
