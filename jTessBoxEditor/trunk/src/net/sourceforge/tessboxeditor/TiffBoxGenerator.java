@@ -28,9 +28,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
+import net.sourceforge.vietocr.utilities.ImageIOHelper;
 
 public class TiffBoxGenerator {
-
+    
     static final String EOL = System.getProperty("line.separator");
     private LineBreakMeasurer lineMeasurer;
     // the first character in the paragraph.
@@ -45,14 +46,14 @@ public class TiffBoxGenerator {
     private Font font;
     private int width, height;
     private final int margin = 20;
-
+    
     TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
         this.font = font;
         this.width = width;
         this.height = height;
     }
-
+    
     public void create() {
         map.put(TextAttribute.FONT, font);
         astr = new AttributedString(text, map);
@@ -61,12 +62,12 @@ public class TiffBoxGenerator {
         drawImage();
         saveImageBox();
     }
-
+    
     void drawImage() {
         AttributedCharacterIterator paragraph = astr.getIterator();
         paragraphStart = paragraph.getBeginIndex();
         paragraphEnd = paragraph.getEndIndex();
-
+        
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         Graphics2D g2 = bi.createGraphics();
 //        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //VALUE_TEXT_ANTIALIAS_LCD_HRGB
@@ -98,7 +99,7 @@ public class TiffBoxGenerator {
             // Move y-coordinate in preparation for next layout.
             drawPosY += layout.getDescent() + layout.getLeading();
         }
-
+        
         boxPages.clear();
         TessBoxCollection boxCol = new TessBoxCollection();
 
@@ -125,7 +126,7 @@ public class TiffBoxGenerator {
 // visualBounds is a negative offset from the basline of the text.
         int textX = centerX - stringBounds.width / 2;
         int textY = centerY - visualBounds.height / 2 - visualBounds.y;
-
+        
         for (int i = 0; i < num; i++) {
             Point2D p = glyphVector.getGlyphPosition(i);
 //            Shape s = glyphVector.getGlyphOutline(i);
@@ -141,7 +142,7 @@ public class TiffBoxGenerator {
             int glyphH = (int) metrics.getBounds2D().getHeight();
             short page = 0;
             String chrs = String.valueOf(text.charAt(i));
-
+            
             g2.drawRect(glyphX, glyphY, glyphW, glyphH);
 //            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
 
@@ -150,14 +151,14 @@ public class TiffBoxGenerator {
 //                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
             }
         }
-
+        
         this.boxPages.add(boxCol);
 //        g2.drawString(text, textX, textY);
 //        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
         g2.dispose();
         imageList.add(bi);
     }
-
+    
     String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < imageList.size(); i++) {
@@ -174,11 +175,9 @@ public class TiffBoxGenerator {
 //        }
         return sb.toString();
     }
-
+    
     void saveImageBox() {
         try {
-            BufferedImage bi = imageList.get(0);
-            ImageIO.write(bi, "png", new File("test.png")); // save image
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("test.box"), "UTF8")); // save boxes
             out.write(formatOutputString());
             out.close();
@@ -193,17 +192,17 @@ public class TiffBoxGenerator {
     private ArrayList<BufferedImage> pages = new ArrayList<BufferedImage>();
 
     /**
-     * Breaks input text into lines.
+     * Breaks input text into TextLayout lines.
      */
     void breakLines() {
         for (String string : text.split("\n")) {
             final AttributedString attStr = new AttributedString(string);
             attStr.addAttribute(TextAttribute.FONT, font);
             final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, true, true));
-
+            
             ArrayList<TextLayout> para = new ArrayList<TextLayout>();
             TextLayout line;
-
+            
             while ((line = measurer.nextLayout(wrapWidth - 2 * margin)) != null) {
                 para.add(line);
             }
@@ -219,16 +218,16 @@ public class TiffBoxGenerator {
         pages.add(bi);
         Graphics2D g2 = bi.createGraphics();
         FontMetrics metrics = g2.getFontMetrics(font);
-
+        
         int textHeight = metrics.getHeight();
         int left = 0; //textHeight; // only for symmetry, could be different
         int top = textHeight;
-
+        
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
                 line.draw(g2, left + margin, top + margin);
                 top += textHeight;
-
+                
                 if (top > pageHeight - 2 * margin) {
                     top = textHeight; // reset to top of next page
                     bi = new BufferedImage(wrapWidth, pageHeight, BufferedImage.TYPE_BYTE_GRAY);
@@ -243,13 +242,10 @@ public class TiffBoxGenerator {
      * Writes a multi-page TIFF image.
      */
     void writePages() {
-        for (int i = 0; i < pages.size(); i++) {
-            BufferedImage bi = pages.get(i);
-            try {
-                ImageIO.write(bi, "png", new File(String.format("test%s.png", i)));
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
+        try {
+            ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), new File("output.tif"));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 }
