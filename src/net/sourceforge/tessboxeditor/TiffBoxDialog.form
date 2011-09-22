@@ -214,9 +214,6 @@
               <Insets value="[5, 5, 2, 2]"/>
             </Property>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        // DnD support&#xd;&#xa;        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

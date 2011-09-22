@@ -31,7 +31,10 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     public TiffBoxDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        
+        // DnD support
+        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
+        
         setLocationRelativeTo(getOwner());
 
         //  Handle escape key to hide the dialog
@@ -159,8 +162,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jTextArea1.setMargin(new java.awt.Insets(5, 5, 2, 2));
         jScrollPane1.setViewportView(jTextArea1);
-        // DnD support
-        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
