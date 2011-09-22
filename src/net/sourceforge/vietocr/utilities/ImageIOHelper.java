@@ -145,7 +145,35 @@ public class ImageIOHelper {
             imageList.addAll(getIIOImageList(inputImages[i]));
         }
 
-        if (imageList.isEmpty()) {
+        mergeTiff(imageList, outputTiff);
+    }
+
+    /**
+     * Merges multiple images into one TIFF image.
+     * 
+     * @param inputImages an array of <code>BufferedImage</code>
+     * @param outputTiff the output TIFF file
+     * @throws Exception
+     */
+    public static void mergeTiff(BufferedImage[] inputImages, File outputTiff) throws IOException {
+        List<IIOImage> imageList = new ArrayList<IIOImage>();
+
+        for (int i = 0; i < inputImages.length; i++) {
+            imageList.add(new IIOImage(inputImages[i], null, null));
+        }
+
+        mergeTiff(imageList, outputTiff);
+    }
+
+    /**
+     * Merges multiple images into one TIFF image.
+     * 
+     * @param imageList a list of <code>IIOImage</code> objects
+     * @param outputTiff the output TIFF file
+     * @throws IOException 
+     */
+    public static void mergeTiff(List<IIOImage> imageList, File outputTiff) throws IOException {
+        if (imageList == null || imageList.isEmpty()) {
             // if no image
             return;
         }
