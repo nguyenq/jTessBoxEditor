@@ -45,7 +45,7 @@ public class TiffBoxGenerator {
     private Font font;
     private int width, height;
     private final int margin = 20;
-    
+
     TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
         this.font = font;
@@ -56,7 +56,7 @@ public class TiffBoxGenerator {
     public void create() {
         map.put(TextAttribute.FONT, font);
         astr = new AttributedString(text, map);
-        
+
 //        imageList.clear();
         drawImage();
         saveImageBox();
@@ -150,7 +150,7 @@ public class TiffBoxGenerator {
 //                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
             }
         }
-        
+
         this.boxPages.add(boxCol);
 //        g2.drawString(text, textX, textY);
 //        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
@@ -176,15 +176,80 @@ public class TiffBoxGenerator {
     }
 
     void saveImageBox() {
-        BufferedImage bi = imageList.get(0);
-
         try {
-            ImageIO.write(bi, "png", new File("test.png"));
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("test.box"), "UTF8"));
+            BufferedImage bi = imageList.get(0);
+            ImageIO.write(bi, "png", new File("test.png")); // save image
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("test.box"), "UTF8")); // save boxes
             out.write(formatOutputString());
             out.close();
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+    }
+    
+    private int wrapWidth = 400;
+    private int pageHeight = 200;
+    private ArrayList<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
+    private ArrayList<BufferedImage> pages = new ArrayList<BufferedImage>();
+
+    /**
+     * Breaks input text into lines.
+     */
+    void breakLines() {
+        for (String string : text.split("\n")) {
+            final AttributedString attStr = new AttributedString(string);
+            attStr.addAttribute(TextAttribute.FONT, font);
+            final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, true, true));
+
+            ArrayList<TextLayout> para = new ArrayList<TextLayout>();
+            TextLayout line;
+
+            while ((line = measurer.nextLayout(wrapWidth - 2 * margin)) != null) {
+                para.add(line);
+            }
+            layouts.add(para); // collection of paragraphs (long strings) of lines
+        }
+    }
+
+    /**
+     * Paints pages.
+     */
+    void paintPages() {
+        BufferedImage bi = new BufferedImage(wrapWidth, pageHeight, BufferedImage.TYPE_BYTE_GRAY);
+        pages.add(bi);
+        Graphics2D g2 = bi.createGraphics();
+        FontMetrics metrics = g2.getFontMetrics(font);
+
+        int textHeight = metrics.getHeight();
+        int left = 0; //textHeight; // only for symmetry, could be different
+        int top = textHeight;
+
+        for (ArrayList<TextLayout> para : layouts) {
+            for (TextLayout line : para) {
+                line.draw(g2, left + margin, top + margin);
+                top += textHeight;
+
+                if (top > pageHeight - 2 * margin) {
+                    top = textHeight; // reset to top of next page
+                    bi = new BufferedImage(wrapWidth, pageHeight, BufferedImage.TYPE_BYTE_GRAY);
+                    pages.add(bi);
+                    g2 = bi.createGraphics();
+                }
+            }
+        }
+    }
+
+    /**
+     * Writes a multi-page TIFF image.
+     */
+    void writePages() {
+        for (int i = 0; i < pages.size(); i++) {
+            BufferedImage bi = pages.get(i);
+            try {
+                ImageIO.write(bi, "png", new File(String.format("test%s.png", i)));
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
 }
