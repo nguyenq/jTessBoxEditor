@@ -188,7 +188,6 @@ public class TiffBoxGenerator {
             System.err.println(e.getMessage());
         }
     }
-    
     private List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private List<BufferedImage> pages = new ArrayList<BufferedImage>();
 
@@ -222,6 +221,8 @@ public class TiffBoxGenerator {
      */
     Graphics2D createGraphics(BufferedImage bi, Font font) {
         Graphics2D g2 = bi.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         g2.setBackground(Color.white);
         g2.clearRect(0, 0, bi.getWidth(), bi.getHeight());
         g2.setColor(Color.black);
@@ -236,19 +237,18 @@ public class TiffBoxGenerator {
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         pages.add(bi);
         Graphics2D g2 = createGraphics(bi, font);
-        FontMetrics metrics = g2.getFontMetrics(font);
 
-        int textHeight = metrics.getHeight();
-        int left = 0; //textHeight; // only for symmetry, could be different
-        int top = textHeight;
+        int left = margin;
+        int top = margin;
 
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
-                line.draw(g2, left + margin, top + margin);
-                top += textHeight;
+                top += line.getAscent();
+                line.draw(g2, left, top);
+                top += line.getDescent() + line.getLeading();
 
-                if (top > height - 2 * margin) {
-                    top = textHeight; // reset to top of next page
+                if (top > height - margin) {
+                    top = margin; // reset to top of next page
                     bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
                     pages.add(bi);
                     g2 = createGraphics(bi, font);
