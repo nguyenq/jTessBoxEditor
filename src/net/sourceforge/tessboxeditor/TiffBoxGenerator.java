@@ -199,8 +199,7 @@ public class TiffBoxGenerator {
             if (str.length() == 0) {
                 str = " ";
             }
-            final AttributedString attStr = new AttributedString(str);
-            attStr.addAttribute(TextAttribute.FONT, font);
+            final AttributedString attStr = new AttributedString(str, map);
             final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, true, true));
 
             ArrayList<TextLayout> para = new ArrayList<TextLayout>();
@@ -238,17 +237,25 @@ public class TiffBoxGenerator {
         pages.add(bi);
         Graphics2D g2 = createGraphics(bi, font);
 
-        int left = margin;
-        int top = margin;
+        int drawPosY = margin;
 
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
-                top += line.getAscent();
-                line.draw(g2, left, top);
-                top += line.getDescent() + line.getLeading();
+                // Move y-coordinate by the ascent of the layout.
+                drawPosY += line.getAscent();
+                // Compute pen x position. If the paragraph is
+                // right-to-left, we want to align the TextLayouts
+                // to the right margin.
+                float drawPosX = line.isLeftToRight()
+                        ? margin : width - margin - line.getAdvance();
+                // Draw the TextLayout at (drawPosX, drawPosY).
+                line.draw(g2, drawPosX, drawPosY);
+                // Move y-coordinate in preparation for next layout.
+                drawPosY += line.getDescent() + line.getLeading();
 
-                if (top > height - margin) {
-                    top = margin; // reset to top of next page
+                // Reach bottom margin?
+                if (drawPosY > height - margin) { // - line.getAscent() ?
+                    drawPosY = margin; // reset to top margin of next page
                     bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
                     pages.add(bi);
                     g2 = createGraphics(bi, font);
