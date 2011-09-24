@@ -21,7 +21,8 @@ import javax.imageio.*;
 import javax.imageio.stream.*;
 import java.awt.image.*;
 import javax.imageio.metadata.IIOMetadata;
-import com.sun.media.imageio.plugins.tiff.TIFFImageWriteParam;
+import com.sun.media.imageio.plugins.tiff.*;
+import javax.imageio.metadata.IIOInvalidTreeException;
 
 public class ImageIOHelper {
 
@@ -191,6 +192,17 @@ public class ImageIOHelper {
         ImageOutputStream ios = ImageIO.createImageOutputStream(outputTiff);
         writer.setOutput(ios);
 
+        int dpiX = 300;
+        int dpiY = 300;
+
+        for (IIOImage iioImage : imageList) {
+            // Get the default image metadata.
+            ImageTypeSpecifier imageType = ImageTypeSpecifier.createFromRenderedImage(iioImage.getRenderedImage());
+            IIOMetadata imageMetadata = writer.getDefaultImageMetadata(imageType, null);
+            imageMetadata = setDPIViaAPI(imageMetadata, dpiX, dpiY);
+            iioImage.setMetadata(imageMetadata);
+        }
+
         IIOImage firstIioImage = imageList.remove(0);
         writer.write(streamMetadata, firstIioImage, tiffWriteParam);
 
@@ -201,5 +213,32 @@ public class ImageIOHelper {
         ios.close();
 
         writer.dispose();
+    }
+
+    /**
+     * Set DPI using API.
+     */
+    private static IIOMetadata setDPIViaAPI(IIOMetadata imageMetadata, int dpiX, int dpiY)
+            throws IIOInvalidTreeException {
+        // Derive the TIFFDirectory from the metadata.
+        TIFFDirectory dir = TIFFDirectory.createFromMetadata(imageMetadata);
+
+        // Get {X,Y}Resolution tags.
+        BaselineTIFFTagSet base = BaselineTIFFTagSet.getInstance();
+        TIFFTag tagXRes = base.getTag(BaselineTIFFTagSet.TAG_X_RESOLUTION);
+        TIFFTag tagYRes = base.getTag(BaselineTIFFTagSet.TAG_Y_RESOLUTION);
+
+        // Create {X,Y}Resolution fields.
+        TIFFField fieldXRes = new TIFFField(tagXRes, TIFFTag.TIFF_RATIONAL,
+                1, new long[][]{{dpiX, 1}});
+        TIFFField fieldYRes = new TIFFField(tagYRes, TIFFTag.TIFF_RATIONAL,
+                1, new long[][]{{dpiY, 1}});
+
+        // Append {X,Y}Resolution fields to directory.
+        dir.addTIFFField(fieldXRes);
+        dir.addTIFFField(fieldYRes);
+
+        // Convert to metadata object and return.
+        return dir.getAsMetadata();
     }
 }
