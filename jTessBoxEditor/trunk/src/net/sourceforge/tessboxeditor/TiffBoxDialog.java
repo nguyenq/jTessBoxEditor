@@ -117,7 +117,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelW.setToolTipText("Image Width");
         jToolBar1.add(jLabelW);
 
-        jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(600, 300, 1000, 1));
+        jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 1));
         jSpinnerW.setPreferredSize(new java.awt.Dimension(55, 20));
         jToolBar1.add(jSpinnerW);
 
@@ -125,7 +125,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelH.setToolTipText("Image Height");
         jToolBar1.add(jLabelH);
 
-        jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(400, 200, 1000, 1));
+        jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 1));
         jSpinnerH.setPreferredSize(new java.awt.Dimension(55, 20));
         jToolBar1.add(jSpinnerH);
         jToolBar1.add(filler4);

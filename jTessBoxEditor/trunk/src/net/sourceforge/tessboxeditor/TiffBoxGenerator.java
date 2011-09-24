@@ -43,7 +43,7 @@ public class TiffBoxGenerator {
     private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
     private String fileName = "test";
-    
+
     TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
         this.font = font;
@@ -58,7 +58,7 @@ public class TiffBoxGenerator {
         this.breakLines();
         this.drawPages();
         this.saveMultipageTiff();
-        makeBoxes();
+//        makeBoxes();
         saveBoxFile();
     }
 
@@ -182,7 +182,7 @@ public class TiffBoxGenerator {
 //                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
                 }
             }
-            this.boxPages.add(boxCol);
+//            this.boxPages.add(boxCol);
         }
     }
 
@@ -200,6 +200,7 @@ public class TiffBoxGenerator {
      * Breaks input text into TextLayout lines.
      */
     void breakLines() {
+        float wrappingWidth = width - 2 * margin;
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
@@ -210,7 +211,7 @@ public class TiffBoxGenerator {
             ArrayList<TextLayout> para = new ArrayList<TextLayout>();
             TextLayout line;
 
-            while ((line = measurer.nextLayout(width - 2 * margin)) != null) {
+            while ((line = measurer.nextLayout(wrappingWidth)) != null) {
                 para.add(line);
             }
             layouts.add(para); // collection of paragraphs (long strings) of lines
@@ -225,8 +226,8 @@ public class TiffBoxGenerator {
      */
     Graphics2D createGraphics(BufferedImage bi, Font font) {
         Graphics2D g2 = bi.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+//        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+//                RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
         g2.setBackground(Color.white);
         g2.clearRect(0, 0, bi.getWidth(), bi.getHeight());
         g2.setColor(Color.black);
@@ -244,6 +245,10 @@ public class TiffBoxGenerator {
 
         int drawPosY = margin;
 
+        TessBoxCollection boxCol = new TessBoxCollection(); // for each page
+        boxPages.add(boxCol);
+        short pageNum = 0;
+
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
                 // Move y-coordinate by the ascent of the layout.
@@ -255,6 +260,26 @@ public class TiffBoxGenerator {
                         ? margin : width - margin - line.getAdvance();
                 // Draw the TextLayout at (drawPosX, drawPosY).
                 line.draw(g2, drawPosX, drawPosY);
+                
+                // TextLayout API does not expose a way to access the underlying string.
+                String lineText = line.toString();
+                int startPos = lineText.indexOf("chars:\"") + "chars:\"".length();
+                lineText = lineText.substring(startPos, lineText.indexOf("\",", startPos));
+                String[] chars = lineText.split("\\s+");
+                
+                // get bounding box for each character on a line
+                int c = line.getCharacterCount();
+                for (int i = 0; i < c; i++) {
+                    Shape shape = line.getBlackBoxBounds(i, i + 1);
+                    Rectangle rect = shape.getBounds();
+                    if (rect.width == 0 || rect.height == 0) {
+                        continue;
+                    }
+                    rect.x += drawPosX;
+                    rect.y += drawPosY;
+                    boxCol.add(new TessBox(String.valueOf((char) Integer.parseInt(chars[i], 16)), rect, pageNum));
+                }
+
                 // Move y-coordinate in preparation for next layout.
                 drawPosY += line.getDescent() + line.getLeading();
 
@@ -263,12 +288,14 @@ public class TiffBoxGenerator {
                     drawPosY = margin; // reset to top margin of next page
                     bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
                     pages.add(bi);
+                    boxPages.add(boxCol);
+                    boxCol = new TessBoxCollection();
+                    pageNum++;
                     g2.dispose();
                     g2 = createGraphics(bi, font);
                 }
             }
         }
-
         g2.dispose();
     }
 
