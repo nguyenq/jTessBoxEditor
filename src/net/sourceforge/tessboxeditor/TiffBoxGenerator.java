@@ -145,6 +145,69 @@ public class TiffBoxGenerator {
         return sb.toString();
     }
 
+    /**
+     * Tightens bounding box in four directions b/c Java cannot produce bounding boxes as tight as Tesseract can.
+     * Exam only the first pixel on each side.
+     * 
+     * @param rect
+     * @param bi 
+     */
+    void tightenBoundingBox(Rectangle rect, BufferedImage bi) {
+        boolean blankLine = true; // a vertical or horizontal line
+
+        // left
+        int startX = rect.x + 1;
+        for (int y = rect.y + 1; y < rect.y + rect.height; y++) {
+            int color = bi.getRGB(startX, y);
+            if (color != Color.WHITE.getRGB()) {
+                blankLine = false;
+                break;
+            }
+        }
+        if (blankLine) {
+            rect.x += 1;
+        }
+        blankLine = true;
+        // right
+        startX = rect.x + rect.width + 1;
+        for (int y = rect.y + 1; y < rect.y + rect.height; y++) {
+            int color = bi.getRGB(startX, y);
+            if (color != Color.WHITE.getRGB()) {
+                blankLine = false;
+                break;
+            }
+        }
+        if (blankLine) {
+            rect.width -= 1;
+        }
+        blankLine = true;
+        //top
+        int startY = rect.y + 1;
+        for (int x = rect.x + 1; x < rect.x + rect.width; x++) {
+            int color = bi.getRGB(x, startY);
+            if (color != Color.WHITE.getRGB()) {
+                blankLine = false;
+                break;
+            }
+        }
+        if (blankLine) {
+            rect.y += 1;
+        }
+        blankLine = true;
+        //bottom
+        startY = rect.y + rect.height + 1;
+        for (int x = rect.x + 1; x < rect.x + rect.width; x++) {
+            int color = bi.getRGB(x, startY);
+            if (color != Color.WHITE.getRGB()) {
+                blankLine = false;
+                break;
+            }
+        }
+        if (blankLine) {
+            rect.height -= 1;
+        }
+    }
+
     void makeBoxes() {
         boxPages.clear();
 
@@ -250,7 +313,7 @@ public class TiffBoxGenerator {
         boxPages.add(boxCol);
         short pageNum = 0;
         int drawPosY = margin;
-        
+
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
                 // Move y-coordinate by the ascent of the layout.
@@ -279,6 +342,8 @@ public class TiffBoxGenerator {
                     }
                     rect.x += drawPosX;
                     rect.y += drawPosY;
+
+                    tightenBoundingBox(rect, bi);
                     boxCol.add(new TessBox(String.valueOf((char) Integer.parseInt(chars[i], 16)), rect, pageNum));
                 }
 
