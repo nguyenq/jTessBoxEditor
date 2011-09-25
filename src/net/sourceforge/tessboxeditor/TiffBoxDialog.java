@@ -34,6 +34,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         
         // DnD support
         new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
+        this.jTextArea1.setFont(this.jTextArea1.getFont().deriveFont(36f));
         
         setLocationRelativeTo(getOwner());
 

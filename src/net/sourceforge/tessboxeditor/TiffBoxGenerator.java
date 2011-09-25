@@ -206,7 +206,7 @@ public class TiffBoxGenerator {
                 str = " ";
             }
             final AttributedString attStr = new AttributedString(str, map);
-            final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, true, true));
+            final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, false, true));
 
             ArrayList<TextLayout> para = new ArrayList<TextLayout>();
             TextLayout line;
@@ -226,8 +226,11 @@ public class TiffBoxGenerator {
      */
     Graphics2D createGraphics(BufferedImage bi, Font font) {
         Graphics2D g2 = bi.createGraphics();
-//        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-//                RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
         g2.setBackground(Color.white);
         g2.clearRect(0, 0, bi.getWidth(), bi.getHeight());
         g2.setColor(Color.black);
@@ -243,12 +246,11 @@ public class TiffBoxGenerator {
         pages.add(bi);
         Graphics2D g2 = createGraphics(bi, font);
 
-        int drawPosY = margin;
-
         TessBoxCollection boxCol = new TessBoxCollection(); // for each page
         boxPages.add(boxCol);
         short pageNum = 0;
-
+        int drawPosY = margin;
+        
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
                 // Move y-coordinate by the ascent of the layout.
@@ -260,13 +262,13 @@ public class TiffBoxGenerator {
                         ? margin : width - margin - line.getAdvance();
                 // Draw the TextLayout at (drawPosX, drawPosY).
                 line.draw(g2, drawPosX, drawPosY);
-                
+
                 // TextLayout API does not expose a way to access the underlying string.
                 String lineText = line.toString();
                 int startPos = lineText.indexOf("chars:\"") + "chars:\"".length();
                 lineText = lineText.substring(startPos, lineText.indexOf("\",", startPos));
                 String[] chars = lineText.split("\\s+");
-                
+
                 // get bounding box for each character on a line
                 int c = line.getCharacterCount();
                 for (int i = 0; i < c; i++) {
