@@ -43,6 +43,7 @@ public class TiffBoxGenerator {
     private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
     private String fileName = "test";
+    private final int COLOR_WHITE = Color.WHITE.getRGB();
 
     TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
@@ -153,58 +154,56 @@ public class TiffBoxGenerator {
      * @param bi 
      */
     void tightenBoundingBox(Rectangle rect, BufferedImage bi) {
-        boolean blankLine = true; // a vertical or horizontal line
-
         // left
-        int startX = rect.x + 1;
-        for (int y = rect.y + 1; y < rect.y + rect.height; y++) {
-            int color = bi.getRGB(startX, y);
-            if (color != Color.WHITE.getRGB()) {
-                blankLine = false;
-                break;
+        int endX = rect.x + 2;
+        outerLeft:
+        for (int x = rect.x; x < endX; x++) {
+            for (int y = rect.y; y < rect.y + rect.height; y++) {
+                int color = bi.getRGB(x, y);
+                if (color != COLOR_WHITE) {
+                    break outerLeft;
+                }
             }
+            rect.x++;
         }
-        if (blankLine) {
-            rect.x += 1;
-        }
-        blankLine = true;
+
         // right
-        startX = rect.x + rect.width + 1;
-        for (int y = rect.y + 1; y < rect.y + rect.height; y++) {
-            int color = bi.getRGB(startX, y);
-            if (color != Color.WHITE.getRGB()) {
-                blankLine = false;
-                break;
+        endX = rect.x + rect.width - 4;
+        outerRight:
+        for (int x = rect.x + rect.width - 1; x > endX; x--) {
+            for (int y = rect.y; y < rect.y + rect.height; y++) {
+                int color = bi.getRGB(x, y);
+                if (color != COLOR_WHITE) {
+                    break outerRight;
+                }
             }
+            rect.width--;
         }
-        if (blankLine) {
-            rect.width -= 1;
-        }
-        blankLine = true;
-        //top
-        int startY = rect.y + 1;
-        for (int x = rect.x + 1; x < rect.x + rect.width; x++) {
-            int color = bi.getRGB(x, startY);
-            if (color != Color.WHITE.getRGB()) {
-                blankLine = false;
-                break;
+
+        // top
+        int endY = rect.y + 2;
+        outerTop:
+        for (int y = rect.y; y < endY; y++) {
+            for (int x = rect.x; x < rect.x + rect.width; x++) {
+                int color = bi.getRGB(x, y);
+                if (color != COLOR_WHITE) {
+                    break outerTop;
+                }
             }
+            rect.y++;
         }
-        if (blankLine) {
-            rect.y += 1;
-        }
-        blankLine = true;
-        //bottom
-        startY = rect.y + rect.height + 1;
-        for (int x = rect.x + 1; x < rect.x + rect.width; x++) {
-            int color = bi.getRGB(x, startY);
-            if (color != Color.WHITE.getRGB()) {
-                blankLine = false;
-                break;
+
+        // bottom
+        endY = rect.y + rect.height - 4;
+        outerBottom:
+        for (int y = rect.y + rect.height - 1; y > endY; y--) {
+            for (int x = rect.x; x < rect.x + rect.width; x++) {
+                int color = bi.getRGB(x, y);
+                if (color != COLOR_WHITE) {
+                    break outerBottom;
+                }
             }
-        }
-        if (blankLine) {
-            rect.height -= 1;
+            rect.height--;
         }
     }
 
