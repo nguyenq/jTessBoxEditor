@@ -180,17 +180,28 @@ public class TiffBoxGenerator {
             rect.width--;
         }
 
+        //TODO: Need to account for Java's incorrect over-tightening the top of the bounding box
+        // Need to move the top up by 1px and increase the height by 1px
         // top
-        int endY = rect.y + 2;
+        int endY = rect.y + 3;
+        int startY = rect.y - 1;
         outerTop:
-        for (int y = rect.y; y < endY; y++) {
+        for (int y = startY; y < endY; y++) {
             for (int x = rect.x; x < rect.x + rect.width; x++) {
                 int color = bi.getRGB(x, y);
                 if (color != COLOR_WHITE) {
-                    break outerTop;
+                    if (y == startY) {
+                        rect.y--;
+                        rect.height++;
+                        continue outerTop;
+                    } else {
+                         break outerTop;
+                    } 
                 }
             }
-            rect.y++;
+            if (y != startY) {
+                rect.y++;
+            }
         }
 
         // bottom
@@ -347,7 +358,7 @@ public class TiffBoxGenerator {
                 }
 
                 // Move y-coordinate in preparation for next layout.
-                drawPosY += line.getDescent() + line.getLeading();
+                drawPosY += line.getDescent() + line.getLeading() + 2; //TODO: Add a few more pixels for larger line spacing
 
                 // Reach bottom margin?
                 if (drawPosY > height - margin) { // - line.getAscent() ?
