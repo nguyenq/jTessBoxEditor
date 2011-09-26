@@ -39,7 +39,7 @@ public class TiffBoxGenerator {
     private String text;
     private Font font;
     private int width, height;
-    private final int margin = 50;
+    private final int margin = 100;
     private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
     private String fileName = "test";
