@@ -36,6 +36,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
         this.jTextArea1.setFont(this.jTextArea1.getFont().deriveFont(36f));
         this.jTextArea1.setFont(new Font("Arial", 0, 36));
+        this.jButtonFont.setText(fontDesc(this.jTextArea1.getFont()));
         
         setLocationRelativeTo(getOwner());
 
@@ -215,6 +216,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
         TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextArea1.getText(), this.jTextArea1.getFont(), (Integer) this.jSpinnerW.getValue(), (Integer) this.jSpinnerH.getValue());
         generator.create();
+        JOptionPane.showMessageDialog(this, "Tiff/Box files have been generated.");
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 
     /**
