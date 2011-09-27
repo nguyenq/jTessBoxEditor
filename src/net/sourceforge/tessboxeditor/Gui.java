@@ -713,6 +713,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuTools.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuTools.Mnemonic").charAt(0));
         jMenuTools.setText(bundle.getString("jMenuTools.Text")); // NOI18N
 
+        jMenuItemMergeTiff.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemMergeTiff.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemMergeTiff.Mnemonic").charAt(0));
         jMenuItemMergeTiff.setText(bundle.getString("jMenuItemMergeTiff.Text")); // NOI18N
         jMenuItemMergeTiff.addActionListener(new java.awt.event.ActionListener() {
@@ -722,7 +723,9 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuTools.add(jMenuItemMergeTiff);
 
-        jMenuItemGenerateTiffBox.setText("Generate TIFF/Box");
+        jMenuItemGenerateTiffBox.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemGenerateTiffBox.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemGenerateTiffBox.Mnemonic").charAt(0));
+        jMenuItemGenerateTiffBox.setText(bundle.getString("jMenuItemGenerateTiffBox.Text")); // NOI18N
         jMenuItemGenerateTiffBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemGenerateTiffBoxActionPerformed(evt);
