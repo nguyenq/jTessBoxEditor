@@ -85,7 +85,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextArea1 = new javax.swing.JTextArea();
 
         setTitle("Generate TIFF/Box");
-        setMinimumSize(new java.awt.Dimension(550, 400));
+        setMinimumSize(new java.awt.Dimension(800, 600));
 
         jToolBar1.setRollover(true);
 
