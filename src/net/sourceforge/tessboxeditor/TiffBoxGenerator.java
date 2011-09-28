@@ -53,7 +53,17 @@ public class TiffBoxGenerator {
     }
 
     public void create() {
-        map.put(TextAttribute.FONT, font);
+        map.put(TextAttribute.FAMILY, font.getName());
+        map.put(TextAttribute.SIZE, font.getSize());
+        if (font.getStyle() == (Font.BOLD | Font.ITALIC)) {
+            map.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+            map.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
+        } else if (font.getStyle() == Font.BOLD) {
+            map.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+        } else if (font.getStyle() == Font.ITALIC) {
+            map.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
+        }
+        map.put(TextAttribute.TRACKING, TextAttribute.TRACKING_LOOSE);
         astr = new AttributedString(text, map);
 
         this.breakLines();
@@ -195,8 +205,8 @@ public class TiffBoxGenerator {
                         rect.height++;
                         continue outerTop;
                     } else {
-                         break outerTop;
-                    } 
+                        break outerTop;
+                    }
                 }
             }
             if (y != startY) {
@@ -273,7 +283,7 @@ public class TiffBoxGenerator {
      * Breaks input text into TextLayout lines.
      */
     void breakLines() {
-        float wrappingWidth = width - 2 * margin;
+        float wrappingWidth = width - 3.5f * margin; // was 2f, but increased for letter tracking
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
