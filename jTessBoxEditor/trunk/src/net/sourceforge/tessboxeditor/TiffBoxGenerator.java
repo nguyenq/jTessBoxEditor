@@ -364,7 +364,8 @@ public class TiffBoxGenerator {
                     rect.y += drawPosY;
 
                     tightenBoundingBox(rect, bi);
-                    boxCol.add(new TessBox(String.valueOf((char) Integer.parseInt(chars[i], 16)), rect, pageNum));
+                    char ch = (char) Integer.parseInt(chars[i], 16);
+                    boxCol.add(new TessBox(String.valueOf(ch), rect, pageNum));
                 }
 
                 // Move y-coordinate in preparation for next layout.
@@ -375,8 +376,8 @@ public class TiffBoxGenerator {
                     drawPosY = margin; // reset to top margin of next page
                     bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
                     pages.add(bi);
-                    boxPages.add(boxCol);
                     boxCol = new TessBoxCollection();
+                    boxPages.add(boxCol);
                     pageNum++;
                     g2.dispose();
                     g2 = createGraphics(bi, font);
