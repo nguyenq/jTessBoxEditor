@@ -44,6 +44,7 @@ public class TiffBoxGenerator {
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
     private String fileName = "fontname.exp0";
     private final int COLOR_WHITE = Color.WHITE.getRGB();
+    private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
@@ -63,7 +64,8 @@ public class TiffBoxGenerator {
         } else if (font.getStyle() == Font.ITALIC) {
             map.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
         }
-        map.put(TextAttribute.TRACKING, TextAttribute.TRACKING_LOOSE);
+        map.put(TextAttribute.TRACKING, tracking);
+        
         astr = new AttributedString(text, map);
 
         this.breakLines();
@@ -406,5 +408,12 @@ public class TiffBoxGenerator {
             int index = fileName.lastIndexOf(".");
             this.fileName = index > -1 ? fileName.substring(0, index) : fileName;
         }
+    }
+
+    /**
+     * @param tracking the tracking to set
+     */
+    public void setTracking(float tracking) {
+        this.tracking = tracking;
     }
 }
