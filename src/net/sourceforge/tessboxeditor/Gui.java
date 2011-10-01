@@ -782,30 +782,9 @@ public class Gui extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, bundle.getString("File_not_exist"), APP_NAME, JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-//        // if text file, load it into textarea
-//        if (selectedFile.getName().endsWith(".txt") || selectedFile.getName().endsWith(".box")) {
-//            if (!promptToSave()) {
-//                return;
-//            }
-//            try {
-//                BufferedReader in = new BufferedReader(new InputStreamReader(
-//                        new FileInputStream(selectedFile), "UTF8"));
-//                this.jTextArea.read(in, null);
-//                in.close();
-//                this.boxFile = selectedFile;
-//                javax.swing.text.Document doc = this.jTextArea.getDocument();
-//                if (doc.getText(0, 1).equals("\uFEFF")) {
-//                    doc.remove(0, 1); // remove BOM
-//                }
-////                doc.addUndoableEditListener(rawListener);
-//                updateMRUList(selectedFile.getPath());
-////                updateSave(false);
-//                this.jTextArea.requestFocusInWindow();
-//            } catch (Exception e) {
-//            }
-//            return;
-//        }
+        if (!promptToSave()) {
+            return;
+        }
 
 //        jLabelStatus.setText(bundle.getString("Loading_image..."));
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -820,15 +799,12 @@ public class Gui extends javax.swing.JFrame {
 
             @Override
             protected void done() {
-
                 try {
-                    readImageFile(get());
-                    updateMRUList(selectedFile.getPath());
-                    // read box file
-                    boxPages.clear();
-                    jTextArea.setText(null);
-                    int lastDot = selectedFile.getName().lastIndexOf(".");
-                    boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
+                    File file = get();
+                    readImageFile(file);
+                    updateMRUList(file.getPath());
+                    int lastDot = file.getName().lastIndexOf(".");
+                    boxFile = new File(file.getParentFile(), file.getName().substring(0, lastDot) + ".box");
                     readBoxFile(boxFile);
 //                    jLabelStatus.setText(bundle.getString("Loading_completed"));
                 } catch (InterruptedException ignore) {
@@ -876,10 +852,6 @@ public class Gui extends javax.swing.JFrame {
 
     void readBoxFile(final File boxFile) {
         if (boxFile.exists()) {
-            if (!promptToSave()) {
-                return;
-            }
-
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"));
                 // load into textarea first
@@ -939,6 +911,7 @@ public class Gui extends javax.swing.JFrame {
             // clear table and box display
             tableModel.setDataVector((Object[][]) null, (Object[]) null);
             ((JImageLabel) this.jLabelImage).setBoxes(null);
+            jTextArea.setText(null);
         }
     }
 
