@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>jTessBoxEditor - Box Editor for Tesseract OCR Data</title>
@@ -45,8 +45,14 @@
             A conversion function is included to convert numeric character reference (NCR) and
             escape sequence in the <em>Character</em> text field to Unicode characters.</p>
         <p>
-            The <em>Merge TIFF</em> function can save multiple images containing text of the 
+            The <em>Merge TIFF</em> function can save multiple images containing text of the
             same font into a single multi-page TIFF file to be used for training.</p>
+        <p>
+            The <em>Generate TIFF/Box</em> function generates, for a given input text file,
+            a TIFF/Box pair of files, which can then be used in the training process. Note that
+            some boxes could be slightly different from ones that would have been generated
+            by Tesseract. You may want to verify and edit the generated box file before continuing with
+            the training.</p>
         <p>
             If there is any question, please post in <a href="http://sourceforge.net/projects/vietocr/forums">
                 VietOCR Forums</a>.</p>
