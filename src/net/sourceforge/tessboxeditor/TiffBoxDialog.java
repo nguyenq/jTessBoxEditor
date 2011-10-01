@@ -27,6 +27,8 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class TiffBoxDialog extends javax.swing.JDialog {
 
+    File selectedFile;
+
     /** Creates new form TiffBoxDialog */
     public TiffBoxDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -186,7 +188,8 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
     private void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
         if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            openFile(jFileChooser1.getSelectedFile());
+            selectedFile = jFileChooser1.getSelectedFile();
+            openFile(selectedFile);
         }
     }//GEN-LAST:event_jButtonInputActionPerformed
 
@@ -233,10 +236,18 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         }
 
         TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextArea1.getText(), this.jTextArea1.getFont(), (Integer) this.jSpinnerW.getValue(), (Integer) this.jSpinnerH.getValue());
+        File outputFolder;
+
+        if (selectedFile != null) {
+            outputFolder = selectedFile.getParentFile();
+        } else {
+            outputFolder = new File(System.getProperty("user.home"));
+        }
+        generator.setOutputFolder(outputFolder);
         generator.setFileName(this.jTextFieldFileName.getText());
-        generator.setTracking((Float)this.jSpinnerTracking.getValue());
+        generator.setTracking((Float) this.jSpinnerTracking.getValue());
         generator.create();
-        JOptionPane.showMessageDialog(this, "Tiff/Box files have been generated.");
+        JOptionPane.showMessageDialog(this, String.format("Tiff/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 
     /**
