@@ -43,6 +43,7 @@ public class TiffBoxGenerator {
     private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
     private String fileName = "fontname.exp0";
+    private File outputFolder;
     private final int COLOR_WHITE = Color.WHITE.getRGB();
     private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
 
@@ -65,7 +66,7 @@ public class TiffBoxGenerator {
             map.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
         }
         map.put(TextAttribute.TRACKING, tracking);
-        
+
         astr = new AttributedString(text, map);
 
         this.breakLines();
@@ -273,7 +274,7 @@ public class TiffBoxGenerator {
 
     private void saveBoxFile() {
         try {
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName + ".box"), "UTF8")); // save boxes
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFolder, fileName + ".box")), "UTF8")); // save boxes
             out.write(formatOutputString());
             out.close();
         } catch (Exception e) {
@@ -394,7 +395,7 @@ public class TiffBoxGenerator {
      */
     private void saveMultipageTiff() {
         try {
-            ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), new File(fileName + ".tif"));
+            ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), new File(outputFolder, fileName + ".tif"));
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -415,5 +416,12 @@ public class TiffBoxGenerator {
      */
     public void setTracking(float tracking) {
         this.tracking = tracking;
+    }
+
+    /**
+     * @param outputFolder the outputFolder to set
+     */
+    public void setOutputFolder(File outputFolder) {
+        this.outputFolder = outputFolder;
     }
 }
