@@ -128,8 +128,8 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelTracking.setToolTipText("Letter Tracking");
         jPanel1.add(jLabelTracking);
 
-        jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.04000002f), Float.valueOf(0.0f), Float.valueOf(0.2f), Float.valueOf(0.01f)));
-        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(55, 20));
+        jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.04000002f), Float.valueOf(0.0f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
+        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(50, 20));
         jPanel1.add(jSpinnerTracking);
 
         jLabelW.setText("W");
@@ -177,7 +177,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
+        jTextArea1.setWrapStyleWord(true);
         jTextArea1.setMargin(new java.awt.Insets(5, 5, 2, 2));
         jScrollPane1.setViewportView(jTextArea1);
 

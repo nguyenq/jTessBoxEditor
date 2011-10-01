@@ -277,7 +277,7 @@ public class TiffBoxGenerator {
      * Breaks input text into TextLayout lines.
      */
     private void breakLines() {
-        float wrappingWidth = width - 2f * margin; // was 2f, but increased for letter tracking
+        float wrappingWidth = width - 3.5f * margin; // was 2f, but increased for letter tracking
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
@@ -357,7 +357,11 @@ public class TiffBoxGenerator {
                     rect.x += drawPosX;
                     rect.y += drawPosY;
 
-                    tightenBoundingBox(rect, bi);
+                    try {
+                        tightenBoundingBox(rect, bi);
+                    } catch (java.lang.ArrayIndexOutOfBoundsException aie) {
+                        // ignore
+                    }
                     char ch = (char) Integer.parseInt(chars[i], 16);
                     boxCol.add(new TessBox(String.valueOf(ch), rect, pageNum));
                 }
