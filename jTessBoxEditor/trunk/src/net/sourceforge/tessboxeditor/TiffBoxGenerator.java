@@ -17,10 +17,8 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.*;
 import java.awt.font.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +30,7 @@ import net.sourceforge.vietocr.utilities.ImageIOHelper;
 public class TiffBoxGenerator {
 
     static final String EOL = System.getProperty("line.separator");
-    private LineBreakMeasurer lineMeasurer;
     private final HashMap<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
-    private AttributedString astr;
     private final List<TessBoxCollection> boxPages = new ArrayList<TessBoxCollection>();
     private String text;
     private Font font;
@@ -67,84 +63,80 @@ public class TiffBoxGenerator {
         }
         map.put(TextAttribute.TRACKING, tracking);
 
-        astr = new AttributedString(text, map);
-
         this.breakLines();
         this.drawPages();
         this.saveMultipageTiff();
-//        makeBoxes();
         this.saveBoxFile();
     }
 
-    private void drawImage() {
-        AttributedCharacterIterator paragraph = astr.getIterator();
-        int paragraphStart = paragraph.getBeginIndex();
-
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-        Graphics2D g2 = bi.createGraphics();
-
-        // Create a new LineBreakMeasurer from the paragraph.
-        lineMeasurer = new LineBreakMeasurer(paragraph, g2.getFontRenderContext());
-        lineMeasurer.setPosition(paragraphStart);
-
-        boxPages.clear();
-        TessBoxCollection boxCol = new TessBoxCollection();
-
-        // get the visual center of the component.
-        int centerX = bi.getWidth() / 2;
-        int centerY = bi.getHeight() / 2;
-
-// get the bounds of the string to draw.
-        FontMetrics fontMetrics = g2.getFontMetrics();
-        Rectangle stringBounds = fontMetrics.getStringBounds(text, g2).getBounds();
-
-// get the visual bounds of the text using a GlyphVector.
-
-        FontRenderContext renderContext = g2.getFontRenderContext();
-        GlyphVector glyphVector = font.createGlyphVector(renderContext, text);
-        Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
-//        Rectangle pixelBounds = glyphVector.getPixelBounds(renderContext, drawPosY, drawPosY).getBounds();
-        int num = glyphVector.getNumGlyphs();
-
-// calculate the lower left point at which to draw the string. note that this we
-// give the graphics context the y corridinate at which we want the baseline to
-// be placed. use the visual bounds height to center on in conjuction with the
-// position returned in the visual bounds. the vertical position given back in the
-// visualBounds is a negative offset from the basline of the text.
-        int textX = centerX - stringBounds.width / 2;
-        int textY = centerY - visualBounds.height / 2 - visualBounds.y;
-
-        for (int i = 0; i < num; i++) {
-            Point2D p = glyphVector.getGlyphPosition(i);
-//            Shape s = glyphVector.getGlyphOutline(i);
-//            Shape s = glyphVector.getGlyphLogicalBounds(i);
-//             Shape s = glyphVector.getGlyphOutline(i, (float) p.getX(), (float) p.getY());
-//            Rectangle s = glyphVector.getGlyphPixelBounds(i, null, (float) p.getX(), (float) p.getY());
-            Shape s = glyphVector.getGlyphVisualBounds(i); // too wide
-            GlyphMetrics metrics = glyphVector.getGlyphMetrics(i);
-//            graphics2D.draw(s);
-            int glyphX = (int) p.getX() + textX + (int) metrics.getLSB();
-            int glyphY = (int) p.getY() + textY + s.getBounds().y;
-            int glyphW = (int) metrics.getBounds2D().getWidth();
-            int glyphH = (int) metrics.getBounds2D().getHeight();
-            short page = 0;
-            String chrs = String.valueOf(text.charAt(i));
-
-            g2.drawRect(glyphX, glyphY, glyphW, glyphH);
-//            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
-
-            if (!chrs.equals(" ")) {
-                boxCol.add(new TessBox(chrs, new Rectangle(glyphX, glyphY, glyphW, glyphH), page));
-//                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
-            }
-        }
-
-        this.boxPages.add(boxCol);
-//        g2.drawString(text, textX, textY);
-//        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
-        g2.dispose();
-    }
-
+//    private void drawImage() {
+//        AttributedCharacterIterator paragraph = astr.getIterator();
+//        int paragraphStart = paragraph.getBeginIndex();
+//
+//        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+//        Graphics2D g2 = bi.createGraphics();
+//
+//        // Create a new LineBreakMeasurer from the paragraph.
+//        lineMeasurer = new LineBreakMeasurer(paragraph, g2.getFontRenderContext());
+//        lineMeasurer.setPosition(paragraphStart);
+//
+//        boxPages.clear();
+//        TessBoxCollection boxCol = new TessBoxCollection();
+//
+//        // get the visual center of the component.
+//        int centerX = bi.getWidth() / 2;
+//        int centerY = bi.getHeight() / 2;
+//
+//// get the bounds of the string to draw.
+//        FontMetrics fontMetrics = g2.getFontMetrics();
+//        Rectangle stringBounds = fontMetrics.getStringBounds(text, g2).getBounds();
+//
+//// get the visual bounds of the text using a GlyphVector.
+//
+//        FontRenderContext renderContext = g2.getFontRenderContext();
+//        GlyphVector glyphVector = font.createGlyphVector(renderContext, text);
+//        Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
+////        Rectangle pixelBounds = glyphVector.getPixelBounds(renderContext, drawPosY, drawPosY).getBounds();
+//        int num = glyphVector.getNumGlyphs();
+//
+//// calculate the lower left point at which to draw the string. note that this we
+//// give the graphics context the y corridinate at which we want the baseline to
+//// be placed. use the visual bounds height to center on in conjuction with the
+//// position returned in the visual bounds. the vertical position given back in the
+//// visualBounds is a negative offset from the basline of the text.
+//        int textX = centerX - stringBounds.width / 2;
+//        int textY = centerY - visualBounds.height / 2 - visualBounds.y;
+//
+//        for (int i = 0; i < num; i++) {
+//            Point2D p = glyphVector.getGlyphPosition(i);
+////            Shape s = glyphVector.getGlyphOutline(i);
+////            Shape s = glyphVector.getGlyphLogicalBounds(i);
+////             Shape s = glyphVector.getGlyphOutline(i, (float) p.getX(), (float) p.getY());
+////            Rectangle s = glyphVector.getGlyphPixelBounds(i, null, (float) p.getX(), (float) p.getY());
+//            Shape s = glyphVector.getGlyphVisualBounds(i); // too wide
+//            GlyphMetrics metrics = glyphVector.getGlyphMetrics(i);
+////            graphics2D.draw(s);
+//            int glyphX = (int) p.getX() + textX + (int) metrics.getLSB();
+//            int glyphY = (int) p.getY() + textY + s.getBounds().y;
+//            int glyphW = (int) metrics.getBounds2D().getWidth();
+//            int glyphH = (int) metrics.getBounds2D().getHeight();
+//            short page = 0;
+//            String chrs = String.valueOf(text.charAt(i));
+//
+//            g2.drawRect(glyphX, glyphY, glyphW, glyphH);
+////            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
+//
+//            if (!chrs.equals(" ")) {
+//                boxCol.add(new TessBox(chrs, new Rectangle(glyphX, glyphY, glyphW, glyphH), page));
+////                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
+//            }
+//        }
+//
+//        this.boxPages.add(boxCol);
+////        g2.drawString(text, textX, textY);
+////        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
+//        g2.dispose();
+//    }
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < pages.size(); i++) {
@@ -231,47 +223,46 @@ public class TiffBoxGenerator {
         }
     }
 
-    private void makeBoxes() {
-        boxPages.clear();
-
-        for (String str : text.split("\n")) {
-            TessBoxCollection boxCol = new TessBoxCollection();
-
-            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-            Graphics2D g2 = bi.createGraphics();
-            FontRenderContext renderContext = g2.getFontRenderContext();
-            GlyphVector glyphVector = font.createGlyphVector(renderContext, str);
-//        Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
-//        Rectangle pixelBounds = glyphVector.getPixelBounds(renderContext, drawPosY, drawPosY).getBounds();
-            int num = glyphVector.getNumGlyphs();
-            for (int i = 0; i < num; i++) {
-                Point2D p = glyphVector.getGlyphPosition(i);
-//            Shape s = glyphVector.getGlyphOutline(i);
-//            Shape s = glyphVector.getGlyphLogicalBounds(i);
-//             Shape s = glyphVector.getGlyphOutline(i, (float) p.getX(), (float) p.getY());
-//            Rectangle s = glyphVector.getGlyphPixelBounds(i, null, (float) p.getX(), (float) p.getY());
-                Shape s = glyphVector.getGlyphVisualBounds(i); // too wide
-                GlyphMetrics metrics = glyphVector.getGlyphMetrics(i);
-//            graphics2D.draw(s);
-                int glyphX = (int) p.getX() + margin + (int) metrics.getLSB();
-                int glyphY = (int) p.getY() + margin + s.getBounds().y;
-                int glyphW = (int) metrics.getBounds2D().getWidth();
-                int glyphH = (int) metrics.getBounds2D().getHeight();
-                short page = 0;
-                String chrs = String.valueOf(text.charAt(i));
-
-                g2.drawRect(glyphX, glyphY, glyphW, glyphH);
-//            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
-
-                if (!chrs.equals(" ")) {
-                    boxCol.add(new TessBox(chrs, new Rectangle(glyphX, glyphY, glyphW, glyphH), page));
-//                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
-                }
-            }
-//            this.boxPages.add(boxCol);
-        }
-    }
-
+//    private void makeBoxes() {
+//        boxPages.clear();
+//
+//        for (String str : text.split("\n")) {
+//            TessBoxCollection boxCol = new TessBoxCollection();
+//
+//            BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+//            Graphics2D g2 = bi.createGraphics();
+//            FontRenderContext renderContext = g2.getFontRenderContext();
+//            GlyphVector glyphVector = font.createGlyphVector(renderContext, str);
+////        Rectangle visualBounds = glyphVector.getVisualBounds().getBounds();
+////        Rectangle pixelBounds = glyphVector.getPixelBounds(renderContext, drawPosY, drawPosY).getBounds();
+//            int num = glyphVector.getNumGlyphs();
+//            for (int i = 0; i < num; i++) {
+//                Point2D p = glyphVector.getGlyphPosition(i);
+////            Shape s = glyphVector.getGlyphOutline(i);
+////            Shape s = glyphVector.getGlyphLogicalBounds(i);
+////             Shape s = glyphVector.getGlyphOutline(i, (float) p.getX(), (float) p.getY());
+////            Rectangle s = glyphVector.getGlyphPixelBounds(i, null, (float) p.getX(), (float) p.getY());
+//                Shape s = glyphVector.getGlyphVisualBounds(i); // too wide
+//                GlyphMetrics metrics = glyphVector.getGlyphMetrics(i);
+////            graphics2D.draw(s);
+//                int glyphX = (int) p.getX() + margin + (int) metrics.getLSB();
+//                int glyphY = (int) p.getY() + margin + s.getBounds().y;
+//                int glyphW = (int) metrics.getBounds2D().getWidth();
+//                int glyphH = (int) metrics.getBounds2D().getHeight();
+//                short page = 0;
+//                String chrs = String.valueOf(text.charAt(i));
+//
+//                g2.drawRect(glyphX, glyphY, glyphW, glyphH);
+////            graphics2D.drawRect((int)p.getX()+textX, (int)p.getY() + textY -s.getBounds().height, s.getBounds().width, s.getBounds().height);
+//
+//                if (!chrs.equals(" ")) {
+//                    boxCol.add(new TessBox(chrs, new Rectangle(glyphX, glyphY, glyphW, glyphH), page));
+////                boxess.add(String.format("%s %d %d %d %d 0", chrs, glyphX, size.height - glyphY - glyphH, glyphX + glyphW, size.height - glyphY));
+//                }
+//            }
+////            this.boxPages.add(boxCol);
+//        }
+//    }
     private void saveBoxFile() {
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFolder, fileName + ".box")), "UTF8")); // save boxes
@@ -286,7 +277,7 @@ public class TiffBoxGenerator {
      * Breaks input text into TextLayout lines.
      */
     private void breakLines() {
-        float wrappingWidth = width - 3.5f * margin; // was 2f, but increased for letter tracking
+        float wrappingWidth = width - 2f * margin; // was 2f, but increased for letter tracking
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
