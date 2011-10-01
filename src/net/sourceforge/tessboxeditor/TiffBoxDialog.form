@@ -68,7 +68,7 @@
             <Component class="javax.swing.JTextField" name="jTextFieldFileName">
               <Properties>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[160, 20]"/>
+                  <Dimension value="[150, 24]"/>
                 </Property>
               </Properties>
             </Component>
@@ -86,6 +86,22 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jButtonFont.setText(fontDesc(UIManager.getFont(&quot;TextArea.font&quot;)));"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelTracking">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Tracking"/>
+                <Property name="toolTipText" type="java.lang.String" value="Letter Tracking"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="jSpinnerTracking">
+              <Properties>
+                <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                  <SpinnerModel initial="0.04000002" maximum="0.2" minimum="0.0" numberType="java.lang.Float" stepSize="0.01" type="number"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[55, 20]"/>
+                </Property>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelW">
               <Properties>

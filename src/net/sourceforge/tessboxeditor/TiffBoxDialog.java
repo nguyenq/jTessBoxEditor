@@ -75,6 +75,8 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelOutput = new javax.swing.JLabel();
         jTextFieldFileName = new javax.swing.JTextField();
         jButtonFont = new javax.swing.JButton();
+        jLabelTracking = new javax.swing.JLabel();
+        jSpinnerTracking = new javax.swing.JSpinner();
         jLabelW = new javax.swing.JLabel();
         jSpinnerW = new javax.swing.JSpinner();
         jLabelH = new javax.swing.JLabel();
@@ -104,7 +106,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelOutput.setText("Output");
         jPanel1.add(jLabelOutput);
 
-        jTextFieldFileName.setPreferredSize(new java.awt.Dimension(160, 20));
+        jTextFieldFileName.setPreferredSize(new java.awt.Dimension(150, 24));
         jPanel1.add(jTextFieldFileName);
 
         jButtonFont.setText("Font");
@@ -119,6 +121,14 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             }
         });
         jPanel1.add(jButtonFont);
+
+        jLabelTracking.setText("Tracking");
+        jLabelTracking.setToolTipText("Letter Tracking");
+        jPanel1.add(jLabelTracking);
+
+        jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.04000002f), Float.valueOf(0.0f), Float.valueOf(0.2f), Float.valueOf(0.01f)));
+        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(55, 20));
+        jPanel1.add(jSpinnerTracking);
 
         jLabelW.setText("W");
         jLabelW.setToolTipText("Image Width");
@@ -224,6 +234,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
         TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextArea1.getText(), this.jTextArea1.getFont(), (Integer) this.jSpinnerW.getValue(), (Integer) this.jSpinnerH.getValue());
         generator.setFileName(this.jTextFieldFileName.getText());
+        generator.setTracking((Float)this.jSpinnerTracking.getValue());
         generator.create();
         JOptionPane.showMessageDialog(this, "Tiff/Box files have been generated.");
     }//GEN-LAST:event_jButtonGenerateActionPerformed
@@ -279,10 +290,12 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabelH;
     private javax.swing.JLabel jLabelOutput;
+    private javax.swing.JLabel jLabelTracking;
     private javax.swing.JLabel jLabelW;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerH;
+    private javax.swing.JSpinner jSpinnerTracking;
     private javax.swing.JSpinner jSpinnerW;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldFileName;
