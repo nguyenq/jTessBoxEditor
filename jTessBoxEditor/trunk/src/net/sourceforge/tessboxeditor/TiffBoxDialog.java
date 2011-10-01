@@ -70,22 +70,17 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jFileChooser1.addChoosableFileFilter(textFilter);
         jFileChooser1.setAcceptAllFileFilterUsed(false);
         jToolBar1 = new javax.swing.JToolBar();
+        jPanel1 = new javax.swing.JPanel();
         jButtonInput = new javax.swing.JButton();
         jLabelOutput = new javax.swing.JLabel();
         jTextFieldFileName = new javax.swing.JTextField();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jButtonFont = new javax.swing.JButton();
-        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jPanel1 = new javax.swing.JPanel();
         jLabelW = new javax.swing.JLabel();
         jSpinnerW = new javax.swing.JSpinner();
         jLabelH = new javax.swing.JLabel();
         jSpinnerH = new javax.swing.JSpinner();
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jButtonGenerate = new javax.swing.JButton();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jButtonClear = new javax.swing.JButton();
-        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
@@ -104,12 +99,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 jButtonInputActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonInput);
+        jPanel1.add(jButtonInput);
 
         jLabelOutput.setText("Output");
-        jToolBar1.add(jLabelOutput);
-        jToolBar1.add(jTextFieldFileName);
-        jToolBar1.add(filler3);
+        jPanel1.add(jLabelOutput);
+
+        jTextFieldFileName.setPreferredSize(new java.awt.Dimension(160, 20));
+        jPanel1.add(jTextFieldFileName);
 
         jButtonFont.setText("Font");
         jButtonFont.setToolTipText("Select Font");
@@ -122,10 +118,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 jButtonFontActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonFont);
-        jToolBar1.add(filler5);
+        jPanel1.add(jButtonFont);
 
-        jLabelW.setText("Width");
+        jLabelW.setText("W");
         jLabelW.setToolTipText("Image Width");
         jPanel1.add(jLabelW);
 
@@ -133,16 +128,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jSpinnerW.setPreferredSize(new java.awt.Dimension(55, 20));
         jPanel1.add(jSpinnerW);
 
-        jLabelH.setText("Height");
+        jLabelH.setText("H");
         jLabelH.setToolTipText("Image Height");
         jPanel1.add(jLabelH);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 1));
         jSpinnerH.setPreferredSize(new java.awt.Dimension(55, 20));
         jPanel1.add(jSpinnerH);
-
-        jToolBar1.add(jPanel1);
-        jToolBar1.add(filler4);
 
         jButtonGenerate.setText("Generate");
         jButtonGenerate.setToolTipText("Generate TIFF/Box");
@@ -154,8 +146,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 jButtonGenerateActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonGenerate);
-        jToolBar1.add(filler7);
+        jPanel1.add(jButtonGenerate);
 
         jButtonClear.setText("Clear");
         jButtonClear.setToolTipText("Clear Textarea");
@@ -167,8 +158,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 jButtonClearActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonClear);
-        jToolBar1.add(filler6);
+        jPanel1.add(jButtonClear);
+
+        jToolBar1.add(jPanel1);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -280,11 +272,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
-    private javax.swing.Box.Filler filler5;
-    private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonFont;
     private javax.swing.JButton jButtonGenerate;
