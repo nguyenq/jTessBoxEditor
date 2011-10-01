@@ -42,10 +42,10 @@ public class TiffBoxGenerator {
     private final int margin = 100;
     private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
-    private String fileName = "test";
+    private String fileName = "fontname.exp0";
     private final int COLOR_WHITE = Color.WHITE.getRGB();
 
-    TiffBoxGenerator(String text, Font font, int width, int height) {
+    public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
         this.font = font;
         this.width = width;
@@ -70,10 +70,10 @@ public class TiffBoxGenerator {
         this.drawPages();
         this.saveMultipageTiff();
 //        makeBoxes();
-        saveBoxFile();
+        this.saveBoxFile();
     }
 
-    void drawImage() {
+    private void drawImage() {
         AttributedCharacterIterator paragraph = astr.getIterator();
         int paragraphStart = paragraph.getBeginIndex();
 
@@ -142,7 +142,7 @@ public class TiffBoxGenerator {
         g2.dispose();
     }
 
-    String formatOutputString() {
+    private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < pages.size(); i++) {
             for (TessBox box : boxPages.get(i).toList()) {
@@ -163,7 +163,7 @@ public class TiffBoxGenerator {
      * @param rect
      * @param bi 
      */
-    void tightenBoundingBox(Rectangle rect, BufferedImage bi) {
+    private void tightenBoundingBox(Rectangle rect, BufferedImage bi) {
         // left
         int endX = rect.x + 2;
         outerLeft:
@@ -228,7 +228,7 @@ public class TiffBoxGenerator {
         }
     }
 
-    void makeBoxes() {
+    private void makeBoxes() {
         boxPages.clear();
 
         for (String str : text.split("\n")) {
@@ -269,7 +269,7 @@ public class TiffBoxGenerator {
         }
     }
 
-    void saveBoxFile() {
+    private void saveBoxFile() {
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName + ".box"), "UTF8")); // save boxes
             out.write(formatOutputString());
@@ -282,7 +282,7 @@ public class TiffBoxGenerator {
     /**
      * Breaks input text into TextLayout lines.
      */
-    void breakLines() {
+    private void breakLines() {
         float wrappingWidth = width - 3.5f * margin; // was 2f, but increased for letter tracking
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
@@ -307,7 +307,7 @@ public class TiffBoxGenerator {
      * @param bi
      * @return 
      */
-    Graphics2D createGraphics(BufferedImage bi, Font font) {
+    private Graphics2D createGraphics(BufferedImage bi, Font font) {
         Graphics2D g2 = bi.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -324,7 +324,7 @@ public class TiffBoxGenerator {
     /**
      * Draws TextLayout lines on pages of <code>BufferedImage</code>
      */
-    void drawPages() {
+    private void drawPages() {
         BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         pages.add(bi);
         Graphics2D g2 = createGraphics(bi, font);
@@ -390,11 +390,21 @@ public class TiffBoxGenerator {
     /**
      * Creates a multi-page TIFF image.
      */
-    void saveMultipageTiff() {
+    private void saveMultipageTiff() {
         try {
             ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), new File(fileName + ".tif"));
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        if (fileName != null && fileName.length() > 0) {
+            int index = fileName.lastIndexOf(".");
+            this.fileName = index > -1 ? fileName.substring(0, index) : fileName;
         }
     }
 }
