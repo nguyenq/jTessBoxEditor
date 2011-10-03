@@ -19,7 +19,10 @@ import java.awt.*;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.font.TextAttribute;
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import net.sourceforge.vietpad.components.FontDialog;
@@ -28,6 +31,7 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 public class TiffBoxDialog extends javax.swing.JDialog {
 
     File selectedFile;
+    Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
 
     /** Creates new form TiffBoxDialog */
     public TiffBoxDialog(java.awt.Frame parent, boolean modal) {
@@ -36,8 +40,10 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
         // DnD support
         new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
-        Font font = this.jTextArea1.getFont().deriveFont(36f);
-//        font = new Font("Arial", 0, 36);
+
+        // Set font
+        attributes.put(TextAttribute.TRACKING, this.jSpinnerTracking.getValue());
+        Font font = this.jTextArea1.getFont().deriveFont(36f).deriveFont(attributes);
         this.jTextArea1.setFont(font);
         this.jButtonFont.setText(fontDesc(font));
         this.jTextFieldFileName.setText(createFileName(font));
@@ -130,6 +136,11 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.04000002f), Float.valueOf(0.0f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
         jSpinnerTracking.setPreferredSize(new java.awt.Dimension(50, 20));
+        jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerTrackingStateChanged(evt);
+            }
+        });
         jPanel1.add(jSpinnerTracking);
 
         jLabelW.setText("W");
@@ -211,7 +222,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         dlg.setVisible(true);
 
         if (dlg.succeeded()) {
-            font = dlg.getFont();
+            font = dlg.getFont().deriveFont(attributes);
             this.jTextArea1.setFont(font);
             this.jTextArea1.validate();
             this.jButtonFont.setText(fontDesc(font));
@@ -251,6 +262,11 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         generator.create();
         JOptionPane.showMessageDialog(this, String.format("Tiff/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
     }//GEN-LAST:event_jButtonGenerateActionPerformed
+
+    private void jSpinnerTrackingStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerTrackingStateChanged
+        attributes.put(TextAttribute.TRACKING, this.jSpinnerTracking.getValue());
+        this.jTextArea1.setFont(this.jTextArea1.getFont().deriveFont(attributes));
+    }//GEN-LAST:event_jSpinnerTrackingStateChanged
 
     /**
      * @param args the command line arguments

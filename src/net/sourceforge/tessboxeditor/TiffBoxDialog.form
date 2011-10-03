@@ -102,6 +102,9 @@
                   <Dimension value="[50, 20]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerTrackingStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelW">
               <Properties>
