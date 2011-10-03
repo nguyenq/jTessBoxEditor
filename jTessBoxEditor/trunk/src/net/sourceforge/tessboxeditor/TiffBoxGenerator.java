@@ -170,6 +170,7 @@ public class TiffBoxGenerator {
                 }
             }
             rect.x++;
+            rect.width--;
         }
 
         // right
