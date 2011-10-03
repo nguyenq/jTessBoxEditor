@@ -277,7 +277,9 @@ public class TiffBoxGenerator {
      * Breaks input text into TextLayout lines.
      */
     private void breakLines() {
-        float wrappingWidth = width - 3.5f * margin; // was 2f, but increased for letter tracking
+        // Bug ID: 6598756 - Tracking textattribute is not properly handled by LineBreakMeasurer
+        // Line breaks do not change with letter tracking.
+        float wrappingWidth = width - 2 * margin - (float) (150 * (tracking / 0.04)); // the last operand was added to compensate for LineBreakMeasurer's failure to adjust for letter tracking
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
@@ -303,11 +305,6 @@ public class TiffBoxGenerator {
      */
     private Graphics2D createGraphics(BufferedImage bi, Font font) {
         Graphics2D g2 = bi.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
         g2.setBackground(Color.white);
         g2.clearRect(0, 0, bi.getWidth(), bi.getHeight());
         g2.setColor(Color.black);
