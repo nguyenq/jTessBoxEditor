@@ -24,5 +24,6 @@ Version 0.5 (5 September 2011)
 Version 0.5.1 (12 September 2011)
 - Correct an issue with (small) image vertically centering in the image pane; align it to top of pane
 
-Version 0.6 Beta (1 October 2011)
-- Add a utility function which creates TIFF/Box pair to be used in training 
+Version 0.6 Beta (2 October 2011)
+- Add a utility function which creates TIFF/Box pair to be used in training
+- Fix a bug which may clear out a modified box file when loading another image
