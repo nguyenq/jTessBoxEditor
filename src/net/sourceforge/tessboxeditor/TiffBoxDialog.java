@@ -135,7 +135,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.04000002f), Float.valueOf(0.0f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
-        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(50, 20));
+        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(55, 20));
         jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerTrackingStateChanged(evt);
@@ -148,7 +148,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelW);
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 1));
-        jSpinnerW.setPreferredSize(new java.awt.Dimension(55, 20));
         jPanel1.add(jSpinnerW);
 
         jLabelH.setText("H");
@@ -156,7 +155,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelH);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 1));
-        jSpinnerH.setPreferredSize(new java.awt.Dimension(55, 20));
         jPanel1.add(jSpinnerH);
 
         jButtonGenerate.setText("Generate");
