@@ -17,7 +17,6 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
-import javax.swing.SwingUtilities;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithFont extends GuiWithSpinner {
