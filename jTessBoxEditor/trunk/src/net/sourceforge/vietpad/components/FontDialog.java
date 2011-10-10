@@ -158,7 +158,7 @@ public class FontDialog extends JDialog {
         final Properties prop = new Properties();
 
         try {
-            File xmlFile = new File("data/pangram.xml");
+            File xmlFile = new File(System.getProperty("user.dir"), "data/pangram.xml");
             prop.loadFromXML(new FileInputStream(xmlFile));
         } catch (IOException ioe) {
             JOptionPane.showMessageDialog(this, ioe.getMessage(), "Font Dialog", JOptionPane.ERROR_MESSAGE);
