@@ -257,8 +257,14 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         generator.setOutputFolder(outputFolder);
         generator.setFileName(this.jTextFieldFileName.getText());
         generator.setTracking((Float) this.jSpinnerTracking.getValue());
-        generator.create();
-        JOptionPane.showMessageDialog(this, String.format("Tiff/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
+        try {
+            generator.create();
+            JOptionPane.showMessageDialog(this, String.format("Tiff/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
+        } catch (OutOfMemoryError oome) {
+            JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 
     private void jSpinnerTrackingStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerTrackingStateChanged
