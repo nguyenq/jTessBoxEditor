@@ -199,8 +199,25 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
     private void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
         if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            selectedFile = jFileChooser1.getSelectedFile();
-            openFile(selectedFile);
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            getGlassPane().setVisible(true);
+
+            try {
+                selectedFile = jFileChooser1.getSelectedFile();
+                openFile(selectedFile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                SwingUtilities.invokeLater(
+                        new Runnable() {
+
+                            @Override
+                            public void run() {
+                                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                getGlassPane().setVisible(false);
+                            }
+                        });
+            }
         }
     }//GEN-LAST:event_jButtonInputActionPerformed
 
@@ -220,11 +237,28 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         dlg.setVisible(true);
 
         if (dlg.succeeded()) {
-            font = dlg.getFont().deriveFont(attributes);
-            this.jTextArea1.setFont(font);
-            this.jTextArea1.validate();
-            this.jButtonFont.setText(fontDesc(font));
-            this.jTextFieldFileName.setText(createFileName(font));
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            getGlassPane().setVisible(true);
+
+            try {
+                font = dlg.getFont().deriveFont(attributes);
+                this.jTextArea1.setFont(font);
+                this.jTextArea1.validate();
+                this.jButtonFont.setText(fontDesc(font));
+                this.jTextFieldFileName.setText(createFileName(font));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                SwingUtilities.invokeLater(
+                        new Runnable() {
+
+                            @Override
+                            public void run() {
+                                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                getGlassPane().setVisible(false);
+                            }
+                        });
+            }
         }
     }//GEN-LAST:event_jButtonFontActionPerformed
 
