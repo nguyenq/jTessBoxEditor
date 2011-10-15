@@ -17,9 +17,11 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.DefaultKeyboardFocusManager;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.KeyEventDispatcher;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DropTarget;
@@ -121,6 +123,20 @@ public class Gui extends javax.swing.JFrame {
                 snap(
                 prefs.getInt("frameY", screen.y + (screen.height - getHeight()) / 3),
                 screen.y, screen.y + screen.height - getHeight()));
+        
+        KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                    if (e.getKeyCode() == KeyEvent.VK_F3) {
+                        jButtonFind.doClick();
+                    }
+                }
+                return false;
+            }
+        };
+        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
     }
 
     private int snap(final int ideal, final int min, final int max) {
@@ -1293,7 +1309,7 @@ public class Gui extends javax.swing.JFrame {
         String[] items = this.jTextFieldFind.getText().split("\\s+");
         try {
             TessBox findBox;
-            
+
             if (items.length == 1) {
                 String chrs = items[0];
                 if (chrs.length() == 0) {
@@ -1322,7 +1338,7 @@ public class Gui extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, msg);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Please enter either the character(s) or the box coordinates in format: x1 y1 x2 y2");
+            JOptionPane.showMessageDialog(this, "Please enter box character(s) or coordinates (x1 y1 x2 y2).");
         }
     }//GEN-LAST:event_jButtonFindActionPerformed
 
