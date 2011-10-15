@@ -1380,7 +1380,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JLabel jLabelChar;
     private javax.swing.JLabel jLabelCodepoint;
-    private javax.swing.JLabel jLabelCodepointValue;
+    protected javax.swing.JLabel jLabelCodepointValue;
     private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;

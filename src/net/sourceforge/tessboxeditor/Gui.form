@@ -828,6 +828,7 @@
                 <Component class="javax.swing.JLabel" name="jLabelCodepointValue">
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jLabelCodepointValue.setFont(jLabelCodepointValue.getFont().deriveFont(14.0f));"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
