@@ -135,7 +135,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
-        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(55, 20));
+        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(64, 28));
         jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerTrackingStateChanged(evt);
