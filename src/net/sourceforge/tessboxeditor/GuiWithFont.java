@@ -72,6 +72,7 @@ public class GuiWithFont extends GuiWithSpinner {
         FontMetrics metrics = jTable.getFontMetrics(font);
         jTable.setRowHeight(metrics.getHeight()); // set row height to match font
         jPanelCoord.revalidate();
+        jLabelImage.setFont(font);
     }
 
     @Override

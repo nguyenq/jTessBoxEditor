@@ -101,7 +101,7 @@ public class JImageLabel extends JLabel {
             TessBox curBox = this.boxes.hitObject(new Point(x, y));
             if (curBox != null) {
                 String curChrs = curBox.getChrs();
-                setToolTipText(String.format("<html><h1>%s : %s</h1></html>", curChrs, Utilities.toHex(curChrs)));
+                setToolTipText(String.format("<html><h1><font face=\"%s\" >%s</font> : %s</h1></html>", this.getFont().getName(), curChrs, Utilities.toHex(curChrs)));
             } else {
                 setToolTipText(null);
             }
