@@ -13,6 +13,7 @@ package net.sourceforge.vietpad.components;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -37,7 +38,8 @@ public class FontDialog extends JDialog {
     private Font curFont;
     private boolean m_succeeded = false;
     private JComboBox combo;
-
+    protected final File baseDir = getBaseDir(FontDialog.this);
+    
     /**
      *  Constructor for the FontDialog object.
      *
@@ -158,7 +160,7 @@ public class FontDialog extends JDialog {
         final Properties prop = new Properties();
 
         try {
-            File xmlFile = new File(System.getProperty("user.dir"), "data/pangram.xml");
+            File xmlFile = new File(baseDir, "data/pangram.xml");
             prop.loadFromXML(new FileInputStream(xmlFile));
         } catch (IOException ioe) {
             JOptionPane.showMessageDialog(this, ioe.getMessage(), "Font Dialog", JOptionPane.ERROR_MESSAGE);
@@ -296,5 +298,26 @@ public class FontDialog extends JDialog {
      */
     public void setSelectedLanguage(String lang) {
         combo.setSelectedItem(lang);
+    }
+    
+    /**
+     *
+     * @return the directory of the running jar
+     */
+    public static File getBaseDir(Object aType) {
+        URL dir = aType.getClass().getResource("/" + aType.getClass().getName().replaceAll("\\.", "/") + ".class");
+        File dbDir = new File(System.getProperty("user.dir"));
+
+        try {
+            if (dir.toString().startsWith("jar:")) {
+                dir = new URL(dir.toString().replaceFirst("^jar:", "").replaceFirst("/[^/]+.jar!.*$", ""));
+                dbDir = new File(dir.toURI());
+            }
+        } catch (MalformedURLException mue) {
+            mue.printStackTrace();
+        } catch (URISyntaxException use) {
+            use.printStackTrace();
+        }
+        return dbDir;
     }
 }
