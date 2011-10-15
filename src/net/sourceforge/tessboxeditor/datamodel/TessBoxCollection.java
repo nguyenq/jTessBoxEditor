@@ -55,6 +55,26 @@ public class TessBoxCollection {
         return null;
     }
 
+    public TessBox selectByChars(TessBox findBox) {
+        List<TessBox> selectedBoxes = getSelectedBoxes();
+        List<TessBox> searchList;
+
+        if (selectedBoxes.isEmpty()) {
+            searchList = list;
+        } else {
+            TessBox lastSelectedBox = selectedBoxes.get(selectedBoxes.size() - 1);
+            int index = list.indexOf(lastSelectedBox);
+            searchList = list.subList(index + 1, list.size());
+        }
+
+        for (TessBox box : searchList) {
+            if (box.getChrs().equals(findBox.getChrs())) {
+                return box;
+            }
+        }
+        return null;
+    }
+
     public TessBox hitObject(Point p) {
         for (TessBox box : list) {
             if (box.contains(p)) {

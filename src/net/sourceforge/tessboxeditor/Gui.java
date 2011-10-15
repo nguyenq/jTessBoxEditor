@@ -1292,13 +1292,25 @@ public class Gui extends javax.swing.JFrame {
         int pageHeight = imageList.get(imageIndex).getHeight();
         String[] items = this.jTextFieldFind.getText().split("\\s+");
         try {
-            int x = Integer.parseInt(items[0]);
-            int y = Integer.parseInt(items[1]);
-            int w = Integer.parseInt(items[2]) - x;
-            int h = Integer.parseInt(items[3]) - y;
-            y = pageHeight - y - h; // flip the y-coordinate
-            TessBox findBox = new TessBox("", new Rectangle(x, y, w, h), imageIndex);
-            findBox = boxes.select(findBox);
+            TessBox findBox;
+            
+            if (items.length == 1) {
+                String chrs = items[0];
+                if (chrs.length() == 0) {
+                    throw new Exception("Empty search values.");
+                }
+                findBox = new TessBox(chrs, new Rectangle(), imageIndex);
+                findBox = boxes.selectByChars(findBox);
+            } else {
+                int x = Integer.parseInt(items[0]);
+                int y = Integer.parseInt(items[1]);
+                int w = Integer.parseInt(items[2]) - x;
+                int h = Integer.parseInt(items[3]) - y;
+                y = pageHeight - y - h; // flip the y-coordinate
+                findBox = new TessBox("", new Rectangle(x, y, w, h), imageIndex);
+                findBox = boxes.select(findBox);
+            }
+
             if (findBox != null) {
                 int index = boxes.toList().indexOf(findBox);
                 this.jTable.setRowSelectionInterval(index, index);
@@ -1306,10 +1318,11 @@ public class Gui extends javax.swing.JFrame {
                 this.jTable.scrollRectToVisible(rect);
             } else {
                 this.jTable.clearSelection();
-                JOptionPane.showMessageDialog(this, "No box with the specified coordinates was found.");
+                String msg = String.format("No box with the specified %s was found.", items.length == 1 ? "character(s)" : "coordinates");
+                JOptionPane.showMessageDialog(this, msg);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Please enter the box coordinates in format: x1 y1 x2 y2");
+            JOptionPane.showMessageDialog(this, "Please enter either the character(s) or the box coordinates in format: x1 y1 x2 y2");
         }
     }//GEN-LAST:event_jButtonFindActionPerformed
 
