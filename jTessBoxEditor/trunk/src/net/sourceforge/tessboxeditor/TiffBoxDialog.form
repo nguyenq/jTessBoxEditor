@@ -121,7 +121,7 @@
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[73, 22]"/>
+                  <Dimension value="[63, 22]"/>
                 </Property>
               </Properties>
             </Component>
@@ -140,7 +140,7 @@
                   <SpinnerEditor format="#" type="3"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[73, 22]"/>
+                  <Dimension value="[63, 22]"/>
                 </Property>
               </Properties>
             </Component>
