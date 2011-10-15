@@ -15,8 +15,10 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import javax.swing.SwingUtilities;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithFont extends GuiWithSpinner {
@@ -28,11 +30,7 @@ public class GuiWithFont extends GuiWithSpinner {
                 prefs.get("fontName", MAC_OS_X ? "Lucida Grande" : "Tahoma"),
                 prefs.getInt("fontStyle", Font.PLAIN),
                 prefs.getInt("fontSize", 12));
-        this.jTextArea.setFont(font);
-        this.jTextFieldChar.setFont(font);
-        this.jTable.setFont(font);
-        FontMetrics metrics = this.jTable.getFontMetrics(font);
-        this.jTable.setRowHeight(metrics.getHeight()); // set row height to match font
+        changeFont(font);
     }
 
     @Override
@@ -42,16 +40,38 @@ public class GuiWithFont extends GuiWithSpinner {
         dlg.setVisible(true);
 
         if (dlg.succeeded()) {
-            font = dlg.getFont();
-            this.jTextArea.setFont(font);
-            this.jTextArea.validate();
-            this.jTextFieldChar.setFont(font);
-            this.jTextFieldChar.validate();
-            jTable.setFont(font);
-            FontMetrics metrics = jTable.getFontMetrics(font);
-            jTable.setRowHeight(metrics.getHeight()); // set row height to match font
-            jPanelCoord.revalidate();
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            getGlassPane().setVisible(true);
+            
+            try {
+                font = dlg.getFont();
+                changeFont(font);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                SwingUtilities.invokeLater(
+                        new Runnable() {
+
+                            @Override
+                            public void run() {
+                                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                getGlassPane().setVisible(false);
+                            }
+                        });
+            }
         }
+    }
+
+    private void changeFont(Font font) {
+        this.jTextArea.setFont(font);
+        this.jTextArea.validate();
+        this.jTextFieldChar.setFont(font);
+        this.jTextFieldChar.validate();
+        this.jLabelCodepointValue.setFont(font.deriveFont(14.0f));
+        jTable.setFont(font);
+        FontMetrics metrics = jTable.getFontMetrics(font);
+        jTable.setRowHeight(metrics.getHeight()); // set row height to match font
+        jPanelCoord.revalidate();
     }
 
     @Override
