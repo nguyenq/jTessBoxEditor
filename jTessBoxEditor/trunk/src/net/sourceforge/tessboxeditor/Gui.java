@@ -123,7 +123,7 @@ public class Gui extends javax.swing.JFrame {
                 snap(
                 prefs.getInt("frameY", screen.y + (screen.height - getHeight()) / 3),
                 screen.y, screen.y + screen.height - getHeight()));
-        
+
         KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
 
             @Override
@@ -861,6 +861,8 @@ public class Gui extends javax.swing.JFrame {
             loadImage();
             this.jScrollPaneImage.getViewport().setViewPosition(new Point(0, 0));
             this.setTitle(APP_NAME + " - " + selectedFile.getName());
+        } catch (OutOfMemoryError oome) {
+            JOptionPane.showMessageDialog(this, oome.getMessage(), "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
         }
@@ -921,7 +923,10 @@ public class Gui extends javax.swing.JFrame {
                 }
                 loadTable();
                 updateSave(false);
+            } catch (OutOfMemoryError oome) {
+                JOptionPane.showMessageDialog(this, oome.getMessage(), "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
             }
         } else {
             // clear table and box display
