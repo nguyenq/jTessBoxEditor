@@ -99,7 +99,7 @@
                   <SpinnerModel initial="0.0" maximum="0.1" minimum="-0.04" numberType="java.lang.Float" stepSize="0.01" type="number"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[55, 20]"/>
+                  <Dimension value="[64, 28]"/>
                 </Property>
               </Properties>
               <Events>
