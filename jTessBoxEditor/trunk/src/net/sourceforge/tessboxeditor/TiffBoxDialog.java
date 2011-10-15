@@ -148,6 +148,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelW);
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 1));
+        jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
         jSpinnerW.setPreferredSize(new java.awt.Dimension(73, 22));
         jPanel1.add(jSpinnerW);
 
@@ -156,6 +157,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelH);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 1));
+        jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
         jSpinnerH.setPreferredSize(new java.awt.Dimension(73, 22));
         jPanel1.add(jSpinnerH);
 
