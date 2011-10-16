@@ -35,12 +35,12 @@ public class GuiWithEdit extends GuiWithMRU {
 
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, maxX = 0, maxY = 0;
 
-        String chrs = null;
+        String chrs = "";
         short page = 0;
         int index = 0;
 
         for (TessBox box : selected) {
-            chrs = box.getChrs();
+            chrs += box.getChrs();
             page = box.getPage();
             index = this.boxes.toList().indexOf(box);
             Rectangle rect = box.getRect();
@@ -51,7 +51,7 @@ public class GuiWithEdit extends GuiWithMRU {
             this.boxes.remove(box);
         }
 
-        if (chrs != null) {
+        if (chrs.length() > 0) {
             TessBox newBox = new TessBox(chrs, new Rectangle(minX, minY, maxX - minX, maxY - minY), page);
             newBox.setSelected(true);
             boxes.add(index, newBox);
