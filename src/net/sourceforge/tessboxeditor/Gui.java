@@ -806,44 +806,23 @@ public class Gui extends javax.swing.JFrame {
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
-        SwingWorker loadWorker = new SwingWorker<File, Void>() {
+        SwingWorker loadWorker = new SwingWorker<Void, Void>() {
 
             @Override
-            protected File doInBackground() throws Exception {
-                return selectedFile;
+            protected Void doInBackground() throws Exception {
+                readImageFile(selectedFile);
+                updateMRUList(selectedFile.getPath());
+                int lastDot = selectedFile.getName().lastIndexOf(".");
+                boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
+                readBoxFile(boxFile);
+                return null;
             }
 
             @Override
             protected void done() {
-                try {
-                    File file = get();
-                    readImageFile(file);
-                    updateMRUList(file.getPath());
-                    int lastDot = file.getName().lastIndexOf(".");
-                    boxFile = new File(file.getParentFile(), file.getName().substring(0, lastDot) + ".box");
-                    readBoxFile(boxFile);
-//                    jLabelStatus.setText(bundle.getString("Loading_completed"));
-                } catch (InterruptedException ignore) {
-//                    ignore.printStackTrace();
-                    jLabelStatus.setText("Loading canceled.");
-                } catch (java.util.concurrent.ExecutionException e) {
-                    String why = null;
-                    Throwable cause = e.getCause();
-                    if (cause != null) {
-                        if (cause instanceof OutOfMemoryError) {
-                            why = bundle.getString("OutOfMemoryError");
-                        } else {
-                            why = cause.getMessage();
-                        }
-                    } else {
-                        why = e.getMessage();
-                    }
-//                    jLabelStatus.setText(null);
-                    JOptionPane.showMessageDialog(Gui.this, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
-                } finally {
-                    getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                    getGlassPane().setVisible(false);
-                }
+//                jLabelStatus.setText(bundle.getString("Loading_completed"));
+                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                getGlassPane().setVisible(false);
             }
         };
 
@@ -1058,6 +1037,7 @@ public class Gui extends javax.swing.JFrame {
      * @param fileName
      */
     protected void updateMRUList(String fileName) {
+        // to be implemented in subclass
     }
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
@@ -1200,7 +1180,25 @@ public class Gui extends javax.swing.JFrame {
 
     private void jButtonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReloadActionPerformed
         if (boxFile != null) {
-            readBoxFile(boxFile);
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            getGlassPane().setVisible(true);
+
+            SwingWorker loadWorker = new SwingWorker<Void, Void>() {
+
+                @Override
+                protected Void doInBackground() throws Exception {
+                    readBoxFile(boxFile);
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    getGlassPane().setVisible(false);
+                }
+            };
+
+            loadWorker.execute();
         }
     }//GEN-LAST:event_jButtonReloadActionPerformed
 
