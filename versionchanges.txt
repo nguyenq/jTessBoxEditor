@@ -29,3 +29,4 @@ Version 0.6 Beta 4 (15 October 2011)
 - Fix a bug which may clear out a modified box file when loading another image
 - Enhance box search operations
 - Fix font issues in various visual components
+- Merged box will have a character value composed of the merging boxes
