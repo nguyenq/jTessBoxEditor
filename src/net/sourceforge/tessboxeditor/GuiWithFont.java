@@ -67,7 +67,7 @@ public class GuiWithFont extends GuiWithSpinner {
         this.jTextArea.validate();
         this.jTextFieldChar.setFont(font);
         this.jTextFieldChar.validate();
-        this.jLabelChar.setFont(font.deriveFont(16.0f));
+        this.jLabelChar.setFont(font.deriveFont(14.0f));
         jTable.setFont(font);
         FontMetrics metrics = jTable.getFontMetrics(font);
         jTable.setRowHeight(metrics.getHeight()); // set row height to match font
