@@ -1188,6 +1188,7 @@ public class Gui extends javax.swing.JFrame {
 
     private void jButtonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReloadActionPerformed
         if (boxFile != null) {
+            jButtonReload.setEnabled(false);
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
 
@@ -1201,6 +1202,7 @@ public class Gui extends javax.swing.JFrame {
 
                 @Override
                 protected void done() {
+                    jButtonReload.setEnabled(true);
                     getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     getGlassPane().setVisible(false);
                 }
