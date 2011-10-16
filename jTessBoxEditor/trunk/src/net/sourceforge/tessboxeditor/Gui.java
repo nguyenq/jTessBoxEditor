@@ -857,14 +857,14 @@ public class Gui extends javax.swing.JFrame {
     void readBoxFile(final File boxFile) {
         if (boxFile.exists()) {
             try {
+                boxPages.clear();
+                
                 BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"));
                 // load into textarea first
                 this.jTextArea.read(in, null);
                 in.close();
 
                 // load into coordinate tab
-                boxPages.clear();
-
                 String[] boxdata = this.jTextArea.getText().split("\\n");
                 if (boxdata.length > 0) {
                     // if only 5 fields, it's Tess 2.0x format
