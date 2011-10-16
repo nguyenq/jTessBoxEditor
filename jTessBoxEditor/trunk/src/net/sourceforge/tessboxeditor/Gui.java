@@ -201,7 +201,7 @@ public class Gui extends javax.swing.JFrame {
         jLabelCodepoint = new javax.swing.JLabel();
         jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));
         jLabelChar = new javax.swing.JLabel();
-        jLabelChar.setFont(jLabelChar.getFont().deriveFont(16.0f));
+        jLabelChar.setFont(jLabelChar.getFont().deriveFont(14.0f));
         jLabelCodepointValue = new javax.swing.JLabel();
         jLabelCodepointValue.setFont(jLabelCodepointValue.getFont().deriveFont(14.0f));
         jLabelSubimage = new javax.swing.JLabel();
@@ -517,7 +517,7 @@ public class Gui extends javax.swing.JFrame {
                             // update Character field
                             jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
                             jLabelChar.setText(jTextFieldChar.getText());
-                            jLabelCodepointValue.setText("  " + Utilities.toHex(jTextFieldChar.getText()));
+                            jLabelCodepointValue.setText(Utilities.toHex(jTextFieldChar.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -1275,7 +1275,7 @@ public class Gui extends javax.swing.JFrame {
             box.setChrs(this.jTextFieldChar.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
             jLabelChar.setText(this.jTextFieldChar.getText());
-            jLabelCodepointValue.setText("  " + Utilities.toHex(this.jTextFieldChar.getText()));
+            jLabelCodepointValue.setText(Utilities.toHex(this.jTextFieldChar.getText()));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
