@@ -170,7 +170,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonInsert = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jPanelSpinner = new javax.swing.JPanel();
-        jLabelChar = new javax.swing.JLabel();
+        jLabelCharacter = new javax.swing.JLabel();
         jTextFieldChar = new javax.swing.JTextField();
         jTextFieldChar.setDocument(new LimitedLengthDocument(8));
         jButtonConvert = new javax.swing.JButton();
@@ -200,6 +200,8 @@ public class Gui extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabelCodepoint = new javax.swing.JLabel();
         jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));
+        jLabelChar = new javax.swing.JLabel();
+        jLabelChar.setFont(jLabelChar.getFont().deriveFont(16.0f));
         jLabelCodepointValue = new javax.swing.JLabel();
         jLabelCodepointValue.setFont(jLabelCodepointValue.getFont().deriveFont(14.0f));
         jLabelSubimage = new javax.swing.JLabel();
@@ -348,9 +350,9 @@ public class Gui extends javax.swing.JFrame {
         jToolBar1.add(jButtonDelete);
         jToolBar1.add(Box.createHorizontalGlue());
 
-        jLabelChar.setLabelFor(jTextFieldChar);
-        jLabelChar.setText("Character");
-        jPanelSpinner.add(jLabelChar);
+        jLabelCharacter.setLabelFor(jTextFieldChar);
+        jLabelCharacter.setText("Character");
+        jPanelSpinner.add(jLabelCharacter);
 
         jTextFieldChar.setColumns(4);
         jTextFieldChar.setEnabled(false);
@@ -514,7 +516,8 @@ public class Gui extends javax.swing.JFrame {
                             enableReadout(true);
                             // update Character field
                             jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            jLabelCodepointValue.setText(jTextFieldChar.getText() + "  " + Utilities.toHex(jTextFieldChar.getText()));
+                            jLabelChar.setText(jTextFieldChar.getText());
+                            jLabelCodepointValue.setText("  " + Utilities.toHex(jTextFieldChar.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -598,7 +601,11 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelCodepoint.setText("Char/Codepoint:");
         jPanel1.add(jLabelCodepoint);
+        jPanel1.add(jLabelChar);
+        jLabelChar.getAccessibleContext().setAccessibleName("Char");
+
         jPanel1.add(jLabelCodepointValue);
+        jLabelCodepointValue.getAccessibleContext().setAccessibleName("Codepoint");
 
         jPanelBoxView.add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -1139,6 +1146,7 @@ public class Gui extends javax.swing.JFrame {
 
     void resetReadout() {
         jTextFieldChar.setText(null);
+        jLabelChar.setText(null);
         jLabelCodepointValue.setText(null);
         jSpinnerH.setValue(0);
         jSpinnerW.setValue(0);
@@ -1264,7 +1272,8 @@ public class Gui extends javax.swing.JFrame {
         if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
             box.setChrs(this.jTextFieldChar.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
-            jLabelCodepointValue.setText(this.jTextFieldChar.getText() + "  " + Utilities.toHex(this.jTextFieldChar.getText()));
+            jLabelChar.setText(this.jTextFieldChar.getText());
+            jLabelCodepointValue.setText("  " + Utilities.toHex(this.jTextFieldChar.getText()));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharActionPerformed
@@ -1381,9 +1390,10 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSplit;
     private javax.swing.JFileChooser jFileChooser;
-    private javax.swing.JLabel jLabelChar;
+    protected javax.swing.JLabel jLabelChar;
+    private javax.swing.JLabel jLabelCharacter;
     private javax.swing.JLabel jLabelCodepoint;
-    protected javax.swing.JLabel jLabelCodepointValue;
+    private javax.swing.JLabel jLabelCodepointValue;
     private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
