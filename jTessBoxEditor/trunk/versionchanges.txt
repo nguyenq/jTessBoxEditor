@@ -24,9 +24,9 @@ Version 0.5 (5 September 2011)
 Version 0.5.1 (12 September 2011)
 - Correct an issue with (small) image vertically centering in the image pane; align it to top of pane
 
-Version 0.6 Beta 4 (15 October 2011)
-- Add a utility function which creates TIFF/Box pair to be used in training
+Version 0.6 (18 October 2011)
+- Add a utility function that creates TIFF/Box pair suitable for training with Tesseract
 - Fix a bug which may clear out a modified box file when loading another image
 - Enhance box search operations
 - Fix font issues in various visual components
-- Merged box will have a character value composed of the merging boxes
+- Merged box will have a character value composed of all the characters of the merging boxes
