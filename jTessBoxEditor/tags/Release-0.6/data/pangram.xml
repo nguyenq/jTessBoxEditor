@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Pangram for various languages</comment>
+<entry key="English">The quick brown fox jumps over the lazy dog.</entry>
+<entry key="Vietnamese">Tôi yêu tiếng nước tôi từ khi mới ra đời.</entry>
+<entry key="French">Le cœur déçu mais l'âme plutôt naïve, Louÿs rêva de crapaüter en canoë au delà des îles, près du mälström où brûlent les novæ.</entry>
+<entry key="Spanish">El pingüino Wenceslao hizo kilómetros bajo exhaustiva lluvia y frío, añoraba a su querido cachorro.</entry>
+<entry key="German">Zwölf Boxkämpfer jagten Eva quer über den Sylter Deich</entry>
+<entry key="Italian">Italiano</entry>
+<entry key="Dutch">Nederlands</entry>
+<entry key="Portuguese">Português</entry>
+<entry key="Kannada">ಕನ್ನಡಅಮ್ಮ</entry>
+<entry key="Khmer">ភាសាខ្មែរ</entry>
+<entry key="Basque">Euskara</entry>
+<entry key="Bengali">বাংলা</entry>
+<entry key="Coptic">اسماء الأعلام</entry>
+<entry key="Polish">Pchnąć w tę łódź jeża lub ośm skrzyń fig</entry>
+<entry key="Telugu">తెలుగుఅమ్మ</entry>
+<entry key="Lithuanian">Įlinkdama fechtuotojo špaga sublykčiojusi pragręžė apvalų arbūzą</entry>
+<entry key="Malayalam">മലയാളം</entry>
+<entry key="Tamil">அம்மா</entry>
+<entry key="Slovak">Kŕdeľ šťastných ďatľov učí pri ústí Váhu mĺkveho koňa obhrýzať kôru, žrať čerstvé mäso a figy.</entry>
+</properties>

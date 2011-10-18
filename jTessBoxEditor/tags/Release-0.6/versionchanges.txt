@@ -1,0 +1,32 @@
+jTessBoxEditor Change Summary
+
+Version 0.1 (10 April 2011):
+- Support editing box data of both Tesseract 2.0x and 3.0x formats
+- Implement box select & merge/split/insert/delete operations
+- Implement box size change function via spinners
+- Support Unicode conversion for the text field
+- Include box search function
+
+Version 0.2 (14 April 2011):
+- Add a provision to set font for the Box Coordinates table
+- Set table row height to match font
+- Incorporate a pangram into the Font dialog
+
+Version 0.3 (25 April 2011):
+- Provide a close-up view of current box
+
+Version 0.4 (28 May 2011):
+- Add a utility function for merging images into a multi-page TIFF
+
+Version 0.5 (5 September 2011)
+- Display informational tooltip for boxed characters in image pane
+
+Version 0.5.1 (12 September 2011)
+- Correct an issue with (small) image vertically centering in the image pane; align it to top of pane
+
+Version 0.6 (18 October 2011)
+- Add a utility function that creates TIFF/Box pair suitable for training with Tesseract
+- Fix a bug which may clear out a modified box file when loading another image
+- Enhance box search operations
+- Fix font issues in various visual components
+- Merged box will have a character value composed of all the characters of the merging boxes
