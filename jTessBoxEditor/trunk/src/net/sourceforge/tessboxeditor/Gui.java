@@ -243,14 +243,12 @@ public class Gui extends javax.swing.JFrame {
         jFileChooser.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
         filterIndex = prefs.getInt("filterIndex", 0);
         FileFilter allImageFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff", bundle.getString("All_Image_Files"));
-        FileFilter bmpFilter = new SimpleFilter("bmp", "Bitmap");
         FileFilter pngFilter = new SimpleFilter("png", "PNG");
         FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
         //FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
 
         jFileChooser.setAcceptAllFileFilterUsed(false);
         jFileChooser.addChoosableFileFilter(allImageFilter);
-        jFileChooser.addChoosableFileFilter(bmpFilter);
         jFileChooser.addChoosableFileFilter(pngFilter);
         jFileChooser.addChoosableFileFilter(tiffFilter);
         //jFileChooser.addChoosableFileFilter(textFilter);
