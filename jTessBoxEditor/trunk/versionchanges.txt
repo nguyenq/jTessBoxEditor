@@ -30,3 +30,7 @@ Version 0.6 (18 October 2011)
 - Enhance box search operations
 - Fix font issues in various visual components
 - Merged box will have a character value composed of all the characters of the merging boxes
+
+Version 0.6.1 (10 February 2012)
+- Increase line spacing
+- Fix an issue with opening Help file on OS X
