@@ -41,7 +41,7 @@ if (!(test-path $langDir))
 
 echo "=== Generating Tesseract language data for language: $lang ==="
 
-$fullPath = [IO.Path]::GetFullPath($langDir)
+$fullPath = Resolve-Path $langDir
 echo "** Your training images should be in ""$fullPath"" directory."
 
 $al = New-Object System.Collections.ArrayList
