@@ -1,10 +1,9 @@
 <#
 
-Automate Tesseract 3.01 language data pack generation process.
+Automate Tesseract 3.02 language data pack generation process.
 
 @author: Quan Nguyen
-@date: 28 Mar 2011
-@version: 1.0
+@date: 28 Feb 2012
 
 The script file should be placed in the same directory as Tesseract's binary executables.
 
@@ -77,13 +76,14 @@ Invoke-Expression ".\unicharset_extractor -D $langDir $boxFiles"
 move-item -force -path $langDir\unicharset -destination $langDir\$lang.unicharset
 
 echo "Clustering"
+Invoke-Expression ".\shapeclustering -F $langDir\$lang.font_properties -U $langDir\$lang.unicharset $trFiles"
 Invoke-Expression ".\mftraining -F $langDir\$lang.font_properties -U $langDir\$lang.unicharset $trFiles"
 move-item -force -path inttemp -destination $langDir\$lang.inttemp
 move-item -force -path pffmtable -destination $langDir\$lang.pffmtable
-move-item -force -path Microfeat -destination $langDir\$lang.Microfeat
-
+#move-item -force -path Microfeat -destination $langDir\$lang.Microfeat
 Invoke-Expression ".\cntraining $trFiles"
 move-item -force -path normproto -destination $langDir\$lang.normproto
+move-item -force -path shapetable -destination $langDir\$lang.shapetable
 
 echo "Dictionary Data"
 Invoke-Expression ".\wordlist2dawg $langdir\$lang.frequent_words_list.txt $langdir\$lang.freq-dawg $langdir\$lang.unicharset"
