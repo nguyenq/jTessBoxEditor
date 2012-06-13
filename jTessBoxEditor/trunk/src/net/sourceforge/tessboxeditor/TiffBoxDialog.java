@@ -114,7 +114,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelOutput.setText("Output");
         jPanel1.add(jLabelOutput);
 
-        jTextFieldFileName.setPreferredSize(new java.awt.Dimension(150, 24));
+        jTextFieldFileName.setPreferredSize(new java.awt.Dimension(140, 24));
         jPanel1.add(jTextFieldFileName);
 
         jButtonFont.setText("Font");
@@ -271,7 +271,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     }
 
     private String createFileName(Font font) {
-        return font.getName().replace(" ", "").toLowerCase() + (font.isBold() ? "bold" : "") + (font.isItalic() ? "italic" : "") + ".exp0.tif";
+        return font.getName().replace(" ", "").toLowerCase() + (font.isBold() ? "b" : "") + (font.isItalic() ? "i" : "") + ".exp0.tif";
     }
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
