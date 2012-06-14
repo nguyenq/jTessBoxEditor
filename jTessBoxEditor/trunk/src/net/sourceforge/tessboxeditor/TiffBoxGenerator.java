@@ -317,7 +317,7 @@ public class TiffBoxGenerator {
      * Draws TextLayout lines on pages of <code>BufferedImage</code>
      */
     private void drawPages() {
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
         pages.add(bi);
         Graphics2D g2 = createGraphics(bi, font);
 
