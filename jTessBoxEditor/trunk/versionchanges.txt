@@ -31,6 +31,8 @@ Version 0.6 (18 October 2011)
 - Fix font issues in various visual components
 - Merged box will have a character value composed of all the characters of the merging boxes
 
-Version 0.6.1 (10 February 2012)
+Version 0.7 (14 June 2012)
 - Increase line spacing
 - Fix an issue with opening Help file on OS X
+- For TIFF/Box generation, switch from grayscale to binary to produce images of smaller file size 
+  yet maintain identical training data and quality; abbreviate bold/italic to b/i for filename
