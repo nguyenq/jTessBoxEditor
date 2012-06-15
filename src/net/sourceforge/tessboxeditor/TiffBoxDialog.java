@@ -81,6 +81,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jButtonInput = new javax.swing.JButton();
         jLabelOutput = new javax.swing.JLabel();
+        jTextFieldPrefix = new javax.swing.JTextField();
         jTextFieldFileName = new javax.swing.JTextField();
         jButtonFont = new javax.swing.JButton();
         jLabelTracking = new javax.swing.JLabel();
@@ -114,6 +115,12 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelOutput.setText("Output");
         jPanel1.add(jLabelOutput);
 
+        jTextFieldPrefix.setText("eng");
+        jTextFieldPrefix.setToolTipText("Prefix (Language Code)");
+        jTextFieldPrefix.setPreferredSize(new java.awt.Dimension(30, 24));
+        jPanel1.add(jTextFieldPrefix);
+
+        jTextFieldFileName.setToolTipText("Filename");
         jTextFieldFileName.setPreferredSize(new java.awt.Dimension(140, 24));
         jPanel1.add(jTextFieldFileName);
 
@@ -135,6 +142,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
+        jSpinnerTracking.setToolTipText("Letter Tracking");
         jSpinnerTracking.setPreferredSize(new java.awt.Dimension(64, 22));
         jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -148,6 +156,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelW);
 
         jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 1));
+        jSpinnerW.setToolTipText("Image Width");
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
         jSpinnerW.setPreferredSize(new java.awt.Dimension(63, 22));
         jPanel1.add(jSpinnerW);
@@ -157,6 +166,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jPanel1.add(jLabelH);
 
         jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 1));
+        jSpinnerH.setToolTipText("Image Height");
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
         jSpinnerH.setPreferredSize(new java.awt.Dimension(63, 22));
         jPanel1.add(jSpinnerH);
@@ -293,7 +303,11 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             outputFolder = new File(System.getProperty("user.home"));
         }
         generator.setOutputFolder(outputFolder);
-        generator.setFileName(this.jTextFieldFileName.getText());
+        String prefix = this.jTextFieldPrefix.getText();
+        if (prefix.trim().length() > 0) {
+            prefix += ".";
+        }
+        generator.setFileName(prefix + this.jTextFieldFileName.getText());
         generator.setTracking((Float) this.jSpinnerTracking.getValue());
         try {
             generator.create();
@@ -370,6 +384,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.JSpinner jSpinnerW;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldFileName;
+    private javax.swing.JTextField jTextFieldPrefix;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }
