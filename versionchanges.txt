@@ -32,9 +32,9 @@ Version 0.6 (18 October 2011)
 - Merged box will have a character value composed of all the characters of the merging boxes
 
 Version 0.7 (16 June 2012)
-- Increase line spacing
 - Fix an issue with opening Help file on OS X
 - For TIFF/Box generation:
+  * increase line spacing
   * abbreviate bold/italic font style to b/i for filename
   * add a Prefix (Language Code) textbox
   * add support for text anti-aliasing
