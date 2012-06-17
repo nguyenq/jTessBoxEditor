@@ -3,9 +3,14 @@
 Automate Tesseract 3.02 language data pack generation process.
 
 @author: Quan Nguyen
-@date: 28 Feb 2012
+@date: 16 June 2012
 
 The script file should be placed in the same directory as Tesseract's binary executables.
+All training data files must be prefixed with the language code -- such as: 
+vie.arial.exp0.tif, vie.font_properties, vie.unicharambigs, vie.frequent_words_list, vie.words_list
+-- and placed in a trainfolder directory, which could be directly under Tesseract directory.
+
+http://code.google.com/p/tesseract-ocr/wiki/TrainingTesseract3
 
 Run PowerShell as Administrator and allow script execution by running the following command:
 
@@ -15,43 +20,50 @@ Then execute the script by:
 
 PS > .\train.ps1
 or
-PS > .\train.ps1 yourlang imageFolder
-
-If imageFolder is not specified, it is default to a yourlang subdirectory under Tesseract directory.
+PS > .\train.ps1 yourlang trainfolder
 
 Windows PowerShell 2.0 Download: http://support.microsoft.com/kb/968929
 
 #>
+
+if ($args[0] -and ($args[0] -eq "-?" -or $args[0] -eq "-h" -or $args[0] -eq "-help")) {
+    Write-Host "Usage: .\train.ps1"
+    Write-Host "   or  .\train.ps1 yourlang trainfolder"
+    Write-Host "where trainfolder directory contains all the training data files prefixed with yourlang,"
+    Write-Host "e.g., vie.arial.exp0.tif, vie.font_properties, vie.unicharambigs, vie.frequent_words_list, vie.words_list,"
+    Write-Host "and could be directly under Tesseract directory"
+    exit
+}
 
 $lang = $args[0]
 if (!$lang) {
     $lang = Read-Host "Enter a language code"
 }
 
-$langDir = $lang
+$trainDir = $args[1]
 
-if ($args[1]) {
-    $langDir = $args[1]
+if (!$trainDir) {
+    $trainDir = Read-Host "Enter location of the training data folder"
 }
 
-if (!(test-path $langDir))
+if (!(test-path $trainDir))
 {
-    throw "{0} is not a valid path" -f $langDir
+    throw "{0} is not a valid path" -f $trainDir
 }
 
 echo "=== Generating Tesseract language data for language: $lang ==="
 
-$fullPath = Resolve-Path $langDir
+$fullPath = Resolve-Path $trainDir
 echo "** Your training images should be in ""$fullPath"" directory."
 
 $al = New-Object System.Collections.ArrayList
 
 echo "Make Box Files"
 $boxFiles = ""
-Foreach ($entry in dir $langDir) {
+Foreach ($entry in dir $trainDir) {
    If ($entry.name.toLower().endsWith(".tif") -and $entry.name.startsWith($lang)) {
       echo "** Processing image: $entry"
-      $nameWoExt = [IO.Path]::Combine($langDir, $entry.BaseName)
+      $nameWoExt = [IO.Path]::Combine($trainDir, $entry.BaseName)
       $al.Add($nameWoExt)
 
 #Bootstrapping a new character set
@@ -72,28 +84,28 @@ Foreach ($entry in $al) {
 }
 
 echo "Compute the Character Set"
-Invoke-Expression ".\unicharset_extractor -D $langDir $boxFiles"
-move-item -force -path $langDir\unicharset -destination $langDir\$lang.unicharset
+Invoke-Expression ".\unicharset_extractor -D $trainDir $boxFiles"
+move-item -force -path $trainDir\unicharset -destination $trainDir\$lang.unicharset
 
 echo "Clustering"
-Invoke-Expression ".\shapeclustering -F $langDir\$lang.font_properties -U $langDir\$lang.unicharset $trFiles"
-Invoke-Expression ".\mftraining -F $langDir\$lang.font_properties -U $langDir\$lang.unicharset $trFiles"
-move-item -force -path inttemp -destination $langDir\$lang.inttemp
-move-item -force -path pffmtable -destination $langDir\$lang.pffmtable
-#move-item -force -path Microfeat -destination $langDir\$lang.Microfeat
+Invoke-Expression ".\shapeclustering -F $trainDir\$lang.font_properties -U $trainDir\$lang.unicharset $trFiles"
+Invoke-Expression ".\mftraining -F $trainDir\$lang.font_properties -U $trainDir\$lang.unicharset $trFiles"
+move-item -force -path inttemp -destination $trainDir\$lang.inttemp
+move-item -force -path pffmtable -destination $trainDir\$lang.pffmtable
+#move-item -force -path Microfeat -destination $trainDir\$lang.Microfeat
 Invoke-Expression ".\cntraining $trFiles"
-move-item -force -path normproto -destination $langDir\$lang.normproto
-move-item -force -path shapetable -destination $langDir\$lang.shapetable
+move-item -force -path normproto -destination $trainDir\$lang.normproto
+move-item -force -path shapetable -destination $trainDir\$lang.shapetable
 
 echo "Dictionary Data"
-Invoke-Expression ".\wordlist2dawg $langdir\$lang.frequent_words_list.txt $langdir\$lang.freq-dawg $langdir\$lang.unicharset"
-Invoke-Expression ".\wordlist2dawg $langdir\$lang.words_list.txt $langdir\$lang.word-dawg $langdir\$lang.unicharset"
+Invoke-Expression ".\wordlist2dawg $trainDir\$lang.frequent_words_list $trainDir\$lang.freq-dawg $trainDir\$lang.unicharset"
+Invoke-Expression ".\wordlist2dawg $trainDir\$lang.words_list $trainDir\$lang.word-dawg $trainDir\$lang.unicharset"
 
 echo "The last file (unicharambigs) -- this is to be manually edited"
-if (!(test-path $langdir\$lang.unicharambigs)) {
-    new-item "$langdir\$lang.unicharambigs" -type file
-    set-content -path $langdir\$lang.unicharambigs -value "v1"
+if (!(test-path $trainDir\$lang.unicharambigs)) {
+    new-item "$trainDir\$lang.unicharambigs" -type file
+    set-content -path $trainDir\$lang.unicharambigs -value "v1"
 }
 
 echo "Putting it all together"
-Invoke-Expression ".\combine_tessdata $langdir\$lang."
+Invoke-Expression ".\combine_tessdata $trainDir\$lang."
