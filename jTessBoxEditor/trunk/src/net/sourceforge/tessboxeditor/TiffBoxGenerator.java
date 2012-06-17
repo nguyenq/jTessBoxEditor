@@ -1,17 +1,17 @@
 /**
  * Copyright @ 2009 Quan Nguyen
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package net.sourceforge.tessboxeditor;
 
@@ -42,6 +42,7 @@ public class TiffBoxGenerator {
     private File outputFolder;
     private final int COLOR_WHITE = Color.WHITE.getRGB();
     private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
+    private boolean isAntiAliased;
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
@@ -137,6 +138,12 @@ public class TiffBoxGenerator {
 ////        graphics2D.drawRect(textX, textY - (int) pixelBounds.getHeight(), (int) pixelBounds.getWidth(), (int) pixelBounds.getHeight());
 //        g2.dispose();
 //    }
+    
+    /**
+     * Formats box content.
+     * 
+     * @return 
+     */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < pages.size(); i++) {
@@ -152,11 +159,11 @@ public class TiffBoxGenerator {
     }
 
     /**
-     * Tightens bounding box in four directions b/c Java cannot produce bounding boxes as tight as Tesseract can.
-     * Exam only the first pixel on each side.
-     * 
+     * Tightens bounding box in four directions b/c Java cannot produce bounding
+     * boxes as tight as Tesseract can. Exam only the first pixel on each side.
+     *
      * @param rect
-     * @param bi 
+     * @param bi
      */
     private void tightenBoundingBox(Rectangle rect, BufferedImage bi) {
         // left
@@ -264,6 +271,10 @@ public class TiffBoxGenerator {
 ////            this.boxPages.add(boxCol);
 //        }
 //    }
+    
+    /**
+     * Creates box file.
+     */
     private void saveBoxFile() {
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFolder, fileName + ".box")), "UTF8")); // save boxes
@@ -281,12 +292,13 @@ public class TiffBoxGenerator {
         // Bug ID: 6598756 - Tracking textattribute is not properly handled by LineBreakMeasurer
         // Line breaks do not change with letter tracking.
         float wrappingWidth = width - 2 * margin - (float) (150 * (tracking / 0.04)); // the last operand was added to compensate for LineBreakMeasurer's failure to adjust for letter tracking
+        
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
             }
             final AttributedString attStr = new AttributedString(str, map);
-            final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, false, true));
+            final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, isAntiAliased, true));
 
             ArrayList<TextLayout> para = new ArrayList<TextLayout>();
             TextLayout line;
@@ -299,10 +311,11 @@ public class TiffBoxGenerator {
     }
 
     /**
-     * Creates graphics with specific settings.
-     * 
-     * @param bi
-     * @return 
+     * Creates graphics object with specific settings.
+     *
+     * @param bi image
+     * @param font font
+     * @return
      */
     private Graphics2D createGraphics(BufferedImage bi, Font font) {
         Graphics2D g2 = bi.createGraphics();
@@ -314,10 +327,11 @@ public class TiffBoxGenerator {
     }
 
     /**
-     * Draws TextLayout lines on pages of <code>BufferedImage</code>
+     * Draws TextLayout lines on pages of
+     * <code>BufferedImage</code>
      */
     private void drawPages() {
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+        BufferedImage bi = new BufferedImage(width, height, isAntiAliased ? BufferedImage.TYPE_BYTE_GRAY : BufferedImage.TYPE_BYTE_BINARY);
         pages.add(bi);
         Graphics2D g2 = createGraphics(bi, font);
 
@@ -365,12 +379,12 @@ public class TiffBoxGenerator {
                 }
 
                 // Move y-coordinate in preparation for next layout.
-                drawPosY += 2 * line.getDescent() + line.getLeading() ; // factor 2 for larger line spacing
+                drawPosY += 2 * line.getDescent() + line.getLeading(); // factor 2 for larger line spacing
 
                 // Reach bottom margin?
                 if (drawPosY > height - margin) { // - line.getAscent() ?
                     drawPosY = margin; // reset to top margin of next page
-                    bi = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+                    bi = new BufferedImage(width, height, isAntiAliased ? BufferedImage.TYPE_BYTE_GRAY : BufferedImage.TYPE_BYTE_BINARY);
                     pages.add(bi);
                     boxCol = new TessBoxCollection();
                     boxPages.add(boxCol);
@@ -388,13 +402,17 @@ public class TiffBoxGenerator {
      */
     private void saveMultipageTiff() {
         try {
-            ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), new File(outputFolder, fileName + ".tif"));
+            File tiffFile = new File(outputFolder, fileName + ".tif");
+            tiffFile.delete();
+            ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), tiffFile);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
 
     /**
+     * Sets output filename.
+     * 
      * @param fileName the fileName to set
      */
     public void setFileName(String fileName) {
@@ -405,6 +423,8 @@ public class TiffBoxGenerator {
     }
 
     /**
+     * Sets letter tracking.
+     * 
      * @param tracking the tracking to set
      */
     public void setTracking(float tracking) {
@@ -412,9 +432,20 @@ public class TiffBoxGenerator {
     }
 
     /**
+     * Sets output folder.
+     * 
      * @param outputFolder the outputFolder to set
      */
     public void setOutputFolder(File outputFolder) {
         this.outputFolder = outputFolder;
+    }
+
+    /**
+     * Enables text anti-aliasing.
+     * 
+     * @param enabled on or off
+     */
+    public void setAntiAliasing(boolean enabled) {
+        this.isAntiAliased = enabled;
     }
 }
