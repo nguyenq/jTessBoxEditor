@@ -22,9 +22,7 @@ import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import java.io.*;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import net.sourceforge.vietpad.components.FontDialog;
@@ -100,7 +98,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
         setTitle("Generate TIFF/Box");
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(880, 135));
 
         jToolBar1.setRollover(true);
 
