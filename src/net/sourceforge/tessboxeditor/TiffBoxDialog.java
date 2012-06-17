@@ -22,7 +22,9 @@ import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import java.io.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import net.sourceforge.vietpad.components.FontDialog;
@@ -84,6 +86,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextFieldPrefix = new javax.swing.JTextField();
         jTextFieldFileName = new javax.swing.JTextField();
         jButtonFont = new javax.swing.JButton();
+        jCheckBoxAntiAliasing = new javax.swing.JCheckBox();
         jLabelTracking = new javax.swing.JLabel();
         jSpinnerTracking = new javax.swing.JSpinner();
         jLabelW = new javax.swing.JLabel();
@@ -97,6 +100,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
 
         setTitle("Generate TIFF/Box");
         setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(880, 135));
 
         jToolBar1.setRollover(true);
 
@@ -136,6 +140,10 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             }
         });
         jPanel1.add(jButtonFont);
+
+        jCheckBoxAntiAliasing.setText("Anti-Aliasing");
+        jCheckBoxAntiAliasing.setToolTipText("Anti-Aliasing");
+        jPanel1.add(jCheckBoxAntiAliasing);
 
         jLabelTracking.setText("Tracking");
         jLabelTracking.setToolTipText("Letter Tracking");
@@ -235,6 +243,11 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonInputActionPerformed
 
+    /**
+     * Opens input text file.
+     * 
+     * @param selectedFile 
+     */
     void openFile(final File selectedFile) {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"));
@@ -276,10 +289,22 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonFontActionPerformed
 
+    /**
+     * Gets font description.
+     * 
+     * @param font selected font
+     * @return font description
+     */
     private String fontDesc(Font font) {
         return font.getName() + (font.isBold() ? " Bold" : "") + (font.isItalic() ? " Italic" : "") + " " + font.getSize() + "pt";
     }
 
+    /**
+     * Creates file name.
+     * 
+     * @param font
+     * @return file name
+     */
     private String createFileName(Font font) {
         return font.getName().replace(" ", "").toLowerCase() + (font.isBold() ? "b" : "") + (font.isItalic() ? "i" : "") + ".exp0.tif";
     }
@@ -309,9 +334,11 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         }
         generator.setFileName(prefix + this.jTextFieldFileName.getText());
         generator.setTracking((Float) this.jSpinnerTracking.getValue());
+        generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
+        
         try {
             generator.create();
-            JOptionPane.showMessageDialog(this, String.format("Tiff/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
+            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -372,6 +399,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonFont;
     private javax.swing.JButton jButtonGenerate;
     private javax.swing.JButton jButtonInput;
+    private javax.swing.JCheckBox jCheckBoxAntiAliasing;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabelH;
     private javax.swing.JLabel jLabelOutput;
