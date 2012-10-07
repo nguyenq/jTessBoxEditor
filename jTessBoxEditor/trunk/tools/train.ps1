@@ -3,7 +3,7 @@
 Automate Tesseract 3.02 language data pack generation process.
 
 @author: Quan Nguyen
-@date: 16 June 2012
+@date: 06 October 2012
 
 The script file should be placed in the same directory as Tesseract's binary executables.
 All training data files must be prefixed with the language code -- such as: 
@@ -28,22 +28,21 @@ Windows PowerShell 2.0 Download: http://support.microsoft.com/kb/968929
 
 if ($args[0] -and ($args[0] -eq "-?" -or $args[0] -eq "-h" -or $args[0] -eq "-help")) {
     Write-Host "Usage: .\train.ps1"
-    Write-Host "   or  .\train.ps1 yourlang trainfolder"
+    Write-Host "   or  .\train.ps1 trainfolder yourlang [bootstraplang]"
     Write-Host "where trainfolder directory contains all the training data files prefixed with yourlang, e.g.,"
     Write-Host "vie.arial.exp0.tif, vie.font_properties, vie.unicharambigs, vie.frequent_words_list, vie.words_list,"
     Write-Host "and could be placed directly under Tesseract directory"
     exit
 }
 
-$lang = $args[0]
-if (!$lang) {
-    $lang = Read-Host "Enter a language code"
-}
-
-$trainDir = $args[1]
-
+$trainDir = $args[0]
 if (!$trainDir) {
     $trainDir = Read-Host "Enter location of the training data folder"
+}
+
+$lang = $args[1]
+if (!$lang) {
+    $lang = Read-Host "Enter a language code"
 }
 
 if ($lang -eq "" -or $trainDir -eq "") {
@@ -54,6 +53,11 @@ if ($lang -eq "" -or $trainDir -eq "") {
 if (!(test-path $trainDir)) {
     throw "{0} is not a valid path" -f $trainDir
     exit
+}
+
+$bootstraplang = $args[2]
+if (!$bootstraplang) {
+    $bootstraplang = Read-Host "Enter a bootstrap language code (optional)"
 }
 
 echo "=== Generating Tesseract language data for language: $lang ==="
@@ -71,8 +75,13 @@ Foreach ($entry in dir $trainDir) {
       $nameWoExt = [IO.Path]::Combine($trainDir, $entry.BaseName)
       $al.Add($nameWoExt)
 
+      If ($bootstraplang -eq "") {
+        $trainCmd = ".\tesseract {0}.tif {0} batch.nochop makebox" -f $nameWoExt
+      } else {
 #Bootstrapping a new character set
-      $trainCmd = ".\tesseract {0}.tif {0} -l {1} batch.nochop makebox" -f $nameWoExt, $lang
+        $trainCmd = ".\tesseract {0}.tif {0} -l {1} batch.nochop makebox" -f $nameWoExt, $bootstraplang
+      }
+     
 #Should comment out the next line after done with editing the box files to prevent them from getting overwritten in repeated runs.
       Invoke-Expression $trainCmd
       $boxFiles += $nameWoExt + ".box "
