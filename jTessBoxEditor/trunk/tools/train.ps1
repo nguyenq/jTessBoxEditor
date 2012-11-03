@@ -99,11 +99,10 @@ Foreach ($entry in $al) {
 
 echo "Compute the Character Set"
 Invoke-Expression ".\unicharset_extractor -D $trainDir $boxFiles"
-move-item -force -path $trainDir\unicharset -destination $trainDir\$lang.unicharset
 
 echo "Clustering"
-Invoke-Expression ".\shapeclustering -F $trainDir\$lang.font_properties -U $trainDir\$lang.unicharset $trFiles"
-Invoke-Expression ".\mftraining -F $trainDir\$lang.font_properties -U $trainDir\$lang.unicharset $trFiles"
+Invoke-Expression ".\shapeclustering -F $trainDir\$lang.font_properties -U $trainDir\unicharset $trFiles"
+Invoke-Expression ".\mftraining -F $trainDir\$lang.font_properties -U $trainDir\unicharset -O $trainDir\$lang.unicharset $trFiles"
 move-item -force -path inttemp -destination $trainDir\$lang.inttemp
 move-item -force -path pffmtable -destination $trainDir\$lang.pffmtable
 #move-item -force -path Microfeat -destination $trainDir\$lang.Microfeat
