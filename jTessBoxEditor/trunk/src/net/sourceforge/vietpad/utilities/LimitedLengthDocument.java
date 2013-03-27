@@ -8,7 +8,7 @@ import javax.swing.text.*;
  *
  *@author     Quan Nguyen
  *@version    1.0.5, 19 April 2003
- *@see        http://vietpad.sourceforge.net
+ *@see        "http://vietpad.sourceforge.net"
  */
 public class LimitedLengthDocument extends PlainDocument {
     private int max;

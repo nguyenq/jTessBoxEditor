@@ -11,7 +11,7 @@ import java.net.URI;
  *
  *@author     Quan Nguyen (nguyenq@users.sf.net)
  *@version    1.1, 23 December 2007
- *@see        http://vietpad.sourceforge.net
+ *@see        "http://vietpad.sourceforge.net"
  */
 public class FileDropTargetListener extends DropTargetAdapter {
 
