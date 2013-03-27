@@ -147,7 +147,9 @@ public class TiffBoxGenerator {
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < pages.size(); i++) {
-            for (TessBox box : boxPages.get(i).toList()) {
+            TessBoxCollection boxCol = boxPages.get(i);
+            boxCol.combineBoxes();
+            for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();
                 sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, height - rect.y - rect.height, rect.x + rect.width, height - rect.y, i)).append(EOL);
             }
