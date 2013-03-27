@@ -93,6 +93,21 @@ public class TessBoxCollection {
         }
         return selected;
     }
+    
+    /**
+     * Combines boxes that have the same coordinates. The new resultant value will be the combined values.
+     */
+    public void combineBoxes() {
+        TessBox prev = null; 
+        for (TessBox box : list.toArray(new TessBox[list.size()])) {
+            if (prev != null && box.getRect().equals(prev.getRect())) {
+                list.remove(box);
+                prev.setChrs(prev.getChrs() + box.getChrs());
+            } else {
+                prev = box;
+            }
+        }
+    }
 
     public boolean remove(TessBox box) {
         return list.remove(box);

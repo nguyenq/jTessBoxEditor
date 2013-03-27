@@ -38,3 +38,6 @@ Version 0.7 (16 June 2012)
   * abbreviate bold/italic font style to b/i for filename
   * add a Prefix (Language Code) textbox
   * add support for text anti-aliasing
+
+Version 0.8 (26 March 2013)
+- Automatically combine boxes that have the same coordinates
