@@ -119,8 +119,7 @@ public class TessBoxCollection {
 
     /**
      * Gets coordinate data for each page.
-     * @param page
-     * @return
+     * @return table data list
      */
     public List<String[]> getTableDataList() {
         List<String[]> dataList = new ArrayList<String[]>();
