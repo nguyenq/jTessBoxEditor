@@ -46,7 +46,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         Font font = this.jTextArea1.getFont().deriveFont(36f).deriveFont(attributes);
         this.jTextArea1.setFont(font);
         this.jButtonFont.setText(fontDesc(font));
-        this.jTextFieldFileName.setText(createFileName(font));
+        this.jTextFieldFileName.setText(createFileName(font) + ".exp0.tif");
 
         setLocationRelativeTo(getOwner());
 
@@ -269,7 +269,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 this.jTextArea1.setFont(font);
                 this.jTextArea1.validate();
                 this.jButtonFont.setText(fontDesc(font));
-                this.jTextFieldFileName.setText(createFileName(font));
+                String curName = this.jTextFieldFileName.getText();
+                String ext = curName.substring(curName.lastIndexOf(".exp"));
+                this.jTextFieldFileName.setText(createFileName(font) + ext);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -303,7 +305,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
      * @return file name
      */
     private String createFileName(Font font) {
-        return font.getName().replace(" ", "").toLowerCase() + (font.isBold() ? "b" : "") + (font.isItalic() ? "i" : "") + ".exp0.tif";
+        return font.getName().replace(" ", "").toLowerCase() + (font.isBold() ? "b" : "") + (font.isItalic() ? "i" : "");
     }
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
