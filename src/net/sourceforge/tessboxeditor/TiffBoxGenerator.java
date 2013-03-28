@@ -26,6 +26,8 @@ import java.util.List;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.vietocr.utilities.ImageIOHelper;
+import net.sourceforge.vietocr.utilities.Utilities;
+import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TiffBoxGenerator {
 
@@ -43,6 +45,7 @@ public class TiffBoxGenerator {
     private final int COLOR_WHITE = Color.WHITE.getRGB();
     private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
     private boolean isAntiAliased;
+    private final File baseDir = Utilities.getBaseDir(TiffBoxGenerator.this);
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
@@ -146,8 +149,10 @@ public class TiffBoxGenerator {
      */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
+        String combiningSymbols = readCombiningSymbols(); //"\u0c82\u0c83\u0cbe\u0cbf\u0cc0-\u0ccc";
         for (short i = 0; i < pages.size(); i++) {
             TessBoxCollection boxCol = boxPages.get(i);
+            boxCol.setCombiningSymbols(combiningSymbols); 
             boxCol.combineBoxes();
             for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();
@@ -158,6 +163,30 @@ public class TiffBoxGenerator {
 //            return sb.toString().replace(" 0" + EOL, EOL); // strip the ending zeroes
 //        }
         return sb.toString();
+    }
+    
+    /**
+     * Reads in combining symbols.
+     * 
+     * @return 
+     */
+    private String readCombiningSymbols() {
+        String str = null;
+        try {
+            File xmlFile = new File(baseDir, "data/combiningsymbols.txt");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(xmlFile), "UTF8"));
+            while ((str = in.readLine()) != null) { // while loop begins here
+                if (!str.trim().startsWith("#")) {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+        
+        str = str.replaceAll("[ \\[\\]]", "");
+        return TextUtilities.convertNCR(str); // convert escaped sequences to Unicode
     }
 
     /**
