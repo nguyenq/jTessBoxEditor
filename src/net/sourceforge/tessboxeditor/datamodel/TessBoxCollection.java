@@ -22,6 +22,7 @@ import java.util.List;
 
 public class TessBoxCollection {
 
+    private static final String COMBINING_SYMBOLS = "[\u0c82\u0c83\u0cbe\u0cbf\u0cc0-\u0ccc]";
     private List<TessBox> list;
 
     public TessBoxCollection() {
@@ -95,7 +96,8 @@ public class TessBoxCollection {
     }
     
     /**
-     * Combines boxes that have the same coordinates. The new resultant value will be the combined values.
+     * Combines boxes that have the same coordinates or combining symbols with main/base character.
+     * The new resultant value will be the combined values.
      */
     public void combineBoxes() {
         TessBox prev = null; 
@@ -103,7 +105,7 @@ public class TessBoxCollection {
             if (prev != null && box.getRect().equals(prev.getRect())) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
-            } else if (prev != null && box.getChrs().matches("[\u0c83\u0cc1-\u0cc8]")) {
+            } else if (prev != null && box.getChrs().matches(COMBINING_SYMBOLS)) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
                 Rectangle prevRect = prev.getRect();
