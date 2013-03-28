@@ -851,7 +851,9 @@ public class Gui extends javax.swing.JFrame {
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, oome.getMessage(), "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
+            if (e.getMessage() != null) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -913,7 +915,9 @@ public class Gui extends javax.swing.JFrame {
             } catch (OutOfMemoryError oome) {
                 JOptionPane.showMessageDialog(this, oome.getMessage(), "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
+                if (e.getMessage() != null) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
+                }
             }
         } else {
             // clear table and box display
