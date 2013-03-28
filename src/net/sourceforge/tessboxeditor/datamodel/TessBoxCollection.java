@@ -103,6 +103,16 @@ public class TessBoxCollection {
             if (prev != null && box.getRect().equals(prev.getRect())) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
+            } else if (prev != null && box.getChrs().matches("[\u0c83\u0cc1-\u0cc8]")) {
+                list.remove(box);
+                prev.setChrs(prev.getChrs() + box.getChrs());
+                Rectangle prevRect = prev.getRect();
+                Rectangle curRect = box.getRect();
+                int minX = Math.min(prevRect.x, curRect.x);
+                int minY = Math.min(prevRect.y, curRect.y);
+                int maxX = Math.max(prevRect.x + prevRect.width, curRect.x + curRect.width);
+                int maxY = Math.max(prevRect.y + prevRect.height, curRect.y + curRect.height);
+                prev.setRect(new Rectangle(minX, minY, maxX - minX, maxY - minY));
             } else {
                 prev = box;
             }

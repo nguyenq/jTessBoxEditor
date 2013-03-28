@@ -59,10 +59,17 @@ public class TessBox {
     }
 
     /**
-     * @return the rect
+     * @return the rectangle
      */
     public Rectangle getRect() {
         return rect;
+    }
+    
+    /**
+     * @param rect the rectangle to set
+     */
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
     }
 
     /**
