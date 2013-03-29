@@ -1,8 +1,7 @@
-# Specify combining symbols/diacritics
-# The user-defined UTF-8 encoded text file contains symbols, diacritics, or characters,
+# This UTF-8 encoded text file lets the user specify combining symbols or diacritics
 # in Unicode native or escaped forms, such as U+0CCC or \u0CCC,
 # that need to be combined with the preceding main/base character.
-# Comment lines start with # sign. The value should be on one single line, with no spaces or quotes.
-# If it's empty, the combining step will be bypassed. "-" character represents ranges.
-# E.g.: "U+0CCA-U+0CCC\u0CC9" (without the quotes)
+# Comment lines start with # sign. All the codepoint values should be on one single line, 
+# with no spaces or quotes. A dash "-" character indicates a range of values.
+# For example, uncomment the following line to combine specified symbols/diacritics for Devanagari or Indic scripts.
 #\u0C82\u0C83\u0CBE\u0CBF\u0CC0-\u0CCC
