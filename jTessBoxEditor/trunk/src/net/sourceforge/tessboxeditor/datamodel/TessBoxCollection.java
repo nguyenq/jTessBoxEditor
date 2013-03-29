@@ -114,7 +114,7 @@ public class TessBoxCollection {
             if (prev != null && box.getRect().equals(prev.getRect())) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
-            } else if (prev != null && combiningSymbols!= null && combiningSymbols.trim().length() > 0 && box.getChrs().matches("[" + combiningSymbols + "]")) {
+            } else if (prev != null && combiningSymbols != null && combiningSymbols.trim().length() > 0 && box.getChrs().matches("[" + combiningSymbols + "]")) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
                 Rectangle prevRect = prev.getRect();

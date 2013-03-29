@@ -149,11 +149,12 @@ public class TiffBoxGenerator {
      */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
-        String combiningSymbols = readCombiningSymbols(); //"\u0c82\u0c83\u0cbe\u0cbf\u0cc0-\u0ccc";
+        String combiningSymbols = readCombiningSymbols();
         for (short i = 0; i < pages.size(); i++) {
             TessBoxCollection boxCol = boxPages.get(i);
             boxCol.setCombiningSymbols(combiningSymbols); 
             boxCol.combineBoxes();
+            
             for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();
                 sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, height - rect.y - rect.height, rect.x + rect.width, height - rect.y, i)).append(EOL);
@@ -173,11 +174,16 @@ public class TiffBoxGenerator {
     private String readCombiningSymbols() {
         String str = null;
         try {
-            File xmlFile = new File(baseDir, "data/combiningsymbols.txt");
+            File symbolFile = new File(baseDir, "data/combiningsymbols.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(xmlFile), "UTF8"));
-            while ((str = in.readLine()) != null) { // while loop begins here
-                if (!str.trim().startsWith("#")) {
+                    new FileInputStream(symbolFile), "UTF8"));
+            while ((str = in.readLine()) != null) {
+                // strip BOM character
+                if (str.length() > 0 && str.charAt(0) == '\ufeff') {
+                    str = str.substring(1);
+                }
+                // skip empty line or line starts with #
+                if (str.trim().length() > 0 && !str.trim().startsWith("#")) {
                     break;
                 }
             }
@@ -185,8 +191,12 @@ public class TiffBoxGenerator {
             // ignore
         }
         
-        str = str.replaceAll("[ \\[\\]]", "");
-        return TextUtilities.convertNCR(str); // convert escaped sequences to Unicode
+        if (str != null) {
+            str = str.replaceAll("[ \\[\\]]", ""); // strip regex special characters
+            str = TextUtilities.convertNCR(str); // convert escaped sequences to Unicode
+        }
+        
+        return str;
     }
 
     /**
