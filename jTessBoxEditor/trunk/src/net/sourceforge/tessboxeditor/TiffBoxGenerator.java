@@ -187,6 +187,7 @@ public class TiffBoxGenerator {
                     break;
                 }
             }
+            in.close();
         } catch (Exception e) {
             // ignore
         }
