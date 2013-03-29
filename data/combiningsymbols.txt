@@ -1,8 +1,8 @@
-# Define combining symbols/diacritics
-# The file, which is UTF-8 encoded, contains symbols, diacritics, or characters,
-# in Unicode native or escaped forms such as U+0CCC or \u00CC.
+# Specify combining symbols/diacritics
+# The user-defined UTF-8 encoded text file contains symbols, diacritics, or characters,
+# in Unicode native or escaped forms, such as U+0CCC or \u0CCC,
 # that need to be combined with the preceding main/base character.
 # Comment lines start with # sign. The value should be on one single line, with no spaces or quotes.
 # If it's empty, the combining step will be bypassed. "-" character represents ranges.
-# Ex: "U+0CCC-U+0CCC\u00CC" (without the quotes)
-\u0C82\u0C83\u0CBE\u0CBF\u0CC0-\u0CCC
+# E.g.: "U+0CCA-U+0CCC\u0CC9" (without the quotes)
+#\u0C82\u0C83\u0CBE\u0CBF\u0CC0-\u0CCC
