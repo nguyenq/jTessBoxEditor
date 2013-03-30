@@ -4,4 +4,4 @@
 # Comment lines start with # sign. All the codepoint values should be on one single line, 
 # with no spaces or quotes. A dash "-" character indicates a range of values.
 # For example, uncomment the following line to combine specified symbols/diacritics for Devanagari or Indic scripts.
-#\u0C82\u0C83\u0CBE\u0CBF\u0CC0-\u0CCC
+#\u0C82\u0C83\u0CBC\u0CBE-\u0CCD\u0CD5\u0CD6\u0CE2\u0CE3U+093EU+0940U+094BU+094CU+0902U+0901
