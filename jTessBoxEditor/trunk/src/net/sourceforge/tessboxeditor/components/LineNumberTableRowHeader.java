@@ -61,13 +61,14 @@ public class LineNumberTableRowHeader extends JComponent {
         if (getHeight() < viewSize.height) {
             Dimension size = getPreferredSize();
             size.height = viewSize.height;
-            size.width = fm.stringWidth("999") + 8; // set cell width equal 3-digit length
+            size.width = fm.stringWidth("9999") + 2; // set cell width equal 4-digit length + margin
             setSize(size);
             setPreferredSize(size);
         }
 
+        int cellWidth = getWidth();
         g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, cellWidth, getHeight());
 
         for (int r = 0; r < table.getRowCount(); r++) {
             Rectangle cellRect = table.getCellRect(r, 0, false);
@@ -76,21 +77,21 @@ public class LineNumberTableRowHeader extends JComponent {
 
             if (rowSelected) {
                 g.setColor(table.getSelectionBackground());
-                g.fillRect(0, cellRect.y, getWidth(), cellRect.height);
+                g.fillRect(0, cellRect.y, cellWidth, cellRect.height);
             }
 
             if ((cellRect.y + cellRect.height) - viewPosition.y >= 0 && cellRect.y < viewPosition.y + viewSize.height) {
                 g.setColor(table.getGridColor());
-                g.drawLine(0, cellRect.y + cellRect.height, getWidth(), cellRect.y + cellRect.height);
+                g.drawLine(0, cellRect.y + cellRect.height, cellWidth, cellRect.y + cellRect.height);
                 g.setColor(rowSelected ? table.getSelectionForeground() : getForeground());
                 String s = Integer.toString(r + 1);
-                g.drawString(s, (getWidth() - fm.stringWidth(s)) / 2, cellRect.y + cellRect.height - fm.getDescent()); // center
+                g.drawString(s, (cellWidth - fm.stringWidth(s)) / 2, cellRect.y + cellRect.height - fm.getDescent()); // center
             }
         }
 
         if (table.getShowVerticalLines()) {
             g.setColor(table.getGridColor());
-            g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+            g.drawRect(0, 0, cellWidth - 1, getHeight() - 1);
         }
     }
 }
