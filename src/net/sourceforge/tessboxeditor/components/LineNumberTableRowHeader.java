@@ -1,5 +1,6 @@
 /**
- * Copyright © 2013 Java Rich Client How to display line numbers in JTable
+ * Copyright © 2013 Java Rich Client
+ * How to display line numbers in JTable
  * http://www.javarichclient.com/display-line-numbers-jtable/
  */
 package net.sourceforge.tessboxeditor.components;
@@ -49,21 +50,24 @@ public class LineNumberTableRowHeader extends JComponent {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         Point viewPosition = scrollPane.getViewport().getViewPosition();
         Dimension viewSize = scrollPane.getViewport().getViewSize();
+
+        g.setFont(table.getFont()); // use table font
+        FontMetrics fm = g.getFontMetrics();
+
         if (getHeight() < viewSize.height) {
             Dimension size = getPreferredSize();
             size.height = viewSize.height;
+            size.width = fm.stringWidth("999") + 8; // set cell width equal 3-digit length
             setSize(size);
             setPreferredSize(size);
         }
 
-        super.paintComponent(g);
-
         g.setColor(getBackground());
         g.fillRect(0, 0, getWidth(), getHeight());
-
-        FontMetrics fm = g.getFontMetrics();
 
         for (int r = 0; r < table.getRowCount(); r++) {
             Rectangle cellRect = table.getCellRect(r, 0, false);
@@ -80,7 +84,7 @@ public class LineNumberTableRowHeader extends JComponent {
                 g.drawLine(0, cellRect.y + cellRect.height, getWidth(), cellRect.y + cellRect.height);
                 g.setColor(rowSelected ? table.getSelectionForeground() : getForeground());
                 String s = Integer.toString(r + 1);
-                g.drawString(s, getWidth() - fm.stringWidth(s) - 8, cellRect.y + cellRect.height - fm.getDescent());
+                g.drawString(s, (getWidth() - fm.stringWidth(s)) / 2, cellRect.y + cellRect.height - fm.getDescent()); // center
             }
         }
 
