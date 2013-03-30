@@ -111,7 +111,7 @@ public class TessBoxCollection {
     public void combineBoxes() {
         TessBox prev = null; 
         for (TessBox box : list.toArray(new TessBox[list.size()])) {
-            if (prev != null && box.getRect().equals(prev.getRect())) {
+            if (prev != null && (box.getRect().equals(prev.getRect()) || prev.getRect().contains(box.getRect()))) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
             } else if (prev != null && combiningSymbols != null && combiningSymbols.trim().length() > 0 && box.getChrs().matches("[" + combiningSymbols + "]")) {
