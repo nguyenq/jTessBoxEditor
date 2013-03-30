@@ -89,7 +89,7 @@ public class LineNumberTableRowHeader extends JComponent {
             }
         }
 
-        if (table.getShowVerticalLines()) {
+        if (table.getRowCount() > 0 && table.getShowVerticalLines()) {
             g.setColor(table.getGridColor());
             g.drawRect(0, 0, cellWidth - 1, getHeight() - 1);
         }
