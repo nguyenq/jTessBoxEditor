@@ -80,6 +80,9 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
+        
+        LineNumberTableRowHeader tableLineNumber = new LineNumberTableRowHeader(this.jScrollPaneCoord, this.jTable);
+        this.jScrollPaneCoord.setRowHeaderView(tableLineNumber);
 
         if (MAC_OS_X) {
             new MacOSXApplication(Gui.this);

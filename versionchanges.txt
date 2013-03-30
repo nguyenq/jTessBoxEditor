@@ -39,7 +39,8 @@ Version 0.7 (16 June 2012)
   * add a Prefix (Language Code) textbox
   * add support for text anti-aliasing
 
-Version 0.8 beta 4 (28 March 2013)
+Version 0.8 beta 6 (30 March 2013)
+- Add row number
 - Improve Generate TIFF/Box functionality:
   * automatically combine boxes that have the same coordinates or combining symbols with main/base character
   * read in combining symbols from an external file
