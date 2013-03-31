@@ -68,6 +68,7 @@ public class Gui extends javax.swing.JFrame {
     protected final File baseDir = Utilities.getBaseDir(Gui.this);
     DefaultTableModel tableModel;
     private boolean isTess2_0Format;
+    protected RowHeaderList rowHeader;
 
     /**
      * Creates new form JTessBoxEditor.
@@ -81,8 +82,8 @@ public class Gui extends javax.swing.JFrame {
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
         
-        LineNumberTableRowHeader tableLineNumber = new LineNumberTableRowHeader(this.jScrollPaneCoord, this.jTable);
-        this.jScrollPaneCoord.setRowHeaderView(tableLineNumber);
+        rowHeader = new RowHeaderList(this.jTable);
+        this.jScrollPaneCoord.setRowHeaderView(rowHeader);
 
         if (MAC_OS_X) {
             new MacOSXApplication(Gui.this);
