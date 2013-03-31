@@ -43,7 +43,7 @@ public class GuiWithSpinner extends GuiWithEdit {
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
 
-        box.setChrs(this.jTextFieldChar.getText());
+        box.setChrs(this.jTextFieldCharacter.getText());
         tableModel.setValueAt(box.getChrs(), index, 0);
         Rectangle rect = box.getRect();
         JSpinner sp = (JSpinner) evt.getSource();

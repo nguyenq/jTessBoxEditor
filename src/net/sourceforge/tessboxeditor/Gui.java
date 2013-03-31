@@ -178,8 +178,8 @@ public class Gui extends javax.swing.JFrame {
         jButtonDelete = new javax.swing.JButton();
         jPanelSpinner = new javax.swing.JPanel();
         jLabelCharacter = new javax.swing.JLabel();
-        jTextFieldChar = new javax.swing.JTextField();
-        jTextFieldChar.setDocument(new LimitedLengthDocument(12));
+        jTextFieldCharacter = new javax.swing.JTextField();
+        jTextFieldCharacter.setDocument(new LimitedLengthDocument(12));
         jButtonConvert = new javax.swing.JButton();
         jLabelX = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
@@ -207,10 +207,10 @@ public class Gui extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabelCodepoint = new javax.swing.JLabel();
         jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));
-        jLabelChar = new javax.swing.JLabel();
-        jLabelChar.setFont(jLabelChar.getFont().deriveFont(14.0f));
-        jLabelCodepointValue = new javax.swing.JLabel();
-        jLabelCodepointValue.setFont(jLabelCodepointValue.getFont().deriveFont(14.0f));
+        jTextFieldChar = new javax.swing.JTextField();
+        jTextFieldChar.setFont(jTextFieldChar.getFont().deriveFont(14.0f));
+        jTextFieldCodepointValue = new javax.swing.JTextField();
+        jTextFieldCodepointValue.setFont(jTextFieldCodepointValue.getFont().deriveFont(14.0f));
         jLabelSubimage = new javax.swing.JLabel();
         jScrollPaneImage = new javax.swing.JScrollPane();
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
@@ -355,20 +355,20 @@ public class Gui extends javax.swing.JFrame {
         jToolBar1.add(jButtonDelete);
         jToolBar1.add(Box.createHorizontalGlue());
 
-        jLabelCharacter.setLabelFor(jTextFieldChar);
+        jLabelCharacter.setLabelFor(jTextFieldCharacter);
         jLabelCharacter.setText("Character");
         jPanelSpinner.add(jLabelCharacter);
 
-        jTextFieldChar.setColumns(4);
-        jTextFieldChar.setEnabled(false);
-        jTextFieldChar.setMargin(new java.awt.Insets(0, 2, 0, 2));
-        jTextFieldChar.setPreferredSize(new java.awt.Dimension(40, 24));
-        jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldCharacter.setColumns(4);
+        jTextFieldCharacter.setEnabled(false);
+        jTextFieldCharacter.setMargin(new java.awt.Insets(0, 2, 0, 2));
+        jTextFieldCharacter.setPreferredSize(new java.awt.Dimension(40, 24));
+        jTextFieldCharacter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCharActionPerformed(evt);
+                jTextFieldCharacterActionPerformed(evt);
             }
         });
-        jPanelSpinner.add(jTextFieldChar);
+        jPanelSpinner.add(jTextFieldCharacter);
 
         jButtonConvert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/tools.png"))); // NOI18N
         jButtonConvert.setToolTipText("<html>Convert NCR and Escape<br/>Sequence to Unicode</html>");
@@ -520,9 +520,9 @@ public class Gui extends javax.swing.JFrame {
                         if (jTable.getSelectedRows().length == 1) {
                             enableReadout(true);
                             // update Character field
-                            jTextFieldChar.setText((String) tableModel.getValueAt(selectedIndex, 0));
-                            jLabelChar.setText(jTextFieldChar.getText());
-                            jLabelCodepointValue.setText(Utilities.toHex(jTextFieldChar.getText()));
+                            jTextFieldCharacter.setText((String) tableModel.getValueAt(selectedIndex, 0));
+                            jTextFieldChar.setText(jTextFieldCharacter.getText());
+                            jTextFieldCodepointValue.setText(Utilities.toHex(jTextFieldCharacter.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -590,8 +590,8 @@ public class Gui extends javax.swing.JFrame {
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jPanelCoord);
 
-        jTextArea.setColumns(20);
         jTextArea.setEditable(false);
+        jTextArea.setColumns(20);
         jTextArea.setRows(5);
         jTextArea.setMargin(new java.awt.Insets(8, 8, 2, 2));
         jScrollPaneBoxData.setViewportView(jTextArea);
@@ -606,11 +606,14 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelCodepoint.setText("Char/Codepoint:");
         jPanel1.add(jLabelCodepoint);
-        jPanel1.add(jLabelChar);
-        jLabelChar.getAccessibleContext().setAccessibleName("Char");
 
-        jPanel1.add(jLabelCodepointValue);
-        jLabelCodepointValue.getAccessibleContext().setAccessibleName("Codepoint");
+        jTextFieldChar.setEditable(false);
+        jTextFieldChar.setOpaque(false);
+        jPanel1.add(jTextFieldChar);
+
+        jTextFieldCodepointValue.setEditable(false);
+        jTextFieldCodepointValue.setOpaque(false);
+        jPanel1.add(jTextFieldCodepointValue);
 
         jPanelBoxView.add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -1154,9 +1157,9 @@ public class Gui extends javax.swing.JFrame {
     }
 
     void resetReadout() {
+        jTextFieldCharacter.setText(null);
         jTextFieldChar.setText(null);
-        jLabelChar.setText(null);
-        jLabelCodepointValue.setText(null);
+        jTextFieldCodepointValue.setText(null);
         jSpinnerH.setValue(0);
         jSpinnerW.setValue(0);
         jSpinnerX.setValue(0);
@@ -1165,7 +1168,7 @@ public class Gui extends javax.swing.JFrame {
     }
 
     void enableReadout(boolean enabled) {
-        jTextFieldChar.setEnabled(enabled);
+        jTextFieldCharacter.setEnabled(enabled);
         jSpinnerX.setEnabled(enabled);
         jSpinnerY.setEnabled(enabled);
         jSpinnerH.setEnabled(enabled);
@@ -1282,7 +1285,7 @@ public class Gui extends javax.swing.JFrame {
     void stateChanged(javax.swing.event.ChangeEvent evt) {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }
-    private void jTextFieldCharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCharActionPerformed
+    private void jTextFieldCharacterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCharacterActionPerformed
         if (boxes == null) {
             return;
         }
@@ -1297,24 +1300,24 @@ public class Gui extends javax.swing.JFrame {
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
 
-        if (!box.getChrs().equals(this.jTextFieldChar.getText())) {
-            box.setChrs(this.jTextFieldChar.getText());
+        if (!box.getChrs().equals(this.jTextFieldCharacter.getText())) {
+            box.setChrs(this.jTextFieldCharacter.getText());
             tableModel.setValueAt(box.getChrs(), index, 0);
-            jLabelChar.setText(this.jTextFieldChar.getText());
-            jLabelCodepointValue.setText(Utilities.toHex(this.jTextFieldChar.getText()));
+            jTextFieldChar.setText(this.jTextFieldCharacter.getText());
+            jTextFieldCodepointValue.setText(Utilities.toHex(this.jTextFieldCharacter.getText()));
             updateSave(true);
         }
-    }//GEN-LAST:event_jTextFieldCharActionPerformed
+    }//GEN-LAST:event_jTextFieldCharacterActionPerformed
     private void jButtonConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConvertActionPerformed
-        String curChar = this.jTextFieldChar.getText();
+        String curChar = this.jTextFieldCharacter.getText();
         if (curChar.trim().length() == 0) {
             return;
         }
         // Convert NCR or escape sequence to Unicode.
-        this.jTextFieldChar.setText(TextUtilities.convertNCR(this.jTextFieldChar.getText()));
+        this.jTextFieldCharacter.setText(TextUtilities.convertNCR(this.jTextFieldCharacter.getText()));
         // Commit the change, if no conversion.
-        if (curChar.equals(this.jTextFieldChar.getText())) {
-            jTextFieldCharActionPerformed(evt);
+        if (curChar.equals(this.jTextFieldCharacter.getText())) {
+            jTextFieldCharacterActionPerformed(evt);
         }
     }//GEN-LAST:event_jButtonConvertActionPerformed
     void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeActionPerformed
@@ -1421,10 +1424,8 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSplit;
     private javax.swing.JFileChooser jFileChooser;
-    protected javax.swing.JLabel jLabelChar;
     private javax.swing.JLabel jLabelCharacter;
     private javax.swing.JLabel jLabelCodepoint;
-    private javax.swing.JLabel jLabelCodepointValue;
     private javax.swing.JLabel jLabelH;
     protected javax.swing.JLabel jLabelImage;
     private javax.swing.JLabel jLabelPageNbr;
@@ -1475,6 +1476,8 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
     protected javax.swing.JTextField jTextFieldChar;
+    protected javax.swing.JTextField jTextFieldCharacter;
+    private javax.swing.JTextField jTextFieldCodepointValue;
     protected javax.swing.JTextField jTextFieldFind;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
