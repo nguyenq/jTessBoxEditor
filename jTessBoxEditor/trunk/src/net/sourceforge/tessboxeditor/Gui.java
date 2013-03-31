@@ -178,7 +178,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelSpinner = new javax.swing.JPanel();
         jLabelCharacter = new javax.swing.JLabel();
         jTextFieldChar = new javax.swing.JTextField();
-        jTextFieldChar.setDocument(new LimitedLengthDocument(8));
+        jTextFieldChar.setDocument(new LimitedLengthDocument(12));
         jButtonConvert = new javax.swing.JButton();
         jLabelX = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
@@ -361,7 +361,7 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldChar.setColumns(4);
         jTextFieldChar.setEnabled(false);
         jTextFieldChar.setMargin(new java.awt.Insets(0, 2, 0, 2));
-        jTextFieldChar.setPreferredSize(new java.awt.Dimension(38, 24));
+        jTextFieldChar.setPreferredSize(new java.awt.Dimension(40, 24));
         jTextFieldChar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCharActionPerformed(evt);
@@ -1354,6 +1354,9 @@ public class Gui extends javax.swing.JFrame {
                 if (chrs.length() == 0) {
                     throw new Exception("Empty search values.");
                 }
+                // Convert NCR or escape sequence to Unicode.
+                chrs = TextUtilities.convertNCR(chrs);
+                
                 findBox = new TessBox(chrs, new Rectangle(), imageIndex);
                 findBox = boxes.selectByChars(findBox);
             } else {
@@ -1471,7 +1474,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
     protected javax.swing.JTextField jTextFieldChar;
-    private javax.swing.JTextField jTextFieldFind;
+    protected javax.swing.JTextField jTextFieldFind;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
     private JFrame helptopicsFrame;
