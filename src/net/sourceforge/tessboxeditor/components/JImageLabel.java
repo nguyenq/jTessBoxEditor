@@ -82,6 +82,7 @@ public class JImageLabel extends JLabel {
 
         for (TessBox box : boxes.toList()) {
             if (box.isSelected()) {
+                g2d.setStroke(new BasicStroke(2));
                 g2d.setColor(Color.RED);
                 resetColor = true;
             }
@@ -89,6 +90,7 @@ public class JImageLabel extends JLabel {
             g2d.draw(rect);
 //            g2d.drawRect(rect.x, height - rect.y - rect.height, rect.width, rect.height);
             if (resetColor) {
+                g2d.setStroke(new BasicStroke(1));
                 g2d.setColor(Color.BLUE);
                 resetColor = false;
             }
