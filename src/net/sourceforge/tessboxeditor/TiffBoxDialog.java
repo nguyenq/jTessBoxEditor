@@ -291,6 +291,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 String curName = this.jTextFieldFileName.getText();
                 String ext = curName.substring(curName.lastIndexOf(".exp"));
                 this.jTextFieldFileName.setText(createFileName(font) + ext);
+                pack();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
