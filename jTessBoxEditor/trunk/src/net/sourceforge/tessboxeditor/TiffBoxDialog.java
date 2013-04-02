@@ -288,10 +288,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
                 this.jTextArea1.setFont(font);
                 this.jTextArea1.validate();
                 this.jButtonFont.setText(fontDesc(font));
-                String curName = this.jTextFieldFileName.getText();
-                String ext = curName.substring(curName.lastIndexOf(".exp"));
-                this.jTextFieldFileName.setText(createFileName(font) + ext);
-                pack();
+                String curFontName = this.jTextFieldFileName.getText();
+                String ext = curFontName.substring(curFontName.lastIndexOf(".exp"));
+                String newFontName = createFileName(font) + ext;
+                this.jTextFieldFileName.setText(newFontName);
+                if (newFontName.length() > curFontName.length()) {
+                    pack(); // re-adjust window width
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
