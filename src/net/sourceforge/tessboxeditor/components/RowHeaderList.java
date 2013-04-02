@@ -47,7 +47,7 @@ public class RowHeaderList extends JList {
     public void setFont(Font font) {
         super.setFont(font);
         FontMetrics metrics = getFontMetrics(font);
-        setFixedCellWidth(metrics.stringWidth("4444") + 4); // 4-digit length + padding
+        setFixedCellWidth(metrics.stringWidth("4444") + 8); // 4-digit length + padding
         if (table != null) {
             setFixedCellHeight(table.getRowHeight());
         }
