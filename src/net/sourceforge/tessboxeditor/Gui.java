@@ -487,7 +487,7 @@ public class Gui extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                true, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -498,6 +498,19 @@ public class Gui extends javax.swing.JFrame {
         jTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPaneCoord.setViewportView(jTable);
         tableModel = (DefaultTableModel) this.jTable.getModel();
+        tableModel.addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+                int row = e.getFirstRow();
+                int column = e.getColumn();
+                TableModel model = (TableModel)e.getSource();
+                if (row != -1 && column != -1) {
+                    Object data = model.getValueAt(row, column);
+                    jTextFieldCharacter.setText((String) data);
+                    jTextFieldChar.setText((String) data);
+                    jTextFieldCodepointValue.setText(Utilities.toHex((String) data));
+                }
+            }
+        });
         ListSelectionModel cellSelectionModel = jTable.getSelectionModel();
         cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
 
