@@ -502,12 +502,14 @@ public class Gui extends javax.swing.JFrame {
             public void tableChanged(TableModelEvent e) {
                 int row = e.getFirstRow();
                 int column = e.getColumn();
-                TableModel model = (TableModel)e.getSource();
+
                 if (row != -1 && column != -1) {
+                    TableModel model = (TableModel)e.getSource();
                     Object data = model.getValueAt(row, column);
-                    jTextFieldCharacter.setText((String) data);
-                    jTextFieldChar.setText((String) data);
-                    jTextFieldCodepointValue.setText(Utilities.toHex((String) data));
+                    String value = (String) data;
+                    jTextFieldCharacter.setText(value);
+                    jTextFieldChar.setText(value);
+                    jTextFieldCodepointValue.setText(Utilities.toHex(value));
                 }
             }
         });
