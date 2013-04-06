@@ -24,6 +24,7 @@ public class RowHeaderList extends JList {
     JTable table;
     RowHeaderRenderer render;
 
+    @SuppressWarnings("unchecked")
     public RowHeaderList(final JTable table) {
         this.table = table;
         setFixedCellWidth(50);
