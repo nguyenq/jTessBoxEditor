@@ -81,13 +81,6 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
-        
-        rowHeader = new RowHeaderList(this.jTable);
-        this.jScrollPaneCoord.setRowHeaderView(rowHeader);
-        this.jTable.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
-        TableColumn col = this.jTable.getColumnModel().getColumn(0);
-        TableCellEditor editor = new MyTableCellEditor();
-        col.setCellEditor(editor);
 
         if (MAC_OS_X) {
             new MacOSXApplication(Gui.this);
@@ -490,9 +483,16 @@ public class Gui extends javax.swing.JFrame {
                 "Char", "X", "Y", "Width", "Height"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
             boolean[] canEdit = new boolean [] {
                 true, false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -585,6 +585,11 @@ public class Gui extends javax.swing.JFrame {
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control C"), "none");
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control X"), "none");
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control V"), "none");
+        rowHeader = new RowHeaderList(this.jTable);
+        this.jScrollPaneCoord.setRowHeaderView(rowHeader);
+        this.jTable.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+        this.jTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        this.jTable.setDefaultEditor(String.class, new MyTableCellEditor());
 
         jPanelCoord.add(jScrollPaneCoord, java.awt.BorderLayout.CENTER);
 
