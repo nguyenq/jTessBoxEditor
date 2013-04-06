@@ -84,6 +84,10 @@ public class Gui extends javax.swing.JFrame {
         
         rowHeader = new RowHeaderList(this.jTable);
         this.jScrollPaneCoord.setRowHeaderView(rowHeader);
+        this.jTable.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+        TableColumn col = this.jTable.getColumnModel().getColumn(0);
+        TableCellEditor editor = new MyTableCellEditor();
+        col.setCellEditor(editor);
 
         if (MAC_OS_X) {
             new MacOSXApplication(Gui.this);
