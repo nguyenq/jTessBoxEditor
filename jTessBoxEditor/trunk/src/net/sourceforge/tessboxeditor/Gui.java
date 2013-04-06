@@ -506,8 +506,8 @@ public class Gui extends javax.swing.JFrame {
             public void tableChanged(TableModelEvent e) {
                 int row = e.getFirstRow();
                 int column = e.getColumn();
-
-                if (row != -1 && column != -1) {
+                // update only if change to column 0 (Char)
+                if (row != -1 && column == 0) {
                     TableModel model = (TableModel)e.getSource();
                     Object data = model.getValueAt(row, column);
                     String value = (String) data;
