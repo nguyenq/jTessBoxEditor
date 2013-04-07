@@ -191,6 +191,7 @@ public class Gui extends javax.swing.JFrame {
         jLabelPageNbr = new javax.swing.JLabel();
         jButtonPrevPage = new javax.swing.JButton();
         jButtonNextPage = new javax.swing.JButton();
+        jSplitPane1 = new javax.swing.JSplitPane();
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
         jPanelCoord = new javax.swing.JPanel();
         jScrollPaneCoord = new javax.swing.JScrollPane();
@@ -471,6 +472,9 @@ public class Gui extends javax.swing.JFrame {
 
         getContentPane().add(jPanelStatus, java.awt.BorderLayout.SOUTH);
 
+        jSplitPane1.setBorder(null);
+        jSplitPane1.setDividerSize(2);
+
         jPanelCoord.setLayout(new java.awt.BorderLayout());
 
         jScrollPaneCoord.setPreferredSize(new java.awt.Dimension(200, 275));
@@ -646,12 +650,14 @@ public class Gui extends javax.swing.JFrame {
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
-        getContentPane().add(jTabbedPaneBoxData, java.awt.BorderLayout.WEST);
+        jSplitPane1.setLeftComponent(jTabbedPaneBoxData);
 
         jLabelImage.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jScrollPaneImage.setViewportView(jLabelImage);
 
-        getContentPane().add(jScrollPaneImage, java.awt.BorderLayout.CENTER);
+        jSplitPane1.setRightComponent(jScrollPaneImage);
+
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuFile.Mnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("jMenuFile.Text")); // NOI18N
@@ -1323,12 +1329,14 @@ public class Gui extends javax.swing.JFrame {
 
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
-
-        if (!box.getChrs().equals(this.jTextFieldCharacter.getText())) {
-            box.setChrs(this.jTextFieldCharacter.getText());
+        // Convert NCR or escape sequence to Unicode.
+        this.jTextFieldCharacter.setText(TextUtilities.convertNCR(this.jTextFieldCharacter.getText()));
+        String str = this.jTextFieldCharacter.getText();
+        if (!box.getChrs().equals(str)) {
+            box.setChrs(str);
             tableModel.setValueAt(box.getChrs(), index, 0);
-            jTextFieldChar.setText(this.jTextFieldCharacter.getText());
-            jTextFieldCodepointValue.setText(Utilities.toHex(this.jTextFieldCharacter.getText()));
+            jTextFieldChar.setText(str);
+            jTextFieldCodepointValue.setText(Utilities.toHex(str));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharacterActionPerformed
@@ -1496,6 +1504,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JSpinner jSpinnerW;
     protected javax.swing.JSpinner jSpinnerX;
     protected javax.swing.JSpinner jSpinnerY;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
     protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
