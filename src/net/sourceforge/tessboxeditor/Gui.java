@@ -518,6 +518,7 @@ public class Gui extends javax.swing.JFrame {
                     jTextFieldCharacter.setText(value);
                     jTextFieldChar.setText(value);
                     jTextFieldCodepointValue.setText(Utilities.toHex(value));
+                    updateSave(true);
                 }
             }
         });
@@ -971,6 +972,26 @@ public class Gui extends javax.swing.JFrame {
             ((JImageLabel) this.jLabelImage).setBoxes(boxes);
         }
     }
+    
+    /**
+     * Displays a dialog to discard changes.
+     *
+     * @return false if user canceled or discard, true else
+     */
+    protected boolean promptToDiscardChanges() {
+        if (!boxChanged) {
+            return false;
+        }
+        switch (JOptionPane.showConfirmDialog(this,
+                bundle.getString("Do_you_want_to_discard_the_changes_to_")
+                + boxFile.getName() + "?",
+                APP_NAME, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE)) {
+            case JOptionPane.YES_OPTION:
+                return true;
+            default:
+                return false;
+        }
+    }
 
     /**
      * Displays a dialog to save changes.
@@ -1229,6 +1250,10 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReloadActionPerformed
+        if (!promptToDiscardChanges()) {
+            return;
+        }
+
         if (boxFile != null) {
             jButtonReload.setEnabled(false);
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
