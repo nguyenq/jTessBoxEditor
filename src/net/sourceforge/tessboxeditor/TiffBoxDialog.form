@@ -37,6 +37,9 @@
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        &#xa;        // Set font&#xa;        font = new Font(&#xa;                prefs.get(&quot;trainfontName&quot;, this.jTextArea1.getFont().getName()),&#xa;                prefs.getInt(&quot;trainfontStyle&quot;, Font.PLAIN),&#xa;                prefs.getInt(&quot;trainfontSize&quot;, 36));&#xa;&#xa;        attributes.put(TextAttribute.TRACKING, this.jSpinnerTracking.getValue());&#xa;        font = font.deriveFont(attributes);&#xa;        this.jTextArea1.setFont(font);&#xa;        this.jButtonFont.setText(fontDesc(font));&#xa;        this.jTextFieldFileName.setText(createFileName(font) + &quot;.exp0.tif&quot;);"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="First"/>

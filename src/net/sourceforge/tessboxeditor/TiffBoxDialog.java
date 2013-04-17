@@ -49,18 +49,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         // DnD support
         new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
 
-        // Set font
-        font = new Font(
-                prefs.get("trainfontName", this.jTextArea1.getFont().getName()),
-                prefs.getInt("trainfontStyle", Font.PLAIN),
-                prefs.getInt("trainfontSize", 36));
-
-        attributes.put(TextAttribute.TRACKING, this.jSpinnerTracking.getValue());
-        font = font.deriveFont(attributes);
-        this.jTextArea1.setFont(font);
-        this.jButtonFont.setText(fontDesc(font));
-        this.jTextFieldFileName.setText(createFileName(font) + ".exp0.tif");
-
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -223,6 +211,18 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jToolBar1.add(jPanel1);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+        // Set font
+        font = new Font(
+            prefs.get("trainfontName", this.jTextArea1.getFont().getName()),
+            prefs.getInt("trainfontStyle", Font.PLAIN),
+            prefs.getInt("trainfontSize", 36));
+
+        attributes.put(TextAttribute.TRACKING, this.jSpinnerTracking.getValue());
+        font = font.deriveFont(attributes);
+        this.jTextArea1.setFont(font);
+        this.jButtonFont.setText(fontDesc(font));
+        this.jTextFieldFileName.setText(createFileName(font) + ".exp0.tif");
 
         jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);

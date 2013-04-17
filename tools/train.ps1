@@ -3,7 +3,7 @@
 Automate Tesseract 3.02 language data pack generation process.
 
 @author: Quan Nguyen
-@date: 06 October 2012
+@date: 16 April 2013
 
 The script file should be placed in the same directory as Tesseract's binary executables.
 All training data files must be prefixed with the language code -- such as: 
@@ -113,6 +113,8 @@ move-item -force -path shapetable -destination $trainDir\$lang.shapetable
 echo "Dictionary Data"
 Invoke-Expression ".\wordlist2dawg $trainDir\$lang.frequent_words_list $trainDir\$lang.freq-dawg $trainDir\$lang.unicharset"
 Invoke-Expression ".\wordlist2dawg $trainDir\$lang.words_list $trainDir\$lang.word-dawg $trainDir\$lang.unicharset"
+#Invoke-Expression ".\wordlist2dawg $trainDir\$lang.wordlist-punc $trainDir\$lang.punc-dawg $trainDir\$lang.unicharset"
+#Invoke-Expression ".\wordlist2dawg $trainDir\$lang.wordlist-number $trainDir\$lang.number-dawg $trainDir\$lang.unicharset"
 
 echo "The last file (unicharambigs) -- this is to be manually edited"
 if (!(test-path $trainDir\$lang.unicharambigs)) {
