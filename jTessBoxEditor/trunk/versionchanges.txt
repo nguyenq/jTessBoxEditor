@@ -39,13 +39,12 @@ Version 0.7 (16 June 2012)
   * add a Prefix (Language Code) textbox
   * add support for text anti-aliasing
 
-Version 0.8 beta 11 (7 April 2013)
+Version 0.8 (16 April 2013)
 - Add row number header
 - Char cell now editable
 - Convert Unicode escape sequences where possible
 - Find box now displays Unicode characters and allows search using Unicode escape sequences
 - Improve Generate TIFF/Box functionality:
   * automatically combine boxes that have the same coordinates or completely encloses one another
-  * automatically combine boxes that are combining symbols, specified in an external file, with the main/base character
+  * automatically combine boxes that are combining symbols, specified in an external file, with the main, base character
   * retain last-modified exp number in Generate TIFF/Box window
-- Various other improvements
