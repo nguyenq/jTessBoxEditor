@@ -22,7 +22,8 @@ import java.util.List;
 
 public class TessBoxCollection {
 
-    private String combiningSymbols;
+    private String appendingSymbols;
+    private String prependingSymbols;
     private List<TessBox> list;
 
     public TessBoxCollection() {
@@ -101,7 +102,16 @@ public class TessBoxCollection {
      * @param combiningSymbols 
      */
     public void setCombiningSymbols(String combiningSymbols) {
-        this.combiningSymbols = combiningSymbols;
+        if (combiningSymbols == null) {
+            return;
+        }
+        String[] str = combiningSymbols.split(";");
+        if (str.length > 0) {
+            this.appendingSymbols = str[0];
+        }
+        if (str.length > 1) {
+            this.prependingSymbols = str[1];
+        }
     }
     
     /**
@@ -114,7 +124,8 @@ public class TessBoxCollection {
             if (prev != null && (box.getRect().equals(prev.getRect()) || prev.getRect().contains(box.getRect()))) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
-            } else if (prev != null && combiningSymbols != null && combiningSymbols.trim().length() > 0 && box.getChrs().matches("[" + combiningSymbols + "]")) {
+            } else if (prev != null && ((appendingSymbols != null && appendingSymbols.trim().length() > 0 && box.getChrs().matches("[" + appendingSymbols + "]"))
+                                     || (prependingSymbols != null && prependingSymbols.trim().length() > 0 && prev.getChrs().matches("[" + prependingSymbols + "]")))) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
                 Rectangle prevRect = prev.getRect();
