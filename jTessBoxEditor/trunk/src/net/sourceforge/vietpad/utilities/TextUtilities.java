@@ -73,10 +73,10 @@ public class TextUtilities {
     }
 
     /**
-     *  Converts Numeric Character References and Unicode escape sequences to Unicode.
+     *  Converts Unicode escape sequences to Unicode.
      */
     public static String convertNCR(String str) {
-        final String[] NCRs = {"&#x", "&#", "\\u", "U+", "#x", "#"};
+        final String[] NCRs = {"\\u", "U+"};
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < NCRs.length; i++) {
