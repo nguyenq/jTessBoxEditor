@@ -70,7 +70,7 @@ public class TessBoxCollection {
         }
 
         for (TessBox box : searchList) {
-            if (box.getChrs().equals(findBox.getChrs())) {
+            if (box.getChrs().contains(findBox.getChrs())) {
                 return box;
             }
         }
