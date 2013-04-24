@@ -48,3 +48,7 @@ Version 0.8 (16 April 2013)
   * automatically combine boxes that have the same coordinates or completely encloses one another
   * automatically combine boxes that are combining symbols, specified in an external file, with the main, base character
   * retain last-modified exp number in Generate TIFF/Box window
+
+Version 0.9 Beta (24 April 2013)
+- Enhance Generate TIFF/Box functionality:
+  * add support for combining prepending symbols in addition to appending
