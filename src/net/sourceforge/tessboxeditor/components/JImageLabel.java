@@ -54,8 +54,8 @@ public class JImageLabel extends JLabel {
                     // select corresponding table rows
                     boxClickAction = true;
                     java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
-                    for (TessBox selectedBoxe : boxes.getSelectedBoxes()) {
-                        int index = boxesOfCurPage.indexOf(selectedBoxe);
+                    for (TessBox selectedBoxes : boxes.getSelectedBoxes()) {
+                        int index = boxesOfCurPage.indexOf(selectedBoxes);
                         table.addRowSelectionInterval(index, index);
                         Rectangle rect = table.getCellRect(index, 0, true);
                         table.scrollRectToVisible(rect);
