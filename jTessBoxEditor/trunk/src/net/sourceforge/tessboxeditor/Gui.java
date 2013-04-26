@@ -572,6 +572,7 @@ public class Gui extends javax.swing.JFrame {
                             tableSelectAction = false;
                         } else {
                             enableReadout(false);
+                            resetReadout();
                         }
                     } else {
                         boxes.deselectAll();
@@ -1481,42 +1482,32 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemGenerateTiffBoxActionPerformed
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
-        this.jButtonNext.setEnabled(true);
-        java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
-        for (TessBox selectedBoxes : boxes.getSelectedBoxes()) {
-            int index = boxesOfCurPage.indexOf(selectedBoxes);
-            if (index > 0) {
-                boxes.deselectAll();
-                this.jTable.clearSelection();
-                --index;
-                TessBox selected = boxesOfCurPage.get(index);
-                selected.setSelected(true);
-                this.jTable.addRowSelectionInterval(index, index);
-                Rectangle rect = this.jTable.getCellRect(index, 0, true);
-                this.jTable.scrollRectToVisible(rect);
-                this.jButtonPrev.setEnabled(index != 0);
-            }
-            break;
+        int index = this.jTable.getSelectedRow();
+        if (index > 0) {
+            boxes.deselectAll();
+            this.jTable.clearSelection();
+            --index;
+            java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
+            TessBox selected = boxesOfCurPage.get(index);
+            selected.setSelected(true);
+            this.jTable.addRowSelectionInterval(index, index);
+            Rectangle rect = this.jTable.getCellRect(index, 0, true);
+            this.jTable.scrollRectToVisible(rect);
         }
     }//GEN-LAST:event_jButtonPrevActionPerformed
 
     private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
-        this.jButtonPrev.setEnabled(true);
         java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
-        for (TessBox selectedBoxes : boxes.getSelectedBoxes()) {
-            int index = boxesOfCurPage.indexOf(selectedBoxes);
-            if (index < boxesOfCurPage.size() - 1) {
-                boxes.deselectAll();
-                this.jTable.clearSelection();
-                ++index;
-                TessBox selected = boxesOfCurPage.get(index);
-                selected.setSelected(true);
-                this.jTable.addRowSelectionInterval(index, index);
-                Rectangle rect = this.jTable.getCellRect(index, 0, true);
-                this.jTable.scrollRectToVisible(rect);
-                this.jButtonNext.setEnabled(index != boxesOfCurPage.size() - 1);
-            }
-            break;
+        int index = this.jTable.getSelectedRow();
+        if (index < boxesOfCurPage.size() - 1) {
+            boxes.deselectAll();
+            this.jTable.clearSelection();
+            ++index;
+            TessBox selected = boxesOfCurPage.get(index);
+            selected.setSelected(true);
+            this.jTable.addRowSelectionInterval(index, index);
+            Rectangle rect = this.jTable.getCellRect(index, 0, true);
+            this.jTable.scrollRectToVisible(rect);
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
 
