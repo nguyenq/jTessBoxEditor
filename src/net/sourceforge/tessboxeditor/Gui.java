@@ -210,6 +210,9 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldCodepointValue = new javax.swing.JTextField();
         jTextFieldCodepointValue.setFont(jTextFieldCodepointValue.getFont().deriveFont(14.0f));
         jLabelSubimage = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jButtonPrev = new javax.swing.JButton();
+        jButtonNext = new javax.swing.JButton();
         jScrollPaneImage = new javax.swing.JScrollPane();
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
         jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
@@ -648,6 +651,26 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setBackground(new java.awt.Color(192, 192, 192));
+
+        jButtonPrev.setText("Prev");
+        jButtonPrev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPrevActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonPrev);
+
+        jButtonNext.setText("Next");
+        jButtonNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNextActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonNext);
+
+        jPanelBoxView.add(jPanel2, java.awt.BorderLayout.SOUTH);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
@@ -1457,6 +1480,46 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemGenerateTiffBoxActionPerformed
 
+    private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
+        this.jButtonNext.setEnabled(true);
+        java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
+        for (TessBox selectedBoxes : boxes.getSelectedBoxes()) {
+            int index = boxesOfCurPage.indexOf(selectedBoxes);
+            if (index > 0) {
+                boxes.deselectAll();
+                this.jTable.clearSelection();
+                --index;
+                TessBox selected = boxesOfCurPage.get(index);
+                selected.setSelected(true);
+                this.jTable.addRowSelectionInterval(index, index);
+                Rectangle rect = this.jTable.getCellRect(index, 0, true);
+                this.jTable.scrollRectToVisible(rect);
+                this.jButtonPrev.setEnabled(index != 0);
+            }
+            break;
+        }
+    }//GEN-LAST:event_jButtonPrevActionPerformed
+
+    private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
+        this.jButtonPrev.setEnabled(true);
+        java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
+        for (TessBox selectedBoxes : boxes.getSelectedBoxes()) {
+            int index = boxesOfCurPage.indexOf(selectedBoxes);
+            if (index < boxesOfCurPage.size() - 1) {
+                boxes.deselectAll();
+                this.jTable.clearSelection();
+                ++index;
+                TessBox selected = boxesOfCurPage.get(index);
+                selected.setSelected(true);
+                this.jTable.addRowSelectionInterval(index, index);
+                Rectangle rect = this.jTable.getCellRect(index, 0, true);
+                this.jTable.scrollRectToVisible(rect);
+                this.jButtonNext.setEnabled(index != boxesOfCurPage.size() - 1);
+            }
+            break;
+        }
+    }//GEN-LAST:event_jButtonNextActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1474,8 +1537,10 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonFind;
     private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonMerge;
+    private javax.swing.JButton jButtonNext;
     private javax.swing.JButton jButtonNextPage;
     private javax.swing.JButton jButtonOpen;
+    private javax.swing.JButton jButtonPrev;
     private javax.swing.JButton jButtonPrevPage;
     private javax.swing.JButton jButtonReload;
     private javax.swing.JButton jButtonSave;
@@ -1513,6 +1578,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JMenu jMenuTools;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelBoxView;
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelFind;
