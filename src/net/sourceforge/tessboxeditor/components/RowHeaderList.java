@@ -18,6 +18,8 @@ package net.sourceforge.tessboxeditor.components;
 import java.awt.*;
 import javax.swing.*;
 import static javax.swing.SwingConstants.CENTER;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class RowHeaderList extends JList {
 
@@ -32,6 +34,16 @@ public class RowHeaderList extends JList {
         render = new RowHeaderRenderer();
         setCellRenderer(render);
         setSelectionModel(table.getSelectionModel());
+        addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int index = RowHeaderList.this.getSelectedIndex();
+                    Rectangle rect = table.getCellRect(index, 0, true);
+                    table.scrollRectToVisible(rect);
+                }
+            }
+        });
+        
         ListModel lm = new AbstractListModel() {
             public int getSize() {
                 return table.getRowCount();
