@@ -518,6 +518,8 @@ public class Gui extends javax.swing.JFrame {
                     TableModel model = (TableModel)e.getSource();
                     Object data = model.getValueAt(row, column);
                     String value = (String) data;
+                    TessBox box = boxes.toList().get(row);
+                    box.setChrs(value);
                     jTextFieldCharacter.setText(value);
                     jTextFieldChar.setText(value);
                     jTextFieldCodepointValue.setText(Utilities.toHex(value));
