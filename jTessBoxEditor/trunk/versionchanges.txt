@@ -52,5 +52,5 @@ Version 0.8 (16 April 2013)
 Version 0.9 (30 April 2013)
 - Enhance Generate TIFF/Box functionality to allow for combining prepending symbols in addition to appending
 - Fix a bug that failed to persist changes to table in edit mode
-- Find function now support partial matches
+- Find function now supports partial matches
 - Fix a problem with table not scrolling along when row header has focus and scrolling
