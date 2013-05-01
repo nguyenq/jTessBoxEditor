@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Configuration File</comment>
+    <entry key="ReleaseDate">2013/4/30</entry>
+    <entry key="Version">v0.9</entry>
+</properties>
