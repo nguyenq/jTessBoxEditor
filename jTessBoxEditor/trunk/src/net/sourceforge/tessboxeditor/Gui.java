@@ -740,7 +740,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuEdit.setText(bundle.getString("jMenuEdit.Text")); // NOI18N
 
         jMenuItemMerge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemMerge.setText("Merge");
+        jMenuItemMerge.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemMerge.Mnemonic").charAt(0));
+        jMenuItemMerge.setText(bundle.getString("jMenuItemMerge.Text")); // NOI18N
         jMenuItemMerge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemMergeActionPerformed(evt);
@@ -749,7 +750,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuEdit.add(jMenuItemMerge);
 
         jMenuItemSplit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemSplit.setText("Split");
+        jMenuItemSplit.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemSplit.Mnemonic").charAt(0));
+        jMenuItemSplit.setText(bundle.getString("jMenuItemSplit.Text")); // NOI18N
         jMenuItemSplit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemSplitActionPerformed(evt);
@@ -768,7 +770,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuEdit.add(jMenuItemInsert);
 
         jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
-        jMenuItemDelete.setText("Delete");
+        jMenuItemDelete.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemDelete.Mnemonic").charAt(0));
+        jMenuItemDelete.setText(bundle.getString("jMenuItemDelete.Text")); // NOI18N
         jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDeleteActionPerformed(evt);
