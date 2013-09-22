@@ -238,6 +238,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuTools = new javax.swing.JMenu();
         jMenuItemMergeTiff = new javax.swing.JMenuItem();
         jMenuItemGenerateTiffBox = new javax.swing.JMenuItem();
+        jMenuItemTrain = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
@@ -823,6 +824,14 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuTools.add(jMenuItemGenerateTiffBox);
+
+        jMenuItemTrain.setText("Generate Trainned Data");
+        jMenuItemTrain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemTrainActionPerformed(evt);
+            }
+        });
+        jMenuTools.add(jMenuItemTrain);
 
         jMenuBar.add(jMenuTools);
 
@@ -1516,6 +1525,10 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
 
+    void jMenuItemTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTrainActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jMenuItemTrainActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1569,6 +1582,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenuItem jMenuItemSplit;
+    private javax.swing.JMenuItem jMenuItemTrain;
     protected javax.swing.JMenu jMenuLookAndFeel;
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
