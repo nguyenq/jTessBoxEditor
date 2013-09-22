@@ -29,7 +29,9 @@ public class ImageIOHelper {
     final static String OUTPUT_FILE_NAME = "Tesstmp";
     final static String TIFF_EXT = ".tif";
     final static String TIFF_FORMAT = "tiff";
-
+    final static String JAI_IMAGE_WRITER_MESSAGE = "Need to install JAI Image I/O package.\nhttps://java.net/projects/jai-imageio/";
+    final static String JAI_IMAGE_READER_MESSAGE = "Unsupported image format. May need to install JAI Image I/O package.\nhttps://java.net/projects/jai-imageio/";
+    
     /**
      * Gets a list of <code>BufferedImage</code> objects for an image file.
      *
@@ -47,11 +49,11 @@ public class ImageIOHelper {
             String imageFileName = imageFile.getName();
             String imageFormat = imageFileName.substring(imageFileName.lastIndexOf('.') + 1);
             Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(imageFormat);
-            reader = readers.next();
-
-            if (reader == null) {
-                throw new RuntimeException("Need to install JAI Image I/O package.\nhttps://jai-imageio.dev.java.net");
+            if (!readers.hasNext()) {
+                throw new RuntimeException(JAI_IMAGE_READER_MESSAGE);
             }
+
+            reader = readers.next();
 
             iis = ImageIO.createImageInputStream(imageFile);
             reader.setInput(iis);
@@ -100,11 +102,11 @@ public class ImageIOHelper {
                 imageFormat = "jpeg2000";
             }
             Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(imageFormat);
-            reader = readers.next();
-
-            if (reader == null) {
-                throw new RuntimeException("Need to install JAI Image I/O package.\nhttps://jai-imageio.dev.java.net");
+            if (!readers.hasNext()) {
+                throw new RuntimeException(JAI_IMAGE_READER_MESSAGE);
             }
+
+            reader = readers.next();
 
             iis = ImageIO.createImageInputStream(imageFile);
             reader.setInput(iis);
@@ -180,6 +182,10 @@ public class ImageIOHelper {
         }
 
         Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+        if (!writers.hasNext()) {
+            throw new RuntimeException(JAI_IMAGE_WRITER_MESSAGE);
+        }
+        
         ImageWriter writer = writers.next();
 
         //Set up the writeParam
