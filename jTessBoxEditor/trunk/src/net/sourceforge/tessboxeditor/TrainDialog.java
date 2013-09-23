@@ -34,9 +34,13 @@ public class TrainDialog extends javax.swing.JDialog {
         initComponents();
         
         tessDirectory = prefs.get("tessDirectory", null);
-        jFileChooser1.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
+        this.jTextFieldTessDir.setText(tessDirectory);
+        this.jFileChooser1.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
         trainDataDirectory = prefs.get("trainDataDirectory", null);
-        jFileChooser2.setCurrentDirectory(tessDirectory == null ? null : new File(trainDataDirectory));
+        this.jTextFieldDataDir.setText(trainDataDirectory);
+        this.jFileChooser2.setCurrentDirectory(tessDirectory == null ? null : new File(trainDataDirectory));
+        this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
+        this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -73,15 +77,15 @@ public class TrainDialog extends javax.swing.JDialog {
         jFileChooser2 = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        jTextFieldTessDir = new javax.swing.JTextField();
         jButtonBrowseTess = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jTextFieldDataDir = new javax.swing.JTextField();
         jButtonBrowseData = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldLang = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldBootstrapLang = new javax.swing.JTextField();
         jComboBoxOps = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jButtonGenerate = new javax.swing.JButton();
@@ -89,7 +93,7 @@ public class TrainDialog extends javax.swing.JDialog {
         jButtonClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Trainer");
+        setTitle("Tesseract Trainer");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -97,15 +101,15 @@ public class TrainDialog extends javax.swing.JDialog {
         jLabel4.setText("Tesseract Executable:");
         jPanel1.add(jLabel4, new java.awt.GridBagConstraints());
 
-        jTextField4.setEnabled(false);
-        jTextField4.setPreferredSize(new java.awt.Dimension(180, 20));
+        jTextFieldTessDir.setEnabled(false);
+        jTextFieldTessDir.setPreferredSize(new java.awt.Dimension(180, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 4);
-        jPanel1.add(jTextField4, gridBagConstraints);
+        jPanel1.add(jTextFieldTessDir, gridBagConstraints);
 
         jButtonBrowseTess.setText("...");
         jButtonBrowseTess.setToolTipText("Browse");
@@ -127,15 +131,15 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel3, gridBagConstraints);
 
-        jTextField3.setEnabled(false);
-        jTextField3.setPreferredSize(new java.awt.Dimension(180, 20));
+        jTextFieldDataDir.setEnabled(false);
+        jTextFieldDataDir.setPreferredSize(new java.awt.Dimension(180, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
-        jPanel1.add(jTextField3, gridBagConstraints);
+        jPanel1.add(jTextFieldDataDir, gridBagConstraints);
 
         jButtonBrowseData.setText("...");
         jButtonBrowseData.setToolTipText("Browse");
@@ -157,31 +161,31 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jTextField1.setPreferredSize(new java.awt.Dimension(30, 20));
+        jTextFieldLang.setPreferredSize(new java.awt.Dimension(34, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
-        jPanel1.add(jTextField1, gridBagConstraints);
+        jPanel1.add(jTextFieldLang, gridBagConstraints);
 
         jLabel2.setText("Bootstrap Language:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 35);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 38);
         jPanel1.add(jLabel2, gridBagConstraints);
 
-        jTextField2.setPreferredSize(new java.awt.Dimension(30, 20));
+        jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(34, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(6, 4, 6, 0);
-        jPanel1.add(jTextField2, gridBagConstraints);
+        jPanel1.add(jTextFieldBootstrapLang, gridBagConstraints);
 
-        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Box Only", "Skip Box Generation", "Training w/o Box" }));
+        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Generate Boxes Only", "Train with Existing Boxes", "Train without Boxes" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -220,35 +224,48 @@ public class TrainDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
-        // launch training process
+        if (this.jComboBoxOps.getSelectedIndex() == 0 || this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0 || this.jTextFieldLang.getText().trim().length() == 0) {
+            JOptionPane.showMessageDialog(TrainDialog.this, "Input is not complete.");
+            return;
+        }
         
+        // launch training process
+        try {
+            TessTrainer trainer = new TessTrainer(this.tessDirectory, this.trainDataDirectory, this.jTextFieldLang.getText(), this.jTextFieldBootstrapLang.getText());
+            trainer.generate(this.jComboBoxOps.getSelectedIndex());
+        } catch (Exception e) {
+            // ignore
+        }
     }//GEN-LAST:event_jButtonGenerateActionPerformed
-
+    
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
         this.setVisible(false);
+        quit();
     }//GEN-LAST:event_jButtonCloseActionPerformed
 
     private void jButtonBrowseDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseDataActionPerformed
         if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             trainDataDirectory = jFileChooser1.getCurrentDirectory().getPath();
+            this.jTextFieldDataDir.setText(trainDataDirectory);
         }
     }//GEN-LAST:event_jButtonBrowseDataActionPerformed
 
     private void jButtonBrowseTessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseTessActionPerformed
         if (jFileChooser2.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             tessDirectory = jFileChooser2.getCurrentDirectory().getPath();
+            this.jTextFieldTessDir.setText(tessDirectory);
         }
     }//GEN-LAST:event_jButtonBrowseTessActionPerformed
 
     void quit() {
         if (tessDirectory != null) {
+            prefs.put("tessDirectory", tessDirectory);
+        }
+        if (trainDataDirectory != null) {
             prefs.put("trainDataDirectory", tessDirectory);
         }
-
-//        prefs.put("trainLanguage", jTextFieldPrefix.getText());
-//        prefs.put("trainfontName", font.getName());
-//        prefs.putInt("trainfontSize", font.getSize());
-//        prefs.putInt("trainfontStyle", font.getStyle());
+        prefs.put("trainnedLanguage", this.jTextFieldLang.getText());
+        prefs.put("bootstrapLanguage", this.jTextFieldBootstrapLang.getText());
     }
 
     /**
@@ -307,9 +324,9 @@ public class TrainDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextFieldBootstrapLang;
+    private javax.swing.JTextField jTextFieldDataDir;
+    private javax.swing.JTextField jTextFieldLang;
+    private javax.swing.JTextField jTextFieldTessDir;
     // End of variables declaration//GEN-END:variables
 }

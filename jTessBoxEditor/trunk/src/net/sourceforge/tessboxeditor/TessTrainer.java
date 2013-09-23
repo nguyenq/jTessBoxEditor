@@ -23,23 +23,41 @@ import java.io.InputStreamReader;
 
 public class TessTrainer {
     ProcessBuilder pb;
+    String tessFolder;
+    String dataFolder;
+    String lang;
+    String bootstrapLang;
     
-    public TessTrainer() {
+    public TessTrainer(String tessFolder, String dataFolder, String lang, String bootstrapLang) {
         pb = new ProcessBuilder();
         pb.directory(new File(System.getProperty("user.home")));
         pb.redirectErrorStream(true);
+        
+        this.tessFolder = tessFolder;
+        this.dataFolder = dataFolder;
+        this.lang = lang;
+        this.bootstrapLang = bootstrapLang;
     }
 
-    void generateBox(String lang) throws Exception {
+    /**
+     * Generates data based on selection of training mode.
+     * @param mode 1: Generate Boxes Only; 2: Train with Existing Boxes; 3: Train without Boxes
+     * @throws Exception 
+     */
+    public void generate(int mode) throws Exception {
+        runCommand(lang);
+    }
+    
+    void generateBox() throws Exception {
         runCommand(lang);
     }
 
-    void generateTraineddata(String lang) throws Exception {
+    void generateTraineddata(boolean skipBoxGeneration) throws Exception {
         runCommand(lang);
     }
 
     void runCommand(String cmd) throws Exception {
-        System.out.println("Execute command " + cmd);
+        System.out.println("Execute command: " + cmd);
         pb.command(cmd);
         Process process = pb.start();
 
