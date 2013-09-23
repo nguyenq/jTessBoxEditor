@@ -235,6 +235,7 @@ public class TrainDialog extends javax.swing.JDialog {
             trainer.generate(this.jComboBoxOps.getSelectedIndex());
         } catch (Exception e) {
             // ignore
+            // System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_jButtonGenerateActionPerformed
     
