@@ -17,24 +17,29 @@ package net.sourceforge.tessboxeditor;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TessTrainer {
+    private final String LANG_OPTION = "-l";
+    
     ProcessBuilder pb;
-    String tessFolder;
-    String dataFolder;
+    String tessDir;
+    String inputDataDir;
     String lang;
     String bootstrapLang;
     
-    public TessTrainer(String tessFolder, String dataFolder, String lang, String bootstrapLang) {
+    public TessTrainer(String tessDir, String inputDataDir, String lang, String bootstrapLang) {
         pb = new ProcessBuilder();
         pb.directory(new File(System.getProperty("user.home")));
         pb.redirectErrorStream(true);
         
-        this.tessFolder = tessFolder;
-        this.dataFolder = dataFolder;
+        this.tessDir = tessDir;
+        this.inputDataDir = inputDataDir;
         this.lang = lang;
         this.bootstrapLang = bootstrapLang;
     }
@@ -45,18 +50,74 @@ public class TessTrainer {
      * @throws Exception 
      */
     public void generate(int mode) throws Exception {
-        runCommand(lang);
+        switch (mode) {
+            case 1: generateBox(); break;
+            case 2: generateTraineddata(false); break;
+            case 3: generateTraineddata(true); break;
+            default: break;
+        }
     }
     
     void generateBox() throws Exception {
-        runCommand(lang);
+        //tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox
+        List<String> cmd = new ArrayList<String>();
+        cmd.add(tessDir + "/tesseract");
+        cmd.add(""); // placeholder for input image file
+        cmd.add(""); // placeholder for output box file
+        if (this.bootstrapLang.length() > 0) {
+            cmd.add(LANG_OPTION);
+            cmd.add(this.bootstrapLang);
+        }
+        cmd.add("batch.nochop");
+        cmd.add("makebox");
+        
+        File[] files = new File(inputDataDir).listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(".tif") || filename.endsWith(".tiff") || filename.endsWith(".png");
+            }
+        });
+        
+        for (File f : files) {
+            String fileName = f.getPath();
+            cmd.set(1, fileName);
+            cmd.set(2, stripExtension(fileName));
+            runCommand(cmd);
+        }
     }
 
+    /**
+     * http://stackoverflow.com/questions/924394/how-to-get-file-name-without-the-extension
+     * @param str
+     * @return 
+     */
+    static String stripExtension(String str) {
+        // Handle null case specially.
+        if (str == null) return null;
+
+        // Get position of last '.'.
+        int pos = str.lastIndexOf(".");
+
+        // If there wasn't any '.' just return the string as is.
+        if (pos == -1) return str;
+
+        // Otherwise return the string, up to the dot.
+        return str.substring(0, pos);
+    }
+    
     void generateTraineddata(boolean skipBoxGeneration) throws Exception {
-        runCommand(lang);
+        if (!skipBoxGeneration) {
+            generateBox();
+        }
+        
+        //unicharset_extractor lang.fontname.exp0.box lang.fontname.exp1.box ...
+        List<String> cmd = new ArrayList<String>();
+        cmd.add(tessDir + "/unicharset_extractor");
+        cmd.add(""); // placeholder for box files
+
+        runCommand(cmd);
     }
 
-    void runCommand(String cmd) throws Exception {
+    void runCommand(List<String> cmd) throws Exception {
         System.out.println("Execute command: " + cmd);
         pb.command(cmd);
         Process process = pb.start();
