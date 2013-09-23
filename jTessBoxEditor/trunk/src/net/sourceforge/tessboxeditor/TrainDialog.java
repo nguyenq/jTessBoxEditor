@@ -38,7 +38,7 @@ public class TrainDialog extends javax.swing.JDialog {
         this.jFileChooser1.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
         trainDataDirectory = prefs.get("trainDataDirectory", null);
         this.jTextFieldDataDir.setText(trainDataDirectory);
-        this.jFileChooser2.setCurrentDirectory(tessDirectory == null ? null : new File(trainDataDirectory));
+        this.jFileChooser2.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
         this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
         this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
 
@@ -262,7 +262,7 @@ public class TrainDialog extends javax.swing.JDialog {
             prefs.put("tessDirectory", tessDirectory);
         }
         if (trainDataDirectory != null) {
-            prefs.put("trainDataDirectory", tessDirectory);
+            prefs.put("trainDataDirectory", trainDataDirectory);
         }
         prefs.put("trainnedLanguage", this.jTextFieldLang.getText());
         prefs.put("bootstrapLanguage", this.jTextFieldBootstrapLang.getText());

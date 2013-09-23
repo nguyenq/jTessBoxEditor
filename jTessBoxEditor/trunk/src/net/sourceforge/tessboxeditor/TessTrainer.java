@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
     private final String LANG_OPTION = "-l";
@@ -59,7 +60,7 @@ public class TessTrainer {
     }
     
     void generateBox() throws Exception {
-        //tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox
+//        String cmdStr = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
         List<String> cmd = new ArrayList<String>();
         cmd.add(tessDir + "/tesseract");
         cmd.add(""); // placeholder for input image file
@@ -80,28 +81,9 @@ public class TessTrainer {
         for (File f : files) {
             String fileName = f.getPath();
             cmd.set(1, fileName);
-            cmd.set(2, stripExtension(fileName));
+            cmd.set(2, TextUtilities.stripExtension(fileName));
             runCommand(cmd);
         }
-    }
-
-    /**
-     * http://stackoverflow.com/questions/924394/how-to-get-file-name-without-the-extension
-     * @param str
-     * @return 
-     */
-    static String stripExtension(String str) {
-        // Handle null case specially.
-        if (str == null) return null;
-
-        // Get position of last '.'.
-        int pos = str.lastIndexOf(".");
-
-        // If there wasn't any '.' just return the string as is.
-        if (pos == -1) return str;
-
-        // Otherwise return the string, up to the dot.
-        return str.substring(0, pos);
     }
     
     void generateTraineddata(boolean skipBoxGeneration) throws Exception {
@@ -130,7 +112,7 @@ public class TessTrainer {
         System.out.println("Exit value = " + w);
 
         if (w == 0) {
-            
+            // successful
         }
     }
 }
