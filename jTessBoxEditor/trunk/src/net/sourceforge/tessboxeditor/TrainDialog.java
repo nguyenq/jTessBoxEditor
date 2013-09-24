@@ -96,14 +96,16 @@ public class TrainDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jButtonGenerate = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        jButtonCancel.setEnabled(false);
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(18, 0), new java.awt.Dimension(18, 0), new java.awt.Dimension(18, 32767));
         jButtonClose = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jProgressBar1.setVisible(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Tesseract Trainer");
+        setTitle("Train Tesseract");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -201,6 +203,7 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
         jPanel1.add(jComboBoxOps, gridBagConstraints);
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 5));
@@ -235,6 +238,7 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
         jPanel1.add(jPanel2, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -298,7 +302,6 @@ public class TrainDialog extends javax.swing.JDialog {
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
         if (trainWorker != null && !trainWorker.isDone()) {
             trainWorker.cancel(true);
-            trainWorker = null;
         }
         this.jButtonCancel.setEnabled(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
@@ -332,32 +335,28 @@ public class TrainDialog extends javax.swing.JDialog {
             jProgressBar1.setIndeterminate(false);
 
             try {
-                get(); // dummy method                   
+                get(); // dummy method            
+                jLabelStatus.setText("Training completed.");
+                jProgressBar1.setVisible(false);
             } catch (InterruptedException ignore) {
                 ignore.printStackTrace();
             } catch (java.util.concurrent.ExecutionException e) {
                 String why = null;
                 Throwable cause = e.getCause();
                 if (cause != null) {
-                    if (cause instanceof OutOfMemoryError) {
-                        why = "OutOfMemoryError";
-                    } else {
-                        why = cause.getMessage();
-                    }
+                    why = cause.getMessage();
                 } else {
                     why = e.getMessage();
                 }
 //                    e.printStackTrace();
                 JOptionPane.showMessageDialog(TrainDialog.this, why, "Trainer", JOptionPane.ERROR_MESSAGE);
+                jProgressBar1.setVisible(false);
+                jLabelStatus.setText(null);
             } catch (java.util.concurrent.CancellationException e) {
-                jLabelStatus.setText("Training_cancelled");
+                jLabelStatus.setText("Training cancelled.");
             } finally {
                 jButtonGenerate.setEnabled(true);
-                jButtonCancel.setEnabled(true);
-                jLabelStatus.setText("Training_completed");
-                jProgressBar1.setString("Training_completed");
-                jProgressBar1.setIndeterminate(false);
-                jProgressBar1.setVisible(false);
+                jButtonCancel.setEnabled(false);
                 getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 getGlassPane().setVisible(false);
             }
