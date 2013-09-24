@@ -177,7 +177,7 @@
                 <StringItem index="0" value="-- Training Mode --"/>
                 <StringItem index="1" value="Generate Boxes Only"/>
                 <StringItem index="2" value="Train with Existing Boxes"/>
-                <StringItem index="3" value="Train without Boxes"/>
+                <StringItem index="3" value="Train from Scratch"/>
               </StringArray>
             </Property>
           </Properties>

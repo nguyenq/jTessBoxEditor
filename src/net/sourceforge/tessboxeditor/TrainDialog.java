@@ -41,6 +41,7 @@ public class TrainDialog extends javax.swing.JDialog {
         this.jFileChooser2.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
         this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
         this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
+        this.jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -185,7 +186,7 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(6, 4, 6, 0);
         jPanel1.add(jTextFieldBootstrapLang, gridBagConstraints);
 
-        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Generate Boxes Only", "Train with Existing Boxes", "Train without Boxes" }));
+        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Generate Boxes Only", "Train with Existing Boxes", "Train from Scratch" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -235,7 +236,7 @@ public class TrainDialog extends javax.swing.JDialog {
             trainer.generate(this.jComboBoxOps.getSelectedIndex());
         } catch (Exception e) {
             // ignore
-            // System.err.println(e.getMessage());
+             System.err.println(e.getMessage());
         }
     }//GEN-LAST:event_jButtonGenerateActionPerformed
     
@@ -267,6 +268,7 @@ public class TrainDialog extends javax.swing.JDialog {
         }
         prefs.put("trainnedLanguage", this.jTextFieldLang.getText());
         prefs.put("bootstrapLanguage", this.jTextFieldBootstrapLang.getText());
+        prefs.putInt("trainingMode", this.jComboBoxOps.getSelectedIndex());
     }
 
     /**
