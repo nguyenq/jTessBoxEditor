@@ -1,7 +1,5 @@
 /**
- * Copyright
- *
- * @ 2013 Quan Nguyen
+ * Copyright @ 2013 Quan Nguyen
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -17,16 +15,8 @@
  */
 package net.sourceforge.tessboxeditor;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
@@ -86,8 +76,7 @@ public class TessTrainer {
      * @throws Exception 
      */
     void generateBox() throws Exception {
-        List<String> cmd = new LinkedList<String>(Arrays.asList(cmdMakeBox.split("\\s+")));
-        cmd.set(0, tessDir + "/" + cmd.get(0));
+        List<String> cmd = getCommand(cmdMakeBox);
 
         // if no bootstrap
         if (this.bootstrapLang.length() == 0) {
@@ -119,13 +108,27 @@ public class TessTrainer {
             generateBox();
         }
 
-        List<String> cmd = new ArrayList<String>();
-        cmd.add(tessDir + "/unicharset_extractor");
-        cmd.add(""); // placeholder for box files
+        List<String> cmd = getCommand(cmdtesseract);
 
         runCommand(cmd);
     }
 
+    /**
+     * Gets command.
+     * @param cmdStr
+     * @return 
+     */
+    List<String> getCommand(String cmdStr) {
+        List<String> cmd = new LinkedList<String>(Arrays.asList(cmdStr.split("\\s+")));
+        cmd.set(0, tessDir + "/" + cmd.get(0));
+        return cmd;
+    }
+    
+    /**
+     * Runs command.
+     * @param cmd
+     * @throws Exception 
+     */
     void runCommand(List<String> cmd) throws Exception {
         System.out.println("Execute command: " + cmd);
         pb.command(cmd);
