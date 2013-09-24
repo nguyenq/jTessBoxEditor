@@ -93,6 +93,9 @@ public class TrainDialog extends javax.swing.JDialog {
         jButtonGenerate = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         jButtonClose = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabelStatus = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tesseract Trainer");
@@ -222,6 +225,12 @@ public class TrainDialog extends javax.swing.JDialog {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel3.add(jLabelStatus);
+        jPanel3.add(jProgressBar1);
+
+        getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -232,6 +241,9 @@ public class TrainDialog extends javax.swing.JDialog {
         }
 
         this.jButtonGenerate.setEnabled(false);
+        this.jProgressBar1.setMaximum(100);
+        this.jProgressBar1.setValue(0);
+        this.jProgressBar1.setVisible(true);
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
         
@@ -339,8 +351,11 @@ public class TrainDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelStatus;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JTextField jTextFieldBootstrapLang;
     private javax.swing.JTextField jTextFieldDataDir;
     private javax.swing.JTextField jTextFieldLang;
