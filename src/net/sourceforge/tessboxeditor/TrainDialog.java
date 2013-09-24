@@ -15,6 +15,7 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Cursor;
 import java.awt.event.*;
 import java.io.File;
 import java.util.prefs.Preferences;
@@ -229,6 +230,10 @@ public class TrainDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(TrainDialog.this, "Input is not complete.");
             return;
         }
+
+        this.jButtonGenerate.setEnabled(false);
+        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        getGlassPane().setVisible(true);
         
         // launch training process
         try {
@@ -237,6 +242,15 @@ public class TrainDialog extends javax.swing.JDialog {
         } catch (Exception e) {
             // ignore
              System.err.println(e.getMessage());
+        } finally {
+            SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        jButtonGenerate.setEnabled(true);
+                        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                        getGlassPane().setVisible(false);
+                    }
+                });
         }
     }//GEN-LAST:event_jButtonGenerateActionPerformed
     
