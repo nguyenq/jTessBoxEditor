@@ -826,8 +826,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuTools.add(jMenuItemGenerateTiffBox);
 
         jMenuItemTrain.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemTrain.setMnemonic('d');
-        jMenuItemTrain.setText("Generate Trainned Data");
+        jMenuItemTrain.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemTrain.Mnemonic").charAt(0));
+        jMenuItemTrain.setText(bundle.getString("jMenuItemTrain.Text")); // NOI18N
         jMenuItemTrain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemTrainActionPerformed(evt);
