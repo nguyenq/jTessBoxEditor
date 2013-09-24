@@ -25,10 +25,10 @@ public class TessTrainer {
     private final String cmdtess_train = "tesseract imageFile boxFile box.train";
     private final String cmdunicharset_extractor = "unicharset_extractor"; // lang.fontname.exp0.box lang.fontname.exp1.box ...
     private final String cmdshapeclustering = "shapeclustering -F %s.font_properties -U unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
-    private final String cmdmftraining = "mftraining -F %s.font_properties -U unicharset -O %s.unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
+    private final String cmdmftraining = "mftraining -F %1$s.font_properties -U unicharset -O %1$s.unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private final String cmdcntraining = "cntraining"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
-    private final String cmdwordlist2dawg = "wordlist2dawg %s.frequent_words_list %s.freq-dawg %s.unicharset";
-    private final String cmdwordlist2dawg2 = "wordlist2dawg %s.words_list %s.word-dawg %s.unicharset";
+    private final String cmdwordlist2dawg = "wordlist2dawg %1$s.frequent_words_list %1$s.freq-dawg %1$s.unicharset";
+    private final String cmdwordlist2dawg2 = "wordlist2dawg %1$s.words_list %1$s.word-dawg %1$s.unicharset";
     private final String cmdcombine_tessdata = "combine_tessdata %s.";
     
     ProcessBuilder pb;
@@ -62,10 +62,10 @@ public class TessTrainer {
                 generateBox();
                 break;
             case 2:
-                generateTraineddata(false);
+                generateTraineddata(true);
                 break;
             case 3:
-                generateTraineddata(true);
+                generateTraineddata(false);
                 break;
             default:
                 break;
@@ -92,6 +92,7 @@ public class TessTrainer {
             }
         });
 
+        System.out.println("** Make Box Files **");
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
@@ -109,20 +110,24 @@ public class TessTrainer {
             generateBox();
         }
 
-        String[] files = new File(inputDataDir).list(new FilenameFilter() {
+        List<String> cmd;
+        String[] files;
+        files = new File(inputDataDir).list(new FilenameFilter() {
             public boolean accept(File dir, String filename) {
                 return filename.endsWith(".tif") || filename.endsWith(".tiff") || filename.endsWith(".png");
             }
         });
-       
+        
+        System.out.println("** Run Tesseract for Training **");
         //cmdtess_train
-        List<String> cmd = getCommand(cmdtess_train);
+        cmd = getCommand(cmdtess_train);
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
             runCommand(cmd);
         }
-        
+           
+        System.out.println("** Compute the Character Set **");
         //cmdunicharset_extractor
         cmd = getCommand(cmdunicharset_extractor);
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -133,6 +138,7 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
+        System.out.println("** Shape Clustering **");
         //cmdshapeclustering
         cmd = getCommand(String.format(cmdshapeclustering, lang));
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -143,16 +149,19 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
+        System.out.println("** MF Training **");
         //cmdmftraining
         cmd = getCommand(String.format(cmdmftraining, lang));
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
+        System.out.println("** CN Training **");
         //cmdcntraining
         cmd = getCommand(cmdcntraining);
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
+        System.out.println("** Dictionary Data **");
         //cmdwordlist2dawg
         cmd = getCommand(String.format(cmdwordlist2dawg, lang));
         runCommand(cmd);
@@ -161,6 +170,7 @@ public class TessTrainer {
         cmd = getCommand(String.format(cmdwordlist2dawg2, lang));
         runCommand(cmd);
         
+        System.out.println("** Combine **");
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
@@ -183,7 +193,7 @@ public class TessTrainer {
      * @throws Exception 
      */
     void runCommand(List<String> cmd) throws Exception {
-        System.out.println("** Execute command: " + cmd);
+        System.out.println(cmd);
         pb.command(cmd);
         Process process = pb.start();
 
@@ -192,7 +202,7 @@ public class TessTrainer {
         outputGobbler.start();
 
         int w = process.waitFor();
-        System.out.println("** Exit value = " + w);
+//        System.out.println("Exit value = " + w);
 
 //        if (w != 0) {
 //            throw new RuntimeException();
