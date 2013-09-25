@@ -46,7 +46,6 @@ public class TrainDialog extends javax.swing.JDialog {
         this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
         this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
         this.jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
-        jProgressBar1.setVisible(false);
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -100,7 +99,6 @@ public class TrainDialog extends javax.swing.JDialog {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 32767));
         jButtonClose = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jLabelStatus = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jProgressBar1.setVisible(false);
 
@@ -245,7 +243,8 @@ public class TrainDialog extends javax.swing.JDialog {
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        jPanel3.add(jLabelStatus);
+
+        jProgressBar1.setStringPainted(true);
         jPanel3.add(jProgressBar1);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
@@ -261,24 +260,14 @@ public class TrainDialog extends javax.swing.JDialog {
 
         this.jButtonRun.setEnabled(false);
         this.jButtonCancel.setEnabled(true);
-        this.jLabelStatus.setText("Training...");
-        jProgressBar1.setIndeterminate(true);
-        this.jProgressBar1.setMaximum(100);
-        this.jProgressBar1.setValue(0);
+        this.jProgressBar1.setIndeterminate(true);
+        this.jProgressBar1.setString("Training...");
         this.jProgressBar1.setVisible(true);
         this.pack();
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
         trainWorker = new TrainingWorker();
-        trainWorker.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("progress".equals(evt.getPropertyName())) {
-                    jProgressBar1.setValue((Integer) evt.getNewValue());
-                }
-            }
-        });
         trainWorker.execute();
     }//GEN-LAST:event_jButtonRunActionPerformed
 
@@ -338,8 +327,7 @@ public class TrainDialog extends javax.swing.JDialog {
 
             try {
                 get(); // dummy method            
-                jLabelStatus.setText("Training completed.");
-                jProgressBar1.setVisible(false);
+                jProgressBar1.setString("Training completed.");
             } catch (InterruptedException ignore) {
                 ignore.printStackTrace();
             } catch (java.util.concurrent.ExecutionException e) {
@@ -353,9 +341,9 @@ public class TrainDialog extends javax.swing.JDialog {
 //                    e.printStackTrace();
                 JOptionPane.showMessageDialog(TrainDialog.this, why, "Train Tesseract", JOptionPane.ERROR_MESSAGE);
                 jProgressBar1.setVisible(false);
-                jLabelStatus.setText(null);
+                jProgressBar1.setString(null);
             } catch (java.util.concurrent.CancellationException e) {
-                jLabelStatus.setText("Training cancelled.");
+                jProgressBar1.setString("Training cancelled.");
             } finally {
                 jButtonRun.setEnabled(true);
                 jButtonCancel.setEnabled(false);
@@ -420,7 +408,6 @@ public class TrainDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabelStatus;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
