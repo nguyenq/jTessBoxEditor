@@ -17,8 +17,6 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Cursor;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.prefs.Preferences;
 import javax.swing.*;
@@ -39,10 +37,12 @@ public class TrainDialog extends javax.swing.JDialog {
 
         tessDirectory = prefs.get("tessDirectory", null);
         this.jTextFieldTessDir.setText(tessDirectory);
-        this.jFileChooser1.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
+        this.jFileChooserTess.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
+        
         trainDataDirectory = prefs.get("trainDataDirectory", null);
         this.jTextFieldDataDir.setText(trainDataDirectory);
-        this.jFileChooser2.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
+        this.jFileChooserData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
+        
         this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
         this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
         this.jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
@@ -78,8 +78,8 @@ public class TrainDialog extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jFileChooser1 = new javax.swing.JFileChooser();
-        jFileChooser2 = new javax.swing.JFileChooser();
+        jFileChooserData = new javax.swing.JFileChooser();
+        jFileChooserTess = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldTessDir = new javax.swing.JTextField();
@@ -101,6 +101,10 @@ public class TrainDialog extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jProgressBar1.setVisible(false);
+
+        jFileChooserData.setDialogTitle("Set Location of Source Training Data");
+
+        jFileChooserTess.setDialogTitle("Set Location of Tesseract Executable");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Train Tesseract");
@@ -277,15 +281,15 @@ public class TrainDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCloseActionPerformed
 
     private void jButtonBrowseDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseDataActionPerformed
-        if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            trainDataDirectory = jFileChooser1.getCurrentDirectory().getPath();
+        if (jFileChooserData.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            trainDataDirectory = jFileChooserData.getCurrentDirectory().getPath();
             this.jTextFieldDataDir.setText(trainDataDirectory);
         }
     }//GEN-LAST:event_jButtonBrowseDataActionPerformed
 
     private void jButtonBrowseTessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseTessActionPerformed
-        if (jFileChooser2.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            tessDirectory = jFileChooser2.getCurrentDirectory().getPath();
+        if (jFileChooserTess.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            tessDirectory = jFileChooserTess.getCurrentDirectory().getPath();
             this.jTextFieldTessDir.setText(tessDirectory);
         }
     }//GEN-LAST:event_jButtonBrowseTessActionPerformed
@@ -402,8 +406,8 @@ public class TrainDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonClose;
     private javax.swing.JButton jButtonRun;
     private javax.swing.JComboBox jComboBoxOps;
-    private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JFileChooser jFileChooser2;
+    private javax.swing.JFileChooser jFileChooserData;
+    private javax.swing.JFileChooser jFileChooserTess;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
