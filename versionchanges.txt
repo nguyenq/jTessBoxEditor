@@ -54,3 +54,6 @@ Version 0.9 (30 April 2013)
 - Fix a bug that failed to persist changes to table in edit mode
 - Find function now supports partial matches
 - Fix a problem with table not scrolling along when row header has focus and scrolling
+
+Version 1.0 Beta (24 September 2013)
+- Support full Tesseract training

@@ -161,6 +161,11 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
+        renameFile("inttemp");
+        renameFile("normproto");
+        renameFile("pffmtable");
+        renameFile("shapetable");
+
         System.out.println("** Dictionary Data **");
         //cmdwordlist2dawg
         cmd = getCommand(String.format(cmdwordlist2dawg, lang));
@@ -174,6 +179,15 @@ public class TessTrainer {
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
+    }
+    
+    void renameFile(String fileName) {
+        File file = new File(inputDataDir, fileName);
+        if (file.exists()) {
+            // prefix filename with language code
+            boolean result = file.renameTo(new File(inputDataDir, lang+ "." + fileName));
+            System.out.println((result? "Successful" : "Unsuccessful") + " rename of " + fileName);
+        }
     }
 
     /**
