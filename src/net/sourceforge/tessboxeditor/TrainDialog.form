@@ -2,9 +2,15 @@
 
 <Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.JFileChooser" name="jFileChooser1">
+    <Component class="javax.swing.JFileChooser" name="jFileChooserData">
+      <Properties>
+        <Property name="dialogTitle" type="java.lang.String" value="Set Location of Source Training Data"/>
+      </Properties>
     </Component>
-    <Component class="javax.swing.JFileChooser" name="jFileChooser2">
+    <Component class="javax.swing.JFileChooser" name="jFileChooserTess">
+      <Properties>
+        <Property name="dialogTitle" type="java.lang.String" value="Set Location of Tesseract Executable"/>
+      </Properties>
     </Component>
   </NonVisualComponents>
   <Properties>
