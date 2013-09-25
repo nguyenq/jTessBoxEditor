@@ -39,7 +39,7 @@
             </zipfileset>
         </zip>
         <zip zipfile="${dist.dir}/${ant.project.name}-${version}.zip">
-            <zipfileset dir="." includes="*,lib/**,data/**,tools/**" prefix="${ant.project.name}"
+            <zipfileset dir="." includes="*,lib/**,data/**,tools/**,samples/**" prefix="${ant.project.name}"
                         excludes="build.xml,src,build,dist,doc,test,nbproject">
                 <exclude name="*.mf"/>
             </zipfileset>
