@@ -94,10 +94,10 @@ public class TrainDialog extends javax.swing.JDialog {
         jTextFieldBootstrapLang = new javax.swing.JTextField();
         jComboBoxOps = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
-        jButtonGenerate = new javax.swing.JButton();
+        jButtonRun = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jButtonCancel.setEnabled(false);
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(18, 0), new java.awt.Dimension(18, 0), new java.awt.Dimension(18, 32767));
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 32767));
         jButtonClose = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabelStatus = new javax.swing.JLabel();
@@ -203,18 +203,18 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(2, 3, 0, 0);
         jPanel1.add(jComboBoxOps, gridBagConstraints);
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 5));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 3, 5));
 
-        jButtonGenerate.setText("Generate");
-        jButtonGenerate.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRun.setText("Run");
+        jButtonRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonGenerateActionPerformed(evt);
+                jButtonRunActionPerformed(evt);
             }
         });
-        jPanel2.add(jButtonGenerate);
+        jPanel2.add(jButtonRun);
 
         jButtonCancel.setText("Cancel");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -237,8 +237,9 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(13, 3, 0, 0);
         jPanel1.add(jPanel2, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -252,19 +253,20 @@ public class TrainDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
+    private void jButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunActionPerformed
         if (this.jComboBoxOps.getSelectedIndex() == 0 || this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0 || this.jTextFieldLang.getText().trim().length() == 0) {
             JOptionPane.showMessageDialog(TrainDialog.this, "Input is not complete.");
             return;
         }
 
-        this.jButtonGenerate.setEnabled(false);
+        this.jButtonRun.setEnabled(false);
         this.jButtonCancel.setEnabled(true);
         this.jLabelStatus.setText("Training...");
         jProgressBar1.setIndeterminate(true);
         this.jProgressBar1.setMaximum(100);
         this.jProgressBar1.setValue(0);
         this.jProgressBar1.setVisible(true);
+        this.pack();
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
@@ -278,7 +280,7 @@ public class TrainDialog extends javax.swing.JDialog {
             }
         });
         trainWorker.execute();
-    }//GEN-LAST:event_jButtonGenerateActionPerformed
+    }//GEN-LAST:event_jButtonRunActionPerformed
 
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
         this.setVisible(false);
@@ -349,13 +351,13 @@ public class TrainDialog extends javax.swing.JDialog {
                     why = e.getMessage();
                 }
 //                    e.printStackTrace();
-                JOptionPane.showMessageDialog(TrainDialog.this, why, "Trainer", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(TrainDialog.this, why, "Train Tesseract", JOptionPane.ERROR_MESSAGE);
                 jProgressBar1.setVisible(false);
                 jLabelStatus.setText(null);
             } catch (java.util.concurrent.CancellationException e) {
                 jLabelStatus.setText("Training cancelled.");
             } finally {
-                jButtonGenerate.setEnabled(true);
+                jButtonRun.setEnabled(true);
                 jButtonCancel.setEnabled(false);
                 getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 getGlassPane().setVisible(false);
@@ -410,7 +412,7 @@ public class TrainDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonBrowseTess;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonClose;
-    private javax.swing.JButton jButtonGenerate;
+    private javax.swing.JButton jButtonRun;
     private javax.swing.JComboBox jComboBoxOps;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileChooser2;
