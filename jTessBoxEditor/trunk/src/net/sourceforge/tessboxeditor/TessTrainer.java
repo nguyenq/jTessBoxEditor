@@ -81,9 +81,11 @@ public class TessTrainer {
         List<String> cmd = getCommand(cmdmake_box);
 
         // if no bootstrap
-        if (this.bootstrapLang.length() == 0) {
+        if (bootstrapLang.length() == 0) {
             cmd.remove(4);
             cmd.remove(3);
+        } else {
+            cmd.set(4, bootstrapLang);
         }
 
         String[] files = new File(inputDataDir).list(new FilenameFilter() {
@@ -161,9 +163,9 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
-        renameFile("inttemp");
-        renameFile("normproto");
+        renameFile("inttemp");       
         renameFile("pffmtable");
+        renameFile("normproto");
         renameFile("shapetable");
 
         System.out.println("** Dictionary Data **");
@@ -181,11 +183,16 @@ public class TessTrainer {
         runCommand(cmd);
     }
     
+    /**
+     * Prefixes filename with language code
+     * @param fileName 
+     */
     void renameFile(String fileName) {
         File file = new File(inputDataDir, fileName);
         if (file.exists()) {
-            // prefix filename with language code
-            boolean result = file.renameTo(new File(inputDataDir, lang+ "." + fileName));
+            File fileWithPrefix = new File(inputDataDir, lang + "." + fileName);
+            fileWithPrefix.delete();
+            boolean result = file.renameTo(fileWithPrefix);
             System.out.println((result? "Successful" : "Unsuccessful") + " rename of " + fileName);
         }
     }
