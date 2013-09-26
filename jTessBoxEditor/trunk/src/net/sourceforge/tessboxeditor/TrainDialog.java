@@ -18,6 +18,7 @@ package net.sourceforge.tessboxeditor;
 import java.awt.Cursor;
 import java.awt.event.*;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 
@@ -34,7 +35,7 @@ public class TrainDialog extends javax.swing.JDialog {
     public TrainDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -90,6 +91,7 @@ public class TrainDialog extends javax.swing.JDialog {
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 17), new java.awt.Dimension(32767, 17));
         jProgressBar1 = new javax.swing.JProgressBar();
         jProgressBar1.setVisible(false);
+        jLabelTime = new javax.swing.JLabel();
 
         jFileChooserData.setDialogTitle("Set Location of Source Training Data");
 
@@ -252,6 +254,7 @@ public class TrainDialog extends javax.swing.JDialog {
 
         jProgressBar1.setStringPainted(true);
         jPanel3.add(jProgressBar1);
+        jPanel3.add(jLabelTime);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.SOUTH);
 
@@ -269,6 +272,7 @@ public class TrainDialog extends javax.swing.JDialog {
         this.jProgressBar1.setIndeterminate(true);
         this.jProgressBar1.setString("Training...");
         this.jProgressBar1.setVisible(true);
+        this.jLabelTime.setText(null);
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
@@ -319,8 +323,11 @@ public class TrainDialog extends javax.swing.JDialog {
      */
     class TrainingWorker extends SwingWorker<Void, Void> {
 
+        long startTime;
+
         @Override
         protected Void doInBackground() throws Exception {
+            startTime = System.currentTimeMillis();
             TessTrainer trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText());
             trainer.generate(jComboBoxOps.getSelectedIndex());
             return null;
@@ -333,6 +340,8 @@ public class TrainDialog extends javax.swing.JDialog {
             try {
                 get(); // dummy method            
                 jProgressBar1.setString("Training completed.");
+                long millis = System.currentTimeMillis() - startTime;
+                jLabelTime.setText("Elapsed time: " + getDisplayTime(millis));
             } catch (InterruptedException ignore) {
                 ignore.printStackTrace();
             } catch (java.util.concurrent.ExecutionException e) {
@@ -353,6 +362,8 @@ public class TrainDialog extends javax.swing.JDialog {
                 jProgressBar1.setString(null);
             } catch (java.util.concurrent.CancellationException e) {
                 jProgressBar1.setString("Training cancelled.");
+                long millis = System.currentTimeMillis() - startTime;
+                jLabelTime.setText("Elapsed time: " + getDisplayTime(millis));
             } finally {
                 jButtonRun.setEnabled(true);
                 jButtonCancel.setEnabled(false);
@@ -362,6 +373,15 @@ public class TrainDialog extends javax.swing.JDialog {
         }
     }
 
+    String getDisplayTime(long millis) {
+        String elapsedTime = String.format("%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(millis),
+                        TimeUnit.MILLISECONDS.toMinutes(millis),
+                        TimeUnit.MILLISECONDS.toSeconds(millis)
+                        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+        return elapsedTime;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -418,6 +438,7 @@ public class TrainDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelTime;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
