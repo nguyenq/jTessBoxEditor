@@ -34,19 +34,7 @@ public class TrainDialog extends javax.swing.JDialog {
     public TrainDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        tessDirectory = prefs.get("tessDirectory", null);
-        this.jTextFieldTessDir.setText(tessDirectory);
-        this.jFileChooserTess.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
         
-        trainDataDirectory = prefs.get("trainDataDirectory", null);
-        this.jTextFieldDataDir.setText(trainDataDirectory);
-        this.jFileChooserData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
-        
-        this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
-        this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
-        this.jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
-
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -99,6 +87,7 @@ public class TrainDialog extends javax.swing.JDialog {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 32767));
         jButtonClose = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 17), new java.awt.Dimension(32767, 17));
         jProgressBar1 = new javax.swing.JProgressBar();
         jProgressBar1.setVisible(false);
 
@@ -108,6 +97,7 @@ public class TrainDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Train Tesseract");
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -199,7 +189,7 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(6, 4, 6, 0);
         jPanel1.add(jTextFieldBootstrapLang, gridBagConstraints);
 
-        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Generate Boxes Only", "Train with Existing Boxes", "Train from Scratch" }));
+        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "Train from Scratch" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -245,8 +235,20 @@ public class TrainDialog extends javax.swing.JDialog {
         jPanel1.add(jPanel2, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        tessDirectory = prefs.get("tessDirectory", null);
+        this.jTextFieldTessDir.setText(tessDirectory);
+        this.jFileChooserTess.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
+
+        trainDataDirectory = prefs.get("trainDataDirectory", null);
+        this.jTextFieldDataDir.setText(trainDataDirectory);
+        this.jFileChooserData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
+
+        this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
+        this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
+        this.jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel3.add(filler2);
 
         jProgressBar1.setStringPainted(true);
         jPanel3.add(jProgressBar1);
@@ -267,7 +269,6 @@ public class TrainDialog extends javax.swing.JDialog {
         this.jProgressBar1.setIndeterminate(true);
         this.jProgressBar1.setString("Training...");
         this.jProgressBar1.setVisible(true);
-        this.pack();
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
@@ -343,6 +344,10 @@ public class TrainDialog extends javax.swing.JDialog {
                     why = e.getMessage();
                 }
 //                    e.printStackTrace();
+                if (why.trim().length() == 0) {
+                    // if empty, display a generic error message
+                    why = "An error has occurred. Input files could be missing.";
+                }
                 JOptionPane.showMessageDialog(TrainDialog.this, why, "Train Tesseract", JOptionPane.ERROR_MESSAGE);
                 jProgressBar1.setVisible(false);
                 jProgressBar1.setString(null);
@@ -400,6 +405,7 @@ public class TrainDialog extends javax.swing.JDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JButton jButtonBrowseData;
     private javax.swing.JButton jButtonBrowseTess;
     private javax.swing.JButton jButtonCancel;
