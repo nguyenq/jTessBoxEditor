@@ -177,7 +177,7 @@ public class TessTrainer {
         cmd = getCommand(String.format(cmdwordlist2dawg2, lang));
         runCommand(cmd);
         
-        System.out.println("** Combine **");
+        System.out.println("** Combine Data Files **");
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
@@ -225,9 +225,9 @@ public class TessTrainer {
         int w = process.waitFor();
 //        System.out.println("Exit value = " + w);
 
-//        if (w != 0) {
-//            throw new RuntimeException();
-//        }
+        if (w != 0) {
+            throw new RuntimeException(outputGobbler.getMessage());
+        }
     }
 }
 
