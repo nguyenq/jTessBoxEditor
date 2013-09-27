@@ -279,7 +279,7 @@ public class TrainDialog extends javax.swing.JDialog {
 
             if (boxFiles.length > 0) {
                 int option = JOptionPane.showConfirmDialog(this,
-                        "There exists box files. Continuing may overwrite them.\nDo you want to proceed?",
+                        "There are existing box files. Continuing may overwrite them.\nDo you want to proceed?",
                         Dialog_Title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 
                 if (option == JOptionPane.NO_OPTION) {

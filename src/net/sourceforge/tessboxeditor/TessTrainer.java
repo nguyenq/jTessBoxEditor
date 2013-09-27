@@ -94,6 +94,10 @@ public class TessTrainer {
             }
         });
 
+        if (files.length == 0) {
+            throw new RuntimeException("There are no training images.");
+        }
+        
         System.out.println("** Make Box Files **");
         for (String file : files) {
             cmd.set(1, file);
