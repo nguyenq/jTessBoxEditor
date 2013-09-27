@@ -18,12 +18,14 @@ package net.sourceforge.tessboxeditor;
 import java.awt.Cursor;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 
 public class TrainDialog extends javax.swing.JDialog {
 
+    static final String Dialog_Title = "Train Tesseract";
     static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/tessboxeditor");
     private String tessDirectory;
     private String trainDataDirectory;
@@ -39,7 +41,7 @@ public class TrainDialog extends javax.swing.JDialog {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                quit();
+                savePreferences();
             }
         });
         setLocationRelativeTo(getOwner());
@@ -98,7 +100,7 @@ public class TrainDialog extends javax.swing.JDialog {
         jFileChooserTess.setDialogTitle("Set Location of Tesseract Executable");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Train Tesseract");
+        setTitle(Dialog_Title);
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -262,9 +264,28 @@ public class TrainDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunActionPerformed
-        if (this.jComboBoxOps.getSelectedIndex() == 0 || this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0 || this.jTextFieldLang.getText().trim().length() == 0) {
+        int selectedTrainingMode = this.jComboBoxOps.getSelectedIndex();
+        if (selectedTrainingMode == 0 || this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0 || this.jTextFieldLang.getText().trim().length() == 0) {
             JOptionPane.showMessageDialog(TrainDialog.this, "Input is not complete.");
             return;
+        }
+
+        if (selectedTrainingMode == 1 || selectedTrainingMode == 3) {
+            String[] boxFiles = new File(trainDataDirectory).list(new FilenameFilter() {
+                public boolean accept(File dir, String filename) {
+                    return filename.endsWith(".box");
+                }
+            });
+
+            if (boxFiles.length > 0) {
+                int option = JOptionPane.showConfirmDialog(this,
+                        "There exists box files. Continuing may overwrite them.\nDo you want to proceed?",
+                        Dialog_Title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                
+                if (option == JOptionPane.NO_OPTION) {
+                    return;
+                }
+            }
         }
 
         this.jButtonRun.setEnabled(false);
@@ -282,7 +303,7 @@ public class TrainDialog extends javax.swing.JDialog {
 
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
         this.setVisible(false);
-        quit();
+        savePreferences();
     }//GEN-LAST:event_jButtonCloseActionPerformed
 
     private void jButtonBrowseDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseDataActionPerformed
@@ -306,7 +327,7 @@ public class TrainDialog extends javax.swing.JDialog {
         this.jButtonCancel.setEnabled(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
-    void quit() {
+    void savePreferences() {
         if (tessDirectory != null) {
             prefs.put("tessDirectory", tessDirectory);
         }
@@ -357,7 +378,7 @@ public class TrainDialog extends javax.swing.JDialog {
                     // if empty, display a generic error message
                     why = "An error has occurred. Input files could be missing.";
                 }
-                JOptionPane.showMessageDialog(TrainDialog.this, why, "Train Tesseract", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(TrainDialog.this, why, Dialog_Title, JOptionPane.ERROR_MESSAGE);
                 jProgressBar1.setVisible(false);
                 jProgressBar1.setString(null);
             } catch (java.util.concurrent.CancellationException e) {
@@ -375,13 +396,13 @@ public class TrainDialog extends javax.swing.JDialog {
 
     String getDisplayTime(long millis) {
         String elapsedTime = String.format("%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millis),
-                        TimeUnit.MILLISECONDS.toMinutes(millis),
-                        TimeUnit.MILLISECONDS.toSeconds(millis)
-                        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis),
+                TimeUnit.MILLISECONDS.toSeconds(millis)
+                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
         return elapsedTime;
     }
-    
+
     /**
      * @param args the command line arguments
      */
