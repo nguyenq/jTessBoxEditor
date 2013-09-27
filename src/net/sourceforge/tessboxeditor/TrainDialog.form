@@ -6,6 +6,9 @@
       <Properties>
         <Property name="dialogTitle" type="java.lang.String" value="Set Location of Source Training Data"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="        FileFilter allImageFilter = new SimpleFilter(&quot;bmp;jpg;jpeg;png;tif;tiff;box;font_properties;frequent_words_list;words_list;unicharambigs&quot;, &quot;Source Training Data&quot;);&#xa;        this.jFileChooserData.setFileFilter(allImageFilter);&#xa;        this.jFileChooserData.setAcceptAllFileFilterUsed(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JFileChooser" name="jFileChooserTess">
       <Properties>

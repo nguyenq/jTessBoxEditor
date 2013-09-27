@@ -22,6 +22,8 @@ import java.io.FilenameFilter;
 import java.util.concurrent.TimeUnit;
 import java.util.prefs.Preferences;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class TrainDialog extends javax.swing.JDialog {
 
@@ -70,6 +72,9 @@ public class TrainDialog extends javax.swing.JDialog {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jFileChooserData = new javax.swing.JFileChooser();
+        FileFilter allImageFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff;box;font_properties;frequent_words_list;words_list;unicharambigs", "Source Training Data");
+        this.jFileChooserData.setFileFilter(allImageFilter);
+        this.jFileChooserData.setAcceptAllFileFilterUsed(false);
         jFileChooserTess = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -270,13 +275,13 @@ public class TrainDialog extends javax.swing.JDialog {
             return;
         }
 
+        String[] boxFiles = new File(trainDataDirectory).list(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(".box");
+            }
+        });
+        
         if (selectedTrainingMode == 1 || selectedTrainingMode == 3) {
-            String[] boxFiles = new File(trainDataDirectory).list(new FilenameFilter() {
-                public boolean accept(File dir, String filename) {
-                    return filename.endsWith(".box");
-                }
-            });
-
             if (boxFiles.length > 0) {
                 int option = JOptionPane.showConfirmDialog(this,
                         "There are existing box files. Continuing may overwrite them.\nDo you want to proceed?",
@@ -285,6 +290,11 @@ public class TrainDialog extends javax.swing.JDialog {
                 if (option == JOptionPane.NO_OPTION) {
                     return;
                 }
+            }
+        } else {
+            if (boxFiles.length == 0) {
+                JOptionPane.showMessageDialog(TrainDialog.this, "There are no existing box files.", Dialog_Title, JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }
 

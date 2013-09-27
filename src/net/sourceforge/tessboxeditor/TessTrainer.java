@@ -88,11 +88,7 @@ public class TessTrainer {
             cmd.set(4, bootstrapLang);
         }
 
-        String[] files = new File(inputDataDir).list(new FilenameFilter() {
-            public boolean accept(File dir, String filename) {
-                return filename.endsWith(".tif") || filename.endsWith(".tiff") || filename.endsWith(".png");
-            }
-        });
+        String[] files = getImageFiles();
 
         if (files.length == 0) {
             throw new RuntimeException("There are no training images.");
@@ -118,11 +114,7 @@ public class TessTrainer {
 
         List<String> cmd;
         String[] files;
-        files = new File(inputDataDir).list(new FilenameFilter() {
-            public boolean accept(File dir, String filename) {
-                return filename.endsWith(".tif") || filename.endsWith(".tiff") || filename.endsWith(".png");
-            }
-        });
+        files = getImageFiles();
         
         System.out.println("** Run Tesseract for Training **");
         //cmdtess_train
@@ -185,6 +177,20 @@ public class TessTrainer {
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
+    }
+    
+    /**
+     * Gets training image files.
+     * @return 
+     */
+    String[] getImageFiles() {
+        String[] files = new File(inputDataDir).list(new FilenameFilter() {
+            public boolean accept(File dir, String filename) {
+                return filename.endsWith(".tif") || filename.endsWith(".tiff") || filename.endsWith(".png") || filename.endsWith(".bmp") || filename.endsWith(".jpg") || filename.endsWith(".jpeg");
+            }
+        });
+        
+        return files;
     }
     
     /**
