@@ -22,7 +22,10 @@ public class GuiWithTrainer extends GuiWithTools {
     
     @Override
     void jMenuItemTrainActionPerformed(java.awt.event.ActionEvent evt) {
-        trainerDialog = new TrainDialog(this, true);
+        if (trainerDialog == null) {
+            trainerDialog = new TrainDialog(this, true);
+        }
+        
         trainerDialog.setVisible(true);
     }
     
