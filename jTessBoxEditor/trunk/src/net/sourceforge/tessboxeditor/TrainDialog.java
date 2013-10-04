@@ -87,7 +87,6 @@ public class TrainDialog extends javax.swing.JDialog {
         jComboBoxOps = new javax.swing.JComboBox();
         jPanelButton = new javax.swing.JPanel();
         jButtonRun = new javax.swing.JButton();
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(2, 0), new java.awt.Dimension(2, 0), new java.awt.Dimension(2, 32767));
         jButtonCancel = new javax.swing.JButton();
         jButtonCancel.setEnabled(false);
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(12, 0), new java.awt.Dimension(12, 0), new java.awt.Dimension(12, 32767));
@@ -228,8 +227,6 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(2, 3, 0, 0);
         jPanelMain.add(jComboBoxOps, gridBagConstraints);
 
-        jPanelButton.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 3, 5));
-
         jButtonRun.setText("Run");
         jButtonRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,7 +234,6 @@ public class TrainDialog extends javax.swing.JDialog {
             }
         });
         jPanelButton.add(jButtonRun);
-        jPanelButton.add(filler4);
 
         jButtonCancel.setText("Cancel");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -483,7 +479,6 @@ public class TrainDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
-    private javax.swing.Box.Filler filler4;
     private javax.swing.JButton jButtonBrowseData;
     private javax.swing.JButton jButtonBrowseTess;
     private javax.swing.JButton jButtonCancel;
