@@ -109,11 +109,6 @@ public class TrainDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(Dialog_Title);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-        });
 
         jPanelMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanelMain.setLayout(new java.awt.GridBagLayout());
@@ -353,11 +348,6 @@ public class TrainDialog extends javax.swing.JDialog {
         }
         this.jButtonCancel.setEnabled(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
-
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        this.jProgressBar1.setVisible(false);
-        this.jLabelTime.setText(null);
-    }//GEN-LAST:event_formWindowActivated
 
     void savePreferences() {
         if (tessDirectory != null) {
