@@ -144,7 +144,7 @@ public class TrainDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanelMain.add(jButtonBrowseTess, gridBagConstraints);
 
-        jLabel3.setText("Training Data:");
+        jLabel3.setText("Training Data Folder:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -285,6 +285,20 @@ public class TrainDialog extends javax.swing.JDialog {
         if (selectedTrainingMode == 0 || this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0 || this.jTextFieldLang.getText().trim().length() == 0) {
             JOptionPane.showMessageDialog(TrainDialog.this, "Input is not complete.");
             return;
+        }
+             
+        // make sure all required data files exist before training
+        if (selectedTrainingMode == 2 || selectedTrainingMode == 3) {
+            String[] otherFiles = new File(trainDataDirectory).list(new FilenameFilter() {
+                public boolean accept(File dir, String filename) {
+                    return filename.toLowerCase().endsWith("font_properties") && filename.toLowerCase().endsWith("frequent_words_list") && filename.toLowerCase().endsWith("words_list");
+                }
+            });
+
+            if (otherFiles.length == 0) {
+                JOptionPane.showMessageDialog(TrainDialog.this, "File font_properties, frequent_words_list, or words_list does not exist.", Dialog_Title, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         }
 
         String[] boxFiles = new File(trainDataDirectory).list(new FilenameFilter() {
