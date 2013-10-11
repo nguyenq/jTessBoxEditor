@@ -290,13 +290,9 @@ public class TrainDialog extends javax.swing.JDialog {
         // make sure all required data files exist before training
         if (selectedTrainingMode == 2 || selectedTrainingMode == 3) {
             final String lang = jTextFieldLang.getText();
-            String[] otherFiles = new File(trainDataDirectory).list(new FilenameFilter() {
-                public boolean accept(File dir, String filename) {
-                    return filename.equals(lang + ".font_properties") && filename.equals(lang + ".frequent_words_list") && filename.equals(lang + ".words_list");
-                }
-            });
+            boolean otherFilesExist = new File(trainDataDirectory, lang + ".font_properties").exists() && new File(trainDataDirectory, lang + ".frequent_words_list").exists() && new File(trainDataDirectory, lang + ".words_list").exists();
 
-            if (otherFiles.length == 0) {
+            if (!otherFilesExist) {
                 String msg = String.format("The required file %1$s.font_properties, %1$s.frequent_words_list, or %1$s.words_list does not exist.", lang);
                 JOptionPane.showMessageDialog(TrainDialog.this, msg, Dialog_Title, JOptionPane.ERROR_MESSAGE);
                 return;
