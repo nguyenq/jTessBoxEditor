@@ -66,6 +66,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelOutput">
               <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="jTextFieldFileName"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Output"/>
               </Properties>
             </Component>
@@ -111,7 +114,11 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelNoise">
               <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="jSpinnerNoise"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Noise"/>
+                <Property name="toolTipText" type="java.lang.String" value="Add Noise to Image"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JSpinner" name="jSpinnerNoise">
@@ -128,6 +135,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelTracking">
               <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="jSpinnerTracking"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Tracking"/>
                 <Property name="toolTipText" type="java.lang.String" value="Letter Tracking"/>
               </Properties>
@@ -148,6 +158,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelW">
               <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="jSpinnerW"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="W"/>
                 <Property name="toolTipText" type="java.lang.String" value="Image Width"/>
               </Properties>
@@ -168,6 +181,9 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelH">
               <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="jSpinnerH"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="H"/>
                 <Property name="toolTipText" type="java.lang.String" value="Image Height"/>
               </Properties>
