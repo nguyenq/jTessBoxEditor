@@ -124,6 +124,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         });
         jPanel1.add(jButtonInput);
 
+        jLabelOutput.setLabelFor(jTextFieldFileName);
         jLabelOutput.setText("Output");
         jPanel1.add(jLabelOutput);
 
@@ -152,7 +153,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jCheckBoxAntiAliasing.setToolTipText("Anti-Aliasing");
         jPanel1.add(jCheckBoxAntiAliasing);
 
+        jLabelNoise.setLabelFor(jSpinnerNoise);
         jLabelNoise.setText("Noise");
+        jLabelNoise.setToolTipText("Add Noise to Image");
         jPanel1.add(jLabelNoise);
 
         jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 50, 5));
@@ -161,6 +164,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 20));
         jPanel1.add(jSpinnerNoise);
 
+        jLabelTracking.setLabelFor(jSpinnerTracking);
         jLabelTracking.setText("Tracking");
         jLabelTracking.setToolTipText("Letter Tracking");
         jPanel1.add(jLabelTracking);
@@ -175,6 +179,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         });
         jPanel1.add(jSpinnerTracking);
 
+        jLabelW.setLabelFor(jSpinnerW);
         jLabelW.setText("W");
         jLabelW.setToolTipText("Image Width");
         jPanel1.add(jLabelW);
@@ -185,6 +190,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jSpinnerW.setPreferredSize(new java.awt.Dimension(63, 22));
         jPanel1.add(jSpinnerW);
 
+        jLabelH.setLabelFor(jSpinnerH);
         jLabelH.setText("H");
         jLabelH.setToolTipText("Image Height");
         jPanel1.add(jLabelH);
