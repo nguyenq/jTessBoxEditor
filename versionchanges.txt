@@ -55,6 +55,7 @@ Version 0.9 (30 April 2013)
 - Find function now supports partial matches
 - Fix a problem with table not scrolling along when row header has focus and scrolling
 
-Version 1.0 Beta (10 October 2013)
+Version 1.0 Beta 5 (16 October 2013)
 - Integrate support for full automation of Tesseract training
 - Fix an issue with generated TIFF missing metadata
+- Add an option to inject noise into generated image

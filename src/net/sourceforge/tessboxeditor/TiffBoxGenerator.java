@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
+import net.sourceforge.tessboxeditor.utilities.ImageUtils;
 import net.sourceforge.vietocr.utilities.ImageIOHelper;
 import net.sourceforge.vietocr.utilities.Utilities;
 import net.sourceforge.vietpad.utilities.TextUtilities;
@@ -37,6 +38,7 @@ public class TiffBoxGenerator {
     private String text;
     private Font font;
     private int width, height;
+    private int noiseAmount;
     private final int margin = 100;
     private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
     private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
@@ -336,7 +338,13 @@ public class TiffBoxGenerator {
         try {
             File tiffFile = new File(outputFolder, fileName + ".tif");
             tiffFile.delete();
-            ImageIOHelper.mergeTiff(pages.toArray(new BufferedImage[pages.size()]), tiffFile);
+            BufferedImage[] images = pages.toArray(new BufferedImage[pages.size()]);
+            if (noiseAmount != 0) {
+                for (int i = 0; i < images.length; i++) {
+                    images[i] = ImageUtils.addNoise(images[i], noiseAmount);
+                }
+            }
+            ImageIOHelper.mergeTiff(images, tiffFile);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -379,5 +387,14 @@ public class TiffBoxGenerator {
      */
     public void setAntiAliasing(boolean enabled) {
         this.isAntiAliased = enabled;
+    }
+
+    /**
+     * Sets amount of noise to be injected to the generated image.
+     * 
+     * @param noiseAmount the noiseAmount to set
+     */
+    public void setNoiseAmount(int noiseAmount) {
+        this.noiseAmount = noiseAmount;
     }
 }

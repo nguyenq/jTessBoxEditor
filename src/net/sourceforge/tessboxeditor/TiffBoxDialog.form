@@ -28,7 +28,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,44,0,0,2,-95"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,44,0,0,3,114"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -109,6 +109,23 @@
                 <Property name="toolTipText" type="java.lang.String" value="Anti-Aliasing"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="jLabelNoise">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Noise"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="jSpinnerNoise">
+              <Properties>
+                <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                  <SpinnerModel initial="0" maximum="50" minimum="0" numberType="java.lang.Integer" stepSize="5" type="number"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Add Noise to Image"/>
+                <Property name="name" type="java.lang.String" value="Noise" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[47, 20]"/>
+                </Property>
+              </Properties>
+            </Component>
             <Component class="javax.swing.JLabel" name="jLabelTracking">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tracking"/>
@@ -138,7 +155,7 @@
             <Component class="javax.swing.JSpinner" name="jSpinnerW">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="2550" maximum="2550" minimum="600" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                  <SpinnerModel initial="2550" maximum="2550" minimum="600" numberType="java.lang.Integer" stepSize="10" type="number"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Image Width"/>
                 <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
@@ -158,7 +175,7 @@
             <Component class="javax.swing.JSpinner" name="jSpinnerH">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="3300" maximum="3300" minimum="400" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                  <SpinnerModel initial="3300" maximum="3300" minimum="400" numberType="java.lang.Integer" stepSize="10" type="number"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Image Height"/>
                 <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
