@@ -94,6 +94,8 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextFieldFileName = new javax.swing.JTextField();
         jButtonFont = new javax.swing.JButton();
         jCheckBoxAntiAliasing = new javax.swing.JCheckBox();
+        jLabelNoise = new javax.swing.JLabel();
+        jSpinnerNoise = new javax.swing.JSpinner();
         jLabelTracking = new javax.swing.JLabel();
         jSpinnerTracking = new javax.swing.JSpinner();
         jLabelW = new javax.swing.JLabel();
@@ -150,6 +152,15 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jCheckBoxAntiAliasing.setToolTipText("Anti-Aliasing");
         jPanel1.add(jCheckBoxAntiAliasing);
 
+        jLabelNoise.setText("Noise");
+        jPanel1.add(jLabelNoise);
+
+        jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 50, 5));
+        jSpinnerNoise.setToolTipText("Add Noise to Image");
+        jSpinnerNoise.setName("Noise"); // NOI18N
+        jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 20));
+        jPanel1.add(jSpinnerNoise);
+
         jLabelTracking.setText("Tracking");
         jLabelTracking.setToolTipText("Letter Tracking");
         jPanel1.add(jLabelTracking);
@@ -168,7 +179,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelW.setToolTipText("Image Width");
         jPanel1.add(jLabelW);
 
-        jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 1));
+        jSpinnerW.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 10));
         jSpinnerW.setToolTipText("Image Width");
         jSpinnerW.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW, "#"));
         jSpinnerW.setPreferredSize(new java.awt.Dimension(63, 22));
@@ -178,7 +189,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelH.setToolTipText("Image Height");
         jPanel1.add(jLabelH);
 
-        jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 1));
+        jSpinnerH.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 10));
         jSpinnerH.setToolTipText("Image Height");
         jSpinnerH.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH, "#"));
         jSpinnerH.setPreferredSize(new java.awt.Dimension(63, 22));
@@ -355,8 +366,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         }
         generator.setFileName(prefix + this.jTextFieldFileName.getText());
         generator.setTracking((Float) this.jSpinnerTracking.getValue());
+        generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
         generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
 
+        this.jButtonGenerate.setEnabled(false);
+        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        getGlassPane().setVisible(true);
+        
         try {
             generator.create();
             JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
@@ -364,6 +380,10 @@ public class TiffBoxDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
+        } finally {
+            jButtonGenerate.setEnabled(true);
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            getGlassPane().setVisible(false);
         }
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 
@@ -432,12 +452,14 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.JCheckBox jCheckBoxAntiAliasing;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabelH;
+    private javax.swing.JLabel jLabelNoise;
     private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelTracking;
     private javax.swing.JLabel jLabelW;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerH;
+    private javax.swing.JSpinner jSpinnerNoise;
     private javax.swing.JSpinner jSpinnerTracking;
     private javax.swing.JSpinner jSpinnerW;
     private javax.swing.JTextArea jTextArea1;
