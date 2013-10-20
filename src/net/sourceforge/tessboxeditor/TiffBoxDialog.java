@@ -158,7 +158,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jLabelNoise.setToolTipText("Add Noise to Image");
         jPanel1.add(jLabelNoise);
 
-        jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 50, 5));
+        jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5, 1));
         jSpinnerNoise.setToolTipText("Add Noise to Image");
         jSpinnerNoise.setName("Noise"); // NOI18N
         jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 20));

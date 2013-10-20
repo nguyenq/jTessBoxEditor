@@ -124,7 +124,7 @@
             <Component class="javax.swing.JSpinner" name="jSpinnerNoise">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="0" maximum="50" minimum="0" numberType="java.lang.Integer" stepSize="5" type="number"/>
+                  <SpinnerModel initial="0" maximum="5" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Add Noise to Image"/>
                 <Property name="name" type="java.lang.String" value="Noise" noResource="true"/>
