@@ -256,11 +256,11 @@ public class TrainDialog extends javax.swing.JDialog {
         jPanelMain.add(jPanelButton, gridBagConstraints);
 
         getContentPane().add(jPanelMain, java.awt.BorderLayout.CENTER);
-        tessDirectory = prefs.get("tessDirectory", null);
+        tessDirectory = prefs.get("tessDirectory", new File(System.getProperty("user.dir"), "tesseract-ocr").getPath());
         this.jTextFieldTessDir.setText(tessDirectory);
         this.jFileChooserTess.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
 
-        trainDataDirectory = prefs.get("trainDataDirectory", null);
+        trainDataDirectory = prefs.get("trainDataDirectory", new File(System.getProperty("user.dir"), "samples/vie").getPath());
         this.jTextFieldDataDir.setText(trainDataDirectory);
         this.jFileChooserData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
 
