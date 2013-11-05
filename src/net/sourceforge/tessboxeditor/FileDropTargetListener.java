@@ -15,7 +15,7 @@ import java.net.URI;
  */
 public class FileDropTargetListener extends DropTargetAdapter {
 
-    private Window holder;
+    private final Window holder;
     private File droppedFile;
 
     /**
@@ -37,8 +37,8 @@ public class FileDropTargetListener extends DropTargetAdapter {
     public void dragOver(DropTargetDragEvent dtde) {
         if (droppedFile == null) {
             DataFlavor[] flavors = dtde.getCurrentDataFlavors();
-            for (int i = 0; i < flavors.length; i++) {
-                if (flavors[i].isFlavorJavaFileListType()) {
+            for (DataFlavor flavor : flavors) {
+                if (flavor.isFlavorJavaFileListType()) {
                     dtde.acceptDrag(DnDConstants.ACTION_COPY);
                     return;
                 }
@@ -58,14 +58,12 @@ public class FileDropTargetListener extends DropTargetAdapter {
         DataFlavor[] flavors = transferable.getTransferDataFlavors();
 
         final boolean LINUX = System.getProperty("os.name").equals("Linux");
-
-        for (int i = 0; i < flavors.length; i++) {
+        for (DataFlavor flavor : flavors) {
             try {
-                if (flavors[i].equals(DataFlavor.javaFileListFlavor) || (LINUX && flavors[i].getPrimaryType().equals("text") && flavors[i].getSubType().equals("uri-list"))) {
+                if (flavor.equals(DataFlavor.javaFileListFlavor) || (LINUX && flavor.getPrimaryType().equals("text") && flavor.getSubType().equals("uri-list"))) {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY);
-
                     // Missing DataFlavor.javaFileListFlavor on Linux (Bug ID: 4899516)
-                    if (flavors[i].equals(DataFlavor.javaFileListFlavor)) {
+                    if (flavor.equals(DataFlavor.javaFileListFlavor)) {
                         java.util.List fileList = (java.util.List) transferable.getTransferData(DataFlavor.javaFileListFlavor);
                         droppedFile = (File) fileList.get(0);
                     } else {
@@ -75,10 +73,8 @@ public class FileDropTargetListener extends DropTargetAdapter {
                         URI uri = new URI(string.substring(0, string.indexOf('\n')));
                         droppedFile = new File(uri);
                     }
-
                     // Note: On Windows, Java 1.4.2 can't recognize a Unicode file name
                     // (Bug ID 4896217). Fixed in Java 1.5.
-
                     // Processes one dropped file at a time in a separate thread
                     new Thread() {
 
@@ -86,13 +82,12 @@ public class FileDropTargetListener extends DropTargetAdapter {
                         public void run() {
                             if (holder instanceof Gui) {
                                 ((Gui) holder).openFile(droppedFile);
-                            } else if (holder instanceof TiffBoxDialog) {
-                                ((TiffBoxDialog) holder).openTextFile(droppedFile);
+                            } else if (holder instanceof GuiWithGenerator) {
+                                ((GuiWithGenerator) holder).openTextFile(droppedFile);
                             }
                             droppedFile = null;
                         }
                     }.start();
-
                     dtde.dropComplete(true);
                     return;
                 }

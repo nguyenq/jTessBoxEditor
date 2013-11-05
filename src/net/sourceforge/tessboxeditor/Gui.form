@@ -901,7 +901,7 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JSplitPane" name="jSplitPane1">
+            <Container class="javax.swing.JSplitPane" name="jSplitPaneEditor">
               <Properties>
                 <Property name="dividerSize" type="int" value="2"/>
               </Properties>
@@ -1029,7 +1029,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTextArea" name="jTextArea">
+                        <Component class="javax.swing.JTextArea" name="jTextAreaBoxData">
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
                             <Property name="columns" type="int" value="20"/>

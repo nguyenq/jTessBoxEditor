@@ -97,9 +97,7 @@ public class Gui extends javax.swing.JFrame {
         boxPages = new ArrayList<TessBoxCollection>();
 
         // DnD support
-        new DropTarget(this.jLabelImage, new FileDropTargetListener(Gui.this));
-        new DropTarget(this.jTabbedPaneBoxData, new FileDropTargetListener(Gui.this));
-        new DropTarget(this.jTextArea, new FileDropTargetListener(Gui.this));
+        new DropTarget(this.jSplitPaneEditor, new FileDropTargetListener(Gui.this));
 
         this.addWindowListener(
                 new WindowAdapter() {
@@ -214,7 +212,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerW = new javax.swing.JSpinner();
         jLabelH = new javax.swing.JLabel();
         jSpinnerH = new javax.swing.JSpinner();
-        jSplitPane1 = new javax.swing.JSplitPane();
+        jSplitPaneEditor = new javax.swing.JSplitPane();
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
         jPanelCoord = new javax.swing.JPanel();
         jScrollPaneCoord = new javax.swing.JScrollPane();
@@ -223,7 +221,7 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldFind = new javax.swing.JTextField();
         jButtonFind = new javax.swing.JButton();
         jScrollPaneBoxData = new javax.swing.JScrollPane();
-        jTextArea = new javax.swing.JTextArea();
+        jTextAreaBoxData = new javax.swing.JTextArea();
         jPanelBoxView = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabelCodepoint = new javax.swing.JLabel();
@@ -615,7 +613,7 @@ public class Gui extends javax.swing.JFrame {
 
         jPanelEditor.add(jToolBarEditor, java.awt.BorderLayout.PAGE_START);
 
-        jSplitPane1.setDividerSize(2);
+        jSplitPaneEditor.setDividerSize(2);
 
         jPanelCoord.setLayout(new java.awt.BorderLayout());
 
@@ -764,11 +762,11 @@ public class Gui extends javax.swing.JFrame {
 
         jTabbedPaneBoxData.addTab("Box Coordinates", jPanelCoord);
 
-        jTextArea.setEditable(false);
-        jTextArea.setColumns(20);
-        jTextArea.setRows(5);
-        jTextArea.setMargin(new java.awt.Insets(8, 8, 2, 2));
-        jScrollPaneBoxData.setViewportView(jTextArea);
+        jTextAreaBoxData.setEditable(false);
+        jTextAreaBoxData.setColumns(20);
+        jTextAreaBoxData.setRows(5);
+        jTextAreaBoxData.setMargin(new java.awt.Insets(8, 8, 2, 2));
+        jScrollPaneBoxData.setViewportView(jTextAreaBoxData);
 
         jTabbedPaneBoxData.addTab("Box Data", jScrollPaneBoxData);
 
@@ -816,14 +814,14 @@ public class Gui extends javax.swing.JFrame {
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
-        jSplitPane1.setLeftComponent(jTabbedPaneBoxData);
+        jSplitPaneEditor.setLeftComponent(jTabbedPaneBoxData);
 
         jLabelImage.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jScrollPaneImage.setViewportView(jLabelImage);
 
-        jSplitPane1.setRightComponent(jScrollPaneImage);
+        jSplitPaneEditor.setRightComponent(jScrollPaneImage);
 
-        jPanelEditor.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        jPanelEditor.add(jSplitPaneEditor, java.awt.BorderLayout.CENTER);
 
         jPanelStatus.add(jLabelStatus);
         jPanelStatus.add(jLabelPageNbr);
@@ -1222,11 +1220,11 @@ public class Gui extends javax.swing.JFrame {
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"));
                 // load into textarea first
-                this.jTextArea.read(in, null);
+                this.jTextAreaBoxData.read(in, null);
                 in.close();
 
                 // load into coordinate tab
-                String[] boxdata = this.jTextArea.getText().split("\\n");
+                String[] boxdata = this.jTextAreaBoxData.getText().split("\\n");
                 if (boxdata.length > 0) {
                     // if only 5 fields, it's Tess 2.0x format
                     isTess2_0Format = boxdata[0].split("\\s+").length == 5;
@@ -1281,7 +1279,7 @@ public class Gui extends javax.swing.JFrame {
             // clear table and box display
             tableModel.setDataVector((Object[][]) null, (Object[]) null);
             ((JImageLabel) this.jLabelImage).setBoxes(null);
-            jTextArea.setText(null);
+            jTextAreaBoxData.setText(null);
         }
     }
 
@@ -1967,11 +1965,11 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JSpinner jSpinnerW1;
     protected javax.swing.JSpinner jSpinnerX;
     protected javax.swing.JSpinner jSpinnerY;
-    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPaneEditor;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
     private javax.swing.JTabbedPane jTabbedPaneMain;
     protected javax.swing.JTable jTable;
-    protected javax.swing.JTextArea jTextArea;
+    protected javax.swing.JTextArea jTextAreaBoxData;
     protected javax.swing.JTextArea jTextAreaInput;
     protected javax.swing.JTextArea jTextAreaOutput;
     protected javax.swing.JTextField jTextFieldBootstrapLang;
