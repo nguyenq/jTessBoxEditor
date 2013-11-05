@@ -26,7 +26,6 @@ public class GuiWithTools extends GuiWithLaF {
 
     File imageFolder;
     FileFilter selectedFilter;
-    JDialog tiffBoxDialog;
 
     public GuiWithTools() {
         imageFolder = new File(prefs.get("ImageFolder", System.getProperty("user.home")));
@@ -124,14 +123,6 @@ public class GuiWithTools extends GuiWithLaF {
                 worker.execute();
             }
         }
-    }
-
-    @Override
-    void jMenuItemGenerateTiffBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        if (tiffBoxDialog == null) {
-            tiffBoxDialog = new TiffBoxDialog(this, true);
-        }
-        tiffBoxDialog.setVisible(true);
     }
 
     @Override

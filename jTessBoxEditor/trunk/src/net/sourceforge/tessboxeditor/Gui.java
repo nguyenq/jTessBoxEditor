@@ -288,10 +288,6 @@ public class Gui extends javax.swing.JFrame {
         jMenuLookAndFeel = new javax.swing.JMenu();
         jMenuTools = new javax.swing.JMenu();
         jMenuItemMergeTiff = new javax.swing.JMenuItem();
-        jMenuItemGenerateTiffBox = new javax.swing.JMenuItem();
-        this.jMenuItemGenerateTiffBox.setVisible(false);
-        jMenuItemTrain = new javax.swing.JMenuItem();
-        this.jMenuItemTrain.setVisible(false);
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
@@ -1119,26 +1115,6 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuTools.add(jMenuItemMergeTiff);
 
-        jMenuItemGenerateTiffBox.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemGenerateTiffBox.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemGenerateTiffBox.Mnemonic").charAt(0));
-        jMenuItemGenerateTiffBox.setText(bundle.getString("jMenuItemGenerateTiffBox.Text")); // NOI18N
-        jMenuItemGenerateTiffBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemGenerateTiffBoxActionPerformed(evt);
-            }
-        });
-        jMenuTools.add(jMenuItemGenerateTiffBox);
-
-        jMenuItemTrain.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemTrain.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemTrain.Mnemonic").charAt(0));
-        jMenuItemTrain.setText(bundle.getString("jMenuItemTrain.Text")); // NOI18N
-        jMenuItemTrain.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemTrainActionPerformed(evt);
-            }
-        });
-        jMenuTools.add(jMenuItemTrain);
-
         jMenuBar.add(jMenuTools);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuHelp.Mnemonic").charAt(0));
@@ -1797,10 +1773,6 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
 
-    void jMenuItemGenerateTiffBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGenerateTiffBoxActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }//GEN-LAST:event_jMenuItemGenerateTiffBoxActionPerformed
-
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
         int index = this.jTable.getSelectedRow();
         if (index > 0) {
@@ -1830,10 +1802,6 @@ public class Gui extends javax.swing.JFrame {
             this.jTable.scrollRectToVisible(rect);
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
-
-    void jMenuItemTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTrainActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }//GEN-LAST:event_jMenuItemTrainActionPerformed
 
     void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
         // to be implemented in subclass
@@ -1955,7 +1923,6 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemDelete;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemFont;
-    private javax.swing.JMenuItem jMenuItemGenerateTiffBox;
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemInsert;
     private javax.swing.JMenuItem jMenuItemMerge;
@@ -1964,7 +1931,6 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenuItem jMenuItemSplit;
-    private javax.swing.JMenuItem jMenuItemTrain;
     protected javax.swing.JMenu jMenuLookAndFeel;
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
