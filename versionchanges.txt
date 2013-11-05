@@ -55,8 +55,8 @@ Version 0.9 (30 April 2013)
 - Find function now supports partial matches
 - Fix a problem with table not scrolling along when row header has focus and scrolling
 
-Version 1.0 Beta 6 (2 November 2013)
+Version 1.0 Beta 9 (5 November 2013)
 - Integrate support for full automation of Tesseract training
+- Bundle Tesseract Windows training executables, English data, and config files
 - Fix an issue with generated TIFF missing metadata
 - Optionally add noise to generated image
-- Bundle Tesseract Windows training executables, English data, and config files

@@ -10,7 +10,7 @@
 <project name="jTessBoxEditor" default="default" basedir=".">
     <description>Builds, tests, and runs the project jTessBoxEditor.</description>
     <import file="nbproject/build-impl.xml"/>
-    <property name="version" value="1.0-Beta8"/>
+    <property name="version" value="1.0-Beta9"/>
     
      <target name="-post-compile">
         <copy todir="${build.classes.dir}">
