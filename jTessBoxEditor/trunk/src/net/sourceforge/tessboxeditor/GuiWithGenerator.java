@@ -16,12 +16,14 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.*;
+import java.awt.dnd.DropTarget;
 import java.awt.font.TextAttribute;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.Document;
 import net.sourceforge.vietpad.components.FontDialog;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
@@ -35,6 +37,9 @@ public class GuiWithGenerator extends GuiWithTools {
 
     public GuiWithGenerator() {
         initComponents();
+        
+        // DnD support
+        new DropTarget(this.jTextAreaInput, new FileDropTargetListener(GuiWithGenerator.this));
     }
 
     private void initComponents() {
@@ -93,7 +98,12 @@ public class GuiWithGenerator extends GuiWithTools {
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"));
             this.jTextAreaInput.read(in, null);
             in.close();
-        } catch (IOException e) {
+            Document doc = jTextAreaInput.getDocument();
+            if (doc.getText(0, 1).equals("\uFEFF")) {
+                doc.remove(0, 1); // remove BOM
+            }
+        } catch (Exception e) {
+            //ignore
         }
     }
 
