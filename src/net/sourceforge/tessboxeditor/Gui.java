@@ -386,6 +386,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelMain.add(jComboBoxOps);
 
         jButtonTrain.setText("Run");
+        jButtonTrain.setToolTipText("Start Training");
         jButtonTrain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonTrainActionPerformed(evt);
@@ -394,6 +395,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelMain.add(jButtonTrain);
 
         jButtonCancel.setText("Cancel");
+        jButtonCancel.setToolTipText("Cancel Training");
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);
@@ -402,6 +404,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelMain.add(jButtonCancel);
 
         jButtonClearLog.setText("Clear");
+        jButtonClearLog.setToolTipText("Clear Log");
         jButtonClearLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonClearLogActionPerformed(evt);
@@ -897,11 +900,9 @@ public class Gui extends javax.swing.JFrame {
         jPanel3.add(jButtonFont);
 
         jCheckBoxAntiAliasing.setText("Anti-Aliasing");
-        jCheckBoxAntiAliasing.setToolTipText("Anti-Aliasing");
         jPanel3.add(jCheckBoxAntiAliasing);
 
         jLabelNoise.setText("Noise");
-        jLabelNoise.setToolTipText("Add Noise to Image");
         jPanel3.add(jLabelNoise);
 
         jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5, 1));
@@ -910,12 +911,11 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 20));
         jPanel3.add(jSpinnerNoise);
 
-        jLabelTracking.setText("Tracking");
-        jLabelTracking.setToolTipText("Letter Tracking");
+        jLabelTracking.setText("Letter Tracking");
         jPanel3.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
-        jSpinnerTracking.setToolTipText("Letter Tracking");
+        jSpinnerTracking.setToolTipText("Adjust Letter Tracking");
         jSpinnerTracking.setPreferredSize(new java.awt.Dimension(64, 22));
         jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
