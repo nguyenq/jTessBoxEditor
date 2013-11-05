@@ -10,7 +10,7 @@
 <project name="jTessBoxEditor" default="default" basedir=".">
     <description>Builds, tests, and runs the project jTessBoxEditor.</description>
     <import file="nbproject/build-impl.xml"/>
-    <property name="version" value="1.0-Beta"/>
+    <property name="version" value="1.0-Beta8"/>
     
      <target name="-post-compile">
         <copy todir="${build.classes.dir}">
@@ -39,7 +39,7 @@
             </zipfileset>
         </zip>
         <zip zipfile="${dist.dir}/${ant.project.name}-${version}.zip">
-            <zipfileset dir="." includes="*,lib/**,data/**,tools/**,samples/**,tesseract-ocr/**" prefix="${ant.project.name}"
+            <zipfileset dir="." includes="*,lib/**,data/**,tools/**,samples/**" prefix="${ant.project.name}"
                         excludes="build.xml,src,build,dist,doc,test,nbproject">
                 <exclude name="*.mf"/>
             </zipfileset>

@@ -87,7 +87,7 @@ public class FileDropTargetListener extends DropTargetAdapter {
                             if (holder instanceof Gui) {
                                 ((Gui) holder).openFile(droppedFile);
                             } else if (holder instanceof TiffBoxDialog) {
-                                ((TiffBoxDialog) holder).openFile(droppedFile);
+                                ((TiffBoxDialog) holder).openTextFile(droppedFile);
                             }
                             droppedFile = null;
                         }
