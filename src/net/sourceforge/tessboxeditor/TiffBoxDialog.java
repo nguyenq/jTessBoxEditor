@@ -79,13 +79,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFileChooser1 = new javax.swing.JFileChooser();
+        jFileChooserInput = new javax.swing.JFileChooser();
         FileFilter textFilter = new SimpleFilter("txt", "Text Files");
-        jFileChooser1.addChoosableFileFilter(textFilter);
-        jFileChooser1.setAcceptAllFileFilterUsed(false);
+        jFileChooserInput.addChoosableFileFilter(textFilter);
+        jFileChooserInput.setAcceptAllFileFilterUsed(false);
         trainDirectory = prefs.get("trainDirectory", null);
-        jFileChooser1.setCurrentDirectory(trainDirectory == null ? null : new File(trainDirectory));
-        jToolBar1 = new javax.swing.JToolBar();
+        jFileChooserInput.setCurrentDirectory(trainDirectory == null ? null : new File(trainDirectory));
+        jToolBarImage = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         jButtonInput = new javax.swing.JButton();
         jLabelOutput = new javax.swing.JLabel();
@@ -104,13 +104,13 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jSpinnerH = new javax.swing.JSpinner();
         jButtonGenerate = new javax.swing.JButton();
         jButtonClear = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPaneText = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
         setTitle("Generate TIFF/Box");
         setMinimumSize(new java.awt.Dimension(800, 600));
 
-        jToolBar1.setRollover(true);
+        jToolBarImage.setRollover(true);
 
         jButtonInput.setText("Input");
         jButtonInput.setToolTipText("Load Text File");
@@ -225,9 +225,9 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         });
         jPanel1.add(jButtonClear);
 
-        jToolBar1.add(jPanel1);
+        jToolBarImage.add(jPanel1);
 
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(jToolBarImage, java.awt.BorderLayout.PAGE_START);
 
         // Set font
         font = new Font(
@@ -246,22 +246,22 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setMargin(new java.awt.Insets(5, 5, 2, 2));
-        jScrollPane1.setViewportView(jTextArea1);
+        jScrollPaneText.setViewportView(jTextArea1);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jScrollPaneText, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
-        if (jFileChooser1.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            trainDirectory = jFileChooser1.getCurrentDirectory().getPath();
+        if (jFileChooserInput.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            trainDirectory = jFileChooserInput.getCurrentDirectory().getPath();
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
 
             try {
-                selectedFile = jFileChooser1.getSelectedFile();
-                openFile(selectedFile);
+                selectedFile = jFileChooserInput.getSelectedFile();
+                openTextFile(selectedFile);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -282,7 +282,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
      *
      * @param selectedFile
      */
-    void openFile(final File selectedFile) {
+    void openTextFile(final File selectedFile) {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"));
             this.jTextArea1.read(in, null);
@@ -456,14 +456,14 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonGenerate;
     private javax.swing.JButton jButtonInput;
     private javax.swing.JCheckBox jCheckBoxAntiAliasing;
-    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JFileChooser jFileChooserInput;
     private javax.swing.JLabel jLabelH;
     private javax.swing.JLabel jLabelNoise;
     private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelTracking;
     private javax.swing.JLabel jLabelW;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneText;
     private javax.swing.JSpinner jSpinnerH;
     private javax.swing.JSpinner jSpinnerNoise;
     private javax.swing.JSpinner jSpinnerTracking;
@@ -471,6 +471,6 @@ public class TiffBoxDialog extends javax.swing.JDialog {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldFileName;
     private javax.swing.JTextField jTextFieldPrefix;
-    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBarImage;
     // End of variables declaration//GEN-END:variables
 }

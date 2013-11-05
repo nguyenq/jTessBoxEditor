@@ -15,6 +15,8 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.*;
 import java.util.*;
 import net.sourceforge.vietpad.utilities.TextUtilities;
@@ -37,6 +39,16 @@ public class TessTrainer {
     String lang;
     String bootstrapLang;
 
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+
+//    public void removePropertyChangeListener(PropertyChangeListener listener) {
+//        this.pcs.removePropertyChangeListener(listener);
+//    }
+     
     public TessTrainer(String tessDir, String inputDataDir, String lang, String bootstrapLang) {
         pb = new ProcessBuilder();
 //        pb.directory(new File(System.getProperty("user.home")));
@@ -229,6 +241,7 @@ public class TessTrainer {
      */
     void runCommand(List<String> cmd) throws Exception {
         System.out.println(cmd);
+        this.pcs.firePropertyChange("value", null, cmd.toString() + "\n");
         pb.command(cmd);
         Process process = pb.start();
 
@@ -238,7 +251,8 @@ public class TessTrainer {
 
         int w = process.waitFor();
 //        System.out.println("Exit value = " + w);
-
+        this.pcs.firePropertyChange("value", null, outputGobbler.getMessage());
+        
         if (w != 0) {
             throw new RuntimeException(outputGobbler.getMessage());
         }

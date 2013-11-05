@@ -122,11 +122,11 @@ public class Gui extends javax.swing.JFrame {
                 snap(prefs.getInt("frameHeight", 360), 150, screen.height));
         setLocation(
                 snap(
-                prefs.getInt("frameX", (screen.width - getWidth()) / 2),
-                screen.x, screen.x + screen.width - getWidth()),
+                        prefs.getInt("frameX", (screen.width - getWidth()) / 2),
+                        screen.x, screen.x + screen.width - getWidth()),
                 snap(
-                prefs.getInt("frameY", screen.y + (screen.height - getHeight()) / 3),
-                screen.y, screen.y + screen.height - getHeight()));
+                        prefs.getInt("frameY", screen.y + (screen.height - getHeight()) / 3),
+                        screen.y, screen.y + screen.height - getHeight()));
 
         KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
 
@@ -164,8 +164,36 @@ public class Gui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFileChooser = new javax.swing.JFileChooser();
-        jToolBar1 = new javax.swing.JToolBar();
+        jFileChooserInputImage = new javax.swing.JFileChooser();
+        jTabbedPaneMain = new javax.swing.JTabbedPane();
+        jPanelTrainer = new javax.swing.JPanel();
+        jToolBarTrainer = new javax.swing.JToolBar();
+        jPanelMain = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldTessDir = new javax.swing.JTextField();
+        jButtonBrowseTess = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldDataDir = new javax.swing.JTextField();
+        jButtonBrowseData = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextFieldLang = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jTextFieldBootstrapLang = new javax.swing.JTextField();
+        jComboBoxOps = new javax.swing.JComboBox();
+        jButtonTrain = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
+        jButtonCancel.setEnabled(false);
+        jButtonClearLog = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextAreaOutput = new javax.swing.JTextArea();
+        jPanelStatus1 = new javax.swing.JPanel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 17), new java.awt.Dimension(0, 17), new java.awt.Dimension(32767, 17));
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jProgressBar1.setVisible(false);
+        jLabelTime = new javax.swing.JLabel();
+        jPanelEditor = new javax.swing.JPanel();
+        jToolBarEditor = new javax.swing.JToolBar();
+        jPanel4 = new javax.swing.JPanel();
         jButtonOpen = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jButtonReload = new javax.swing.JButton();
@@ -186,11 +214,6 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerW = new javax.swing.JSpinner();
         jLabelH = new javax.swing.JLabel();
         jSpinnerH = new javax.swing.JSpinner();
-        jPanelStatus = new javax.swing.JPanel();
-        jLabelStatus = new javax.swing.JLabel();
-        jLabelPageNbr = new javax.swing.JLabel();
-        jButtonPrevPage = new javax.swing.JButton();
-        jButtonNextPage = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
         jPanelCoord = new javax.swing.JPanel();
@@ -217,59 +240,208 @@ public class Gui extends javax.swing.JFrame {
         jScrollPaneImage.getVerticalScrollBar().setUnitIncrement(20);
         jScrollPaneImage.getHorizontalScrollBar().setUnitIncrement(20);
         jLabelImage = new JImageLabel();
+        jPanelStatus = new javax.swing.JPanel();
+        jLabelStatus = new javax.swing.JLabel();
+        jLabelPageNbr = new javax.swing.JLabel();
+        jButtonPrevPage = new javax.swing.JButton();
+        jButtonNextPage = new javax.swing.JButton();
+        jPanelTIFFBox = new javax.swing.JPanel();
+        jToolBarGenerator = new javax.swing.JToolBar();
+        jPanel3 = new javax.swing.JPanel();
+        jButtonInput = new javax.swing.JButton();
+        jLabelOutput = new javax.swing.JLabel();
+        jTextFieldPrefix = new javax.swing.JTextField();
+        jTextFieldPrefix.setText(prefs.get("trainLanguage", "eng"));
+        jTextFieldFileName = new javax.swing.JTextField();
+        jButtonFont = new javax.swing.JButton();
+        jCheckBoxAntiAliasing = new javax.swing.JCheckBox();
+        jLabelNoise = new javax.swing.JLabel();
+        jSpinnerNoise = new javax.swing.JSpinner();
+        jLabelTracking = new javax.swing.JLabel();
+        jSpinnerTracking = new javax.swing.JSpinner();
+        jLabelW1 = new javax.swing.JLabel();
+        jSpinnerW1 = new javax.swing.JSpinner();
+        jLabelH1 = new javax.swing.JLabel();
+        jSpinnerH1 = new javax.swing.JSpinner();
+        jButtonGenerate = new javax.swing.JButton();
+        jButtonClear = new javax.swing.JButton();
+        jScrollPaneText = new javax.swing.JScrollPane();
+        jTextAreaInput = new javax.swing.JTextArea();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jSeparatorRecentFiles = new javax.swing.JPopupMenu.Separator();
         jMenuRecentFiles = new javax.swing.JMenu();
         jSeparatorExit = new javax.swing.JPopupMenu.Separator();
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
+        this.jMenuEdit.setVisible(false);
         jMenuItemMerge = new javax.swing.JMenuItem();
         jMenuItemSplit = new javax.swing.JMenuItem();
         jMenuItemInsert = new javax.swing.JMenuItem();
         jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jSeparatorLAF = new javax.swing.JPopupMenu.Separator();
         jMenuLookAndFeel = new javax.swing.JMenu();
         jMenuTools = new javax.swing.JMenu();
         jMenuItemMergeTiff = new javax.swing.JMenuItem();
         jMenuItemGenerateTiffBox = new javax.swing.JMenuItem();
+        this.jMenuItemGenerateTiffBox.setVisible(false);
         jMenuItemTrain = new javax.swing.JMenuItem();
+        this.jMenuItemTrain.setVisible(false);
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui"); // NOI18N
-        jFileChooser.setDialogTitle(bundle.getString("jButtonOpen.ToolTipText")); // NOI18N
+        jFileChooserInputImage.setDialogTitle(bundle.getString("jButtonOpen.ToolTipText")); // NOI18N
 
         currentDirectory = prefs.get("currentDirectory", null);
         outputDirectory = prefs.get("outputDirectory", null);
-        jFileChooser.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
+        jFileChooserInputImage.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
         filterIndex = prefs.getInt("filterIndex", 0);
         FileFilter allImageFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff", bundle.getString("All_Image_Files"));
         FileFilter pngFilter = new SimpleFilter("png", "PNG");
         FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
         //FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
 
-        jFileChooser.setAcceptAllFileFilterUsed(false);
-        jFileChooser.addChoosableFileFilter(allImageFilter);
-        jFileChooser.addChoosableFileFilter(pngFilter);
-        jFileChooser.addChoosableFileFilter(tiffFilter);
+        jFileChooserInputImage.setAcceptAllFileFilterUsed(false);
+        jFileChooserInputImage.addChoosableFileFilter(allImageFilter);
+        jFileChooserInputImage.addChoosableFileFilter(pngFilter);
+        jFileChooserInputImage.addChoosableFileFilter(tiffFilter);
         //jFileChooser.addChoosableFileFilter(textFilter);
-        fileFilters = jFileChooser.getChoosableFileFilters();
+        fileFilters = jFileChooserInputImage.getChoosableFileFilters();
         if (filterIndex < fileFilters.length) {
-            jFileChooser.setFileFilter(fileFilters[filterIndex]);
+            jFileChooserInputImage.setFileFilter(fileFilters[filterIndex]);
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("jTessBoxEditor");
 
-        jToolBar1.setRollover(true);
+        jTabbedPaneMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(-2, 0, 0, 0));
+        jTabbedPaneMain.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPaneMainStateChanged(evt);
+            }
+        });
+
+        jPanelTrainer.setLayout(new java.awt.BorderLayout());
+
+        jToolBarTrainer.setRollover(true);
+
+        jPanelMain.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel4.setText("Tesseract Executables");
+        jPanelMain.add(jLabel4);
+
+        jTextFieldTessDir.setEnabled(false);
+        jTextFieldTessDir.setPreferredSize(new java.awt.Dimension(180, 24));
+        jPanelMain.add(jTextFieldTessDir);
+
+        jButtonBrowseTess.setText("...");
+        jButtonBrowseTess.setToolTipText("Browse");
+        jButtonBrowseTess.setMaximumSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseTess.setMinimumSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseTess.setPreferredSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseTess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowseTessActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonBrowseTess);
+
+        jLabel3.setText("Training Data");
+        jPanelMain.add(jLabel3);
+
+        jTextFieldDataDir.setEnabled(false);
+        jTextFieldDataDir.setPreferredSize(new java.awt.Dimension(180, 24));
+        jPanelMain.add(jTextFieldDataDir);
+
+        jButtonBrowseData.setText("...");
+        jButtonBrowseData.setToolTipText("Browse");
+        jButtonBrowseData.setMaximumSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseData.setMinimumSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseData.setPreferredSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowseDataActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonBrowseData);
+
+        jLabel1.setText("Language");
+        jPanelMain.add(jLabel1);
+
+        jTextFieldLang.setMinimumSize(new java.awt.Dimension(34, 19));
+        jTextFieldLang.setPreferredSize(new java.awt.Dimension(34, 24));
+        jPanelMain.add(jTextFieldLang);
+
+        jLabel2.setText("Bootstrap Language");
+        jPanelMain.add(jLabel2);
+
+        jTextFieldBootstrapLang.setMinimumSize(new java.awt.Dimension(34, 19));
+        jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(34, 24));
+        jPanelMain.add(jTextFieldBootstrapLang);
+
+        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "Train from Scratch" }));
+        jComboBoxOps.setToolTipText("Training Mode");
+        jPanelMain.add(jComboBoxOps);
+
+        jButtonTrain.setText("Run");
+        jButtonTrain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonTrainActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonTrain);
+
+        jButtonCancel.setText("Cancel");
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonCancel);
+
+        jButtonClearLog.setText("Clear");
+        jButtonClearLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearLogActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonClearLog);
+
+        jToolBarTrainer.add(jPanelMain);
+
+        jPanelTrainer.add(jToolBarTrainer, java.awt.BorderLayout.PAGE_START);
+
+        jTextAreaOutput.setEditable(false);
+        jTextAreaOutput.setColumns(20);
+        jTextAreaOutput.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaOutput);
+
+        jPanelTrainer.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanelStatus1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanelStatus1.add(filler2);
+
+        jProgressBar1.setStringPainted(true);
+        jPanelStatus1.add(jProgressBar1);
+        jPanelStatus1.add(jLabelTime);
+
+        jPanelTrainer.add(jPanelStatus1, java.awt.BorderLayout.SOUTH);
+
+        jTabbedPaneMain.addTab("Trainer", jPanelTrainer);
+
+        jPanelEditor.setLayout(new java.awt.BorderLayout());
+
+        jToolBarEditor.setRollover(true);
+
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 1, 5));
 
         jButtonOpen.setText(bundle.getString("jButtonOpen.Text")); // NOI18N
         jButtonOpen.setToolTipText(bundle.getString("jButtonOpen.ToolTipText")); // NOI18N
@@ -281,7 +453,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonOpenActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonOpen);
+        jPanel4.add(jButtonOpen);
 
         jButtonSave.setText(bundle.getString("jButtonSave.Text")); // NOI18N
         jButtonSave.setToolTipText(bundle.getString("jButtonSave.ToolTipText")); // NOI18N
@@ -293,7 +465,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonSaveActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonSave);
+        jPanel4.add(jButtonSave);
 
         jButtonReload.setText("Reload");
         jButtonReload.setToolTipText("Reload Box File");
@@ -305,8 +477,8 @@ public class Gui extends javax.swing.JFrame {
                 jButtonReloadActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonReload);
-        jToolBar1.add(Box.createHorizontalGlue());
+        jPanel4.add(jButtonReload);
+        jPanel4.add(Box.createHorizontalStrut(100));
 
         jButtonMerge.setText(bundle.getString("jButtonMerge.Text")); // NOI18N
         jButtonMerge.setToolTipText(bundle.getString("jButtonMerge.ToolTipText")); // NOI18N
@@ -318,7 +490,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonMergeActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonMerge);
+        jPanel4.add(jButtonMerge);
 
         jButtonSplit.setText(bundle.getString("jButtonSplit.Text")); // NOI18N
         jButtonSplit.setToolTipText(bundle.getString("jButtonSplit.ToolTipText")); // NOI18N
@@ -330,7 +502,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonSplitActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonSplit);
+        jPanel4.add(jButtonSplit);
 
         jButtonInsert.setText(bundle.getString("jButtonInsert.Text")); // NOI18N
         jButtonInsert.setToolTipText(bundle.getString("jButtonInsert.ToolTipText")); // NOI18N
@@ -342,7 +514,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonInsertActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonInsert);
+        jPanel4.add(jButtonInsert);
 
         jButtonDelete.setText(bundle.getString("jButtonDelete.Text")); // NOI18N
         jButtonDelete.setToolTipText(bundle.getString("jButtonDelete.ToolTipText")); // NOI18N
@@ -354,8 +526,9 @@ public class Gui extends javax.swing.JFrame {
                 jButtonDeleteActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButtonDelete);
-        jToolBar1.add(Box.createHorizontalGlue());
+        jPanel4.add(jButtonDelete);
+
+        jToolBarEditor.add(jPanel4);
 
         jLabelCharacter.setLabelFor(jTextFieldCharacter);
         jLabelCharacter.setText("Character");
@@ -441,42 +614,11 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanelSpinner.add(jSpinnerH);
 
-        jToolBar1.add(jPanelSpinner);
-        jToolBar1.add(Box.createHorizontalGlue());
+        jToolBarEditor.add(jPanelSpinner);
+        jToolBarEditor.add(Box.createHorizontalGlue());
 
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+        jPanelEditor.add(jToolBarEditor, java.awt.BorderLayout.PAGE_START);
 
-        jPanelStatus.add(jLabelStatus);
-        jPanelStatus.add(jLabelPageNbr);
-        this.jPanelStatus.add(Box.createHorizontalStrut(10));
-
-        jButtonPrevPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/PrevPage.gif"))); // NOI18N
-        jButtonPrevPage.setToolTipText(bundle.getString("jButtonPrevPage.ToolTipText")); // NOI18N
-        jButtonPrevPage.setFocusable(false);
-        jButtonPrevPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonPrevPage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonPrevPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPrevPageActionPerformed(evt);
-            }
-        });
-        jPanelStatus.add(jButtonPrevPage);
-
-        jButtonNextPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/NextPage.gif"))); // NOI18N
-        jButtonNextPage.setToolTipText(bundle.getString("jButtonNextPage.ToolTipText")); // NOI18N
-        jButtonNextPage.setFocusable(false);
-        jButtonNextPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonNextPage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonNextPage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNextPageActionPerformed(evt);
-            }
-        });
-        jPanelStatus.add(jButtonNextPage);
-
-        getContentPane().add(jPanelStatus, java.awt.BorderLayout.SOUTH);
-
-        jSplitPane1.setBorder(null);
         jSplitPane1.setDividerSize(2);
 
         jPanelCoord.setLayout(new java.awt.BorderLayout());
@@ -685,7 +827,169 @@ public class Gui extends javax.swing.JFrame {
 
         jSplitPane1.setRightComponent(jScrollPaneImage);
 
-        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        jPanelEditor.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        jPanelStatus.add(jLabelStatus);
+        jPanelStatus.add(jLabelPageNbr);
+        this.jPanelStatus.add(Box.createHorizontalStrut(10));
+
+        jButtonPrevPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/PrevPage.gif"))); // NOI18N
+        jButtonPrevPage.setToolTipText(bundle.getString("jButtonPrevPage.ToolTipText")); // NOI18N
+        jButtonPrevPage.setFocusable(false);
+        jButtonPrevPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonPrevPage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonPrevPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPrevPageActionPerformed(evt);
+            }
+        });
+        jPanelStatus.add(jButtonPrevPage);
+
+        jButtonNextPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/NextPage.gif"))); // NOI18N
+        jButtonNextPage.setToolTipText(bundle.getString("jButtonNextPage.ToolTipText")); // NOI18N
+        jButtonNextPage.setFocusable(false);
+        jButtonNextPage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonNextPage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonNextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNextPageActionPerformed(evt);
+            }
+        });
+        jPanelStatus.add(jButtonNextPage);
+
+        jPanelEditor.add(jPanelStatus, java.awt.BorderLayout.SOUTH);
+
+        jTabbedPaneMain.addTab("Box Editor", jPanelEditor);
+
+        jPanelTIFFBox.setLayout(new java.awt.BorderLayout());
+
+        jToolBarGenerator.setRollover(true);
+
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jButtonInput.setText("Input");
+        jButtonInput.setToolTipText("Load Text File");
+        jButtonInput.setFocusable(false);
+        jButtonInput.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonInput.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInputActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonInput);
+
+        jLabelOutput.setText("Output");
+        jPanel3.add(jLabelOutput);
+
+        jTextFieldPrefix.setToolTipText("Prefix (Language Code)");
+        jTextFieldPrefix.setPreferredSize(new java.awt.Dimension(30, 24));
+        jPanel3.add(jTextFieldPrefix);
+
+        jTextFieldFileName.setToolTipText("Filename");
+        jTextFieldFileName.setPreferredSize(new java.awt.Dimension(140, 24));
+        jPanel3.add(jTextFieldFileName);
+
+        jButtonFont.setText("Font");
+        jButtonFont.setToolTipText("Select Font");
+        jButtonFont.setFocusable(false);
+        jButtonFont.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonFont.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonFont.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFontActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonFont);
+
+        jCheckBoxAntiAliasing.setText("Anti-Aliasing");
+        jCheckBoxAntiAliasing.setToolTipText("Anti-Aliasing");
+        jPanel3.add(jCheckBoxAntiAliasing);
+
+        jLabelNoise.setText("Noise");
+        jLabelNoise.setToolTipText("Add Noise to Image");
+        jPanel3.add(jLabelNoise);
+
+        jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5, 1));
+        jSpinnerNoise.setToolTipText("Add Noise to Image");
+        jSpinnerNoise.setName("Noise"); // NOI18N
+        jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 20));
+        jPanel3.add(jSpinnerNoise);
+
+        jLabelTracking.setText("Tracking");
+        jLabelTracking.setToolTipText("Letter Tracking");
+        jPanel3.add(jLabelTracking);
+
+        jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
+        jSpinnerTracking.setToolTipText("Letter Tracking");
+        jSpinnerTracking.setPreferredSize(new java.awt.Dimension(64, 22));
+        jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerTrackingStateChanged(evt);
+            }
+        });
+        jPanel3.add(jSpinnerTracking);
+
+        jLabelW1.setText("W");
+        jLabelW1.setToolTipText("Image Width");
+        jPanel3.add(jLabelW1);
+
+        jSpinnerW1.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 10));
+        jSpinnerW1.setToolTipText("Image Width");
+        jSpinnerW1.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW1, "#"));
+        jSpinnerW1.setPreferredSize(new java.awt.Dimension(63, 22));
+        jPanel3.add(jSpinnerW1);
+
+        jLabelH1.setText("H");
+        jLabelH1.setToolTipText("Image Height");
+        jPanel3.add(jLabelH1);
+
+        jSpinnerH1.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 10));
+        jSpinnerH1.setToolTipText("Image Height");
+        jSpinnerH1.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH1, "#"));
+        jSpinnerH1.setPreferredSize(new java.awt.Dimension(63, 22));
+        jPanel3.add(jSpinnerH1);
+
+        jButtonGenerate.setText("Generate");
+        jButtonGenerate.setToolTipText("Generate TIFF/Box");
+        jButtonGenerate.setFocusable(false);
+        jButtonGenerate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonGenerate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonGenerate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerateActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonGenerate);
+
+        jButtonClear.setText("Clear");
+        jButtonClear.setToolTipText("Clear Textarea");
+        jButtonClear.setFocusable(false);
+        jButtonClear.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonClear.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonClear);
+
+        jToolBarGenerator.add(jPanel3);
+
+        jPanelTIFFBox.add(jToolBarGenerator, java.awt.BorderLayout.PAGE_START);
+
+        jTextAreaInput.setColumns(20);
+        jTextAreaInput.setLineWrap(true);
+        jTextAreaInput.setRows(5);
+        jTextAreaInput.setWrapStyleWord(true);
+        jTextAreaInput.setMargin(new java.awt.Insets(5, 5, 2, 2));
+        jScrollPaneText.setViewportView(jTextAreaInput);
+
+        jPanelTIFFBox.add(jScrollPaneText, java.awt.BorderLayout.CENTER);
+
+        jTabbedPaneMain.addTab("TIFF/Box Generator", jPanelTIFFBox);
+
+        getContentPane().add(jTabbedPaneMain, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuFile.Mnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("jMenuFile.Text")); // NOI18N
@@ -719,7 +1023,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuFile.add(jMenuItemSaveAs);
-        jMenuFile.add(jSeparator1);
+        jMenuFile.add(jSeparatorRecentFiles);
 
         jMenuRecentFiles.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuRecentFiles.Mnemonic").charAt(0));
         jMenuRecentFiles.setText(bundle.getString("jMenuRecentFiles.Text")); // NOI18N
@@ -794,7 +1098,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuSettings.add(jMenuItemFont);
-        jMenuSettings.add(jSeparator3);
+        jMenuSettings.add(jSeparatorLAF);
 
         jMenuLookAndFeel.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuLookAndFeel.Mnemonic").charAt(0));
         jMenuLookAndFeel.setText(bundle.getString("jMenuLookAndFeel.Text")); // NOI18N
@@ -867,12 +1171,12 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
-        if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            currentDirectory = jFileChooser.getCurrentDirectory().getPath();
-            openFile(jFileChooser.getSelectedFile());
+        if (jFileChooserInputImage.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            currentDirectory = jFileChooserInputImage.getCurrentDirectory().getPath();
+            openFile(jFileChooserInputImage.getSelectedFile());
 
             for (int i = 0; i < fileFilters.length; i++) {
-                if (fileFilters[i] == jFileChooser.getFileFilter()) {
+                if (fileFilters[i] == jFileChooserInputImage.getFileFilter()) {
                     filterIndex = i;
                     break;
                 }
@@ -1012,7 +1316,7 @@ public class Gui extends javax.swing.JFrame {
             ((JImageLabel) this.jLabelImage).setBoxes(boxes);
         }
     }
-    
+
     /**
      * Displays a dialog to discard changes.
      *
@@ -1353,8 +1657,8 @@ public class Gui extends javax.swing.JFrame {
 
     private void copyFileFromJarToSupportDir(File helpFile) throws IOException {
         if (!helpFile.exists()) {
-            final ReadableByteChannel input =
-                    Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName()));
+            final ReadableByteChannel input
+                    = Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName()));
             final FileChannel output = new FileOutputStream(helpFile).getChannel();
             output.transferFrom(input, 0, 1000000L);
             output.close();
@@ -1457,7 +1761,7 @@ public class Gui extends javax.swing.JFrame {
                 }
                 // Convert NCR or escape sequence to Unicode.
                 chrs = TextUtilities.convertNCR(chrs);
-                
+
                 findBox = new TessBox(chrs, new Rectangle(), imageIndex);
                 findBox = boxes.selectByChars(findBox);
             } else {
@@ -1531,6 +1835,60 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemTrainActionPerformed
 
+    void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
+        // to be implemented in subclass
+    }//GEN-LAST:event_jButtonInputActionPerformed
+
+    void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed
+        // to be implemented in subclass
+    }//GEN-LAST:event_jButtonFontActionPerformed
+
+    void jSpinnerTrackingStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerTrackingStateChanged
+        // to be implemented to subclass
+    }//GEN-LAST:event_jSpinnerTrackingStateChanged
+
+    void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
+        // to be implemented to subclass
+    }//GEN-LAST:event_jButtonGenerateActionPerformed
+
+    void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        this.jTextAreaInput.setText(null);
+    }//GEN-LAST:event_jButtonClearActionPerformed
+
+    void jButtonBrowseTessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseTessActionPerformed
+        // to be implemented to subclass
+    }//GEN-LAST:event_jButtonBrowseTessActionPerformed
+
+    void jButtonBrowseDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseDataActionPerformed
+        // to be implemented to subclass
+    }//GEN-LAST:event_jButtonBrowseDataActionPerformed
+
+    void jButtonTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTrainActionPerformed
+        // to be implemented to subclass
+    }//GEN-LAST:event_jButtonTrainActionPerformed
+
+    void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+        // to be implemented to subclass
+    }//GEN-LAST:event_jButtonCancelActionPerformed
+
+    private void jTabbedPaneMainStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneMainStateChanged
+        JTabbedPane pane = (JTabbedPane) evt.getSource();
+        boolean boxEditorActive = pane.getSelectedIndex() == 1;
+        this.jMenuEdit.setVisible(boxEditorActive);
+        this.jMenuItemFont.setVisible(boxEditorActive);
+        this.jMenuItemOpen.setVisible(boxEditorActive);
+        this.jMenuItemSave.setVisible(boxEditorActive);
+        this.jMenuItemSaveAs.setVisible(boxEditorActive);
+        this.jMenuRecentFiles.setVisible(boxEditorActive);
+        this.jSeparatorRecentFiles.setVisible(boxEditorActive);
+        this.jSeparatorExit.setVisible(boxEditorActive);
+        this.jSeparatorLAF.setVisible(boxEditorActive);
+    }//GEN-LAST:event_jTabbedPaneMainStateChanged
+
+    void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearLogActionPerformed
+        this.jTextAreaOutput.setText(null);
+    }//GEN-LAST:event_jButtonClearLogActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1543,9 +1901,18 @@ public class Gui extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.Box.Filler filler2;
+    protected javax.swing.JButton jButtonBrowseData;
+    protected javax.swing.JButton jButtonBrowseTess;
+    protected javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonClear;
+    protected javax.swing.JButton jButtonClearLog;
     private javax.swing.JButton jButtonConvert;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonFind;
+    protected javax.swing.JButton jButtonFont;
+    protected javax.swing.JButton jButtonGenerate;
+    private javax.swing.JButton jButtonInput;
     private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonMerge;
     private javax.swing.JButton jButtonNext;
@@ -1556,15 +1923,28 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonReload;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSplit;
-    private javax.swing.JFileChooser jFileChooser;
+    protected javax.swing.JButton jButtonTrain;
+    protected javax.swing.JCheckBox jCheckBoxAntiAliasing;
+    protected javax.swing.JComboBox jComboBoxOps;
+    private javax.swing.JFileChooser jFileChooserInputImage;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelCharacter;
     private javax.swing.JLabel jLabelCodepoint;
     private javax.swing.JLabel jLabelH;
+    private javax.swing.JLabel jLabelH1;
     protected javax.swing.JLabel jLabelImage;
+    private javax.swing.JLabel jLabelNoise;
+    private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelPageNbr;
     protected javax.swing.JLabel jLabelStatus;
     protected javax.swing.JLabel jLabelSubimage;
+    protected javax.swing.JLabel jLabelTime;
+    private javax.swing.JLabel jLabelTracking;
     private javax.swing.JLabel jLabelW;
+    private javax.swing.JLabel jLabelW1;
     private javax.swing.JLabel jLabelX;
     private javax.swing.JLabel jLabelY;
     private javax.swing.JMenuBar jMenuBar;
@@ -1591,31 +1971,56 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuTools;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelBoxView;
     protected javax.swing.JPanel jPanelCoord;
+    private javax.swing.JPanel jPanelEditor;
     private javax.swing.JPanel jPanelFind;
+    private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelSpinner;
     private javax.swing.JPanel jPanelStatus;
+    private javax.swing.JPanel jPanelStatus1;
+    private javax.swing.JPanel jPanelTIFFBox;
+    private javax.swing.JPanel jPanelTrainer;
+    protected javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneBoxData;
     private javax.swing.JScrollPane jScrollPaneCoord;
     private javax.swing.JScrollPane jScrollPaneImage;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JScrollPane jScrollPaneText;
     private javax.swing.JPopupMenu.Separator jSeparatorAbout;
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
+    private javax.swing.JPopupMenu.Separator jSeparatorLAF;
+    private javax.swing.JPopupMenu.Separator jSeparatorRecentFiles;
     protected javax.swing.JSpinner jSpinnerH;
+    protected javax.swing.JSpinner jSpinnerH1;
+    protected javax.swing.JSpinner jSpinnerNoise;
+    protected javax.swing.JSpinner jSpinnerTracking;
     protected javax.swing.JSpinner jSpinnerW;
+    protected javax.swing.JSpinner jSpinnerW1;
     protected javax.swing.JSpinner jSpinnerX;
     protected javax.swing.JSpinner jSpinnerY;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPaneBoxData;
+    private javax.swing.JTabbedPane jTabbedPaneMain;
     protected javax.swing.JTable jTable;
     protected javax.swing.JTextArea jTextArea;
+    protected javax.swing.JTextArea jTextAreaInput;
+    protected javax.swing.JTextArea jTextAreaOutput;
+    protected javax.swing.JTextField jTextFieldBootstrapLang;
     protected javax.swing.JTextField jTextFieldChar;
     protected javax.swing.JTextField jTextFieldCharacter;
     private javax.swing.JTextField jTextFieldCodepointValue;
+    protected javax.swing.JTextField jTextFieldDataDir;
+    protected javax.swing.JTextField jTextFieldFileName;
     protected javax.swing.JTextField jTextFieldFind;
-    private javax.swing.JToolBar jToolBar1;
+    protected javax.swing.JTextField jTextFieldLang;
+    protected javax.swing.JTextField jTextFieldPrefix;
+    protected javax.swing.JTextField jTextFieldTessDir;
+    private javax.swing.JToolBar jToolBarEditor;
+    private javax.swing.JToolBar jToolBarGenerator;
+    private javax.swing.JToolBar jToolBarTrainer;
     // End of variables declaration//GEN-END:variables
     private JFrame helptopicsFrame;
 }
