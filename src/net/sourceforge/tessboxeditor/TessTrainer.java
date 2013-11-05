@@ -40,14 +40,6 @@ public class TessTrainer {
     String bootstrapLang;
 
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.pcs.addPropertyChangeListener(listener);
-    }
-
-//    public void removePropertyChangeListener(PropertyChangeListener listener) {
-//        this.pcs.removePropertyChangeListener(listener);
-//    }
      
     public TessTrainer(String tessDir, String inputDataDir, String lang, String bootstrapLang) {
         pb = new ProcessBuilder();
@@ -60,6 +52,19 @@ public class TessTrainer {
         this.lang = lang;
         this.bootstrapLang = bootstrapLang;
     }
+       
+    /**
+     * Adds listener for property change event.
+     * 
+     * @param listener 
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+
+//    public void removePropertyChangeListener(PropertyChangeListener listener) {
+//        this.pcs.removePropertyChangeListener(listener);
+//    }
 
     /**
      * Generates data based on selection of training mode.
@@ -107,6 +112,7 @@ public class TessTrainer {
         }
         
         System.out.println("** Make Box Files **");
+        writeToLog("** Make Box Files **\n");
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
@@ -116,6 +122,7 @@ public class TessTrainer {
 
     /**
      * Generates traineddata file.
+     * 
      * @param skipBoxGeneration
      * @throws Exception 
      */
@@ -133,6 +140,7 @@ public class TessTrainer {
         }
         
         System.out.println("** Run Tesseract for Training **");
+        writeToLog("** Run Tesseract for Training **\n");
         //cmdtess_train
         cmd = getCommand(cmdtess_train);
         for (String file : files) {
@@ -142,6 +150,7 @@ public class TessTrainer {
         }
            
         System.out.println("** Compute the Character Set **");
+        writeToLog("** Compute the Character Set **\n");
         //cmdunicharset_extractor
         cmd = getCommand(cmdunicharset_extractor);
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -153,6 +162,7 @@ public class TessTrainer {
         runCommand(cmd);
         
         System.out.println("** Shape Clustering **");
+        writeToLog("** Shape Clustering **\n");
         //cmdshapeclustering
         cmd = getCommand(String.format(cmdshapeclustering, lang));
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -164,12 +174,14 @@ public class TessTrainer {
         runCommand(cmd);
         
         System.out.println("** MF Training **");
+        writeToLog("** MF Training **\n");
         //cmdmftraining
         cmd = getCommand(String.format(cmdmftraining, lang));
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
         System.out.println("** CN Training **");
+        writeToLog("** CN Training **\n");
         //cmdcntraining
         cmd = getCommand(cmdcntraining);
         cmd.addAll(Arrays.asList(files));
@@ -181,6 +193,7 @@ public class TessTrainer {
         renameFile("shapetable");
 
         System.out.println("** Dictionary Data **");
+        writeToLog("** Dictionary Data **\n");
         //cmdwordlist2dawg
         cmd = getCommand(String.format(cmdwordlist2dawg, lang));
         runCommand(cmd);
@@ -190,6 +203,7 @@ public class TessTrainer {
         runCommand(cmd);
         
         System.out.println("** Combine Data Files **");
+        writeToLog("** Combine Data Files **\n");
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
@@ -235,13 +249,13 @@ public class TessTrainer {
     }
     
     /**
-     * Runs command.
+     * Runs given command.
      * @param cmd
      * @throws Exception 
      */
     void runCommand(List<String> cmd) throws Exception {
         System.out.println(cmd);
-        this.pcs.firePropertyChange("value", null, cmd.toString() + "\n");
+        writeToLog(cmd.toString() + "\n");
         pb.command(cmd);
         Process process = pb.start();
 
@@ -251,11 +265,19 @@ public class TessTrainer {
 
         int w = process.waitFor();
 //        System.out.println("Exit value = " + w);
-        this.pcs.firePropertyChange("value", null, outputGobbler.getMessage());
+        writeToLog(outputGobbler.getMessage());
         
         if (w != 0) {
             throw new RuntimeException(outputGobbler.getMessage());
         }
+    }
+    
+    /**
+     * Writes to output log.
+     * @param message 
+     */
+    void writeToLog(String message) {
+        this.pcs.firePropertyChange("value", null, message);
     }
 }
 
