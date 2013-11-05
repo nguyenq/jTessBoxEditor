@@ -1842,13 +1842,13 @@ public class Gui extends javax.swing.JFrame {
         boolean boxEditorActive = pane.getSelectedIndex() == 1;
         this.jMenuEdit.setVisible(boxEditorActive);
         this.jMenuItemFont.setVisible(boxEditorActive || pane.getSelectedIndex() == 0);
+        this.jSeparatorLAF.setVisible(this.jMenuItemFont.isVisible());
         this.jMenuItemOpen.setVisible(boxEditorActive);
         this.jMenuItemSave.setVisible(boxEditorActive);
         this.jMenuItemSaveAs.setVisible(boxEditorActive);
         this.jMenuRecentFiles.setVisible(boxEditorActive);
         this.jSeparatorRecentFiles.setVisible(boxEditorActive);
         this.jSeparatorExit.setVisible(boxEditorActive);
-        this.jSeparatorLAF.setVisible(boxEditorActive);
     }//GEN-LAST:event_jTabbedPaneMainStateChanged
 
     void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearLogActionPerformed
