@@ -37,9 +37,9 @@ public class GuiWithLaF extends GuiWithFont {
         // build Look and Feel submenu
         ButtonGroup groupLookAndFeel = new ButtonGroup();
         UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
-        for (int i = 0; i < lafs.length; i++) {
-            JRadioButtonMenuItem lafButton = new JRadioButtonMenuItem(lafs[i].getName());
-            lafButton.setActionCommand(lafs[i].getClassName());
+        for (UIManager.LookAndFeelInfo laf : lafs) {
+            JRadioButtonMenuItem lafButton = new JRadioButtonMenuItem(laf.getName());
+            lafButton.setActionCommand(laf.getClassName());
             if (UIManager.getLookAndFeel().getClass().getName().equals(lafButton.getActionCommand())) {
                 lafButton.setSelected(true);
             }

@@ -192,6 +192,11 @@ public class GuiWithGenerator extends GuiWithTools {
             getGlassPane().setVisible(false);
         }
     }
+    
+    @Override
+    void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        this.jTextAreaInput.setText(null);
+    }
 
     /**
      * Gets font description.

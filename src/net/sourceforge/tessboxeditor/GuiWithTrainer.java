@@ -25,13 +25,13 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTrainer extends GuiWithGenerator {
 
-    static final String Dialog_Title = "Train Tesseract";
+    private static final String Dialog_Title = "Train Tesseract";
     private String tessDirectory;
     private String trainDataDirectory;
-    TrainingWorker trainWorker;
     private JFileChooser jFileChooserTrainingData;
     private JFileChooser jFileChooserTessExecutables;
-
+    private TrainingWorker trainWorker;
+    
     public GuiWithTrainer() {
         initComponents();
     }
@@ -139,6 +139,11 @@ public class GuiWithTrainer extends GuiWithGenerator {
             trainWorker.cancel(true);
         }
         this.jButtonCancel.setEnabled(false);
+    }
+        
+    @Override
+    void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        this.jTextAreaOutput.setText(null);
     }
 
     /**

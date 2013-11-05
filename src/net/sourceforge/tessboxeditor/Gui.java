@@ -1802,46 +1802,46 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNextActionPerformed
 
     void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputActionPerformed
-        // to be implemented in subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonInputActionPerformed
 
     void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFontActionPerformed
-        // to be implemented in subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonFontActionPerformed
 
     void jSpinnerTrackingStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerTrackingStateChanged
-        // to be implemented to subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jSpinnerTrackingStateChanged
 
     void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateActionPerformed
-        // to be implemented to subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonGenerateActionPerformed
 
     void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
-        this.jTextAreaInput.setText(null);
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     void jButtonBrowseTessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseTessActionPerformed
-        // to be implemented to subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonBrowseTessActionPerformed
 
     void jButtonBrowseDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseDataActionPerformed
-        // to be implemented to subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonBrowseDataActionPerformed
 
     void jButtonTrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTrainActionPerformed
-        // to be implemented to subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonTrainActionPerformed
 
     void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        // to be implemented to subclass
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jTabbedPaneMainStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneMainStateChanged
         JTabbedPane pane = (JTabbedPane) evt.getSource();
         boolean boxEditorActive = pane.getSelectedIndex() == 1;
         this.jMenuEdit.setVisible(boxEditorActive);
-        this.jMenuItemFont.setVisible(boxEditorActive);
+        this.jMenuItemFont.setVisible(boxEditorActive || pane.getSelectedIndex() == 0);
         this.jMenuItemOpen.setVisible(boxEditorActive);
         this.jMenuItemSave.setVisible(boxEditorActive);
         this.jMenuItemSaveAs.setVisible(boxEditorActive);
@@ -1852,7 +1852,7 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPaneMainStateChanged
 
     void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearLogActionPerformed
-        this.jTextAreaOutput.setText(null);
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonClearLogActionPerformed
 
     /**
