@@ -39,7 +39,7 @@ public class GuiWithGenerator extends GuiWithTools {
         initComponents();
         
         // DnD support
-        new DropTarget(this.jTextAreaInput, new FileDropTargetListener(GuiWithGenerator.this));
+        new DropTarget(this.jTextAreaInput, new FileDropTargetListener(GuiWithGenerator.this, this.jTextAreaInput));
     }
 
     private void initComponents() {
@@ -94,6 +94,9 @@ public class GuiWithGenerator extends GuiWithTools {
      * @param selectedFile
      */
     void openTextFile(final File selectedFile) {
+        if (!selectedFile.getName().toLowerCase().endsWith(".txt")) {
+            return; // not text file
+        }
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"));
             this.jTextAreaInput.read(in, null);

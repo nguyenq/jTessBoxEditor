@@ -47,7 +47,7 @@ public class TiffBoxDialog extends javax.swing.JDialog {
         initComponents();
 
         // DnD support
-        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this));
+        new DropTarget(this.jTextArea1, new FileDropTargetListener(TiffBoxDialog.this, null));
 
         this.addWindowListener(new WindowAdapter() {
             @Override
