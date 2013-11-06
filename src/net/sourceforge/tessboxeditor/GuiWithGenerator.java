@@ -37,7 +37,7 @@ public class GuiWithGenerator extends GuiWithTools {
 
     public GuiWithGenerator() {
         initComponents();
-        
+
         // DnD support
         new DropTarget(this.jTextAreaInput, new FileDropTargetListener(GuiWithGenerator.this, this.jTextAreaInput));
     }
@@ -195,10 +195,24 @@ public class GuiWithGenerator extends GuiWithTools {
             getGlassPane().setVisible(false);
         }
     }
-    
+
     @Override
-    void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {
         this.jTextAreaInput.setText(null);
+    }
+
+    @Override
+    void quit() {
+        if (trainDirectory != null) {
+            prefs.put("trainDirectory", trainDirectory);
+        }
+
+        prefs.put("trainLanguage", jTextFieldPrefix.getText());
+        prefs.put("trainfontName", fontGen.getName());
+        prefs.putInt("trainfontSize", fontGen.getSize());
+        prefs.putInt("trainfontStyle", fontGen.getStyle());
+
+        super.quit();
     }
 
     /**

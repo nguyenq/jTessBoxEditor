@@ -25,7 +25,7 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTrainer extends GuiWithGenerator {
 
-    private static final String Dialog_Title = "Train Tesseract";
+    private static final String DIALOG_TITLE = "Train Tesseract";
     private String tessDirectory;
     private String trainDataDirectory;
     private JFileChooser jFileChooserTrainingData;
@@ -38,27 +38,27 @@ public class GuiWithTrainer extends GuiWithGenerator {
 
     private void initComponents() {
         tessDirectory = prefs.get("tessDirectory", new File(System.getProperty("user.dir"), "tesseract-ocr").getPath());
-        this.jTextFieldTessDir.setText(tessDirectory);
+        jTextFieldTessDir.setText(tessDirectory);
 
         jFileChooserTessExecutables = new javax.swing.JFileChooser();
         jFileChooserTessExecutables.setApproveButtonText("Set");
         jFileChooserTessExecutables.setDialogTitle("Set Location of Tesseract Executables");
-        this.jFileChooserTessExecutables.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
+        jFileChooserTessExecutables.setCurrentDirectory(tessDirectory == null ? null : new File(tessDirectory));
 
         trainDataDirectory = prefs.get("trainDataDirectory", new File(System.getProperty("user.dir"), "samples/vie").getPath());
-        this.jTextFieldDataDir.setText(trainDataDirectory);
+        jTextFieldDataDir.setText(trainDataDirectory);
 
         jFileChooserTrainingData = new JFileChooser();
         jFileChooserTrainingData.setAcceptAllFileFilterUsed(false);
         jFileChooserTrainingData.setApproveButtonText("Set");
         jFileChooserTrainingData.setDialogTitle("Set Location of Source Training Data");
-        FileFilter allImageFilter2 = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff;box;font_properties;frequent_words_list;words_list;unicharambigs", "Source Training Data");
-        jFileChooserTrainingData.setFileFilter(allImageFilter2);
-        this.jFileChooserTrainingData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
+        FileFilter allTrainingFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff;box;font_properties;frequent_words_list;words_list;unicharambigs", "Source Training Data");
+        jFileChooserTrainingData.setFileFilter(allTrainingFilter);
+        jFileChooserTrainingData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
 
-        this.jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
-        this.jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
-        this.jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
+        jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
+        jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
+        jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
 
             if (!otherFilesExist) {
                 String msg = String.format("The required file %1$s.font_properties, %1$s.frequent_words_list, or %1$s.words_list does not exist.", lang);
-                JOptionPane.showMessageDialog(this, msg, Dialog_Title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, msg, DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
@@ -107,7 +107,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
             if (boxFiles.length > 0) {
                 int option = JOptionPane.showConfirmDialog(this,
                         "There are existing box files. Continuing may overwrite them.\nDo you want to proceed?",
-                        Dialog_Title, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                        DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
                 if (option == JOptionPane.NO_OPTION) {
                     return;
@@ -115,7 +115,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
             }
         } else {
             if (boxFiles.length == 0) {
-                JOptionPane.showMessageDialog(this, "There are no existing box files.", Dialog_Title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "There are no existing box files.", DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
@@ -144,6 +144,21 @@ public class GuiWithTrainer extends GuiWithGenerator {
     @Override
     void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {                                                
         this.jTextAreaOutput.setText(null);
+    }
+    
+    @Override
+    void quit() {
+        if (tessDirectory != null) {
+            prefs.put("tessDirectory", tessDirectory);
+        }
+        if (trainDataDirectory != null) {
+            prefs.put("trainDataDirectory", trainDataDirectory);
+        }
+        prefs.put("trainnedLanguage", this.jTextFieldLang.getText());
+        prefs.put("bootstrapLanguage", this.jTextFieldBootstrapLang.getText());
+        prefs.putInt("trainingMode", this.jComboBoxOps.getSelectedIndex());
+        
+        super.quit();
     }
 
     /**
@@ -198,7 +213,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
                     // if empty, display a generic error message
                     why = "An error has occurred. Input files could be missing.";
                 }
-                JOptionPane.showMessageDialog(GuiWithTrainer.this, why, Dialog_Title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(GuiWithTrainer.this, why, DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
                 jProgressBar1.setVisible(false);
                 jProgressBar1.setString(null);
             } catch (java.util.concurrent.CancellationException e) {
