@@ -97,7 +97,7 @@ public class Gui extends javax.swing.JFrame {
         boxPages = new ArrayList<TessBoxCollection>();
 
         // DnD support
-        new DropTarget(this.jSplitPaneEditor, new FileDropTargetListener(Gui.this));
+        new DropTarget(this.jSplitPaneEditor, new FileDropTargetListener(Gui.this, this.jSplitPaneEditor));
 
         this.addWindowListener(
                 new WindowAdapter() {
@@ -332,6 +332,7 @@ public class Gui extends javax.swing.JFrame {
         jLabel4.setText("Tesseract Executables");
         jPanelMain.add(jLabel4);
 
+        jTextFieldTessDir.setToolTipText("Location of Tesseract Executables");
         jTextFieldTessDir.setEnabled(false);
         jTextFieldTessDir.setPreferredSize(new java.awt.Dimension(180, 24));
         jPanelMain.add(jTextFieldTessDir);
@@ -351,6 +352,7 @@ public class Gui extends javax.swing.JFrame {
         jLabel3.setText("Training Data");
         jPanelMain.add(jLabel3);
 
+        jTextFieldDataDir.setToolTipText("Location of Source Training Data");
         jTextFieldDataDir.setEnabled(false);
         jTextFieldDataDir.setPreferredSize(new java.awt.Dimension(180, 24));
         jPanelMain.add(jTextFieldDataDir);
@@ -908,7 +910,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5, 1));
         jSpinnerNoise.setToolTipText("Add Noise to Image");
         jSpinnerNoise.setName("Noise"); // NOI18N
-        jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 20));
+        jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 22));
         jPanel3.add(jSpinnerNoise);
 
         jLabelTracking.setText("Letter Tracking");
@@ -925,7 +927,6 @@ public class Gui extends javax.swing.JFrame {
         jPanel3.add(jSpinnerTracking);
 
         jLabelW1.setText("W");
-        jLabelW1.setToolTipText("Image Width");
         jPanel3.add(jLabelW1);
 
         jSpinnerW1.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 10));
@@ -935,7 +936,6 @@ public class Gui extends javax.swing.JFrame {
         jPanel3.add(jSpinnerW1);
 
         jLabelH1.setText("H");
-        jLabelH1.setToolTipText("Image Height");
         jPanel3.add(jLabelH1);
 
         jSpinnerH1.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 10));

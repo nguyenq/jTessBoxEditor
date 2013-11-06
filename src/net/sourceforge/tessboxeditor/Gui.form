@@ -374,6 +374,7 @@
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextFieldTessDir">
                       <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="Location of Tesseract Executables"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[180, 24]"/>
@@ -407,10 +408,12 @@
                     <Component class="javax.swing.JLabel" name="jLabel3">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Training Data"/>
+                        <Property name="toolTipText" type="java.lang.String" value=""/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextFieldDataDir">
                       <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="Location of Source Training Data"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[180, 24]"/>
@@ -1343,7 +1346,7 @@
                         <Property name="toolTipText" type="java.lang.String" value="Add Noise to Image"/>
                         <Property name="name" type="java.lang.String" value="Noise" noResource="true"/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[47, 20]"/>
+                          <Dimension value="[47, 22]"/>
                         </Property>
                       </Properties>
                       <AuxValues>
@@ -1375,7 +1378,6 @@
                     <Component class="javax.swing.JLabel" name="jLabelW1">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="W"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Image Width"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JSpinner" name="jSpinnerW1">
@@ -1398,7 +1400,6 @@
                     <Component class="javax.swing.JLabel" name="jLabelH1">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="H"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Image Height"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JSpinner" name="jSpinnerH1">
