@@ -233,7 +233,9 @@ public class TessTrainer {
             File fileWithPrefix = new File(inputDataDir, lang + "." + fileName);
             fileWithPrefix.delete();
             boolean result = file.renameTo(fileWithPrefix);
-            System.out.println((result? "Successful" : "Unsuccessful") + " rename of " + fileName);
+            String msg = (result? "Successful" : "Unsuccessful") + " rename of " + fileName;
+            System.out.println(msg);
+            writeToLog(msg + "\n");
         }
     }
 
