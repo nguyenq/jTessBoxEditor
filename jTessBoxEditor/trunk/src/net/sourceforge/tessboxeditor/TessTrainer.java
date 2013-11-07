@@ -62,10 +62,6 @@ public class TessTrainer {
         this.pcs.addPropertyChangeListener(listener);
     }
 
-//    public void removePropertyChangeListener(PropertyChangeListener listener) {
-//        this.pcs.removePropertyChangeListener(listener);
-//    }
-
     /**
      * Generates data based on selection of training mode.
      *
@@ -111,8 +107,7 @@ public class TessTrainer {
             throw new RuntimeException("There are no training images.");
         }
         
-        System.out.println("** Make Box Files **");
-        writeToLog("** Make Box Files **\n");
+        writeToLog("** Make Box Files **");
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
@@ -139,8 +134,7 @@ public class TessTrainer {
             throw new RuntimeException("There are no training images.");
         }
         
-        System.out.println("** Run Tesseract for Training **");
-        writeToLog("** Run Tesseract for Training **\n");
+        writeToLog("** Run Tesseract for Training **");
         //cmdtess_train
         cmd = getCommand(cmdtess_train);
         for (String file : files) {
@@ -149,8 +143,7 @@ public class TessTrainer {
             runCommand(cmd);
         }
            
-        System.out.println("** Compute the Character Set **");
-        writeToLog("** Compute the Character Set **\n");
+        writeToLog("** Compute the Character Set **");
         //cmdunicharset_extractor
         cmd = getCommand(cmdunicharset_extractor);
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -161,8 +154,7 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
-        System.out.println("** Shape Clustering **");
-        writeToLog("** Shape Clustering **\n");
+        writeToLog("** Shape Clustering **");
         //cmdshapeclustering
         cmd = getCommand(String.format(cmdshapeclustering, lang));
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -173,15 +165,13 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
-        System.out.println("** MF Training **");
-        writeToLog("** MF Training **\n");
+        writeToLog("** MF Training **");
         //cmdmftraining
         cmd = getCommand(String.format(cmdmftraining, lang));
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
         
-        System.out.println("** CN Training **");
-        writeToLog("** CN Training **\n");
+        writeToLog("** CN Training **");
         //cmdcntraining
         cmd = getCommand(cmdcntraining);
         cmd.addAll(Arrays.asList(files));
@@ -192,8 +182,7 @@ public class TessTrainer {
         renameFile("normproto");
         renameFile("shapetable");
 
-        System.out.println("** Dictionary Data **");
-        writeToLog("** Dictionary Data **\n");
+        writeToLog("** Dictionary Data **");
         //cmdwordlist2dawg
         cmd = getCommand(String.format(cmdwordlist2dawg, lang));
         runCommand(cmd);
@@ -202,8 +191,7 @@ public class TessTrainer {
         cmd = getCommand(String.format(cmdwordlist2dawg2, lang));
         runCommand(cmd);
         
-        System.out.println("** Combine Data Files **");
-        writeToLog("** Combine Data Files **\n");
+        writeToLog("** Combine Data Files **");
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
@@ -234,8 +222,7 @@ public class TessTrainer {
             fileWithPrefix.delete();
             boolean result = file.renameTo(fileWithPrefix);
             String msg = (result? "Successful" : "Unsuccessful") + " rename of " + fileName;
-            System.out.println(msg);
-            writeToLog(msg + "\n");
+            writeToLog(msg);
         }
     }
 
@@ -256,8 +243,7 @@ public class TessTrainer {
      * @throws Exception 
      */
     void runCommand(List<String> cmd) throws Exception {
-        System.out.println(cmd);
-        writeToLog(cmd.toString() + "\n");
+        writeToLog(cmd.toString());
         pb.command(cmd);
         Process process = pb.start();
 
@@ -279,7 +265,8 @@ public class TessTrainer {
      * @param message 
      */
     void writeToLog(String message) {
-        this.pcs.firePropertyChange("value", null, message);
+        this.pcs.firePropertyChange("value", null, message + "\n");
+        System.out.println(message);
     }
 }
 
@@ -307,7 +294,6 @@ class StreamGobbler extends Thread {
             BufferedReader br = new BufferedReader(isr);
             String line = null;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
                 outputMessage.append(line).append("\n");
             }
         } catch (IOException ioe) {
