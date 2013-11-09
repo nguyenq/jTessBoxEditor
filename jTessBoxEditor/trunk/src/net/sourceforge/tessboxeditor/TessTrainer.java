@@ -256,7 +256,13 @@ public class TessTrainer {
         writeToLog(outputGobbler.getMessage());
         
         if (w != 0) {
-            throw new RuntimeException(outputGobbler.getMessage());
+            String msg;
+            if (cmd.get(0).contains("shapeclustering")) {
+                msg = "An error has occurred. The font_properties could be missing a font entry.";
+            } else {
+                msg = outputGobbler.getMessage();
+            }
+            throw new RuntimeException(msg);
         }
     }
     
