@@ -229,12 +229,12 @@ public class GuiWithTrainer extends GuiWithGenerator {
         }
     }
 
-    String getDisplayTime(long millis) {
+    public static String getDisplayTime(long millis) {
         String elapsedTime = String.format("%02d:%02d:%02d",
                 TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis),
-                TimeUnit.MILLISECONDS.toSeconds(millis)
-                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                TimeUnit.MILLISECONDS.toMinutes(millis) % 60,
+                TimeUnit.MILLISECONDS.toSeconds(millis) % 60
+                );
         return elapsedTime;
     }
 
