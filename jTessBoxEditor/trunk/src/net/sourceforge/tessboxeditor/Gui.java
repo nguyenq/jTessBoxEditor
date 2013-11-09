@@ -181,6 +181,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonTrain = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jButtonCancel.setEnabled(false);
+        jButtonSaveLog = new javax.swing.JButton();
         jButtonClearLog = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaOutput = new javax.swing.JTextArea();
@@ -404,6 +405,15 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanelMain.add(jButtonCancel);
+
+        jButtonSaveLog.setText("Save");
+        jButtonSaveLog.setToolTipText("Save Log");
+        jButtonSaveLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveLogActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonSaveLog);
 
         jButtonClearLog.setText("Clear");
         jButtonClearLog.setToolTipText("Clear Log");
@@ -1855,6 +1865,10 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonClearLogActionPerformed
 
+    void jButtonSaveLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveLogActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jButtonSaveLogActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1888,6 +1902,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonPrevPage;
     private javax.swing.JButton jButtonReload;
     private javax.swing.JButton jButtonSave;
+    private javax.swing.JButton jButtonSaveLog;
     private javax.swing.JButton jButtonSplit;
     protected javax.swing.JButton jButtonTrain;
     protected javax.swing.JCheckBox jCheckBoxAntiAliasing;
