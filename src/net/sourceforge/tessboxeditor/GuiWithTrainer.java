@@ -140,6 +140,19 @@ public class GuiWithTrainer extends GuiWithGenerator {
         }
         this.jButtonCancel.setEnabled(false);
     }
+    
+    @Override
+    void jButtonSaveLogActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        try {
+            File outFile = new File(trainDataDirectory, "training.log");
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), UTF8));
+            jTextAreaOutput.write(out);
+            out.close();
+            JOptionPane.showMessageDialog(this, String.format("Log has been saved as \"%s\".", outFile.getPath()), DIALOG_TITLE, JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            //ignore
+        }
+    }
         
     @Override
     void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {                                                
