@@ -258,7 +258,7 @@ public class TessTrainer {
         if (w != 0) {
             String msg;
             if (cmd.get(0).contains("shapeclustering")) {
-                msg = "An error has occurred. The font_properties could be missing a font entry.";
+                msg = "An error has occurred. font_properties could be missing a font entry.";
             } else {
                 msg = outputGobbler.getMessage();
             }

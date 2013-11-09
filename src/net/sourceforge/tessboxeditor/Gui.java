@@ -374,14 +374,14 @@ public class Gui extends javax.swing.JFrame {
         jPanelMain.add(jLabel1);
 
         jTextFieldLang.setMinimumSize(new java.awt.Dimension(34, 19));
-        jTextFieldLang.setPreferredSize(new java.awt.Dimension(34, 24));
+        jTextFieldLang.setPreferredSize(new java.awt.Dimension(38, 24));
         jPanelMain.add(jTextFieldLang);
 
         jLabel2.setText("Bootstrap Language");
         jPanelMain.add(jLabel2);
 
         jTextFieldBootstrapLang.setMinimumSize(new java.awt.Dimension(34, 19));
-        jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(34, 24));
+        jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(38, 24));
         jPanelMain.add(jTextFieldBootstrapLang);
 
         jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "Train from Scratch" }));
@@ -431,6 +431,7 @@ public class Gui extends javax.swing.JFrame {
         jTextAreaOutput.setEditable(false);
         jTextAreaOutput.setColumns(20);
         jTextAreaOutput.setRows(5);
+        jTextAreaOutput.setMargin(new java.awt.Insets(5, 5, 2, 2));
         jScrollPane1.setViewportView(jTextAreaOutput);
 
         jPanelTrainer.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -892,7 +893,7 @@ public class Gui extends javax.swing.JFrame {
         jPanel3.add(jLabelOutput);
 
         jTextFieldPrefix.setToolTipText("Prefix (Language Code)");
-        jTextFieldPrefix.setPreferredSize(new java.awt.Dimension(30, 24));
+        jTextFieldPrefix.setPreferredSize(new java.awt.Dimension(38, 24));
         jPanel3.add(jTextFieldPrefix);
 
         jTextFieldFileName.setToolTipText("Filename");
