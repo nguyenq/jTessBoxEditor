@@ -23,6 +23,8 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.tessboxeditor.utilities.ImageUtils;
@@ -48,6 +50,7 @@ public class TiffBoxGenerator {
     private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
     private boolean isAntiAliased;
     private final File baseDir = Utilities.getBaseDir(TiffBoxGenerator.this);
+    private final Pattern pattern = Pattern.compile("chars:\"(.*?)\",");
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
@@ -273,6 +276,7 @@ public class TiffBoxGenerator {
         boxPages.add(boxCol);
         short pageNum = 0;
         int drawPosY = margin;
+        StringBuilder lineText = new StringBuilder();
 
         for (ArrayList<TextLayout> para : layouts) {
             for (TextLayout line : para) {
@@ -286,11 +290,15 @@ public class TiffBoxGenerator {
                 // Draw the TextLayout at (drawPosX, drawPosY).
                 line.draw(g2, drawPosX, drawPosY);
 
-                // TextLayout API does not expose a way to access the underlying string.
-                String lineText = line.toString();
-                int startPos = lineText.indexOf("chars:\"") + "chars:\"".length();
-                lineText = lineText.substring(startPos, lineText.indexOf("\",", startPos));
-                String[] chars = lineText.split("\\s+");
+                // TextLayout API does not expose a way to access the underlying strings.
+                lineText.setLength(0);
+                
+                Matcher matcher = pattern.matcher(line.toString());
+                while (matcher.find())
+                {
+                    lineText.append(matcher.group(1)).append(" ");
+                }
+                String[] chars = lineText.toString().split("\\s+");
 
                 // get bounding box for each character on a line
                 int c = line.getCharacterCount();
@@ -308,6 +316,7 @@ public class TiffBoxGenerator {
                     } catch (java.lang.ArrayIndexOutOfBoundsException aie) {
                         // ignore
                     }
+                    
                     char ch = (char) Integer.parseInt(chars[i], 16);
                     boxCol.add(new TessBox(String.valueOf(ch), rect, pageNum));
                 }
