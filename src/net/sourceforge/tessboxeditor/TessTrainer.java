@@ -296,9 +296,9 @@ class StreamGobbler extends Thread {
     @Override
     public void run() {
         try {
-            InputStreamReader isr = new InputStreamReader(is);
+            InputStreamReader isr = new InputStreamReader(is, "UTF8");
             BufferedReader br = new BufferedReader(isr);
-            String line = null;
+            String line;
             while ((line = br.readLine()) != null) {
                 outputMessage.append(line).append("\n");
             }
