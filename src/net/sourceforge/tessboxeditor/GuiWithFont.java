@@ -1,17 +1,17 @@
 /**
  * Copyright @ 2011 Quan Nguyen
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package net.sourceforge.tessboxeditor;
 
@@ -19,11 +19,10 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import javax.swing.SwingUtilities;
+import net.sourceforge.tessboxeditor.components.MyTableCellEditor;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithFont extends GuiWithSpinner {
-
-    private Font font;
 
     public GuiWithFont() {
         font = new Font(
@@ -42,7 +41,7 @@ public class GuiWithFont extends GuiWithSpinner {
         if (dlg.succeeded()) {
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
-            
+
             try {
                 font = dlg.getFont();
                 changeFont(font);
@@ -72,10 +71,13 @@ public class GuiWithFont extends GuiWithSpinner {
         this.jTextFieldFind.setFont(font14);
         this.jTextFieldFind.validate();
         this.jTextFieldChar.setFont(font14);
-        jTable.setFont(font);
-        FontMetrics metrics = jTable.getFontMetrics(font);
+        Font tableFont = jTable.getFont().deriveFont(font.getSize2D());
+        jTable.setFont(tableFont);
+        FontMetrics metrics = jTable.getFontMetrics(tableFont);
         jTable.setRowHeight(metrics.getHeight()); // set row height to match font
-        rowHeader.setFont(font);    
+        rowHeader.setFont(tableFont);
+        ((MyTableCellEditor)jTable.getDefaultEditor(String.class)).setFont(font);
+        jTable.revalidate();
         jPanelCoord.revalidate();
         jLabelImage.setFont(font);
     }
