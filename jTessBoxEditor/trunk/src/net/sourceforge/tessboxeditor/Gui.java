@@ -16,8 +16,10 @@
 package net.sourceforge.tessboxeditor;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DefaultKeyboardFocusManager;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -69,6 +71,7 @@ public class Gui extends javax.swing.JFrame {
     DefaultTableModel tableModel;
     private boolean isTess2_0Format;
     protected RowHeaderList rowHeader;
+    protected Font font;
 
     /**
      * Creates new form JTessBoxEditor.
@@ -217,7 +220,15 @@ public class Gui extends javax.swing.JFrame {
         jTabbedPaneBoxData = new javax.swing.JTabbedPane();
         jPanelCoord = new javax.swing.JPanel();
         jScrollPaneCoord = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
+        jTable = new javax.swing.JTable() {
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (font != null && column == 0) {
+                    c.setFont(font);
+                }
+                return c;
+            }
+        };
         jPanelFind = new javax.swing.JPanel();
         jTextFieldFind = new javax.swing.JTextField();
         jButtonFind = new javax.swing.JButton();

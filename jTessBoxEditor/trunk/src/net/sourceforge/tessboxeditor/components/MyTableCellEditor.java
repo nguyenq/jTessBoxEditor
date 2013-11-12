@@ -16,6 +16,7 @@
 package net.sourceforge.tessboxeditor.components;
 
 import java.awt.Component;
+import java.awt.Font;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,11 +27,17 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 public class MyTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 
     JTextComponent component = new JTextField();
+    Font font;
+       
+    public void setFont(Font font) {
+        this.font = font;
+    } 
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         component.setText((String) value);
-        component.setFont(table.getFont());
+        component.setFont((font != null) ? font : table.getFont());
+        
         return component;
     }
 
