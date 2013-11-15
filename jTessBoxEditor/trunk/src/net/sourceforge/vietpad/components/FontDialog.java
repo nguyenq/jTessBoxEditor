@@ -70,6 +70,7 @@ public class FontDialog extends JDialog {
     /**
      *  Initializes the form.
      */
+    @SuppressWarnings("unchecked")
     private void initComponents() {
         final JPanel pp = new JPanel();
         pp.setBorder(new EmptyBorder(5, 10, 11, 9));
