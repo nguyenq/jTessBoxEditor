@@ -49,6 +49,7 @@ public class OpenList extends JPanel implements ListSelectionListener, ActionLis
      * @param data List items
      * @param title Title
      */
+    @SuppressWarnings("unchecked")
     public OpenList(Object[] data, String title) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         m_title = new JLabel(title);
