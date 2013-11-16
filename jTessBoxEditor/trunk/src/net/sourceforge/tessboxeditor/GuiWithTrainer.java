@@ -79,9 +79,19 @@ public class GuiWithTrainer extends GuiWithGenerator {
 
     @Override
     void jButtonTrainActionPerformed(java.awt.event.ActionEvent evt) {
+        String msg = "";
+        
         int selectedTrainingMode = this.jComboBoxOps.getSelectedIndex();
-        if (selectedTrainingMode == 0 || this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0 || this.jTextFieldLang.getText().trim().length() == 0) {
-            JOptionPane.showMessageDialog(this, "Input is not complete.");
+        if (this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0) {
+            msg = "Input is not complete.";
+        } else if (this.jTextFieldLang.getText().trim().length() == 0) {
+            msg = "Language is required.";
+        } else if (selectedTrainingMode == 0) {
+            msg = "Please select a Training Mode.";
+        }
+        
+        if (msg.length() > 0) {
+            JOptionPane.showMessageDialog(this, msg);
             return;
         }
 
@@ -91,7 +101,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
             boolean otherFilesExist = new File(trainDataDirectory, lang + ".font_properties").exists() && new File(trainDataDirectory, lang + ".frequent_words_list").exists() && new File(trainDataDirectory, lang + ".words_list").exists();
 
             if (!otherFilesExist) {
-                String msg = String.format("The required file %1$s.font_properties, %1$s.frequent_words_list, or %1$s.words_list does not exist.", lang);
+                msg = String.format("The required file %1$s.font_properties, %1$s.frequent_words_list, or %1$s.words_list does not exist.", lang);
                 JOptionPane.showMessageDialog(this, msg, DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
                 return;
             }
