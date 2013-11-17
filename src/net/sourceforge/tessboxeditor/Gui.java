@@ -1365,8 +1365,9 @@ public class Gui extends javax.swing.JFrame {
 
     boolean saveFileDlg() {
         JFileChooser saveChooser = new JFileChooser(outputDirectory);
-        FileFilter textFilter = new SimpleFilter("box;txt", "Box Files");
+        FileFilter textFilter = new SimpleFilter("box", "Box Files");
         saveChooser.addChoosableFileFilter(textFilter);
+        saveChooser.setFileFilter(textFilter);
         saveChooser.setDialogTitle(bundle.getString("Save_As"));
         if (boxFile != null) {
             saveChooser.setSelectedFile(boxFile);
@@ -1390,6 +1391,8 @@ public class Gui extends javax.swing.JFrame {
                 } else {
                     boxFile = f;
                 }
+            } else {
+                boxFile = f;
             }
             return saveBoxFile();
         } else {
