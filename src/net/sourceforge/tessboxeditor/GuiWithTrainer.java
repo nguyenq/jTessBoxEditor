@@ -152,7 +152,11 @@ public class GuiWithTrainer extends GuiWithGenerator {
     }
     
     @Override
-    void jButtonSaveLogActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    void jButtonSaveLogActionPerformed(java.awt.event.ActionEvent evt) {  
+        if (jTextAreaOutput.getDocument().getLength() == 0) {
+            return;
+        }
+        
         try {
             File outFile = new File(trainDataDirectory, "training.log");
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), UTF8));
