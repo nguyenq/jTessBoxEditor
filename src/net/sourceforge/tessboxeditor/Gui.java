@@ -1812,6 +1812,9 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPrevActionPerformed
 
     private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
+        if (boxes == null) {
+            return;
+        }
         java.util.List<TessBox> boxesOfCurPage = boxes.toList(); // boxes of current page
         int index = this.jTable.getSelectedRow();
         if (index < boxesOfCurPage.size() - 1) {
