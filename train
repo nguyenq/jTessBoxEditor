@@ -18,4 +18,4 @@ if [ -z "$JAVACMD" ] ; then
   fi
 fi
 
-$JAVACMD -Xms128m -Xmx512m -cp "$PROGDIR/$PROGRAM.jar" $PROGRAM $@
+$JAVACMD -Xms128m -Xmx1024m -cp "$PROGDIR/$PROGRAM.jar" $PROGRAM $@
