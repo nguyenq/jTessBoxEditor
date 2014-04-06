@@ -1,1 +1,1 @@
-java -Xms128m -Xmx512m -jar jTessBoxEditor.jar
+java -Xms128m -Xmx1024m -jar jTessBoxEditor.jar
