@@ -1,21 +1,22 @@
 /**
  * Copyright @ 2011 Quan Nguyen
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package net.sourceforge.tessboxeditor;
 
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
@@ -80,17 +81,35 @@ public class GuiWithEdit extends GuiWithMRU {
             return;
         }
 
+        boolean modifierKeyPressed = false;
+        int modifiers = evt.getModifiers();
+        if ((modifiers & ActionEvent.CTRL_MASK) == ActionEvent.CTRL_MASK
+                || (modifiers & ActionEvent.ALT_MASK) == ActionEvent.ALT_MASK
+                || (modifiers & ActionEvent.META_MASK) == ActionEvent.META_MASK) {
+            modifierKeyPressed = true;
+        }
+
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
         Rectangle rect = box.getRect();
-        rect.width /= 2;
-        tableModel.setValueAt(String.valueOf(rect.width), index, 3);
-
+        if (!modifierKeyPressed) {
+            rect.width /= 2;
+            tableModel.setValueAt(String.valueOf(rect.width), index, 3);
+        } else {
+            rect.height /= 2;
+            tableModel.setValueAt(String.valueOf(rect.height), index, 4);
+        }
+        
         TessBox newBox = new TessBox(box.getChrs(), new Rectangle(rect), box.getPage());
         newBox.setSelected(true);
         boxes.add(index + 1, newBox);
         Rectangle newRect = newBox.getRect();
-        newRect.x += newRect.width;
+        if (!modifierKeyPressed) {
+            newRect.x += newRect.width;
+        } else {
+            newRect.y += newRect.height;
+        }
+        
         Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index + 1, newRow);
         jTable.setRowSelectionInterval(index, index + 1);
