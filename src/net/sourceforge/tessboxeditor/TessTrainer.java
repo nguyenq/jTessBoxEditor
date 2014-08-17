@@ -164,6 +164,7 @@ public class TessTrainer {
         runCommand(cmd);
 
         //correct Unicode character directionality in unicharset
+        writeToLog("Edited unicharset file with Unicode character directionality.\n");
         editUniCharDirectionality();
 
         writeToLog("** Shape Clustering **");
