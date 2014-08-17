@@ -59,6 +59,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         jTextFieldLang.setText(prefs.get("trainnedLanguage", null));
         jTextFieldBootstrapLang.setText(prefs.get("bootstrapLanguage", null));
         jComboBoxOps.setSelectedIndex(prefs.getInt("trainingMode", 0));
+        jCheckBoxRTL.setSelected(prefs.getBoolean("trainingRTL", false));
     }
 
     @Override
@@ -184,6 +185,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         prefs.put("trainnedLanguage", this.jTextFieldLang.getText());
         prefs.put("bootstrapLanguage", this.jTextFieldBootstrapLang.getText());
         prefs.putInt("trainingMode", this.jComboBoxOps.getSelectedIndex());
+        prefs.putBoolean("trainingRTL", this.jCheckBoxRTL.isSelected());
         
         super.quit();
     }
