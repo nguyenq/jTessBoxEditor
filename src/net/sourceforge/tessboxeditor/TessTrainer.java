@@ -35,8 +35,8 @@ public class TessTrainer {
     private final String cmdshapeclustering = "shapeclustering -F %s.font_properties -U unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private final String cmdmftraining = "mftraining -F %1$s.font_properties -U unicharset -O %1$s.unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private final String cmdcntraining = "cntraining"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
-    private final String cmdwordlist2dawg = "wordlist2dawg %1$s.frequent_words_list %1$s.freq-dawg %1$s.unicharset";
-    private final String cmdwordlist2dawg2 = "wordlist2dawg %1$s.words_list %1$s.word-dawg %1$s.unicharset";
+    private final String cmdwordlist2dawg = "wordlist2dawg %2$s %1$s.frequent_words_list %1$s.freq-dawg %1$s.unicharset";
+    private final String cmdwordlist2dawg2 = "wordlist2dawg %2$s %1$s.words_list %1$s.word-dawg %1$s.unicharset";
     private final String cmdcombine_tessdata = "combine_tessdata %s.";
 
     ProcessBuilder pb;
@@ -196,11 +196,11 @@ public class TessTrainer {
 
         writeToLog("** Dictionary Data **");
         //cmdwordlist2dawg
-        cmd = getCommand(String.format(cmdwordlist2dawg + (rtl ? " -r 1" : ""), lang));
+        cmd = getCommand(String.format(cmdwordlist2dawg, lang, (rtl ? "-r 1" : "")));
         runCommand(cmd);
 
         //cmdwordlist2dawg2
-        cmd = getCommand(String.format(cmdwordlist2dawg2 + (rtl ? " -r 1" : ""), lang));
+        cmd = getCommand(String.format(cmdwordlist2dawg2, lang, (rtl ? "-r 1" : "")));
         runCommand(cmd);
 
         writeToLog("** Combine Data Files **");
