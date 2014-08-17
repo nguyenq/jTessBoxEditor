@@ -197,7 +197,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         long startTime;
 
         public TrainingWorker() {
-            trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText());
+            trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
             trainer.addPropertyChangeListener(new PropertyChangeListener() {
 
                 public void propertyChange(final PropertyChangeEvent evt) {

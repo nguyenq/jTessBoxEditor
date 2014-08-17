@@ -18,7 +18,13 @@ package net.sourceforge.tessboxeditor;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
+import net.sourceforge.vietocr.utilities.Utilities;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
@@ -32,16 +38,17 @@ public class TessTrainer {
     private final String cmdwordlist2dawg = "wordlist2dawg %1$s.frequent_words_list %1$s.freq-dawg %1$s.unicharset";
     private final String cmdwordlist2dawg2 = "wordlist2dawg %1$s.words_list %1$s.word-dawg %1$s.unicharset";
     private final String cmdcombine_tessdata = "combine_tessdata %s.";
-    
+
     ProcessBuilder pb;
     String tessDir;
     String inputDataDir;
     String lang;
     String bootstrapLang;
+    boolean rtl;
 
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-     
-    public TessTrainer(String tessDir, String inputDataDir, String lang, String bootstrapLang) {
+
+    public TessTrainer(String tessDir, String inputDataDir, String lang, String bootstrapLang, boolean rtl) {
         pb = new ProcessBuilder();
 //        pb.directory(new File(System.getProperty("user.home")));
         pb.directory(new File(inputDataDir));
@@ -51,12 +58,13 @@ public class TessTrainer {
         this.inputDataDir = inputDataDir;
         this.lang = lang;
         this.bootstrapLang = bootstrapLang;
+        this.rtl = rtl;
     }
-       
+
     /**
      * Adds listener for property change event.
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
@@ -87,7 +95,8 @@ public class TessTrainer {
 
     /**
      * Generates box file.
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     void generateBox() throws Exception {
         //cmdmake_box
@@ -106,7 +115,7 @@ public class TessTrainer {
         if (files.length == 0) {
             throw new RuntimeException("There are no training images.");
         }
-        
+
         writeToLog("** Make Box Files **");
         for (String file : files) {
             cmd.set(1, file);
@@ -117,9 +126,9 @@ public class TessTrainer {
 
     /**
      * Generates traineddata file.
-     * 
+     *
      * @param skipBoxGeneration
-     * @throws Exception 
+     * @throws Exception
      */
     void generateTraineddata(boolean skipBoxGeneration) throws Exception {
         if (!skipBoxGeneration) {
@@ -129,11 +138,11 @@ public class TessTrainer {
         List<String> cmd;
         String[] files;
         files = getImageFiles();
-                
+
         if (files.length == 0) {
             throw new RuntimeException("There are no training images.");
         }
-        
+
         writeToLog("** Run Tesseract for Training **");
         //cmdtess_train
         cmd = getCommand(cmdtess_train);
@@ -142,7 +151,7 @@ public class TessTrainer {
             cmd.set(2, TextUtilities.stripExtension(file));
             runCommand(cmd);
         }
-           
+
         writeToLog("** Compute the Character Set **");
         //cmdunicharset_extractor
         cmd = getCommand(cmdunicharset_extractor);
@@ -153,7 +162,10 @@ public class TessTrainer {
         });
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
-        
+
+        //correct Unicode character directionality in unicharset
+        editUniCharDirectionality();
+
         writeToLog("** Shape Clustering **");
         //cmdshapeclustering
         cmd = getCommand(String.format(cmdshapeclustering, lang));
@@ -164,42 +176,67 @@ public class TessTrainer {
         });
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
-        
+
         writeToLog("** MF Training **");
         //cmdmftraining
         cmd = getCommand(String.format(cmdmftraining, lang));
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
-        
+
         writeToLog("** CN Training **");
         //cmdcntraining
         cmd = getCommand(cmdcntraining);
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
-        
-        renameFile("inttemp");       
+
+        renameFile("inttemp");
         renameFile("pffmtable");
         renameFile("normproto");
         renameFile("shapetable");
 
         writeToLog("** Dictionary Data **");
         //cmdwordlist2dawg
-        cmd = getCommand(String.format(cmdwordlist2dawg, lang));
+        cmd = getCommand(String.format(cmdwordlist2dawg + (rtl ? " -r 1" : ""), lang));
         runCommand(cmd);
-        
+
         //cmdwordlist2dawg2
-        cmd = getCommand(String.format(cmdwordlist2dawg2, lang));
+        cmd = getCommand(String.format(cmdwordlist2dawg2 + (rtl ? " -r 1" : ""), lang));
         runCommand(cmd);
-        
+
         writeToLog("** Combine Data Files **");
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
     }
-    
+
+    /**
+     * Edits Unicode Character Directionality in <code>unicharset</code> file.
+     *
+     * http://tesseract-ocr.googlecode.com/svn/trunk/doc/unicharset.5.html
+     */
+    void editUniCharDirectionality() throws IOException {
+        Path path = FileSystems.getDefault().getPath(inputDataDir, "unicharset");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        for (int i = 0; i < lines.size(); i++) {
+            String[] parts = lines.get(i).split(" ");
+            if (parts.length < 8) {
+                continue;
+            }
+            int bidiValue = Utilities.getTextDirection(parts[0]);
+            String bidiVal = String.valueOf(bidiValue);
+            if (!parts[5].equals(bidiVal)) {
+                parts[5] = bidiVal;
+                lines.set(i, Utilities.join(Arrays.asList(parts), " "));
+            }
+
+        }
+        Files.write(path, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
     /**
      * Gets training image files.
-     * @return 
+     *
+     * @return
      */
     String[] getImageFiles() {
         String[] files = new File(inputDataDir).list(new FilenameFilter() {
@@ -207,13 +244,14 @@ public class TessTrainer {
                 return filename.toLowerCase().matches(".*\\.(tif|tiff|jpg|jpeg|png|bmp)$");
             }
         });
-        
+
         return files;
     }
-    
+
     /**
      * Prefixes filename with language code
-     * @param fileName 
+     *
+     * @param fileName
      */
     void renameFile(String fileName) {
         File file = new File(inputDataDir, fileName);
@@ -221,26 +259,28 @@ public class TessTrainer {
             File fileWithPrefix = new File(inputDataDir, lang + "." + fileName);
             fileWithPrefix.delete();
             boolean result = file.renameTo(fileWithPrefix);
-            String msg = (result? "Successful" : "Unsuccessful") + " rename of " + fileName;
+            String msg = (result ? "Successful" : "Unsuccessful") + " rename of " + fileName;
             writeToLog(msg);
         }
     }
 
     /**
      * Gets command.
+     *
      * @param cmdStr
-     * @return 
+     * @return
      */
     List<String> getCommand(String cmdStr) {
         List<String> cmd = new LinkedList<String>(Arrays.asList(cmdStr.split("\\s+")));
         cmd.set(0, tessDir + "/" + cmd.get(0));
         return cmd;
     }
-    
+
     /**
      * Runs given command.
+     *
      * @param cmd
-     * @throws Exception 
+     * @throws Exception
      */
     void runCommand(List<String> cmd) throws Exception {
         writeToLog(cmd.toString());
@@ -254,7 +294,7 @@ public class TessTrainer {
         int w = process.waitFor();
 //        System.out.println("Exit value = " + w);
         writeToLog(outputGobbler.getMessage());
-        
+
         if (w != 0) {
             String msg;
             if (cmd.get(0).contains("shapeclustering")) {
@@ -265,10 +305,11 @@ public class TessTrainer {
             throw new RuntimeException(msg);
         }
     }
-    
+
     /**
      * Writes to output log.
-     * @param message 
+     *
+     * @param message
      */
     void writeToLog(String message) {
         this.pcs.firePropertyChange("value", null, message + "\n");
