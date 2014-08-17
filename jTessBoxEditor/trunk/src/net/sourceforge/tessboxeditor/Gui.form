@@ -479,6 +479,15 @@
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
                       </AuxValues>
                     </Component>
+                    <Component class="javax.swing.JCheckBox" name="jCheckBoxRTL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="RTL"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Right-To-Left Text Direction"/>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+                      </AuxValues>
+                    </Component>
                     <Component class="javax.swing.JComboBox" name="jComboBoxOps">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">

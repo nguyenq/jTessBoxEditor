@@ -180,6 +180,7 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldLang = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldBootstrapLang = new javax.swing.JTextField();
+        jCheckBoxRTL = new javax.swing.JCheckBox();
         jComboBoxOps = new javax.swing.JComboBox();
         jButtonTrain = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
@@ -394,6 +395,10 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldBootstrapLang.setMinimumSize(new java.awt.Dimension(34, 19));
         jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(38, 24));
         jPanelMain.add(jTextFieldBootstrapLang);
+
+        jCheckBoxRTL.setText("RTL");
+        jCheckBoxRTL.setToolTipText("Right-To-Left Text Direction");
+        jPanelMain.add(jCheckBoxRTL);
 
         jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "Train from Scratch" }));
         jComboBoxOps.setToolTipText("Training Mode");
@@ -1924,6 +1929,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSplit;
     protected javax.swing.JButton jButtonTrain;
     protected javax.swing.JCheckBox jCheckBoxAntiAliasing;
+    protected javax.swing.JCheckBox jCheckBoxRTL;
     protected javax.swing.JComboBox jComboBoxOps;
     private javax.swing.JFileChooser jFileChooserInputImage;
     private javax.swing.JLabel jLabel1;

@@ -61,3 +61,6 @@ Version 1.0 (16 November 2013)
 - Fix an issue with generated TIFF missing metadata
 - Optionally add noise to generated image
 - Bug fixes and improvements
+
+Version 1.1 Beta (16 August 2014)
+- Add support for Right-to-Left (RTL) text
