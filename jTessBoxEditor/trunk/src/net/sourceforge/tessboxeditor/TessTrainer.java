@@ -163,9 +163,9 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
-        //correct Unicode character directionality in unicharset
-        writeToLog("Edited unicharset file with Unicode character directionality.\n");
-        editUniCharDirectionality();
+        //fix Unicode character directionality in unicharset
+        writeToLog("Fixed unicharset file with Unicode character directionality.\n");
+        fixUniCharDirectionality();
 
         writeToLog("** Shape Clustering **");
         //cmdshapeclustering
@@ -215,7 +215,7 @@ public class TessTrainer {
      *
      * http://tesseract-ocr.googlecode.com/svn/trunk/doc/unicharset.5.html
      */
-    void editUniCharDirectionality() throws IOException {
+    void fixUniCharDirectionality() throws IOException {
         Path path = FileSystems.getDefault().getPath(inputDataDir, "unicharset");
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         for (int i = 0; i < lines.size(); i++) {
@@ -223,13 +223,25 @@ public class TessTrainer {
             if (parts.length < 8) {
                 continue;
             }
-            int bidiValue = Utilities.getTextDirection(parts[0]);
-            String bidiVal = String.valueOf(bidiValue);
-            if (!parts[5].equals(bidiVal)) {
-                parts[5] = bidiVal;
-                lines.set(i, Utilities.join(Arrays.asList(parts), " "));
+            
+            boolean change = false;
+            
+            String scriptName = Character.UnicodeScript.of(parts[0].codePointAt(0)).toString();
+            if (parts[3].equals("NULL")) {
+                parts[3] = Utilities.capitalize(scriptName);
+                change = true;
             }
 
+            byte diValue = Character.getDirectionality(parts[0].codePointAt(0));
+            String diVal = String.valueOf(diValue);
+            if (!parts[5].equals(diVal)) {
+                parts[5] = diVal;
+                change = true;
+            }
+            
+            if (change) {
+                lines.set(i, Utilities.join(Arrays.asList(parts), " "));
+            }
         }
         Files.write(path, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
     }

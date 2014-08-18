@@ -17,8 +17,6 @@ package net.sourceforge.vietocr.utilities;
 
 import java.io.*;
 import java.net.*;
-import java.text.AttributedString;
-import java.text.Bidi;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -26,6 +24,7 @@ public class Utilities {
 
     /**
      * Gets the directory of the executing jar.
+     *
      * @param aType
      * @return the directory of the running jar
      */
@@ -72,28 +71,22 @@ public class Utilities {
     }
 
     /**
-     * Gets Unicode character's directionality.
-     * Adapted from https://abdera.apache.org/docs/api/org/apache/abdera/i18n/text/Bidi.html
+     * Capitalizes first letter.
      * 
-     * @param text input text
-     * @return directionality
+     * @param line
+     * @return 
      */
-    public static int getTextDirection(String text) {
-        if (text != null) {
-            AttributedString as = new AttributedString(text);
-            Bidi bidi = new Bidi(as.getIterator());
-            return bidi.isLeftToRight() ? Bidi.DIRECTION_LEFT_TO_RIGHT : Bidi.DIRECTION_RIGHT_TO_LEFT;
-        }
-        return Bidi.DIRECTION_LEFT_TO_RIGHT; // default
+    public static String capitalize(String line) {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1).toLowerCase();
     }
 
     /**
      * Strings join.
      * http://stackoverflow.com/questions/187676/java-equivalents-of-c-sharp-string-format-and-string-join
-     * 
+     *
      * @param s
      * @param delimiter
-     * @return 
+     * @return
      */
     public static String join(Collection<?> s, String delimiter) {
         StringBuilder builder = new StringBuilder();
