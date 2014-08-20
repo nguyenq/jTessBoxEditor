@@ -211,7 +211,7 @@ public class TessTrainer {
     }
 
     /**
-     * Edits Unicode Character Directionality in <code>unicharset</code> file.
+     * Fixes Unicode Character Directionality in <code>unicharset</code> file.
      *
      * http://tesseract-ocr.googlecode.com/svn/trunk/doc/unicharset.5.html
      */
@@ -223,27 +223,44 @@ public class TessTrainer {
             if (parts.length < 8) {
                 continue;
             }
-            
+
             boolean change = false;
-            
-            String scriptName = Character.UnicodeScript.of(parts[0].codePointAt(0)).toString();
+            int codePoint = parts[0].codePointAt(0);
+            String scriptName = Character.UnicodeScript.of(codePoint).toString();
             if (parts[3].equals("NULL")) {
                 parts[3] = Utilities.capitalize(scriptName);
                 change = true;
             }
 
-            byte diValue = Character.getDirectionality(parts[0].codePointAt(0));
+            byte diValue = Character.getDirectionality(codePoint);
             String diVal = String.valueOf(diValue);
             if (!parts[5].equals(diVal)) {
-                parts[5] = diVal;
+                //Custom rule override
+                parts[5] = customRuleOverride(diVal);
                 change = true;
             }
-            
+
             if (change) {
                 lines.set(i, Utilities.join(Arrays.asList(parts), " "));
             }
         }
         Files.write(path, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    /**
+     * Custom rules for overriding directionality, mainly for RTL scripts.
+     *
+     * @param diVal
+     * @return
+     */
+    String customRuleOverride(String diVal) {
+        switch (diVal) {
+            case "2": //DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC -> DIRECTIONALITY_RIGHT_TO_LEFT
+                diVal = "1";
+                break;
+        }
+
+        return diVal;
     }
 
     /**
