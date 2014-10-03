@@ -299,6 +299,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuLookAndFeel = new javax.swing.JMenu();
         jMenuTools = new javax.swing.JMenu();
         jMenuItemMergeTiff = new javax.swing.JMenuItem();
+        jMenuItemSplitTiff = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemHelp = new javax.swing.JMenuItem();
         jSeparatorAbout = new javax.swing.JPopupMenu.Separator();
@@ -1140,6 +1141,16 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuTools.add(jMenuItemMergeTiff);
 
+        jMenuItemSplitTiff.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSplitTiff.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuItemSplitTiff.Mnemonic").charAt(0));
+        jMenuItemSplitTiff.setText(bundle.getString("jMenuItemSplitTiff.Text")); // NOI18N
+        jMenuItemSplitTiff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSplitTiffActionPerformed(evt);
+            }
+        });
+        jMenuTools.add(jMenuItemSplitTiff);
+
         jMenuBar.add(jMenuTools);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuHelp.Mnemonic").charAt(0));
@@ -1800,6 +1811,10 @@ public class Gui extends javax.swing.JFrame {
     void jMenuItemMergeTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeTiffActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
+	
+	void jMenuItemSplitTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSplitTiffActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jMenuItemSplitTiffActionPerformed
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
         int index = this.jTable.getSelectedRow();
@@ -1968,6 +1983,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenuItem jMenuItemSplit;
+    private javax.swing.JMenuItem jMenuItemSplitTiff;
     protected javax.swing.JMenu jMenuLookAndFeel;
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
