@@ -126,6 +126,11 @@ public class GuiWithTools extends GuiWithLaF {
     }
 
     @Override
+    void jMenuItemSplitTiffActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }   
+
+    @Override
     void quit() {
         prefs.put("ImageFolder", imageFolder.getPath());
         super.quit();
