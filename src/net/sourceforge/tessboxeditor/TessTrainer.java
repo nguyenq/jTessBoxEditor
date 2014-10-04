@@ -233,6 +233,10 @@ public class TessTrainer {
             }
 
             byte diValue = Character.getDirectionality(codePoint);
+            if (diValue == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC || diValue == Character.DIRECTIONALITY_RIGHT_TO_LEFT_EMBEDDING || diValue == Character.DIRECTIONALITY_RIGHT_TO_LEFT_OVERRIDE) {
+                diValue = Character.DIRECTIONALITY_RIGHT_TO_LEFT;
+            }
+            
             String diVal = String.valueOf(diValue);
             if (!parts[5].equals(diVal)) {
                 //Custom rule override
