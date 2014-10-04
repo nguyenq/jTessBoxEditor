@@ -175,6 +175,7 @@ public class GuiWithEdit extends GuiWithMRU {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 new GuiWithEdit().setVisible(true);
             }

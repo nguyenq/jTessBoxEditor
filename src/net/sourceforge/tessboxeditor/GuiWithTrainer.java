@@ -109,6 +109,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         }
 
         String[] boxFiles = new File(trainDataDirectory).list(new FilenameFilter() {
+            @Override
             public boolean accept(File dir, String filename) {
                 return filename.endsWith(".box");
             }
@@ -160,9 +161,9 @@ public class GuiWithTrainer extends GuiWithGenerator {
         
         try {
             File outFile = new File(trainDataDirectory, "training.log");
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), UTF8));
-            jTextAreaOutput.write(out);
-            out.close();
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), UTF8))) {
+                jTextAreaOutput.write(out);
+            }
             JOptionPane.showMessageDialog(this, String.format("Log has been saved as \"%s\".", outFile.getPath()), DIALOG_TITLE, JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             //ignore
@@ -202,6 +203,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
             trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
             trainer.addPropertyChangeListener(new PropertyChangeListener() {
 
+                @Override
                 public void propertyChange(final PropertyChangeEvent evt) {
                     if ("value".equals(evt.getPropertyName())) {
                         jTextAreaOutput.append(evt.getNewValue().toString());
@@ -230,7 +232,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
             } catch (InterruptedException ignore) {
                 ignore.printStackTrace();
             } catch (java.util.concurrent.ExecutionException e) {
-                String why = null;
+                String why;
                 Throwable cause = e.getCause();
                 if (cause != null) {
                     why = cause.getMessage();

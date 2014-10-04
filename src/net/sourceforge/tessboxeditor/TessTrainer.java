@@ -156,6 +156,7 @@ public class TessTrainer {
         //cmdunicharset_extractor
         cmd = getCommand(cmdunicharset_extractor);
         files = new File(inputDataDir).list(new FilenameFilter() {
+            @Override
             public boolean accept(File dir, String filename) {
                 return filename.endsWith(".box");
             }
@@ -164,13 +165,14 @@ public class TessTrainer {
         runCommand(cmd);
 
         //fix Unicode character directionality in unicharset
-        writeToLog("Fixed unicharset file with Unicode character directionality.\n");
+        writeToLog("Fixed unicharset's Unicode character directionality.\n");
         fixUniCharDirectionality();
 
         writeToLog("** Shape Clustering **");
         //cmdshapeclustering
         cmd = getCommand(String.format(cmdshapeclustering, lang));
         files = new File(inputDataDir).list(new FilenameFilter() {
+            @Override
             public boolean accept(File dir, String filename) {
                 return filename.endsWith(".tr");
             }
@@ -208,6 +210,8 @@ public class TessTrainer {
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
+        
+        writeToLog("** Training Completed **");
     }
 
     /**
@@ -273,6 +277,7 @@ public class TessTrainer {
      */
     String[] getImageFiles() {
         String[] files = new File(inputDataDir).list(new FilenameFilter() {
+            @Override
             public boolean accept(File dir, String filename) {
                 return filename.toLowerCase().matches(".*\\.(tif|tiff|jpg|jpeg|png|bmp)$");
             }
@@ -304,7 +309,7 @@ public class TessTrainer {
      * @return
      */
     List<String> getCommand(String cmdStr) {
-        List<String> cmd = new LinkedList<String>(Arrays.asList(cmdStr.split("\\s+")));
+        List<String> cmd = new LinkedList<>(Arrays.asList(cmdStr.split("\\s+")));
         cmd.set(0, tessDir + "/" + cmd.get(0));
         return cmd;
     }
