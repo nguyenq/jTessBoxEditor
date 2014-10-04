@@ -62,7 +62,7 @@ Version 1.0 (16 November 2013)
 - Optionally add noise to generated image
 - Bug fixes and improvements
 
-Version 1.1 Beta 2 (03 October 2014)
+Version 1.1 Beta 3 (03 October 2014)
 - Add training support for Right-to-Left (RTL) text
 - Add horizontal box split using modifier keys
 - Add split multi-page TIFF function
