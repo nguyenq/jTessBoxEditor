@@ -15,11 +15,12 @@
  */
 package net.sourceforge.tessboxeditor;
 
-import net.sourceforge.vietocr.utilities.*;
 import java.awt.Cursor;
 import java.io.File;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import net.sourceforge.tess4j.util.ImageIOHelper;
+import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTools extends GuiWithLaF {
