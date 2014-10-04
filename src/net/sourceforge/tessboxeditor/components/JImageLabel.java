@@ -19,7 +19,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import net.sourceforge.tessboxeditor.datamodel.*;
-import net.sourceforge.vietocr.utilities.Utilities;
+import net.sourceforge.vietocr.util.Utils;
 
 public class JImageLabel extends JLabel {
 
@@ -103,7 +103,7 @@ public class JImageLabel extends JLabel {
             TessBox curBox = this.boxes.hitObject(new Point(x, y));
             if (curBox != null) {
                 String curChrs = curBox.getChrs();
-                setToolTipText(String.format("<html><h1><font face=\"%s\" >%s</font> : %s</h1></html>", this.getFont().getName(), curChrs, Utilities.toHex(curChrs)));
+                setToolTipText(String.format("<html><h1><font face=\"%s\" >%s</font> : %s</h1></html>", this.getFont().getName(), curChrs, Utils.toHex(curChrs)));
             } else {
                 setToolTipText(null);
             }
