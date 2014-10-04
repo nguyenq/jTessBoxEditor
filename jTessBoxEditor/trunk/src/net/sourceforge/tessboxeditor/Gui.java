@@ -40,11 +40,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.*;
 import net.sourceforge.tessboxeditor.components.*;
 import net.sourceforge.tessboxeditor.datamodel.*;
-import net.sourceforge.vietocr.utilities.*;
+import net.sourceforge.vietocr.util.Utils;
+import net.sourceforge.tess4j.util.ImageIOHelper;
 import net.sourceforge.vietpad.components.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
 import net.sourceforge.vietpad.utilities.TextUtilities;
-import net.sourceforge.tess4j.util.ImageIOHelper;
 
 public class Gui extends javax.swing.JFrame {
 
@@ -68,7 +68,7 @@ public class Gui extends javax.swing.JFrame {
     protected TessBoxCollection boxes; // boxes of current page
     protected short imageIndex;
     private List<BufferedImage> imageList;
-    protected final File baseDir = Utilities.getBaseDir(Gui.this);
+    protected final File baseDir = Utils.getBaseDir(Gui.this);
     DefaultTableModel tableModel;
     private boolean isTess2_0Format;
     protected RowHeaderList rowHeader;
@@ -693,7 +693,7 @@ public class Gui extends javax.swing.JFrame {
                     box.setChrs(value);
                     jTextFieldCharacter.setText(value);
                     jTextFieldChar.setText(value);
-                    jTextFieldCodepointValue.setText(Utilities.toHex(value));
+                    jTextFieldCodepointValue.setText(Utils.toHex(value));
                     updateSave(true);
                 }
             }
@@ -722,7 +722,7 @@ public class Gui extends javax.swing.JFrame {
                             // update Character field
                             jTextFieldCharacter.setText((String) tableModel.getValueAt(selectedIndex, 0));
                             jTextFieldChar.setText(jTextFieldCharacter.getText());
-                            jTextFieldCodepointValue.setText(Utilities.toHex(jTextFieldCharacter.getText()));
+                            jTextFieldCodepointValue.setText(Utils.toHex(jTextFieldCharacter.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
@@ -1721,7 +1721,7 @@ public class Gui extends javax.swing.JFrame {
             box.setChrs(str);
             tableModel.setValueAt(box.getChrs(), index, 0);
             jTextFieldChar.setText(str);
-            jTextFieldCodepointValue.setText(Utilities.toHex(str));
+            jTextFieldCodepointValue.setText(Utils.toHex(str));
             updateSave(true);
         }
     }//GEN-LAST:event_jTextFieldCharacterActionPerformed

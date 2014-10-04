@@ -13,14 +13,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.sourceforge.vietocr.utilities;
+package net.sourceforge.vietocr.util;
 
 import java.io.*;
 import java.net.*;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class Utilities {
+public class Utils {
 
     /**
      * Gets the directory of the executing jar.
@@ -43,6 +43,31 @@ public class Utilities {
             use.printStackTrace();
         }
         return dbDir;
+    }
+
+    /**
+     * Gets filename without extension.
+     * http://stackoverflow.com/questions/924394/how-to-get-file-name-without-the-extension
+     *
+     * @param str
+     * @return
+     */
+    public static String stripExtension(String str) {
+        // Handle null case specially.
+        if (str == null) {
+            return null;
+        }
+
+        // Get position of last '.'.
+        int pos = str.lastIndexOf(".");
+
+        // If there wasn't any '.' just return the string as is.
+        if (pos == -1) {
+            return str;
+        }
+
+        // Otherwise return the string, up to the dot.
+        return str.substring(0, pos);
     }
 
     /**
@@ -72,9 +97,9 @@ public class Utilities {
 
     /**
      * Capitalizes first letter.
-     * 
+     *
      * @param line
-     * @return 
+     * @return
      */
     public static String capitalize(String line) {
         return Character.toUpperCase(line.charAt(0)) + line.substring(1).toLowerCase();

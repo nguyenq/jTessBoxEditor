@@ -29,7 +29,7 @@ import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.tessboxeditor.utilities.ImageUtils;
 import net.sourceforge.tess4j.util.ImageIOHelper;
-import net.sourceforge.vietocr.utilities.Utilities;
+import net.sourceforge.vietocr.util.Utils;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TiffBoxGenerator {
@@ -49,7 +49,7 @@ public class TiffBoxGenerator {
     private final int COLOR_WHITE = Color.WHITE.getRGB();
     private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
     private boolean isAntiAliased;
-    private final File baseDir = Utilities.getBaseDir(TiffBoxGenerator.this);
+    private final File baseDir = Utils.getBaseDir(TiffBoxGenerator.this);
     private final Pattern pattern = Pattern.compile("chars:\"(.*?)\",");
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {

@@ -17,10 +17,11 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Cursor;
 import java.io.File;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import net.sourceforge.tess4j.util.ImageIOHelper;
-import net.sourceforge.vietocr.utilities.*;
+import net.sourceforge.vietocr.util.Utils;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTools extends GuiWithLaF {
@@ -128,7 +129,82 @@ public class GuiWithTools extends GuiWithLaF {
 
     @Override
     void jMenuItemSplitTiffActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+        JFileChooser jf = new JFileChooser();
+        jf.setDialogTitle(bundle.getString("Select_Input_TIFF"));
+        jf.setApproveButtonText("Split");
+        jf.setCurrentDirectory(imageFolder);
+        FileFilter tiffFilter = new SimpleFilter("tif;tiff", "TIFF");
+        jf.addChoosableFileFilter(tiffFilter);
+
+        if (selectedFilter != null) {
+            jf.setFileFilter(selectedFilter);
+        }
+
+        jf.setAcceptAllFileFilterUsed(false);
+        if (jf.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            selectedFilter = jf.getFileFilter();
+            final File input = jf.getSelectedFile();
+            imageFolder = jf.getCurrentDirectory();
+
+            jLabelStatus.setText(bundle.getString("SplitTIFF_running..."));
+            jProgressBar1.setIndeterminate(true);
+            jProgressBar1.setString(bundle.getString("SplitTIFF_running..."));
+            jProgressBar1.setVisible(true);
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            getGlassPane().setVisible(true);
+
+            SwingWorker worker = new SwingWorker<Void, Void>() {
+
+                @Override
+                protected Void doInBackground() throws Exception {
+                    String basefilename = Utils.stripExtension(input.getPath());
+                    List<File> files = ImageIOHelper.createTiffFiles(input, -1, true);
+                    
+                    // move temp TIFF files to selected folder
+                    for (int i = 0; i < files.size(); i++) {
+                        String outfilename = String.format("%s-%03d.tif", basefilename, i + 1);
+                        File outfile = new File(outfilename);
+                        outfile.delete();
+                        files.get(i).renameTo(outfile);
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    jLabelStatus.setText(bundle.getString("SplitTIFFcompleted"));
+                    jProgressBar1.setIndeterminate(false);
+                    jProgressBar1.setString(bundle.getString("SplitTIFFcompleted"));
+
+                    try {
+                        get();
+                        JOptionPane.showMessageDialog(GuiWithTools.this, bundle.getString("SplitTIFFcompleted"), APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+                    } catch (InterruptedException ignore) {
+                        ignore.printStackTrace();
+                    } catch (java.util.concurrent.ExecutionException e) {
+                        String why = null;
+                        Throwable cause = e.getCause();
+                        if (cause != null) {
+                            if (cause instanceof OutOfMemoryError) {
+                                why = bundle.getString("OutOfMemoryError");
+                            } else {
+                                why = cause.getMessage();
+                            }
+                        } else {
+                            why = e.getMessage();
+                        }
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(GuiWithTools.this, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
+                    } finally {
+                        jProgressBar1.setVisible(false);
+                        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                        getGlassPane().setVisible(false);
+                    }
+                }
+            };
+
+            worker.execute();
+        }
     }   
 
     @Override

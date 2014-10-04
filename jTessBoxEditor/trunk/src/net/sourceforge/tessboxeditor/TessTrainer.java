@@ -24,7 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
-import net.sourceforge.vietocr.utilities.Utilities;
+import net.sourceforge.vietocr.util.Utils;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
@@ -228,7 +228,7 @@ public class TessTrainer {
             int codePoint = parts[0].codePointAt(0);
             String scriptName = Character.UnicodeScript.of(codePoint).toString();
             if (parts[3].equals("NULL")) {
-                parts[3] = Utilities.capitalize(scriptName);
+                parts[3] = Utils.capitalize(scriptName);
                 change = true;
             }
 
@@ -245,7 +245,7 @@ public class TessTrainer {
             }
 
             if (change) {
-                lines.set(i, Utilities.join(Arrays.asList(parts), " "));
+                lines.set(i, Utils.join(Arrays.asList(parts), " "));
             }
         }
         Files.write(path, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
