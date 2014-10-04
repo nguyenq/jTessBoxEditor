@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.sourceforge.vietocr.utilities;
+package net.sourceforge.tess4j.util;
 
 import java.io.*;
 import java.util.*;

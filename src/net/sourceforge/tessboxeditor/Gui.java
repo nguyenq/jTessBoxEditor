@@ -44,6 +44,7 @@ import net.sourceforge.vietocr.utilities.*;
 import net.sourceforge.vietpad.components.*;
 import net.sourceforge.vietpad.utilities.LimitedLengthDocument;
 import net.sourceforge.vietpad.utilities.TextUtilities;
+import net.sourceforge.tess4j.util.ImageIOHelper;
 
 public class Gui extends javax.swing.JFrame {
 

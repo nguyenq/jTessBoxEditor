@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.tessboxeditor.utilities.ImageUtils;
-import net.sourceforge.vietocr.utilities.ImageIOHelper;
+import net.sourceforge.tess4j.util.ImageIOHelper;
 import net.sourceforge.vietocr.utilities.Utilities;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
