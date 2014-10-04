@@ -35,15 +35,15 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 public class TiffBoxGenerator {
 
     static final String EOL = System.getProperty("line.separator");
-    private final HashMap<TextAttribute, Object> map = new HashMap<TextAttribute, Object>();
-    private final List<TessBoxCollection> boxPages = new ArrayList<TessBoxCollection>();
-    private String text;
-    private Font font;
-    private int width, height;
+    private final HashMap<TextAttribute, Object> map = new HashMap<>();
+    private final List<TessBoxCollection> boxPages = new ArrayList<>();
+    private final String text;
+    private final Font font;
+    private final int width, height;
     private int noiseAmount;
     private final int margin = 100;
-    private final List<ArrayList<TextLayout>> layouts = new ArrayList<ArrayList<TextLayout>>();
-    private final List<BufferedImage> pages = new ArrayList<BufferedImage>();
+    private final List<ArrayList<TextLayout>> layouts = new ArrayList<>();
+    private final List<BufferedImage> pages = new ArrayList<>();
     private String fileName = "fontname.exp0";
     private File outputFolder;
     private final int COLOR_WHITE = Color.WHITE.getRGB();
@@ -111,19 +111,19 @@ public class TiffBoxGenerator {
         String str = null;
         try {
             File symbolFile = new File(baseDir, "data/combiningsymbols.txt");
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(symbolFile), "UTF8"));
-            while ((str = in.readLine()) != null) {
-                // strip BOM character
-                if (str.length() > 0 && str.charAt(0) == '\ufeff') {
-                    str = str.substring(1);
-                }
-                // skip empty line or line starts with #
-                if (str.trim().length() > 0 && !str.trim().startsWith("#")) {
-                    break;
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(symbolFile), "UTF8"))) {
+                while ((str = in.readLine()) != null) {
+                    // strip BOM character
+                    if (str.length() > 0 && str.charAt(0) == '\ufeff') {
+                        str = str.substring(1);
+                    }
+                    // skip empty line or line starts with #
+                    if (str.trim().length() > 0 && !str.trim().startsWith("#")) {
+                        break;
+                    }
                 }
             }
-            in.close();
         } catch (Exception e) {
             // ignore
         }
@@ -214,9 +214,9 @@ public class TiffBoxGenerator {
      */
     private void saveBoxFile() {
         try {
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFolder, fileName + ".box")), "UTF8")); // save boxes
-            out.write(formatOutputString());
-            out.close();
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFolder, fileName + ".box")), "UTF8"))) {
+                out.write(formatOutputString());
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -237,7 +237,7 @@ public class TiffBoxGenerator {
             final AttributedString attStr = new AttributedString(str, map);
             final LineBreakMeasurer measurer = new LineBreakMeasurer(attStr.getIterator(), new FontRenderContext(null, isAntiAliased, true));
 
-            ArrayList<TextLayout> para = new ArrayList<TextLayout>();
+            ArrayList<TextLayout> para = new ArrayList<>();
             TextLayout line;
 
             while ((line = measurer.nextLayout(wrappingWidth)) != null) {

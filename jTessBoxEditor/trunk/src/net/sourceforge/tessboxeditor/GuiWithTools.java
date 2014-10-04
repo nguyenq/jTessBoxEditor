@@ -101,7 +101,7 @@ public class GuiWithTools extends GuiWithLaF {
                         } catch (InterruptedException ignore) {
                             ignore.printStackTrace();
                         } catch (java.util.concurrent.ExecutionException e) {
-                            String why = null;
+                            String why;
                             Throwable cause = e.getCause();
                             if (cause != null) {
                                 if (cause instanceof OutOfMemoryError) {
@@ -182,7 +182,7 @@ public class GuiWithTools extends GuiWithLaF {
                     } catch (InterruptedException ignore) {
                         ignore.printStackTrace();
                     } catch (java.util.concurrent.ExecutionException e) {
-                        String why = null;
+                        String why;
                         Throwable cause = e.getCause();
                         if (cause != null) {
                             if (cause instanceof OutOfMemoryError) {

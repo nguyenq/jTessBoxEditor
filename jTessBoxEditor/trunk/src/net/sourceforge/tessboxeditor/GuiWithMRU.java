@@ -23,7 +23,7 @@ import javax.swing.JMenuItem;
 
 public class GuiWithMRU extends Gui {
 
-    private java.util.List<String> mruList = new java.util.ArrayList<String>();
+    private final java.util.List<String> mruList = new java.util.ArrayList<String>();
     private String strClearRecentFiles;
 
     /**
@@ -101,8 +101,8 @@ public class GuiWithMRU extends Gui {
     @Override
        void quit() {
         StringBuilder buf = new StringBuilder();
-        for (int i = 0; i < this.mruList.size(); i++) {
-            buf.append(this.mruList.get(i)).append(File.pathSeparatorChar);
+        for (String item : this.mruList) {
+            buf.append(item).append(File.pathSeparatorChar);
         }
         prefs.put("MruList", buf.toString());
 

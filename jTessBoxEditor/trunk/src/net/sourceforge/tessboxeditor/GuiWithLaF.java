@@ -82,6 +82,7 @@ public class GuiWithLaF extends GuiWithFont {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 new GuiWithLaF().setVisible(true);
             }

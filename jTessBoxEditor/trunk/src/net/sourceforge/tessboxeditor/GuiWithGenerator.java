@@ -98,9 +98,9 @@ public class GuiWithGenerator extends GuiWithTools {
             return; // not text file
         }
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"));
-            this.jTextAreaInput.read(in, null);
-            in.close();
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"))) {
+                this.jTextAreaInput.read(in, null);
+            }
             Document doc = jTextAreaInput.getDocument();
             if (doc.getText(0, 1).equals("\uFEFF")) {
                 doc.remove(0, 1); // remove BOM
