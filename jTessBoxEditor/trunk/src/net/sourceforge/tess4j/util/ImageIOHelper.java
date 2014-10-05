@@ -220,8 +220,8 @@ public class ImageIOHelper {
     public static void mergeTiff(File[] inputImages, File outputTiff) throws IOException {
         List<IIOImage> imageList = new ArrayList<IIOImage>();
 
-        for (int i = 0; i < inputImages.length; i++) {
-            imageList.addAll(getIIOImageList(inputImages[i]));
+        for (File inputImage : inputImages) {
+            imageList.addAll(getIIOImageList(inputImage));
         }
 
         mergeTiff(imageList, outputTiff);

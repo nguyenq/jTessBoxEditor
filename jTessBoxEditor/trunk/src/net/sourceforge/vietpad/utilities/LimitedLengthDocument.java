@@ -11,7 +11,7 @@ import javax.swing.text.*;
  *@see        "http://vietpad.sourceforge.net"
  */
 public class LimitedLengthDocument extends PlainDocument {
-    private int max;
+    private final int max;
 
     public LimitedLengthDocument(int max) {
         this.max = max;
