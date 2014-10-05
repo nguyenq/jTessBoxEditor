@@ -74,6 +74,8 @@ public class TextUtilities {
 
     /**
      *  Converts Unicode escape sequences to Unicode.
+     * @param str input string
+     * @return converted string
      */
     public static String convertNCR(String str) {
         final String[] NCRs = {"\\u", "U+"};
