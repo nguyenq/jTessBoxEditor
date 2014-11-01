@@ -86,13 +86,13 @@ public class TessTrainer {
                 generateTraineddata(true);
                 break;
             case 3:
-                generateTraineddata(false);
-                break;
-            case 4:
                 cmdshapeclustering();
                 break;
-            case 5:
+            case 4:
                 cmdwordlist2dawg();
+                break;
+            case 5:
+                generateTraineddata(false);
                 break;
             default:
                 break;
@@ -181,9 +181,6 @@ public class TessTrainer {
      * @throws Exception
      */
     void cmdshapeclustering() throws Exception {
-        writeToLog("** Shape Clustering **");
-        //cmdshapeclustering
-        List<String> cmd = getCommand(String.format(cmdshapeclustering, lang));
         String[] files = new File(inputDataDir).list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
@@ -192,9 +189,12 @@ public class TessTrainer {
         });
         
         if (files.length == 0) {
-            throw new RuntimeException("There are no .tr files. Need to run Tesseract for training first.");
+            throw new RuntimeException("There are no .tr files. Need to train Tesseract first.");
         }
-                
+        
+        writeToLog("** Shape Clustering **");
+        //cmdshapeclustering
+        List<String> cmd = getCommand(String.format(cmdshapeclustering, lang));               
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
@@ -224,6 +224,11 @@ public class TessTrainer {
      * @throws Exception
      */
     void cmdwordlist2dawg() throws Exception {
+        if (!new File(inputDataDir, lang + ".unicharset").exists()) {
+            String msg = String.format("There is no %1$s.unicharset. Need to train Tesseract first.", lang);
+            throw new RuntimeException(msg);
+        }
+        
         writeToLog("** Dictionary Data **");
         //cmdwordlist2dawg
         List<String> cmd = getCommand(String.format(cmdwordlist2dawg, lang, (rtl ? "-r 1" : "")));

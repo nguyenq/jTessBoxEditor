@@ -97,7 +97,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         }
 
         // make sure all required data files exist before training
-        if (selectedTrainingMode == 2 || selectedTrainingMode == 3) {
+        if (selectedTrainingMode == 2 || selectedTrainingMode == 4 || selectedTrainingMode == 5) {
             final String lang = jTextFieldLang.getText();
             boolean otherFilesExist = new File(trainDataDirectory, lang + ".font_properties").exists() && new File(trainDataDirectory, lang + ".frequent_words_list").exists() && new File(trainDataDirectory, lang + ".words_list").exists();
 
@@ -115,7 +115,8 @@ public class GuiWithTrainer extends GuiWithGenerator {
             }
         });
 
-        if (selectedTrainingMode == 1 || selectedTrainingMode == 3) {
+        // warn about potential box overwrite
+        if (selectedTrainingMode == 1 || selectedTrainingMode == 5) {
             if (boxFiles.length > 0) {
                 int option = JOptionPane.showConfirmDialog(this,
                         "There are existing box files. Continuing may overwrite them.\nDo you want to proceed?",

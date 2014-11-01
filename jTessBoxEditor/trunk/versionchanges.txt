@@ -67,5 +67,5 @@ Version 1.1 (15 October 2014)
 - Add horizontal box split using modifier keys
 - Add split multi-page TIFF function
 
-Version 1.1.1 Beta (1 November 2014)
+Version 1.2 (2 November 2014)
 - Break up the training process to allow incremental builds
