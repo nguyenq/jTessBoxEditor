@@ -402,7 +402,7 @@ public class Gui extends javax.swing.JFrame {
         jCheckBoxRTL.setToolTipText("Right-To-Left Text Direction");
         jPanelMain.add(jCheckBoxRTL);
 
-        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "Train from Scratch" }));
+        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "    Shape Clustering...", "    Dictionary...", "Train from Scratch" }));
         jComboBoxOps.setToolTipText("Training Mode");
         jPanelMain.add(jComboBoxOps);
 
@@ -693,7 +693,7 @@ public class Gui extends javax.swing.JFrame {
                     box.setChrs(value);
                     jTextFieldCharacter.setText(value);
                     jTextFieldChar.setText(value);
-                    jTextFieldCodepointValue.setText(Utils.toHex(value));
+                    jTextFieldCodepointValue.setText(net.sourceforge.vietocr.util.Utils.toHex(value));
                     updateSave(true);
                 }
             }
@@ -722,7 +722,7 @@ public class Gui extends javax.swing.JFrame {
                             // update Character field
                             jTextFieldCharacter.setText((String) tableModel.getValueAt(selectedIndex, 0));
                             jTextFieldChar.setText(jTextFieldCharacter.getText());
-                            jTextFieldCodepointValue.setText(Utils.toHex(jTextFieldCharacter.getText()));
+                            jTextFieldCodepointValue.setText(net.sourceforge.vietocr.util.Utils.toHex(jTextFieldCharacter.getText()));
                             // update subimage label
                             Icon icon = jLabelImage.getIcon();
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
