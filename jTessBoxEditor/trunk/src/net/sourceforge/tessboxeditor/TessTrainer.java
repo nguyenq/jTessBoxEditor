@@ -88,6 +88,12 @@ public class TessTrainer {
             case 3:
                 generateTraineddata(false);
                 break;
+            case 4:
+                cmdshapeclustering();
+                break;
+            case 5:
+                cmdwordlist2dawg();
+                break;
             default:
                 break;
         }
@@ -135,9 +141,7 @@ public class TessTrainer {
             generateBox();
         }
 
-        List<String> cmd;
-        String[] files;
-        files = getImageFiles();
+        String[] files = getImageFiles();
 
         if (files.length == 0) {
             throw new RuntimeException("There are no training images.");
@@ -145,7 +149,7 @@ public class TessTrainer {
 
         writeToLog("** Run Tesseract for Training **");
         //cmdtess_train
-        cmd = getCommand(cmdtess_train);
+        List<String> cmd = getCommand(cmdtess_train);
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
@@ -168,15 +172,29 @@ public class TessTrainer {
         writeToLog("Fixed unicharset's Unicode character directionality.\n");
         fixUniCharDirectionality();
 
+        cmdshapeclustering();
+    }
+
+    /**
+     * Perform training from shapeclustering on...
+     *
+     * @throws Exception
+     */
+    void cmdshapeclustering() throws Exception {
         writeToLog("** Shape Clustering **");
         //cmdshapeclustering
-        cmd = getCommand(String.format(cmdshapeclustering, lang));
-        files = new File(inputDataDir).list(new FilenameFilter() {
+        List<String> cmd = getCommand(String.format(cmdshapeclustering, lang));
+        String[] files = new File(inputDataDir).list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
                 return filename.endsWith(".tr");
             }
         });
+        
+        if (files.length == 0) {
+            throw new RuntimeException("There are no .tr files. Need to run Tesseract for training first.");
+        }
+                
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
@@ -197,9 +215,18 @@ public class TessTrainer {
         renameFile("normproto");
         renameFile("shapetable");
 
+        cmdwordlist2dawg();
+    }
+
+    /**
+     * Perform training from dictionary on...
+     *
+     * @throws Exception
+     */
+    void cmdwordlist2dawg() throws Exception {
         writeToLog("** Dictionary Data **");
         //cmdwordlist2dawg
-        cmd = getCommand(String.format(cmdwordlist2dawg, lang, (rtl ? "-r 1" : "")));
+        List<String> cmd = getCommand(String.format(cmdwordlist2dawg, lang, (rtl ? "-r 1" : "")));
         runCommand(cmd);
 
         //cmdwordlist2dawg2
@@ -210,7 +237,7 @@ public class TessTrainer {
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
-        
+
         writeToLog("** Training Completed **");
     }
 
@@ -238,7 +265,7 @@ public class TessTrainer {
 
             byte diValue = Character.getDirectionality(codePoint);
             diValue = customRuleOverride(diValue);
-            
+
             String diVal = String.valueOf(diValue);
             if (!parts[5].equals(diVal)) {
                 parts[5] = diVal;
@@ -303,7 +330,7 @@ public class TessTrainer {
     }
 
     /**
-     * Gets command.
+     * Gets a training command.
      *
      * @param cmdStr
      * @return
