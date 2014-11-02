@@ -34,7 +34,7 @@ public class FontDialog extends JDialog {
     private OpenList m_lstFontStyle;
     private OpenList m_lstFontSize;
     private JLabel m_preview;
-    private ResourceBundle bundle;
+    private final ResourceBundle bundle;
     private Font curFont;
     private boolean m_succeeded = false;
     private JComboBox combo;
@@ -82,8 +82,8 @@ public class FontDialog extends JDialog {
 
         final Font[] allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
         final Collection<String> fontFamilies = new TreeSet<String>();
-        for (int i = 0; i < allFonts.length; i++) {
-            fontFamilies.add(allFonts[i].getFamily());
+        for (Font allFont : allFonts) {
+            fontFamilies.add(allFont.getFamily());
         }
 
         m_lstFontName = new OpenList(fontFamilies.toArray(), bundle.getString("Name"));
@@ -174,6 +174,7 @@ public class FontDialog extends JDialog {
         combo.setToolTipText("Language");
         combo.addActionListener(new java.awt.event.ActionListener() {
 
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_preview.setText(prop.getProperty(combo.getSelectedItem().toString()));
             }
@@ -303,6 +304,7 @@ public class FontDialog extends JDialog {
     
     /**
      *
+     * @param aType
      * @return the directory of the running jar
      */
     public static File getBaseDir(Object aType) {
