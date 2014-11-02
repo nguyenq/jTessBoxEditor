@@ -68,4 +68,4 @@ Version 1.1 (15 October 2014)
 - Add split multi-page TIFF function
 
 Version 1.2 (2 November 2014)
-- Break up the training process to allow incremental builds
+- Break up the training process to allow incremental training
