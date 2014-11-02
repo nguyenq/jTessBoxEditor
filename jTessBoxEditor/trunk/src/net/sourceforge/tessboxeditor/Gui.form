@@ -506,15 +506,8 @@
                     </Component>
                     <Component class="javax.swing.JComboBox" name="jComboBoxOps">
                       <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="6">
-                            <StringItem index="0" value="-- Training Mode --"/>
-                            <StringItem index="1" value="Make Box File Only"/>
-                            <StringItem index="2" value="Train with Existing Box"/>
-                            <StringItem index="3" value="    Shape Clustering..."/>
-                            <StringItem index="4" value="    Dictionary..."/>
-                            <StringItem index="5" value="Train from Scratch"/>
-                          </StringArray>
+                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new DefaultComboBoxModel(TrainingMode.values())" type="code"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="Training Mode"/>
                       </Properties>
