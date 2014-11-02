@@ -402,7 +402,7 @@ public class Gui extends javax.swing.JFrame {
         jCheckBoxRTL.setToolTipText("Right-To-Left Text Direction");
         jPanelMain.add(jCheckBoxRTL);
 
-        jComboBoxOps.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Training Mode --", "Make Box File Only", "Train with Existing Box", "    Shape Clustering...", "    Dictionary...", "Train from Scratch" }));
+        jComboBoxOps.setModel(new DefaultComboBoxModel(TrainingMode.values()));
         jComboBoxOps.setToolTipText("Training Mode");
         jPanelMain.add(jComboBoxOps);
 
