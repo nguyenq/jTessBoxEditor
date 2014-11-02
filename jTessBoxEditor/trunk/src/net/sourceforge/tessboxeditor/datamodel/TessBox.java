@@ -18,6 +18,9 @@ package net.sourceforge.tessboxeditor.datamodel;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+/**
+ * Operations on a box.
+ */
 public class TessBox {
 
     private String chrs;
@@ -32,6 +35,8 @@ public class TessBox {
     }
 
     /**
+     * Whether the box is selected.
+     * 
      * @return the selected
      */
     public boolean isSelected() {
@@ -39,26 +44,48 @@ public class TessBox {
     }
 
     /**
+     * Select a box.
+     * 
      * @param selected the selected to set
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
+    /**
+     * Whether the box contains a coordinate.
+     * 
+     * @param x
+     * @param y
+     * @return 
+     */
     boolean contains(int x, int y) {
         return this.rect.contains(x, y);
     }
 
+    /**
+     * Whether the box contains a point.
+     * 
+     * @param p
+     * @return 
+     */
     boolean contains(Point p) {
         return this.rect.contains(p);
     }
 
+    /**
+     * A box information.
+     * 
+     * @return 
+     */
     @Override
     public String toString() {
         return String.format("%s %d %d %d %d %d", chrs, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, page);
     }
 
     /**
+     * Gets box bounding rectangle.
+     * 
      * @return the rectangle
      */
     public Rectangle getRect() {
@@ -66,6 +93,8 @@ public class TessBox {
     }
     
     /**
+     * Sets box bounding rectangle.
+     * 
      * @param rect the rectangle to set
      */
     public void setRect(Rectangle rect) {
@@ -73,6 +102,8 @@ public class TessBox {
     }
 
     /**
+     * Gets box character value.
+     * 
      * @return the chrs
      */
     public String getChrs() {
@@ -80,6 +111,8 @@ public class TessBox {
     }
 
     /**
+     * Sets box character value.
+     * 
      * @param chrs the chrs to set
      */
     public void setChrs(String chrs) {
@@ -87,6 +120,8 @@ public class TessBox {
     }
 
     /**
+     * Gets the page the box is in.
+     * 
      * @return the page
      */
     public short getPage() {
@@ -94,6 +129,8 @@ public class TessBox {
     }
 
     /**
+     * Sets the page the box is in.
+     * 
      * @param page the page to set
      */
     public void setPage(short page) {
