@@ -19,6 +19,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JSpinner;
@@ -26,6 +28,7 @@ import net.sourceforge.tessboxeditor.components.ImageIconScalable;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 
 public class GuiWithSpinner extends GuiWithEdit {
+    private final static Logger logger = Logger.getLogger(GuiWithSpinner.class.getName());
 
     @Override
     void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -67,8 +70,8 @@ public class GuiWithSpinner extends GuiWithEdit {
             ImageIconScalable subIcon = new ImageIconScalable(subImage);
             subIcon.setScaledFactor(4);
             jLabelSubimage.setIcon(subIcon);
-        } catch (Exception exc) {
-            //ignore
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
         }
         this.jLabelImage.repaint();
         updateSave(true);

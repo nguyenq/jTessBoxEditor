@@ -35,6 +35,7 @@ public class RowHeaderList extends JList {
         setCellRenderer(render);
         setSelectionModel(table.getSelectionModel());
         addListSelectionListener(new ListSelectionListener() {
+            @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     int index = RowHeaderList.this.getSelectedIndex();
@@ -45,12 +46,14 @@ public class RowHeaderList extends JList {
         });
         
         ListModel lm = new AbstractListModel() {
+            @Override
             public int getSize() {
                 return table.getRowCount();
             }
 
+            @Override
             public Object getElementAt(int index) {
-                return new Integer(index + 1);
+                return index + 1;
             }
         };
         setModel(lm);

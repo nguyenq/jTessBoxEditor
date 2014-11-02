@@ -22,6 +22,7 @@ import java.awt.DefaultKeyboardFocusManager;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.KeyEventDispatcher;
 import java.awt.Point;
@@ -33,6 +34,8 @@ import java.io.*;
 import java.nio.channels.*;
 import java.text.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -68,20 +71,24 @@ public class Gui extends javax.swing.JFrame {
     protected TessBoxCollection boxes; // boxes of current page
     protected short imageIndex;
     private List<BufferedImage> imageList;
-    protected final File baseDir = Utils.getBaseDir(Gui.this);
+    protected final File baseDir;
     DefaultTableModel tableModel;
     private boolean isTess2_0Format;
     protected RowHeaderList rowHeader;
     protected Font font;
+    
+    private final static Logger logger = Logger.getLogger(Gui.class.getName());
 
     /**
      * Creates new form JTessBoxEditor.
      */
     public Gui() {
+        this.baseDir = Utils.getBaseDir(Gui.this);
         try {
             UIManager.setLookAndFeel(prefs.get("lookAndFeel", UIManager.getSystemLookAndFeelClassName()));
         } catch (Exception e) {
             // keep default LAF
+            logger.log(Level.WARNING, e.getMessage(), e);
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
@@ -1245,7 +1252,8 @@ public class Gui extends javax.swing.JFrame {
             this.setTitle(APP_NAME + " - " + selectedFile.getName());
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, oome.getMessage(), "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
+        } catch (IOException | HeadlessException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             if (e.getMessage() != null) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
             }
@@ -1257,10 +1265,10 @@ public class Gui extends javax.swing.JFrame {
             try {
                 boxPages.clear();
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"));
                 // load into textarea first
-                this.jTextAreaBoxData.read(in, null);
-                in.close();
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"))) {
+                    this.jTextAreaBoxData.read(in, null);
+                }
 
                 // load into coordinate tab
                 String[] boxdata = this.jTextAreaBoxData.getText().split("\\n");
@@ -1308,8 +1316,10 @@ public class Gui extends javax.swing.JFrame {
                 loadTable();
                 updateSave(false);
             } catch (OutOfMemoryError oome) {
+                logger.log(Level.SEVERE, oome.getMessage(), oome);
                 JOptionPane.showMessageDialog(this, oome.getMessage(), "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception e) {
+            } catch (IOException | NumberFormatException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
                 if (e.getMessage() != null) {
                     JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
                 }
@@ -1422,16 +1432,18 @@ public class Gui extends javax.swing.JFrame {
         getGlassPane().setVisible(true);
 
         try {
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8));
-            out.write(formatOutputString());
-            out.close();
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8))) {
+                out.write(formatOutputString());
+            }
 //            updateMRUList(boxFile.getPath());
             updateSave(false);
         } catch (OutOfMemoryError oome) {
-//            oome.printStackTrace();
+            logger.log(Level.SEVERE, oome.getMessage(), oome);
             JOptionPane.showMessageDialog(this, oome.getMessage(), bundle.getString("OutOfMemoryError"), JOptionPane.ERROR_MESSAGE);
         } catch (FileNotFoundException fnfe) {
-        } catch (Exception ex) {
+            logger.log(Level.SEVERE, fnfe.getMessage(), fnfe);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
         } finally {
             SwingUtilities.invokeLater(new Runnable() {
 
@@ -1520,8 +1532,8 @@ public class Gui extends javax.swing.JFrame {
                     + "Tesseract Box Editor & Trainer\n"
                     + DateFormat.getDateInstance(DateFormat.LONG).format(releaseDate)
                     + "\nhttp://vietocr.sourceforge.net", jMenuItemAbout.getText(), JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        } catch (IOException | ParseException | HeadlessException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
     private void jButtonPrevPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevPageActionPerformed
@@ -1596,7 +1608,7 @@ public class Gui extends javax.swing.JFrame {
             boxChanged = modified;
             this.jButtonSave.setEnabled(modified);
             this.jMenuItemSave.setEnabled(modified);
-            rootPane.putClientProperty("windowModified", Boolean.valueOf(modified));
+            rootPane.putClientProperty("windowModified", modified);
             // see http://developer.apple.com/qa/qa2001/qa1146.html
         }
     }
@@ -1654,8 +1666,8 @@ public class Gui extends javax.swing.JFrame {
                 File helpFile = new File(supportDir, "readme.html");
                 copyFileFromJarToSupportDir(helpFile);
                 Runtime.getRuntime().exec(new String[]{"open", "-b", "com.apple.helpviewer", readme}, null, supportDir);
-            } catch (IOException x) {
-                x.printStackTrace();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         } else {
             if (helptopicsFrame == null) {
@@ -1673,12 +1685,10 @@ public class Gui extends javax.swing.JFrame {
 
     private void copyFileFromJarToSupportDir(File helpFile) throws IOException {
         if (!helpFile.exists()) {
-            final ReadableByteChannel input
-                    = Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName()));
-            final FileChannel output = new FileOutputStream(helpFile).getChannel();
-            output.transferFrom(input, 0, 1000000L);
-            output.close();
-            input.close();
+            try (ReadableByteChannel input = Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName())); 
+                    FileChannel output = new FileOutputStream(helpFile).getChannel()) {
+                output.transferFrom(input, 0, 1000000L);
+            }
         }
     }
 

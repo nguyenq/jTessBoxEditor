@@ -21,8 +21,11 @@ import java.awt.font.TextAttribute;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import net.sourceforge.vietpad.components.FontDialog;
 import net.sourceforge.vietpad.components.SimpleFilter;
@@ -35,6 +38,8 @@ public class GuiWithGenerator extends GuiWithTools {
     private final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
     private JFileChooser jFileChooserInputText;
 
+    private final static Logger logger = Logger.getLogger(GuiWithGenerator.class.getName());
+    
     public GuiWithGenerator() {
         initComponents();
 
@@ -74,7 +79,7 @@ public class GuiWithGenerator extends GuiWithTools {
                 selectedFile = jFileChooserInputText.getSelectedFile();
                 openTextFile(selectedFile);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, e.getMessage(), e);
             } finally {
                 SwingUtilities.invokeLater(
                         new Runnable() {
@@ -105,8 +110,8 @@ public class GuiWithGenerator extends GuiWithTools {
             if (doc.getText(0, 1).equals("\uFEFF")) {
                 doc.remove(0, 1); // remove BOM
             }
-        } catch (Exception e) {
-            //ignore
+        } catch (IOException | BadLocationException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
@@ -133,7 +138,7 @@ public class GuiWithGenerator extends GuiWithTools {
                     pack(); // re-adjust window width
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, e.getMessage(), e);
             } finally {
                 SwingUtilities.invokeLater(
                         new Runnable() {

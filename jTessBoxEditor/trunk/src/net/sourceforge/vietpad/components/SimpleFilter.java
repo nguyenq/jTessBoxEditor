@@ -23,9 +23,9 @@ import java.io.File;
  */
 public class SimpleFilter extends javax.swing.filechooser.FileFilter {
 
-    private String m_description;
-    private String m_extension;
-    private String[] extensions;
+    private final String m_description;
+    private final String m_extension;
+    private final String[] extensions;
 
     public SimpleFilter(String extension, String description) {
         m_description = description;

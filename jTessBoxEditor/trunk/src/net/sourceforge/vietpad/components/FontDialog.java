@@ -15,6 +15,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ListSelectionEvent;
@@ -38,7 +40,9 @@ public class FontDialog extends JDialog {
     private Font curFont;
     private boolean m_succeeded = false;
     private JComboBox combo;
-    protected final File baseDir = getBaseDir(FontDialog.this);
+    protected final File baseDir;
+    
+    private final static Logger logger = Logger.getLogger(FontDialog.class.getName());
     
     /**
      *  Constructor for the FontDialog object.
@@ -47,6 +51,7 @@ public class FontDialog extends JDialog {
      */
     public FontDialog(JFrame owner) {
         super(owner, true);
+        this.baseDir = getBaseDir(FontDialog.this);
         setLocale(owner.getLocale());
         bundle = ResourceBundle.getBundle("net.sourceforge.vietpad.components.FontDialog");
         this.setTitle(bundle.getString("this.Title"));
@@ -316,10 +321,8 @@ public class FontDialog extends JDialog {
                 dir = new URL(dir.toString().replaceFirst("^jar:", "").replaceFirst("/[^/]+.jar!.*$", ""));
                 dbDir = new File(dir.toURI());
             }
-        } catch (MalformedURLException mue) {
-            mue.printStackTrace();
-        } catch (URISyntaxException use) {
-            use.printStackTrace();
+        } catch (MalformedURLException | URISyntaxException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
         }
         return dbDir;
     }

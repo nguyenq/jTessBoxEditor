@@ -18,11 +18,14 @@ package net.sourceforge.tessboxeditor;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import net.sourceforge.tessboxeditor.components.MyTableCellEditor;
 import net.sourceforge.vietpad.components.FontDialog;
 
 public class GuiWithFont extends GuiWithSpinner {
+    private final static Logger logger = Logger.getLogger(GuiWithFont.class.getName());
 
     public GuiWithFont() {
         font = new Font(
@@ -46,7 +49,7 @@ public class GuiWithFont extends GuiWithSpinner {
                 font = dlg.getFont();
                 changeFont(font);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, e.getMessage(), e);
             } finally {
                 SwingUtilities.invokeLater(
                         new Runnable() {
