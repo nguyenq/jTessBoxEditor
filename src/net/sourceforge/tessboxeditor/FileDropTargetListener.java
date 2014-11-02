@@ -6,6 +6,9 @@ import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.io.*;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextArea;
 
 /**
@@ -20,6 +23,8 @@ public class FileDropTargetListener extends DropTargetAdapter {
     private final Window holder;
     private final Component comp;
     private File droppedFile;
+    
+    private final static Logger logger = Logger.getLogger(FileDropTargetListener.class.getName());
 
     /**
      * Constructor for the FileDropTargetListener object
@@ -98,8 +103,8 @@ public class FileDropTargetListener extends DropTargetAdapter {
                     dtde.dropComplete(true);
                     return;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (UnsupportedFlavorException | IOException | URISyntaxException e) {
+                logger.log(Level.WARNING, e.getMessage(), e);
                 dtde.rejectDrop();
             }
         }

@@ -18,6 +18,8 @@ package net.sourceforge.tessboxeditor;
 import java.awt.Cursor;
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import net.sourceforge.tess4j.util.ImageIOHelper;
@@ -28,6 +30,8 @@ public class GuiWithTools extends GuiWithLaF {
 
     File imageFolder;
     FileFilter selectedFilter;
+    
+    private final static Logger logger = Logger.getLogger(GuiWithTools.class.getName());
 
     public GuiWithTools() {
         imageFolder = new File(prefs.get("ImageFolder", System.getProperty("user.home")));
@@ -99,7 +103,7 @@ public class GuiWithTools extends GuiWithLaF {
                             File result = get();
                             JOptionPane.showMessageDialog(GuiWithTools.this, bundle.getString("MergeTIFFcompleted") + result.getName() + bundle.getString("created"), APP_NAME, JOptionPane.INFORMATION_MESSAGE);
                         } catch (InterruptedException ignore) {
-                            ignore.printStackTrace();
+                            logger.log(Level.WARNING, ignore.getMessage(), ignore);
                         } catch (java.util.concurrent.ExecutionException e) {
                             String why;
                             Throwable cause = e.getCause();
@@ -112,7 +116,7 @@ public class GuiWithTools extends GuiWithLaF {
                             } else {
                                 why = e.getMessage();
                             }
-                            e.printStackTrace();
+                            logger.log(Level.SEVERE, e.getMessage(), e);
                             JOptionPane.showMessageDialog(GuiWithTools.this, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
                         } finally {
                             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -180,7 +184,7 @@ public class GuiWithTools extends GuiWithLaF {
                         get();
                         JOptionPane.showMessageDialog(GuiWithTools.this, bundle.getString("SplitTIFFcompleted"), APP_NAME, JOptionPane.INFORMATION_MESSAGE);
                     } catch (InterruptedException ignore) {
-                        ignore.printStackTrace();
+                        logger.log(Level.WARNING, ignore.getMessage(), ignore);
                     } catch (java.util.concurrent.ExecutionException e) {
                         String why;
                         Throwable cause = e.getCause();
@@ -193,7 +197,7 @@ public class GuiWithTools extends GuiWithLaF {
                         } else {
                             why = e.getMessage();
                         }
-                        e.printStackTrace();
+                        logger.log(Level.SEVERE, e.getMessage(), e);
                         JOptionPane.showMessageDialog(GuiWithTools.this, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
                     } finally {
                         jProgressBar1.setVisible(false);

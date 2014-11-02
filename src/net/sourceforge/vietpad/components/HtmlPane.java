@@ -16,7 +16,6 @@
  * 
  */
 
-
 package net.sourceforge.vietpad.components;
 
 import java.awt.*;
@@ -90,7 +89,7 @@ public class HtmlPane extends JScrollPane implements HyperlinkListener {
             } else {
                 Desktop.getDesktop().browse(url.toURI());
             }
-        } catch (Exception e) {
+        } catch (IOException | URISyntaxException e) {
             System.err.println("Error message: " + e.getMessage()); 
             Cursor cursor = html.getCursor();
             Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
@@ -100,7 +99,9 @@ public class HtmlPane extends JScrollPane implements HyperlinkListener {
     }
     
     /**
-     * Get the Status Bar
+     * Get the Status Bar.
+     * 
+     * @return 
      */
     public JTextField getStatusBar() {
         return statusBar;

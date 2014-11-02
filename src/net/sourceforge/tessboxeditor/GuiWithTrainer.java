@@ -231,7 +231,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
                 long millis = System.currentTimeMillis() - startTime;
                 jLabelTime.setText("Elapsed time: " + getDisplayTime(millis));
             } catch (InterruptedException ignore) {
-                ignore.printStackTrace();
+                //ignore
             } catch (java.util.concurrent.ExecutionException e) {
                 String why;
                 Throwable cause = e.getCause();

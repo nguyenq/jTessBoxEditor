@@ -17,10 +17,13 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Window;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class GuiWithLaF extends GuiWithFont {
-
+    private final static Logger logger = Logger.getLogger(GuiWithLaF.class.getName());
+    
     public GuiWithLaF() {
         initComponents();
     }
@@ -58,7 +61,7 @@ public class GuiWithLaF extends GuiWithFont {
         try {
             UIManager.setLookAndFeel(laf);
         } catch (Exception exc) {
-            // do nothing
+            logger.log(Level.WARNING, exc.getMessage(), exc);
         }
 
         for (Window win : Window.getWindows()) {

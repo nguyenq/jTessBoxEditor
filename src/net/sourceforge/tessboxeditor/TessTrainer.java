@@ -24,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sourceforge.vietocr.util.Utils;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
@@ -395,6 +397,8 @@ class StreamGobbler extends Thread {
 
     InputStream is;
     StringBuilder outputMessage = new StringBuilder();
+    
+    private final static Logger logger = Logger.getLogger(StreamGobbler.class.getName());
 
     StreamGobbler(InputStream is) {
         this.is = is;
@@ -414,7 +418,7 @@ class StreamGobbler extends Thread {
                 outputMessage.append(line).append("\n");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.log(Level.SEVERE, ioe.getMessage(), ioe);
         }
     }
 }
