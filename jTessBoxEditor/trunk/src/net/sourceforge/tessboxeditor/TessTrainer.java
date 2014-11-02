@@ -86,10 +86,10 @@ public class TessTrainer {
                 generateTraineddata(true);
                 break;
             case 3:
-                cmdshapeclustering();
+                runShapeClustering();
                 break;
             case 4:
-                cmdwordlist2dawg();
+                runDictionary();
                 break;
             case 5:
                 generateTraineddata(false);
@@ -172,15 +172,15 @@ public class TessTrainer {
         writeToLog("Fixed unicharset's Unicode character directionality.\n");
         fixUniCharDirectionality();
 
-        cmdshapeclustering();
+        runShapeClustering();
     }
 
     /**
-     * Perform training from shapeclustering on...
+     * Perform training from shape clustering on...
      *
      * @throws Exception
      */
-    void cmdshapeclustering() throws Exception {
+    void runShapeClustering() throws Exception {
         String[] files = new File(inputDataDir).list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
@@ -215,7 +215,7 @@ public class TessTrainer {
         renameFile("normproto");
         renameFile("shapetable");
 
-        cmdwordlist2dawg();
+        runDictionary();
     }
 
     /**
@@ -223,7 +223,7 @@ public class TessTrainer {
      *
      * @throws Exception
      */
-    void cmdwordlist2dawg() throws Exception {
+    void runDictionary() throws Exception {
         if (!new File(inputDataDir, lang + ".unicharset").exists()) {
             String msg = String.format("There is no %1$s.unicharset. Need to train Tesseract first.", lang);
             throw new RuntimeException(msg);
