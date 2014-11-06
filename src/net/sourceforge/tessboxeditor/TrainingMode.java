@@ -5,6 +5,9 @@ package net.sourceforge.tessboxeditor;
  */
 public enum TrainingMode {
 
+    /**
+     * Header text.
+     */
     HeaderText("-- Training Mode --"),
     /**
      * Make box only.
@@ -39,10 +42,10 @@ public enum TrainingMode {
      * @param desc
      * @return
      */
-    public static TrainingMode getMode(String desc) {
+    public static TrainingMode getValueByDesc(String desc) {
         if (desc != null) {
             for (TrainingMode mode : TrainingMode.values()) {
-                if (desc.equalsIgnoreCase(mode.display)) {
+                if (desc.equals(mode.display)) {
                     return mode;
                 }
             }

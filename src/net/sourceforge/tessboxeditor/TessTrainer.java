@@ -51,6 +51,8 @@ public class TessTrainer {
 
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
+    private final static Logger logger = Logger.getLogger(TessTrainer.class.getName());
+
     public TessTrainer(String tessDir, String inputDataDir, String lang, String bootstrapLang, boolean rtl) {
         pb = new ProcessBuilder();
 //        pb.directory(new File(System.getProperty("user.home")));
@@ -386,7 +388,8 @@ public class TessTrainer {
      */
     void writeToLog(String message) {
         this.pcs.firePropertyChange("value", null, message + "\n");
-        System.out.println(message);
+        logger.info(message);
+//        System.out.println(message);
     }
 }
 
