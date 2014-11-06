@@ -82,7 +82,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
     void jButtonTrainActionPerformed(java.awt.event.ActionEvent evt) {
         String msg = "";
 
-        TrainingMode selectedMode = TrainingMode.getMode(this.jComboBoxOps.getSelectedItem().toString());
+        TrainingMode selectedMode = TrainingMode.getValueByDesc(this.jComboBoxOps.getSelectedItem().toString());
         if (this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0) {
             msg = "Input is not complete.";
         } else if (this.jTextFieldLang.getText().trim().length() == 0) {
@@ -217,7 +217,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         @Override
         protected Void doInBackground() throws Exception {
             startTime = System.currentTimeMillis();
-            trainer.generate(TrainingMode.getMode(jComboBoxOps.getSelectedItem().toString()));
+            trainer.generate(TrainingMode.getValueByDesc(jComboBoxOps.getSelectedItem().toString()));
             return null;
         }
 

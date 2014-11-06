@@ -1,17 +1,17 @@
 /**
  * Copyright @ 2011 Quan Nguyen
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 package net.sourceforge.tessboxeditor;
 
@@ -32,7 +32,7 @@ public class GuiWithMRU extends Gui {
     @Override
     protected void populateMRUList() {
         String[] fileNames = prefs.get("MruList", "").split(File.pathSeparator);
-        
+
         for (String fileName : fileNames) {
             if (!fileName.equals("")) {
                 mruList.add(fileName);
@@ -40,7 +40,7 @@ public class GuiWithMRU extends Gui {
         }
         updateMRUMenu();
     }
-    
+
     /**
      * Update MRU List after open or save file.
      *
@@ -99,7 +99,7 @@ public class GuiWithMRU extends Gui {
     }
 
     @Override
-       void quit() {
+    void quit() {
         StringBuilder buf = new StringBuilder();
         for (String item : this.mruList) {
             buf.append(item).append(File.pathSeparatorChar);
