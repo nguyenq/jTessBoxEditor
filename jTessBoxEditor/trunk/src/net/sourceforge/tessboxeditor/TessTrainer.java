@@ -26,6 +26,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.sourceforge.vietocr.util.Utils;
 import net.sourceforge.vietpad.utilities.TextUtilities;
 
@@ -79,21 +80,21 @@ public class TessTrainer {
      * Train without Boxes
      * @throws Exception
      */
-    public void generate(int mode) throws Exception {
+    public void generate(TrainingMode mode) throws Exception {
         switch (mode) {
-            case 1:
+            case Make_Box_File_Only:
                 generateBox();
                 break;
-            case 2:
+            case Train_with_Existing_Box:
                 generateTraineddata(true);
                 break;
-            case 3:
+            case Shape_Clustering:
                 runShapeClustering();
                 break;
-            case 4:
+            case Dictionary:
                 runDictionary();
                 break;
-            case 5:
+            case Train_from_Scratch:
                 generateTraineddata(false);
                 break;
             default:

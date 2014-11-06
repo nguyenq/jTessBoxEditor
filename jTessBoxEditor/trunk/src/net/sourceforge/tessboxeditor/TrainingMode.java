@@ -5,25 +5,25 @@ package net.sourceforge.tessboxeditor;
  */
 public enum TrainingMode {
 
-    Header("-- Training Mode --"),
+    HeaderText("-- Training Mode --"),
     /**
-     *
+     * Make box only.
      */
     Make_Box_File_Only("Make Box File Only"),
     /**
-     *
+     * Train with Existing Box.
      */
     Train_with_Existing_Box("Train with Existing Box"),
     /**
-     *
+     * Starts from Shape Clustering step.
      */
     Shape_Clustering("    Shape Clustering..."),
     /**
-     *
+     * Starts from Dictionary step.
      */
     Dictionary("    Dictionary..."),
     /**
-     *
+     * Train from scratch, complete training process.
      */
     Train_from_Scratch("Train from Scratch");
 
@@ -53,6 +53,6 @@ public enum TrainingMode {
 
     @Override
     public String toString() {
-        return display.replace("_", " ");
+        return display;
     }
 }
