@@ -31,7 +31,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
     private JFileChooser jFileChooserTrainingData;
     private JFileChooser jFileChooserTessExecutables;
     private TrainingWorker trainWorker;
-    
+
     public GuiWithTrainer() {
         initComponents();
     }
@@ -81,23 +81,23 @@ public class GuiWithTrainer extends GuiWithGenerator {
     @Override
     void jButtonTrainActionPerformed(java.awt.event.ActionEvent evt) {
         String msg = "";
-        
-        int selectedTrainingMode = this.jComboBoxOps.getSelectedIndex();
+
+        TrainingMode selectedMode = TrainingMode.getMode(this.jComboBoxOps.getSelectedItem().toString());
         if (this.jTextFieldTessDir.getText().length() == 0 || this.jTextFieldDataDir.getText().length() == 0) {
             msg = "Input is not complete.";
         } else if (this.jTextFieldLang.getText().trim().length() == 0) {
             msg = "Language is required.";
-        } else if (selectedTrainingMode == 0) {
+        } else if (selectedMode == TrainingMode.HeaderText) {
             msg = "Please select a Training Mode.";
         }
-        
+
         if (msg.length() > 0) {
             JOptionPane.showMessageDialog(this, msg);
             return;
         }
 
         // make sure all required data files exist before training
-        if (selectedTrainingMode == 2 || selectedTrainingMode == 4 || selectedTrainingMode == 5) {
+        if (selectedMode == TrainingMode.Train_with_Existing_Box || selectedMode == TrainingMode.Dictionary || selectedMode == TrainingMode.Train_from_Scratch) {
             final String lang = jTextFieldLang.getText();
             boolean otherFilesExist = new File(trainDataDirectory, lang + ".font_properties").exists() && new File(trainDataDirectory, lang + ".frequent_words_list").exists() && new File(trainDataDirectory, lang + ".words_list").exists();
 
@@ -116,7 +116,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         });
 
         // warn about potential box overwrite
-        if (selectedTrainingMode == 1 || selectedTrainingMode == 5) {
+        if (selectedMode == TrainingMode.Make_Box_File_Only || selectedMode == TrainingMode.Train_from_Scratch) {
             if (boxFiles.length > 0) {
                 int option = JOptionPane.showConfirmDialog(this,
                         "There are existing box files. Continuing may overwrite them.\nDo you want to proceed?",
@@ -153,13 +153,13 @@ public class GuiWithTrainer extends GuiWithGenerator {
         }
         this.jButtonCancel.setEnabled(false);
     }
-    
+
     @Override
-    void jButtonSaveLogActionPerformed(java.awt.event.ActionEvent evt) {  
+    void jButtonSaveLogActionPerformed(java.awt.event.ActionEvent evt) {
         if (jTextAreaOutput.getDocument().getLength() == 0) {
             return;
         }
-        
+
         try {
             File outFile = new File(trainDataDirectory, "training.log");
             try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), UTF8))) {
@@ -170,12 +170,12 @@ public class GuiWithTrainer extends GuiWithGenerator {
             //ignore
         }
     }
-        
+
     @Override
-    void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {                                                
+    void jButtonClearLogActionPerformed(java.awt.event.ActionEvent evt) {
         this.jTextAreaOutput.setText(null);
     }
-    
+
     @Override
     void quit() {
         if (tessDirectory != null) {
@@ -188,7 +188,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         prefs.put("bootstrapLanguage", this.jTextFieldBootstrapLang.getText());
         prefs.putInt("trainingMode", this.jComboBoxOps.getSelectedIndex());
         prefs.putBoolean("trainingRTL", this.jCheckBoxRTL.isSelected());
-        
+
         super.quit();
     }
 
@@ -217,7 +217,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         @Override
         protected Void doInBackground() throws Exception {
             startTime = System.currentTimeMillis();
-            trainer.generate(jComboBoxOps.getSelectedIndex());
+            trainer.generate(TrainingMode.getMode(jComboBoxOps.getSelectedItem().toString()));
             return null;
         }
 
@@ -266,7 +266,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
                 TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) % 60,
                 TimeUnit.MILLISECONDS.toSeconds(millis) % 60
-                );
+        );
         return elapsedTime;
     }
 
