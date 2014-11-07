@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.tessboxeditor.utilities.ImageUtils;
@@ -81,20 +82,20 @@ public class TiffBoxGenerator {
         this.saveMultipageTiff();
         this.saveBoxFile();
     }
-    
+
     /**
      * Formats box content.
-     * 
-     * @return 
+     *
+     * @return
      */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
         String combiningSymbols = readCombiningSymbols();
         for (short i = 0; i < pages.size(); i++) {
             TessBoxCollection boxCol = boxPages.get(i);
-            boxCol.setCombiningSymbols(combiningSymbols); 
+            boxCol.setCombiningSymbols(combiningSymbols);
             boxCol.combineBoxes();
-            
+
             for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();
                 sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, height - rect.y - rect.height, rect.x + rect.width, height - rect.y, i)).append(EOL);
@@ -105,11 +106,11 @@ public class TiffBoxGenerator {
 //        }
         return sb.toString();
     }
-    
+
     /**
      * Reads in combining symbols.
-     * 
-     * @return 
+     *
+     * @return
      */
     private String readCombiningSymbols() {
         String str = null;
@@ -129,7 +130,6 @@ public class TiffBoxGenerator {
                 }
             }
         } catch (Exception e) {
-            // ignore
             logger.log(Level.WARNING, e.getMessage(), e);
         }
 
@@ -213,7 +213,7 @@ public class TiffBoxGenerator {
             rect.height--;
         }
     }
-    
+
     /**
      * Creates box file.
      */
@@ -234,7 +234,7 @@ public class TiffBoxGenerator {
         // Bug ID: 6598756 - Tracking textattribute is not properly handled by LineBreakMeasurer
         // Line breaks do not change with letter tracking.
         float wrappingWidth = width - 2 * margin - (float) (150 * (tracking / 0.04)); // the last operand was added to compensate for LineBreakMeasurer's failure to adjust for letter tracking
-        
+
         for (String str : text.split("\n")) {
             if (str.length() == 0) {
                 str = " ";
@@ -269,8 +269,7 @@ public class TiffBoxGenerator {
     }
 
     /**
-     * Draws TextLayout lines on pages of
-     * <code>BufferedImage</code>
+     * Draws TextLayout lines on pages of <code>BufferedImage</code>.
      */
     private void drawPages() {
         BufferedImage bi = new BufferedImage(width, height, isAntiAliased ? BufferedImage.TYPE_BYTE_GRAY : BufferedImage.TYPE_BYTE_BINARY);
@@ -297,10 +296,9 @@ public class TiffBoxGenerator {
 
                 // TextLayout API does not expose a way to access the underlying strings.
                 lineText.setLength(0);
-                
+
                 Matcher matcher = pattern.matcher(line.toString());
-                while (matcher.find())
-                {
+                while (matcher.find()) {
                     lineText.append(matcher.group(1)).append(" ");
                 }
                 String[] chars = lineText.toString().split("\\s+");
@@ -319,7 +317,6 @@ public class TiffBoxGenerator {
                     try {
                         tightenBoundingBox(rect, bi);
                     } catch (java.lang.ArrayIndexOutOfBoundsException e) {
-                        // ignore
                         logger.log(Level.WARNING, e.getMessage(), e);
                     }
 
@@ -367,7 +364,7 @@ public class TiffBoxGenerator {
 
     /**
      * Sets output filename.
-     * 
+     *
      * @param fileName the fileName to set
      */
     public void setFileName(String fileName) {
@@ -379,7 +376,7 @@ public class TiffBoxGenerator {
 
     /**
      * Sets letter tracking.
-     * 
+     *
      * @param tracking the tracking to set
      */
     public void setTracking(float tracking) {
@@ -388,7 +385,7 @@ public class TiffBoxGenerator {
 
     /**
      * Sets output folder.
-     * 
+     *
      * @param outputFolder the outputFolder to set
      */
     public void setOutputFolder(File outputFolder) {
@@ -397,7 +394,7 @@ public class TiffBoxGenerator {
 
     /**
      * Enables text anti-aliasing.
-     * 
+     *
      * @param enabled on or off
      */
     public void setAntiAliasing(boolean enabled) {
@@ -406,7 +403,7 @@ public class TiffBoxGenerator {
 
     /**
      * Sets amount of noise to be injected to the generated image.
-     * 
+     *
      * @param noiseAmount the noiseAmount to set
      */
     public void setNoiseAmount(int noiseAmount) {
