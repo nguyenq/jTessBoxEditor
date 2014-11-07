@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import java.io.IOException;
-//import java.util.logging.*;
+import java.util.logging.*;
 import javax.swing.JOptionPane;
 import net.sourceforge.tessboxeditor.GuiWithTrainer;
 
@@ -30,12 +30,12 @@ public class JTessBoxEditor {
                     "Insufficient Java Version", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
-      
-//        Handler fh = new FileHandler("jtessboxeditor.log");
-//        fh.setFormatter(new SimpleFormatter());
-//        Logger logger = Logger.getLogger("");
-//        logger.addHandler(fh);
-//        logger.setUseParentHandlers(false);
+
+        Logger logger = Logger.getLogger("");
+        logger.setUseParentHandlers(false);
+        Handler fh = new FileHandler("program.log");
+        fh.setFormatter(new SimpleFormatter());
+        logger.addHandler(fh);
 
         System.setProperty("apple.laf.useScreenMenuBar", "true"); 
         GuiWithTrainer.main(args);

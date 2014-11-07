@@ -127,7 +127,8 @@ public class TessTrainer {
             throw new RuntimeException("There are no training images.");
         }
 
-        writeToLog("** Make Box Files **");
+        logger.info("Make Box Files");
+        writeMessage("** Make Box Files **");
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
@@ -152,7 +153,8 @@ public class TessTrainer {
             throw new RuntimeException("There are no training images.");
         }
 
-        writeToLog("** Run Tesseract for Training **");
+        logger.info("Run Tesseract for Training");
+        writeMessage("** Run Tesseract for Training **");
         //cmdtess_train
         List<String> cmd = getCommand(cmdtess_train);
         for (String file : files) {
@@ -161,7 +163,8 @@ public class TessTrainer {
             runCommand(cmd);
         }
 
-        writeToLog("** Compute the Character Set **");
+        logger.info("Compute the Character Set");
+        writeMessage("** Compute the Character Set **");
         //cmdunicharset_extractor
         cmd = getCommand(cmdunicharset_extractor);
         files = new File(inputDataDir).list(new FilenameFilter() {
@@ -174,7 +177,8 @@ public class TessTrainer {
         runCommand(cmd);
 
         //fix Unicode character directionality in unicharset
-        writeToLog("Fixed unicharset's Unicode character directionality.\n");
+        logger.info("Fixed unicharset's Unicode character directionality.");
+        writeMessage("Fixed unicharset's Unicode character directionality.\n");
         fixUniCharDirectionality();
 
         runShapeClustering();
@@ -192,29 +196,33 @@ public class TessTrainer {
                 return filename.endsWith(".tr");
             }
         });
-        
+
         if (files.length == 0) {
             throw new RuntimeException("There are no .tr files. Need to train Tesseract first.");
         }
-        
-        writeToLog("** Shape Clustering **");
+
+        logger.info("Shape Clustering");
+        writeMessage("** Shape Clustering **");
         //cmdshapeclustering
-        List<String> cmd = getCommand(String.format(cmdshapeclustering, lang));               
+        List<String> cmd = getCommand(String.format(cmdshapeclustering, lang));
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
-        writeToLog("** MF Training **");
+        logger.info("MF Training");
+        writeMessage("** MF Training **");
         //cmdmftraining
         cmd = getCommand(String.format(cmdmftraining, lang));
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
-        writeToLog("** CN Training **");
+        logger.info("CN Training");
+        writeMessage("** CN Training **");
         //cmdcntraining
         cmd = getCommand(cmdcntraining);
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
+        logger.info("Rename files");
         renameFile("inttemp");
         renameFile("pffmtable");
         renameFile("normproto");
@@ -233,8 +241,9 @@ public class TessTrainer {
             String msg = String.format("There is no %1$s.unicharset. Need to train Tesseract first.", lang);
             throw new RuntimeException(msg);
         }
-        
-        writeToLog("** Dictionary Data **");
+
+        logger.info("Dictionary Data");
+        writeMessage("** Dictionary Data **");
         //cmdwordlist2dawg
         List<String> cmd = getCommand(String.format(cmdwordlist2dawg, lang, (rtl ? "-r 1" : "")));
         runCommand(cmd);
@@ -243,12 +252,14 @@ public class TessTrainer {
         cmd = getCommand(String.format(cmdwordlist2dawg2, lang, (rtl ? "-r 1" : "")));
         runCommand(cmd);
 
-        writeToLog("** Combine Data Files **");
+        logger.info("Combine Data Files");
+        writeMessage("** Combine Data Files **");
         //cmdcombine_tessdata
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
 
-        writeToLog("** Training Completed **");
+        logger.info("Training Completed");
+        writeMessage("** Training Completed **");
     }
 
     /**
@@ -335,7 +346,7 @@ public class TessTrainer {
             fileWithPrefix.delete();
             boolean result = file.renameTo(fileWithPrefix);
             String msg = (result ? "Successful" : "Unsuccessful") + " rename of " + fileName;
-            writeToLog(msg);
+            writeMessage(msg);
         }
     }
 
@@ -358,7 +369,8 @@ public class TessTrainer {
      * @throws Exception
      */
     void runCommand(List<String> cmd) throws Exception {
-        writeToLog(cmd.toString());
+        logger.log(Level.INFO, "Command: {0}", cmd.toString());
+        writeMessage(cmd.toString());
         pb.command(cmd);
         Process process = pb.start();
 
@@ -367,8 +379,8 @@ public class TessTrainer {
         outputGobbler.start();
 
         int w = process.waitFor();
-//        System.out.println("Exit value = " + w);
-        writeToLog(outputGobbler.getMessage());
+        logger.log(Level.INFO, "Exit value = {0}", w);
+        writeMessage(outputGobbler.getMessage());
 
         if (w != 0) {
             String msg;
@@ -382,13 +394,12 @@ public class TessTrainer {
     }
 
     /**
-     * Writes to output log.
+     * Writes a message.
      *
      * @param message
      */
-    void writeToLog(String message) {
+    void writeMessage(String message) {
         this.pcs.firePropertyChange("value", null, message + "\n");
-        logger.info(message);
 //        System.out.println(message);
     }
 }
@@ -401,7 +412,7 @@ class StreamGobbler extends Thread {
 
     InputStream is;
     StringBuilder outputMessage = new StringBuilder();
-    
+
     private final static Logger logger = Logger.getLogger(StreamGobbler.class.getName());
 
     StreamGobbler(InputStream is) {
