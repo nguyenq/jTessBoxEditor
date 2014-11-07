@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
 import net.sourceforge.tessboxeditor.GuiWithTrainer;
 
 public class JTessBoxEditor {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String jreVersion = System.getProperty("java.version");
         if (jreVersion.compareTo("1.7") < 0) {
             JOptionPane.showMessageDialog(null,
@@ -29,7 +34,10 @@ public class JTessBoxEditor {
             System.exit(1);
         }
 
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("apple.laf.useScreenMenuBar", "true");       
+        Handler fh = new FileHandler("program.log");
+        fh.setFormatter(new SimpleFormatter());
+        Logger.getLogger("").addHandler(fh);
         GuiWithTrainer.main(args);
     }
 }

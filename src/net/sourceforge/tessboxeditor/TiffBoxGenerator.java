@@ -23,6 +23,8 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
@@ -51,6 +53,8 @@ public class TiffBoxGenerator {
     private boolean isAntiAliased;
     private final File baseDir = Utils.getBaseDir(TiffBoxGenerator.this);
     private final Pattern pattern = Pattern.compile("chars:\"(.*?)\",");
+
+    private final static Logger logger = Logger.getLogger(TiffBoxGenerator.class.getName());
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
@@ -126,13 +130,14 @@ public class TiffBoxGenerator {
             }
         } catch (Exception e) {
             // ignore
+            logger.log(Level.WARNING, e.getMessage(), e);
         }
-        
+
         if (str != null) {
             str = str.replaceAll("[ \\[\\]]", ""); // strip regex special characters
             str = TextUtilities.convertNCR(str); // convert escaped sequences to Unicode
         }
-        
+
         return str;
     }
 
@@ -218,7 +223,7 @@ public class TiffBoxGenerator {
                 out.write(formatOutputString());
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -313,10 +318,11 @@ public class TiffBoxGenerator {
 
                     try {
                         tightenBoundingBox(rect, bi);
-                    } catch (java.lang.ArrayIndexOutOfBoundsException aie) {
+                    } catch (java.lang.ArrayIndexOutOfBoundsException e) {
                         // ignore
+                        logger.log(Level.WARNING, e.getMessage(), e);
                     }
-                    
+
                     char ch = (char) Integer.parseInt(chars[i], 16);
                     boxCol.add(new TessBox(String.valueOf(ch), rect, pageNum));
                 }
@@ -355,7 +361,7 @@ public class TiffBoxGenerator {
             }
             ImageIOHelper.mergeTiff(images, tiffFile);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

@@ -85,7 +85,7 @@ public class TessTrainer {
     public void generate(TrainingMode mode) throws Exception {
         switch (mode) {
             case Make_Box_File_Only:
-                generateBox();
+                makeBox();
                 break;
             case Train_with_Existing_Box:
                 generateTraineddata(true);
@@ -105,11 +105,11 @@ public class TessTrainer {
     }
 
     /**
-     * Generates box file.
+     * Makes box files.
      *
      * @throws Exception
      */
-    void generateBox() throws Exception {
+    void makeBox() throws Exception {
         //cmdmake_box
         List<String> cmd = getCommand(cmdmake_box);
 
@@ -143,7 +143,7 @@ public class TessTrainer {
      */
     void generateTraineddata(boolean skipBoxGeneration) throws Exception {
         if (!skipBoxGeneration) {
-            generateBox();
+            makeBox();
         }
 
         String[] files = getImageFiles();

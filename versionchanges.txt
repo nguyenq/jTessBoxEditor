@@ -69,3 +69,4 @@ Version 1.1 (15 October 2014)
 
 Version 1.2 (7 November 2014)
 - Break up the training process to allow flexible, incremental training
+- Incorporate logging
