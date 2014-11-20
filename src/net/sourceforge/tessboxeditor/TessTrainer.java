@@ -176,10 +176,12 @@ public class TessTrainer {
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
 
-        //fix Unicode character directionality in unicharset
-        logger.info("Fixed unicharset's Unicode character directionality.");
-        writeMessage("Fixed unicharset's Unicode character directionality.\n");
-        fixUniCharDirectionality();
+        if (rtl) {
+            //fix Unicode character directionality in unicharset
+            logger.info("Fixed unicharset's Unicode character directionality.");
+            writeMessage("Fixed unicharset's Unicode character directionality.\n");
+            fixUniCharDirectionality();
+        }
 
         runShapeClustering();
     }
