@@ -70,3 +70,6 @@ Version 1.1 (15 October 2014)
 Version 1.2 (7 November 2014)
 - Break up the training process to allow flexible, incremental training
 - Incorporate logging
+
+Version 1.2.1 (19 November 2014)
+- Apply fixing unicharset's Unicode character directionality only when RTL is selected
