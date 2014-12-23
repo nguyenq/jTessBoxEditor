@@ -16,7 +16,7 @@
 import java.io.IOException;
 import java.util.logging.*;
 import javax.swing.JOptionPane;
-import net.sourceforge.tessboxeditor.GuiWithTrainer;
+import net.sourceforge.tessboxeditor.GuiWithValidator;
 
 public class JTessBoxEditor {
 
@@ -38,6 +38,6 @@ public class JTessBoxEditor {
         logger.addHandler(fh);
 
         System.setProperty("apple.laf.useScreenMenuBar", "true"); 
-        GuiWithTrainer.main(args);
+        GuiWithValidator.main(args);
     }
 }

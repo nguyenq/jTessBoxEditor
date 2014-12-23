@@ -25,11 +25,12 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTrainer extends GuiWithGenerator {
 
-    private static final String DIALOG_TITLE = "Train Tesseract";
-    private String tessDirectory;
-    private String trainDataDirectory;
+    protected static final String DIALOG_TITLE = "Train Tesseract";
+    protected String tessDirectory;
+    protected String trainDataDirectory;
     private JFileChooser jFileChooserTrainingData;
     private JFileChooser jFileChooserTessExecutables;
+
     private TrainingWorker trainWorker;
 
     public GuiWithTrainer() {
