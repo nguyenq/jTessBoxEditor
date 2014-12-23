@@ -260,6 +260,15 @@ public class TessTrainer {
         cmd = getCommand(String.format(cmdcombine_tessdata, lang));
         runCommand(cmd);
 
+        String traineddata = lang + ".traineddata";
+        logger.info("Moving generated traineddata file to tessdata folder");
+        writeMessage("** Moving generated traineddata file to tessdata folder **");
+        File tessdata = new File(inputDataDir, "tessdata");
+        if (!tessdata.exists()) {
+            tessdata.mkdir();
+        }
+        boolean success = new File(inputDataDir, traineddata).renameTo(new File(tessdata, traineddata));
+
         logger.info("Training Completed");
         writeMessage("** Training Completed **");
     }

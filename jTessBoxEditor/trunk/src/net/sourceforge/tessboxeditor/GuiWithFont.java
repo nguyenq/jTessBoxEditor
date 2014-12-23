@@ -83,6 +83,7 @@ public class GuiWithFont extends GuiWithSpinner {
         jTable.revalidate();
         jPanelCoord.revalidate();
         jLabelImage.setFont(font);
+        this.jTextAreaValidationResult.setFont(font);
     }
 
     @Override

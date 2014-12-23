@@ -174,6 +174,12 @@ public class Gui extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooserInputImage = new javax.swing.JFileChooser();
+        jDialogValidationResult = new javax.swing.JDialog();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextAreaValidationResult = new javax.swing.JTextArea();
+        jPanelCommand = new javax.swing.JPanel();
+        jButtonClearText = new javax.swing.JButton();
+        jButtonCloseDialog = new javax.swing.JButton();
         jTabbedPaneMain = new javax.swing.JTabbedPane();
         jPanelTrainer = new javax.swing.JPanel();
         jToolBarTrainer = new javax.swing.JToolBar();
@@ -193,6 +199,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonTrain = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jButtonCancel.setEnabled(false);
+        jButtonValidate = new javax.swing.JButton();
         jButtonSaveLog = new javax.swing.JButton();
         jButtonClearLog = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -335,6 +342,40 @@ public class Gui extends javax.swing.JFrame {
             jFileChooserInputImage.setFileFilter(fileFilters[filterIndex]);
         }
 
+        jDialogValidationResult.setTitle("Validation Result");
+        jDialogValidationResult.setMinimumSize(new java.awt.Dimension(600, 450));
+
+        jTextAreaValidationResult.setColumns(20);
+        jTextAreaValidationResult.setRows(5);
+        jTextAreaValidationResult.setMargin(new java.awt.Insets(5, 5, 2, 2));
+        jScrollPane2.setViewportView(jTextAreaValidationResult);
+
+        jDialogValidationResult.getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jPanelCommand.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 1));
+
+        jButtonClearText.setText("Clear");
+        jButtonClearText.setToolTipText("Clear Textarea");
+        jButtonClearText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearTextActionPerformed(evt);
+            }
+        });
+        jPanelCommand.add(jButtonClearText);
+
+        jButtonCloseDialog.setText("Close");
+        jButtonCloseDialog.setToolTipText("Close Dialog");
+        jButtonCloseDialog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseDialogActionPerformed(evt);
+            }
+        });
+        jPanelCommand.add(jButtonCloseDialog);
+
+        jDialogValidationResult.getContentPane().add(jPanelCommand, java.awt.BorderLayout.SOUTH);
+
+        jDialogValidationResult.setLocationRelativeTo(this);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("jTessBoxEditor");
 
@@ -430,6 +471,15 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanelMain.add(jButtonCancel);
+
+        jButtonValidate.setText("Validate");
+        jButtonValidate.setToolTipText("Validate Generated Traineddata");
+        jButtonValidate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonValidateActionPerformed(evt);
+            }
+        });
+        jPanelMain.add(jButtonValidate);
 
         jButtonSaveLog.setText("Save");
         jButtonSaveLog.setToolTipText("Save Log");
@@ -1918,6 +1968,18 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonSaveLogActionPerformed
 
+    void jButtonValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValidateActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jButtonValidateActionPerformed
+
+    void jButtonClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearTextActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jButtonClearTextActionPerformed
+
+    void jButtonCloseDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseDialogActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jButtonCloseDialogActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1937,6 +1999,8 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonClear;
     protected javax.swing.JButton jButtonClearLog;
+    private javax.swing.JButton jButtonClearText;
+    private javax.swing.JButton jButtonCloseDialog;
     private javax.swing.JButton jButtonConvert;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonFind;
@@ -1955,9 +2019,11 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSaveLog;
     private javax.swing.JButton jButtonSplit;
     protected javax.swing.JButton jButtonTrain;
+    protected javax.swing.JButton jButtonValidate;
     protected javax.swing.JCheckBox jCheckBoxAntiAliasing;
     protected javax.swing.JCheckBox jCheckBoxRTL;
     protected javax.swing.JComboBox jComboBoxOps;
+    protected javax.swing.JDialog jDialogValidationResult;
     private javax.swing.JFileChooser jFileChooserInputImage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -2005,6 +2071,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelBoxView;
+    private javax.swing.JPanel jPanelCommand;
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelEditor;
     private javax.swing.JPanel jPanelFind;
@@ -2016,6 +2083,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelTrainer;
     protected javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneBoxData;
     private javax.swing.JScrollPane jScrollPaneCoord;
     private javax.swing.JScrollPane jScrollPaneImage;
@@ -2039,6 +2107,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JTextArea jTextAreaBoxData;
     protected javax.swing.JTextArea jTextAreaInput;
     protected javax.swing.JTextArea jTextAreaOutput;
+    protected javax.swing.JTextArea jTextAreaValidationResult;
     protected javax.swing.JTextField jTextFieldBootstrapLang;
     protected javax.swing.JTextField jTextFieldChar;
     protected javax.swing.JTextField jTextFieldCharacter;

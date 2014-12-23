@@ -17,14 +17,18 @@ package net.sourceforge.vietocr.util;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Utils {
 
+    private static final String EOL = "\n";
     private final static Logger logger = Logger.getLogger(Utils.class.getName());
+
     /**
      * Gets the directory of the executing jar.
      *
@@ -125,5 +129,63 @@ public class Utils {
             builder.append(delimiter);
         }
         return builder.toString();
+    }
+
+    /**
+     * Reads a text file.
+     *
+     * @param tempTessOutputFile
+     * @return
+     * @throws Exception
+     */
+    public static String readTextFile(File tempTessOutputFile) throws Exception {
+        StringBuilder result = new StringBuilder();
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(tempTessOutputFile), "UTF-8"));
+
+        String str;
+
+        while ((str = in.readLine()) != null) {
+            result.append(str).append(EOL);
+        }
+
+        int length = result.length();
+        if (length >= EOL.length()) {
+            result.setLength(length - EOL.length()); // remove last EOL
+        }
+        in.close();
+
+        return result.toString();
+    }
+
+    /**
+     * Lists image files recursively in a given directory.
+     *
+     * @param list
+     * @param directory
+     */
+    public static void listImageFiles(List<File> list, File directory) {
+        // list image files and subdir
+        File[] files = directory.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return file.getName().toLowerCase().matches(".*\\.(tif|tiff|jpg|jpeg|gif|png|bmp|pdf)$") || file.isDirectory();
+            }
+        });
+
+        List<File> dirs = new ArrayList<File>();
+
+        // process files first
+        for (File file : files) {
+            if (file.isFile()) {
+                list.add(file);
+            } else {
+                dirs.add(file);
+            }
+        }
+
+        // then process directories
+        for (File dir : dirs) {
+            listImageFiles(list, dir);
+        }
     }
 }
