@@ -345,6 +345,7 @@ public class Gui extends javax.swing.JFrame {
         jDialogValidationResult.setTitle("Validation Result");
         jDialogValidationResult.setMinimumSize(new java.awt.Dimension(600, 450));
 
+        jTextAreaValidationResult.setEditable(false);
         jTextAreaValidationResult.setColumns(20);
         jTextAreaValidationResult.setRows(5);
         jTextAreaValidationResult.setMargin(new java.awt.Insets(5, 5, 2, 2));
