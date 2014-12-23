@@ -46,8 +46,8 @@ public class GuiWithValidator extends GuiWithTrainer {
     private void initComponents() {
         jFileChooserValidatingImage = new JFileChooser();
         jFileChooserValidatingImage.setAcceptAllFileFilterUsed(false);
-//        jFileChooserValidatingImage.setApproveButtonText("Select");
-        jFileChooserValidatingImage.setDialogTitle("Set Location of Source Training Data");
+        jFileChooserValidatingImage.setApproveButtonText("Select");
+        jFileChooserValidatingImage.setDialogTitle("Select Image File");
         FileFilter allImagesFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff", "All Images");
         jFileChooserValidatingImage.setFileFilter(allImagesFilter);
         jFileChooserValidatingImage.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
@@ -67,6 +67,7 @@ public class GuiWithValidator extends GuiWithTrainer {
         // perform OCR on the training image
         if (jFileChooserValidatingImage.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             jButtonValidate.setEnabled(false);
+            this.jTextAreaValidationResult.setText(null);
             jLabelStatus.setText(bundle.getString("OCR_running..."));
             jProgressBar1.setIndeterminate(true);
             jProgressBar1.setString(bundle.getString("OCR_running..."));
