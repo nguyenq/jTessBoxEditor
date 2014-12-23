@@ -73,3 +73,6 @@ Version 1.2 (7 November 2014)
 
 Version 1.2.1 (19 November 2014)
 - Apply fixing unicharset's Unicode character directionality only when RTL is selected
+
+Version 1.3 Beta (23 December 2014)
+- Implement functionality to validate generated traineddata
