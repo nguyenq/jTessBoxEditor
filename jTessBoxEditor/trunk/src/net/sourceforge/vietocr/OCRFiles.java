@@ -28,7 +28,7 @@ public class OCRFiles extends OCR<File> {
 
     private final String LANG_OPTION = "-l";
     private final String PSM_OPTION = "-psm";
-//    private final String TESSDATA_DIR = "--tessdata-dir";
+//    private final String TESSDATA_DIR = "--tessdata-dir"; // Tess 3.04
     private final String tessPath;
     final static String OUTPUT_FILE_NAME = "TessOutput";
     final static String TEXTFILE_EXTENSION = ".txt";
@@ -64,7 +64,7 @@ public class OCRFiles extends OCR<File> {
         cmd.add(getLanguage());
         cmd.add(PSM_OPTION);
         cmd.add(getPageSegMode());
-//        cmd.add(this.getLanguage().startsWith("vie") ? VIET_CONFIGS_FILE : CONFIGS_FILE);
+//        cmd.add(CONFIGS_FILE);
 
         ProcessBuilder pb = new ProcessBuilder();
         Map<String, String> env = pb.environment();
@@ -116,41 +116,7 @@ public class OCRFiles extends OCR<File> {
      */
     @Override
     public void processPages(File inputImage, File outputFile) throws Exception {
-//        String outputFormat = this.getOutputFormat();
-//        List<String> cmd = new ArrayList<String>();
-//        cmd.add(tessPath + "/tesseract");
-//        cmd.add(inputImage.getAbsolutePath());
-//        cmd.add(outputFile.getAbsolutePath());
-//        cmd.add(LANG_OPTION);
-//        cmd.add(this.getLanguage());
-//        cmd.add(PSM_OPTION);
-//        cmd.add(getPageSegMode());
-//        cmd.add(this.getLanguage().startsWith("vie") ? VIET_CONFIGS_FILE : CONFIGS_FILE);
-//
-//        if ("hocr".equals(outputFormat) || "pdf".equals(outputFormat)) {
-//            cmd.add(outputFormat);
-//        }
-//
-//        ProcessBuilder pb = new ProcessBuilder();
-//        pb.directory(new File(tessPath));
-//        pb.redirectErrorStream(true);
-//        pb.command(cmd);
-////        System.out.println(cmd);
-//        Process process = pb.start();
-//
-//        StreamGobbler outputGobbler = new StreamGobbler(process.getInputStream());
-//        outputGobbler.start();
-//
-//        int w = process.waitFor();
-//        System.out.println("Exit value = " + w);
-//
-//        if (w != 0) {
-//            String msg = outputGobbler.getMessage(); // get actual message from the engine;
-//            if (msg.trim().length() == 0) {
-//                msg = "Errors occurred.";
-//            }
-//            throw new RuntimeException(msg);
-//        }
+        // not used
     }
 }
 
