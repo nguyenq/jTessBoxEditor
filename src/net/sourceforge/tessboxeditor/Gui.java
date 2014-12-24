@@ -405,7 +405,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonBrowseTess.setToolTipText("Browse");
         jButtonBrowseTess.setMaximumSize(new java.awt.Dimension(30, 23));
         jButtonBrowseTess.setMinimumSize(new java.awt.Dimension(30, 23));
-        jButtonBrowseTess.setPreferredSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseTess.setPreferredSize(new java.awt.Dimension(24, 23));
         jButtonBrowseTess.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBrowseTessActionPerformed(evt);
@@ -425,7 +425,7 @@ public class Gui extends javax.swing.JFrame {
         jButtonBrowseData.setToolTipText("Browse");
         jButtonBrowseData.setMaximumSize(new java.awt.Dimension(30, 23));
         jButtonBrowseData.setMinimumSize(new java.awt.Dimension(30, 23));
-        jButtonBrowseData.setPreferredSize(new java.awt.Dimension(30, 23));
+        jButtonBrowseData.setPreferredSize(new java.awt.Dimension(24, 23));
         jButtonBrowseData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBrowseDataActionPerformed(evt);
@@ -437,14 +437,14 @@ public class Gui extends javax.swing.JFrame {
         jPanelMain.add(jLabel1);
 
         jTextFieldLang.setMinimumSize(new java.awt.Dimension(34, 19));
-        jTextFieldLang.setPreferredSize(new java.awt.Dimension(38, 24));
+        jTextFieldLang.setPreferredSize(new java.awt.Dimension(30, 24));
         jPanelMain.add(jTextFieldLang);
 
         jLabel2.setText("Bootstrap Language");
         jPanelMain.add(jLabel2);
 
         jTextFieldBootstrapLang.setMinimumSize(new java.awt.Dimension(34, 19));
-        jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(38, 24));
+        jTextFieldBootstrapLang.setPreferredSize(new java.awt.Dimension(30, 24));
         jPanelMain.add(jTextFieldBootstrapLang);
 
         jCheckBoxRTL.setText("RTL");
