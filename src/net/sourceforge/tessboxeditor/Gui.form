@@ -69,15 +69,6 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="jButtonClearText">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Clear"/>
-                <Property name="toolTipText" type="java.lang.String" value="Clear Textarea"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonClearTextActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="jButtonCloseDialog">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Close"/>
@@ -643,7 +634,7 @@
                     <Component class="javax.swing.JButton" name="jButtonClearLog">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Clear"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Clear Log"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Clear Textaera"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonClearLogActionPerformed"/>

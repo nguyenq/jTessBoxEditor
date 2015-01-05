@@ -86,11 +86,6 @@ public class GuiWithValidator extends GuiWithTrainer {
     }
 
     @Override
-    void jButtonClearTextActionPerformed(java.awt.event.ActionEvent evt) {
-        this.jTextAreaValidationResult.setText(null);
-    }
-
-    @Override
     void jButtonCloseDialogActionPerformed(java.awt.event.ActionEvent evt) {
         this.jDialogValidationResult.setVisible(false);
     }

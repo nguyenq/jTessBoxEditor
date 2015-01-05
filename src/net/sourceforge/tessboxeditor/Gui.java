@@ -178,7 +178,6 @@ public class Gui extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaValidationResult = new javax.swing.JTextArea();
         jPanelCommand = new javax.swing.JPanel();
-        jButtonClearText = new javax.swing.JButton();
         jButtonCloseDialog = new javax.swing.JButton();
         jTabbedPaneMain = new javax.swing.JTabbedPane();
         jPanelTrainer = new javax.swing.JPanel();
@@ -355,15 +354,6 @@ public class Gui extends javax.swing.JFrame {
 
         jPanelCommand.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 1, 5, 1));
 
-        jButtonClearText.setText("Clear");
-        jButtonClearText.setToolTipText("Clear Textarea");
-        jButtonClearText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonClearTextActionPerformed(evt);
-            }
-        });
-        jPanelCommand.add(jButtonClearText);
-
         jButtonCloseDialog.setText("Close");
         jButtonCloseDialog.setToolTipText("Close Dialog");
         jButtonCloseDialog.addActionListener(new java.awt.event.ActionListener() {
@@ -492,7 +482,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelMain.add(jButtonSaveLog);
 
         jButtonClearLog.setText("Clear");
-        jButtonClearLog.setToolTipText("Clear Log");
+        jButtonClearLog.setToolTipText("Clear Textaera");
         jButtonClearLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonClearLogActionPerformed(evt);
@@ -1973,10 +1963,6 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonValidateActionPerformed
 
-    void jButtonClearTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearTextActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }//GEN-LAST:event_jButtonClearTextActionPerformed
-
     void jButtonCloseDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseDialogActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonCloseDialogActionPerformed
@@ -2000,7 +1986,6 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonClear;
     protected javax.swing.JButton jButtonClearLog;
-    private javax.swing.JButton jButtonClearText;
     private javax.swing.JButton jButtonCloseDialog;
     private javax.swing.JButton jButtonConvert;
     private javax.swing.JButton jButtonDelete;
