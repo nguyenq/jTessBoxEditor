@@ -83,6 +83,9 @@
       </SubComponents>
     </Container>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xd;&#xa;KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();&#xd;&#xa;        manager.addKeyEventDispatcher(new KeyEventDispatcher() {&#xd;&#xa;&#xd;&#xa;            private void inc(JSpinner s) {&#xd;&#xa;                if (s == jSpinnerX || s == jSpinnerY) {&#xd;&#xa;                    if (!invertControls) {&#xd;&#xa;                        s.setValue(Math.max(0, ((Integer) s.getValue()) - movementMultiplier));&#xd;&#xa;                    } else {&#xd;&#xa;                        s.setValue(((Integer) s.getValue()) + movementMultiplier);&#xd;&#xa;                    }&#xd;&#xa;                } else {&#xd;&#xa;                    s.setValue(((Integer) s.getValue()) + movementMultiplier);&#xd;&#xa;                }&#xd;&#xa;            }&#xd;&#xa;&#xd;&#xa;            private void inc(JSpinner s, int max) {&#xd;&#xa;                if ((s == jSpinnerX || s == jSpinnerY) &amp;&amp; !invertControls) {&#xd;&#xa;                    s.setValue(Math.max(0, ((Integer) s.getValue()) - movementMultiplier));&#xd;&#xa;                } else {&#xd;&#xa;                    s.setValue(((Integer) s.getValue()) + movementMultiplier);&#xd;&#xa;                }&#xd;&#xa;            }&#xd;&#xa;&#xd;&#xa;            private void dec(JSpinner s) {&#xd;&#xa;                if ((s == jSpinnerX || s == jSpinnerY) &amp;&amp; !invertControls) {&#xd;&#xa;                    s.setValue(((Integer) s.getValue()) + movementMultiplier);&#xd;&#xa;                } else {&#xd;&#xa;                    s.setValue(Math.max(0, ((Integer) s.getValue()) - movementMultiplier));&#xd;&#xa;                }&#xd;&#xa;            }&#xd;&#xa;&#xd;&#xa;            @Override&#xd;&#xa;            public boolean dispatchKeyEvent(KeyEvent e) {&#xd;&#xa;&#xd;&#xa;                if (e.getID() != KeyEvent.KEY_TYPED) {&#xd;&#xa;                    return false;&#xd;&#xa;                }&#xd;&#xa;&#xd;&#xa;                Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();&#xd;&#xa;&#xd;&#xa;                if ( (focusOwner instanceof JSpinner)&#xd;&#xa;                    || (focusOwner instanceof JTextField)) {&#xd;&#xa;                    return false;&#xd;&#xa;                }&#xd;&#xa;&#xd;&#xa;&#xd;&#xa;                if (jLabelCharacter.hasFocus()) {&#xd;&#xa;                    return false;&#xd;&#xa;                }&#xd;&#xa;&#xd;&#xa;                if (!jPanelBoxView.isShowing()) {&#xd;&#xa;                    return false;&#xd;&#xa;                }&#xd;&#xa;&#xd;&#xa;                if (e.isShiftDown()) {&#xd;&#xa;                    movementMultiplier = 10;&#xd;&#xa;                }&#xd;&#xa;                else {&#xd;&#xa;                    movementMultiplier = 1;&#xd;&#xa;&#xd;&#xa;                }&#xd;&#xa;&#xd;&#xa;                char c = Character.toLowerCase(e.getKeyChar());&#xd;&#xa;&#xd;&#xa;                if (c == &apos;w&apos;) {&#xd;&#xa;                    inc(jSpinnerY);&#xd;&#xa;                } else if (c == &apos;s&apos;) {&#xd;&#xa;                    dec(jSpinnerY);&#xd;&#xa;                } else if (c == &apos;d&apos;) {&#xd;&#xa;                    dec(jSpinnerX);&#xd;&#xa;                } else if (c == &apos;a&apos;) {&#xd;&#xa;                    inc(jSpinnerX);&#xd;&#xa;                } else if (c == &apos;q&apos;) {&#xd;&#xa;                    dec(jSpinnerW);&#xd;&#xa;                } else if (c == &apos;e&apos;) {&#xd;&#xa;                    inc(jSpinnerW);&#xd;&#xa;                } else if (c == &apos;r&apos;) {&#xd;&#xa;                    dec(jSpinnerH);&#xd;&#xa;                } else if (c == &apos;f&apos;) {&#xd;&#xa;                    inc(jSpinnerH);&#xd;&#xa;                } else if (c == &apos;,&apos;) {&#xd;&#xa;                    jButtonPrev.doClick();&#xd;&#xa;                } else if (c == &apos;.&apos;) {&#xd;&#xa;                    jButtonNext.doClick();&#xd;&#xa;                } else if (c == &apos;x&apos;) {&#xd;&#xa;                    jTextFieldCharacter.requestFocus();&#xd;&#xa;                } else {&#xd;&#xa;                    return false;&#xd;&#xa;                }&#xd;&#xa;&#xd;&#xa;                return true;&#xd;&#xa;            }&#xd;&#xa;        });&#xd;&#xa;"/>
+      </AuxValues>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenuFile">
           <Properties>
@@ -1091,7 +1094,7 @@
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xd;&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {&#xd;&#xa;        Component c = super.prepareRenderer(renderer, row, column);&#xd;&#xa;        if (font != null &amp;&amp; column == 0) {&#xd;&#xa;            c.setFont(font);&#xd;&#xa;        }&#xd;&#xa;        return c;&#xd;&#xa;    }&#xd;&#xa;};"/>
                                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        tableModel.addTableModelListener(new TableModelListener() {&#xa;            public void tableChanged(TableModelEvent e) {&#xa;                int row = e.getFirstRow();&#xa;                int column = e.getColumn();&#xa;                // update only if change to column 0 (Char)&#xa;                if (row != -1 &amp;&amp; column == 0) {&#xa;                    TableModel model = (TableModel)e.getSource();&#xa;                    Object data = model.getValueAt(row, column);&#xa;                    String value = (String) data;&#xa;                    TessBox box = boxes.toList().get(row);&#xa;                    box.setChrs(value);&#xa;                    jTextFieldCharacter.setText(value);&#xa;                    jTextFieldChar.setText(value);&#xa;                    jTextFieldCodepointValue.setText(net.sourceforge.vietocr.util.Utils.toHex(value));&#xa;                    updateSave(true);&#xa;                }&#xa;            }&#xa;        });&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int selectedIndex = jTable.getSelectedRow();&#xa;                    if (selectedIndex != -1) {&#xa;                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click&#xa;                            boxes.deselectAll();&#xa;                        }&#xa;                        List&lt;TessBox&gt; boxesOfCurPage = boxes.toList(); // boxes of current page&#xa;                        for (int index : jTable.getSelectedRows()) {&#xa;                            TessBox box = boxesOfCurPage.get(index);&#xa;                            // select box&#xa;                            box.setSelected(true);&#xa;                            jLabelImage.scrollRectToVisible(box.getRect());&#xa;                        }&#xa;                        jLabelImage.repaint();&#xa;&#xa;                        if (jTable.getSelectedRows().length == 1) {&#xa;                            enableReadout(true);&#xa;                            // update Character field&#xa;                            jTextFieldCharacter.setText((String) tableModel.getValueAt(selectedIndex, 0));&#xa;                            jTextFieldChar.setText(jTextFieldCharacter.getText());&#xa;                            jTextFieldCodepointValue.setText(net.sourceforge.vietocr.util.Utils.toHex(jTextFieldCharacter.getText()));&#xa;                            // update subimage label&#xa;                            Icon icon = jLabelImage.getIcon();&#xa;                            TessBox curBox = boxesOfCurPage.get(selectedIndex);&#xa;                            Rectangle rect = curBox.getRect();&#xa;                            try {&#xa;                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width, rect.height);&#xa;                                ImageIconScalable subIcon = new ImageIconScalable(subImage);&#xa;                                subIcon.setScaledFactor(4);&#xa;                                jLabelSubimage.setIcon(subIcon);&#xa;                            } catch (Exception exc) {&#xa;                                //ignore&#xa;                            }&#xa;                            // mark this as table action event to prevent cyclic firing of events by spinners&#xa;                            tableSelectAction = true;&#xa;                            // update spinners&#xa;                            jSpinnerX.setValue(rect.x);&#xa;                            jSpinnerY.setValue(rect.y);&#xa;                            jSpinnerH.setValue(rect.height);&#xa;                            jSpinnerW.setValue(rect.width);&#xa;                            tableSelectAction = false;&#xa;                        } else {&#xa;                            enableReadout(false);&#xa;                            resetReadout();&#xa;                        }&#xa;                    } else {&#xa;                        boxes.deselectAll();&#xa;                        jLabelImage.repaint();&#xa;                        enableReadout(false);&#xa;                        tableSelectAction = true;&#xa;                        resetReadout();&#xa;                        tableSelectAction = false;&#xa;                    }&#xa;                }&#xa;            }&#xa;        });&#xa;&#xa;        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);&#xa;        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;&#xa;        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);&#xa;        ((JLabel) jTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);&#xa;       ((JImageLabel) this.jLabelImage).setTable(jTable);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control C&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control X&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control V&quot;), &quot;none&quot;);&#xa;        rowHeader = new RowHeaderList(this.jTable);&#xa;        this.jScrollPaneCoord.setRowHeaderView(rowHeader);&#xa;        this.jTable.putClientProperty(&quot;JTable.autoStartsEdit&quot;, Boolean.FALSE);&#xa;        this.jTable.putClientProperty(&quot;terminateEditOnFocusLost&quot;, Boolean.TRUE);&#xa;        this.jTable.setDefaultEditor(String.class, new MyTableCellEditor());"/>
+                                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="        tableModel = (DefaultTableModel) this.jTable.getModel();&#xa;        tableModel.addTableModelListener(new TableModelListener() {&#xa;            public void tableChanged(TableModelEvent e) {&#xa;                int row = e.getFirstRow();&#xa;                int column = e.getColumn();&#xa;                // update only if change to column 0 (Char)&#xa;                if (row != -1 &amp;&amp; column == 0) {&#xa;                    TableModel model = (TableModel)e.getSource();&#xa;                    Object data = model.getValueAt(row, column);&#xa;                    String value = (String) data;&#xa;                    TessBox box = boxes.toList().get(row);&#xa;                    box.setChrs(value);&#xa;                    jTextFieldCharacter.setText(value);&#xa;                    jTextFieldChar.setText(value);&#xa;                    jTextFieldCodepointValue.setText(net.sourceforge.vietocr.util.Utils.toHex(value));&#xa;                    updateSave(true);&#xa;                }&#xa;            }&#xa;        });&#xa;        ListSelectionModel cellSelectionModel = jTable.getSelectionModel();&#xa;        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {&#xa;&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (!e.getValueIsAdjusting()) {&#xa;                    int selectedIndex = jTable.getSelectedRow();&#xa;                    if (selectedIndex != -1) {&#xa;                        if (!((JImageLabel) jLabelImage).isBoxClickAction()) { // not from image block click&#xa;                            boxes.deselectAll();&#xa;                        }&#xa;                        List&lt;TessBox&gt; boxesOfCurPage = boxes.toList(); // boxes of current page&#xa;                        for (int index : jTable.getSelectedRows()) {&#xa;                            TessBox box = boxesOfCurPage.get(index);&#xa;                            // select box&#xa;                            box.setSelected(true);&#xa;                            jLabelImage.scrollRectToVisible(box.getRect());&#xa;                        }&#xa;                        jLabelImage.repaint();&#xa;&#xa;                        if (jTable.getSelectedRows().length == 1) {&#xa;                            enableReadout(true);&#xa;                            // update Character field&#xa;                            jTextFieldCharacter.setText((String) tableModel.getValueAt(selectedIndex, 0));&#xa;                            jTextFieldChar.setText(jTextFieldCharacter.getText());&#xa;                            jTextFieldCodepointValue.setText(net.sourceforge.vietocr.util.Utils.toHex(jTextFieldCharacter.getText()));&#xa;                            // update subimage label&#xa;                            Icon icon = jLabelImage.getIcon();&#xa;                            TessBox curBox = boxesOfCurPage.get(selectedIndex);&#xa;                            Rectangle rect = curBox.getRect();&#xa;                            try {&#xa;                                Image subImage = getSubimage((BufferedImage) ((ImageIcon) icon).getImage(), rect);&#xa;                                ImageIconScalable subIcon = new ImageIconScalable(subImage);&#xa;                                subIcon.setScaledFactor(scaleFactor);&#xa;                                jLabelSubimage.setIcon(subIcon);&#xa;                            } catch (Exception exc) {&#xa;                                //ignore&#xa;                            }&#xa;                            // mark this as table action event to prevent cyclic firing of events by spinners&#xa;                            tableSelectAction = true;&#xa;                            // update spinners&#xa;                            jSpinnerX.setValue(rect.x);&#xa;                            jSpinnerY.setValue(rect.y);&#xa;                            jSpinnerH.setValue(rect.height);&#xa;                            jSpinnerW.setValue(rect.width);&#xa;                            tableSelectAction = false;&#xa;                        } else {&#xa;                            enableReadout(false);&#xa;                            resetReadout();&#xa;                        }&#xa;                    } else {&#xa;                        boxes.deselectAll();&#xa;                        jLabelImage.repaint();&#xa;                        enableReadout(false);&#xa;                        tableSelectAction = true;&#xa;                        resetReadout();&#xa;                        tableSelectAction = false;&#xa;                    }&#xa;                }&#xa;            }&#xa;        });&#xa;&#xa;        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);&#xa;        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;&#xa;        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);&#xa;        ((JLabel) jTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);&#xa;       ((JImageLabel) this.jLabelImage).setTable(jTable);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control C&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control X&quot;), &quot;none&quot;);&#xa;        jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(&quot;control V&quot;), &quot;none&quot;);&#xa;        rowHeader = new RowHeaderList(this.jTable);&#xa;        this.jScrollPaneCoord.setRowHeaderView(rowHeader);&#xa;        this.jTable.putClientProperty(&quot;JTable.autoStartsEdit&quot;, Boolean.FALSE);&#xa;        this.jTable.putClientProperty(&quot;terminateEditOnFocusLost&quot;, Boolean.TRUE);&#xa;        this.jTable.setDefaultEditor(String.class, new MyTableCellEditor());"/>
                               </AuxValues>
                             </Component>
                           </SubComponents>
@@ -1180,50 +1183,110 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                       <SubComponents>
-                        <Container class="javax.swing.JPanel" name="jPanel1">
-                          <Properties>
-                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
-                            </Property>
-                          </Properties>
+                        <Container class="javax.swing.JPanel" name="jPanelNorthContainer">
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                               <BorderConstraints direction="North"/>
                             </Constraint>
                           </Constraints>
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                            <Property name="alignment" type="int" value="0"/>
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                            <Property name="axis" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
-                            <Component class="javax.swing.JLabel" name="jLabelCodepoint">
+                            <Container class="javax.swing.JPanel" name="jPanelChar">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="Char/Codepoint:"/>
+                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
+                                </Property>
                               </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));"/>
-                                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Gui_jLabelCodepoint"/>
-                              </AuxValues>
-                            </Component>
-                            <Component class="javax.swing.JTextField" name="jTextFieldChar">
+
+                              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                                <Property name="alignment" type="int" value="0"/>
+                              </Layout>
+                              <SubComponents>
+                                <Component class="javax.swing.JLabel" name="jLabelCodepoint">
+                                  <Properties>
+                                    <Property name="text" type="java.lang.String" value="Char/Codepoint:"/>
+                                  </Properties>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));"/>
+                                    <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Gui_jLabelCodepoint"/>
+                                  </AuxValues>
+                                </Component>
+                                <Component class="javax.swing.JTextField" name="jTextFieldChar">
+                                  <Properties>
+                                    <Property name="editable" type="boolean" value="false"/>
+                                    <Property name="opaque" type="boolean" value="false"/>
+                                  </Properties>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldChar.setFont(jTextFieldChar.getFont().deriveFont(14.0f));"/>
+                                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+                                  </AuxValues>
+                                </Component>
+                                <Component class="javax.swing.JTextField" name="jTextFieldCodepointValue">
+                                  <Properties>
+                                    <Property name="editable" type="boolean" value="false"/>
+                                    <Property name="opaque" type="boolean" value="false"/>
+                                  </Properties>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldCodepointValue.setFont(jTextFieldCodepointValue.getFont().deriveFont(14.0f));"/>
+                                  </AuxValues>
+                                </Component>
+                              </SubComponents>
+                            </Container>
+                            <Container class="javax.swing.JPanel" name="jPanelControls">
                               <Properties>
-                                <Property name="editable" type="boolean" value="false"/>
-                                <Property name="opaque" type="boolean" value="false"/>
+                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
+                                </Property>
                               </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldChar.setFont(jTextFieldChar.getFont().deriveFont(14.0f));"/>
-                                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                              </AuxValues>
-                            </Component>
-                            <Component class="javax.swing.JTextField" name="jTextFieldCodepointValue">
-                              <Properties>
-                                <Property name="editable" type="boolean" value="false"/>
-                                <Property name="opaque" type="boolean" value="false"/>
-                              </Properties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldCodepointValue.setFont(jTextFieldCodepointValue.getFont().deriveFont(14.0f));"/>
-                              </AuxValues>
-                            </Component>
+
+                              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                                <Property name="alignment" type="int" value="0"/>
+                              </Layout>
+                              <SubComponents>
+                                <Component class="javax.swing.JLabel" name="jLabelSpinnerMargin">
+                                  <Properties>
+                                    <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                                      <ComponentRef name="jSpinnerMargin"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="Margins"/>
+                                  </Properties>
+                                </Component>
+                                <Component class="javax.swing.JSpinner" name="jSpinnerMargin">
+                                  <Properties>
+                                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                      <SpinnerModel initial="3" maximum="20" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                    </Property>
+                                  </Properties>
+                                  <Events>
+                                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerMarginStateChanged"/>
+                                  </Events>
+                                </Component>
+                                <Component class="javax.swing.JLabel" name="jLabelSpinnerScale">
+                                  <Properties>
+                                    <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                                      <ComponentRef name="jSpinnerScale"/>
+                                    </Property>
+                                    <Property name="text" type="java.lang.String" value="Scale"/>
+                                  </Properties>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_AddingCodePre" type="java.lang.String" value="jPanelControls.add(Box.createHorizontalStrut(10));"/>
+                                  </AuxValues>
+                                </Component>
+                                <Component class="javax.swing.JSpinner" name="jSpinnerScale">
+                                  <Properties>
+                                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                      <SpinnerModel initial="4" maximum="10" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                    </Property>
+                                  </Properties>
+                                  <Events>
+                                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerScaleStateChanged"/>
+                                  </Events>
+                                </Component>
+                              </SubComponents>
+                            </Container>
                           </SubComponents>
                         </Container>
                         <Component class="javax.swing.JLabel" name="jLabelSubimage">
@@ -1231,6 +1294,7 @@
                             <Property name="horizontalAlignment" type="int" value="0"/>
                           </Properties>
                           <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new SubImageView();"/>
                             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
                           </AuxValues>
                           <Constraints>
@@ -1239,7 +1303,7 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Container class="javax.swing.JPanel" name="jPanel2">
+                        <Container class="javax.swing.JPanel" name="jPanelButtons">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="c0" green="c0" red="c0" type="rgb"/>

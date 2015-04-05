@@ -66,9 +66,9 @@ public class GuiWithSpinner extends GuiWithEdit {
 
         Icon icon = jLabelImage.getIcon();
         try {
-            Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width,rect.height);
+            Image subImage = getSubimage((BufferedImage) ((ImageIcon) icon).getImage(), rect);
             ImageIconScalable subIcon = new ImageIconScalable(subImage);
-            subIcon.setScaledFactor(4);
+            subIcon.setScaledFactor(scaleFactor);
             jLabelSubimage.setIcon(subIcon);
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage(), e);
