@@ -637,6 +637,11 @@ public class Gui extends javax.swing.JFrame {
                 jTextFieldCharacterActionPerformed(evt);
             }
         });
+        jTextFieldCharacter.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldCharacterKeyReleased(evt);
+            }
+        });
         jPanelSpinner.add(jTextFieldCharacter);
 
         jButtonConvert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/sourceforge/tessboxeditor/icons/tools.png"))); // NOI18N
@@ -2128,11 +2133,18 @@ public class Gui extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jSpinnerScaleStateChanged
 
+    private void jTextFieldCharacterKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCharacterKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ESCAPE || evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jLabelSubimage.requestFocus();
+        }
+    }//GEN-LAST:event_jTextFieldCharacterKeyReleased
+
     /**
      * Gets a subimage for display in boxview.
+     *
      * @param image
      * @param rect
-     * @return 
+     * @return
      */
     BufferedImage getSubimage(BufferedImage image, Rectangle rect) {
         Gui.iconPosX = rect.x;
