@@ -25,6 +25,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DropTarget;
@@ -76,7 +77,18 @@ public class Gui extends javax.swing.JFrame {
     private boolean isTess2_0Format;
     protected RowHeaderList rowHeader;
     protected Font font;
-    
+
+    protected static int iconMargin = 3;
+    protected static boolean invertControls = false;
+    protected static int scaleFactor = 4;
+    protected static int iconPosX = 0;
+    protected static int iconPosY = 0;
+    protected static int iconWidth = 0;
+    protected static int iconHeight = 0;
+    protected static int imageWidth = 0;
+    protected static int imageHeight = 0;
+    protected static int movementMultiplier = 1;
+
     private final static Logger logger = Logger.getLogger(Gui.class.getName());
 
     /**
@@ -250,15 +262,21 @@ public class Gui extends javax.swing.JFrame {
         jScrollPaneBoxData = new javax.swing.JScrollPane();
         jTextAreaBoxData = new javax.swing.JTextArea();
         jPanelBoxView = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelNorthContainer = new javax.swing.JPanel();
+        jPanelChar = new javax.swing.JPanel();
         jLabelCodepoint = new javax.swing.JLabel();
         jLabelCodepoint.setFont(jLabelCodepoint.getFont().deriveFont(14.0f));
         jTextFieldChar = new javax.swing.JTextField();
         jTextFieldChar.setFont(jTextFieldChar.getFont().deriveFont(14.0f));
         jTextFieldCodepointValue = new javax.swing.JTextField();
         jTextFieldCodepointValue.setFont(jTextFieldCodepointValue.getFont().deriveFont(14.0f));
-        jLabelSubimage = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        jPanelControls = new javax.swing.JPanel();
+        jLabelSpinnerMargin = new javax.swing.JLabel();
+        jSpinnerMargin = new javax.swing.JSpinner();
+        jLabelSpinnerScale = new javax.swing.JLabel();
+        jSpinnerScale = new javax.swing.JSpinner();
+        jLabelSubimage = new SubImageView();
+        jPanelButtons = new javax.swing.JPanel();
         jButtonPrev = new javax.swing.JButton();
         jButtonNext = new javax.swing.JButton();
         jScrollPaneImage = new javax.swing.JScrollPane();
@@ -776,9 +794,9 @@ public class Gui extends javax.swing.JFrame {
                             TessBox curBox = boxesOfCurPage.get(selectedIndex);
                             Rectangle rect = curBox.getRect();
                             try {
-                                Image subImage = ((BufferedImage) ((ImageIcon) icon).getImage()).getSubimage(rect.x, rect.y, rect.width, rect.height);
+                                Image subImage = getSubimage((BufferedImage) ((ImageIcon) icon).getImage(), rect);
                                 ImageIconScalable subIcon = new ImageIconScalable(subImage);
-                                subIcon.setScaledFactor(4);
+                                subIcon.setScaledFactor(scaleFactor);
                                 jLabelSubimage.setIcon(subIcon);
                             } catch (Exception exc) {
                                 //ignore
@@ -855,26 +873,60 @@ public class Gui extends javax.swing.JFrame {
         jPanelBoxView.setBackground(java.awt.Color.lightGray);
         jPanelBoxView.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBackground(java.awt.Color.lightGray);
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanelNorthContainer.setLayout(new javax.swing.BoxLayout(jPanelNorthContainer, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanelChar.setBackground(java.awt.Color.lightGray);
+        jPanelChar.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabelCodepoint.setText("Char/Codepoint:");
-        jPanel1.add(jLabelCodepoint);
+        jPanelChar.add(jLabelCodepoint);
 
         jTextFieldChar.setEditable(false);
         jTextFieldChar.setOpaque(false);
-        jPanel1.add(jTextFieldChar);
+        jPanelChar.add(jTextFieldChar);
 
         jTextFieldCodepointValue.setEditable(false);
         jTextFieldCodepointValue.setOpaque(false);
-        jPanel1.add(jTextFieldCodepointValue);
+        jPanelChar.add(jTextFieldCodepointValue);
 
-        jPanelBoxView.add(jPanel1, java.awt.BorderLayout.NORTH);
+        jPanelNorthContainer.add(jPanelChar);
+
+        jPanelControls.setBackground(java.awt.Color.lightGray);
+        jPanelControls.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabelSpinnerMargin.setLabelFor(jSpinnerMargin);
+        jLabelSpinnerMargin.setText("Margins");
+        jPanelControls.add(jLabelSpinnerMargin);
+
+        jSpinnerMargin.setModel(new javax.swing.SpinnerNumberModel(3, 0, 20, 1));
+        jSpinnerMargin.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerMarginStateChanged(evt);
+            }
+        });
+        jPanelControls.add(jSpinnerMargin);
+
+        jLabelSpinnerScale.setLabelFor(jSpinnerScale);
+        jLabelSpinnerScale.setText("Scale");
+        jPanelControls.add(Box.createHorizontalStrut(10));
+        jPanelControls.add(jLabelSpinnerScale);
+
+        jSpinnerScale.setModel(new javax.swing.SpinnerNumberModel(4, 1, 10, 1));
+        jSpinnerScale.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerScaleStateChanged(evt);
+            }
+        });
+        jPanelControls.add(jSpinnerScale);
+
+        jPanelNorthContainer.add(jPanelControls);
+
+        jPanelBoxView.add(jPanelNorthContainer, java.awt.BorderLayout.NORTH);
 
         jLabelSubimage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanelBoxView.add(jLabelSubimage, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBackground(new java.awt.Color(192, 192, 192));
+        jPanelButtons.setBackground(new java.awt.Color(192, 192, 192));
 
         jButtonPrev.setText("Prev");
         jButtonPrev.addActionListener(new java.awt.event.ActionListener() {
@@ -882,7 +934,7 @@ public class Gui extends javax.swing.JFrame {
                 jButtonPrevActionPerformed(evt);
             }
         });
-        jPanel2.add(jButtonPrev);
+        jPanelButtons.add(jButtonPrev);
 
         jButtonNext.setText("Next");
         jButtonNext.addActionListener(new java.awt.event.ActionListener() {
@@ -890,9 +942,9 @@ public class Gui extends javax.swing.JFrame {
                 jButtonNextActionPerformed(evt);
             }
         });
-        jPanel2.add(jButtonNext);
+        jPanelButtons.add(jButtonNext);
 
-        jPanelBoxView.add(jPanel2, java.awt.BorderLayout.SOUTH);
+        jPanelBoxView.add(jPanelButtons, java.awt.BorderLayout.SOUTH);
 
         jTabbedPaneBoxData.addTab("Box View", jPanelBoxView);
 
@@ -1227,6 +1279,99 @@ public class Gui extends javax.swing.JFrame {
         jMenuBar.add(jMenuHelp);
 
         setJMenuBar(jMenuBar);
+
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(new KeyEventDispatcher() {
+
+            private void inc(JSpinner s) {
+                if (s == jSpinnerX || s == jSpinnerY) {
+                    if (!invertControls) {
+                        s.setValue(Math.max(0, ((Integer) s.getValue()) - movementMultiplier));
+                    } else {
+                        s.setValue(((Integer) s.getValue()) + movementMultiplier);
+                    }
+                } else {
+                    s.setValue(((Integer) s.getValue()) + movementMultiplier);
+                }
+            }
+
+            private void inc(JSpinner s, int max) {
+                if ((s == jSpinnerX || s == jSpinnerY) && !invertControls) {
+                    s.setValue(Math.max(0, ((Integer) s.getValue()) - movementMultiplier));
+                } else {
+                    s.setValue(((Integer) s.getValue()) + movementMultiplier);
+                }
+            }
+
+            private void dec(JSpinner s) {
+                if ((s == jSpinnerX || s == jSpinnerY) && !invertControls) {
+                    s.setValue(((Integer) s.getValue()) + movementMultiplier);
+                } else {
+                    s.setValue(Math.max(0, ((Integer) s.getValue()) - movementMultiplier));
+                }
+            }
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+
+                if (e.getID() != KeyEvent.KEY_TYPED) {
+                    return false;
+                }
+
+                Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+
+                if ( (focusOwner instanceof JSpinner)
+                    || (focusOwner instanceof JTextField)) {
+                    return false;
+                }
+
+                if (jLabelCharacter.hasFocus()) {
+                    return false;
+                }
+
+                if (!jPanelBoxView.isShowing()) {
+                    return false;
+                }
+
+                if (e.isShiftDown()) {
+                    movementMultiplier = 10;
+                }
+                else {
+                    movementMultiplier = 1;
+
+                }
+
+                char c = Character.toLowerCase(e.getKeyChar());
+
+                if (c == 'w') {
+                    inc(jSpinnerY);
+                } else if (c == 's') {
+                    dec(jSpinnerY);
+                } else if (c == 'd') {
+                    dec(jSpinnerX);
+                } else if (c == 'a') {
+                    inc(jSpinnerX);
+                } else if (c == 'q') {
+                    dec(jSpinnerW);
+                } else if (c == 'e') {
+                    inc(jSpinnerW);
+                } else if (c == 'r') {
+                    dec(jSpinnerH);
+                } else if (c == 'f') {
+                    inc(jSpinnerH);
+                } else if (c == ',') {
+                    jButtonPrev.doClick();
+                } else if (c == '.') {
+                    jButtonNext.doClick();
+                } else if (c == 'x') {
+                    jTextFieldCharacter.requestFocus();
+                } else {
+                    return false;
+                }
+
+                return true;
+            }
+        });
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1726,7 +1871,7 @@ public class Gui extends javax.swing.JFrame {
 
     private void copyFileFromJarToSupportDir(File helpFile) throws IOException {
         if (!helpFile.exists()) {
-            try (ReadableByteChannel input = Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName())); 
+            try (ReadableByteChannel input = Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName()));
                     FileChannel output = new FileOutputStream(helpFile).getChannel()) {
                 output.transferFrom(input, 0, 1000000L);
             }
@@ -1863,7 +2008,7 @@ public class Gui extends javax.swing.JFrame {
     void jMenuItemMergeTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMergeTiffActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
-	
+
 	void jMenuItemSplitTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSplitTiffActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemSplitTiffActionPerformed
@@ -1967,6 +2112,58 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonCloseDialogActionPerformed
 
+    private void jSpinnerMarginStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerMarginStateChanged
+        iconMargin = (Integer) jSpinnerMargin.getValue();
+        int index = jTable.getSelectedRow();
+        jTable.clearSelection();
+        jTable.setRowSelectionInterval(index, index);
+
+    }//GEN-LAST:event_jSpinnerMarginStateChanged
+
+    private void jSpinnerScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerScaleStateChanged
+        scaleFactor = (Integer) jSpinnerScale.getValue();
+        int index = jTable.getSelectedRow();
+        jTable.clearSelection();
+        jTable.setRowSelectionInterval(index, index);
+
+    }//GEN-LAST:event_jSpinnerScaleStateChanged
+
+    /**
+     * Gets a subimage for display in boxview.
+     * @param image
+     * @param rect
+     * @return 
+     */
+    BufferedImage getSubimage(BufferedImage image, Rectangle rect) {
+        Gui.iconPosX = rect.x;
+        Gui.iconPosY = rect.y;
+
+        Gui.imageWidth = image.getWidth();
+        Gui.imageHeight = image.getHeight();
+
+        Gui.iconHeight = rect.height;
+        Gui.iconWidth = rect.width;
+
+        int height = Gui.iconHeight + Gui.iconMargin * 2;
+        int width = Gui.iconWidth + Gui.iconMargin * 2;
+
+        while (width + Gui.iconPosX > image.getWidth() + 1) {
+            width -= 1;
+        }
+
+        while (height + Gui.iconPosY > image.getHeight() + 1) {
+            height -= 1;
+        }
+
+        BufferedImage subImage = image.getSubimage(Math.max(0, Math.min(Gui.imageWidth - 1, Gui.iconPosX - Gui.iconMargin)),
+                Math.max(0, Math.min(Gui.imageHeight - 1, Gui.iconPosY - Gui.iconMargin)),
+                width,
+                height
+        );
+
+        return subImage;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -2023,6 +2220,8 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelNoise;
     private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelPageNbr;
+    private javax.swing.JLabel jLabelSpinnerMargin;
+    private javax.swing.JLabel jLabelSpinnerScale;
     protected javax.swing.JLabel jLabelStatus;
     protected javax.swing.JLabel jLabelSubimage;
     protected javax.swing.JLabel jLabelTime;
@@ -2052,16 +2251,18 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JMenu jMenuRecentFiles;
     private javax.swing.JMenu jMenuSettings;
     private javax.swing.JMenu jMenuTools;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelBoxView;
+    private javax.swing.JPanel jPanelButtons;
+    private javax.swing.JPanel jPanelChar;
     private javax.swing.JPanel jPanelCommand;
+    private javax.swing.JPanel jPanelControls;
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelEditor;
     private javax.swing.JPanel jPanelFind;
     private javax.swing.JPanel jPanelMain;
+    private javax.swing.JPanel jPanelNorthContainer;
     private javax.swing.JPanel jPanelSpinner;
     private javax.swing.JPanel jPanelStatus;
     private javax.swing.JPanel jPanelStatus1;
@@ -2080,7 +2281,9 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparatorRecentFiles;
     protected javax.swing.JSpinner jSpinnerH;
     protected javax.swing.JSpinner jSpinnerH1;
+    private javax.swing.JSpinner jSpinnerMargin;
     protected javax.swing.JSpinner jSpinnerNoise;
+    private javax.swing.JSpinner jSpinnerScale;
     protected javax.swing.JSpinner jSpinnerTracking;
     protected javax.swing.JSpinner jSpinnerW;
     protected javax.swing.JSpinner jSpinnerW1;
