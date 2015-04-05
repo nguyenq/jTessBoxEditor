@@ -76,3 +76,6 @@ Version 1.2.1 (19 November 2014)
 
 Version 1.3 (4 January 2015)
 - Implement function to validate generated traineddata
+
+Version 1.4 (4 April 2015)
+- Incorporate improvements by A2K in box movement control
