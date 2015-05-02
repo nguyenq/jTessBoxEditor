@@ -1264,6 +1264,9 @@
                                   <Events>
                                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerMarginStateChanged"/>
                                   </Events>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="((DefaultEditor) jSpinnerMargin.getEditor()).getTextField().setEditable(false);"/>
+                                  </AuxValues>
                                 </Component>
                                 <Component class="javax.swing.JLabel" name="jLabelSpinnerScale">
                                   <Properties>
@@ -1285,6 +1288,9 @@
                                   <Events>
                                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerScaleStateChanged"/>
                                   </Events>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="((DefaultEditor) jSpinnerScale.getEditor()).getTextField().setEditable(false);"/>
+                                  </AuxValues>
                                 </Component>
                               </SubComponents>
                             </Container>

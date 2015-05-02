@@ -44,7 +44,7 @@ public class SubImageView extends JLabel {
         int x2 = (this.getWidth() + this.getIcon().getIconWidth()) / 2;
         int y2 = (this.getHeight() + this.getIcon().getIconHeight()) / 2;
 
-        System.out.println("icon pos: " + Gui.iconPosX);
+//        System.out.println("icon pos: " + Gui.iconPosX);
 
         if (Gui.iconPosX < Gui.iconMargin) {
             int shift = (Gui.iconMargin - Gui.iconPosX) * Gui.scaleFactor;
@@ -58,7 +58,7 @@ public class SubImageView extends JLabel {
             y2 -= shift;
         }
 
-        System.out.println("icon pos: " + Gui.iconPosX + ", width=" + Gui.iconWidth + ", image width=" + Gui.imageWidth);
+//        System.out.println("icon pos: " + Gui.iconPosX + ", width=" + Gui.iconWidth + ", image width=" + Gui.imageWidth);
 
         if ((Gui.imageWidth - (Gui.iconPosX + Gui.iconWidth) - 1) <= Gui.iconMargin) {
             int shift = (Gui.iconMargin - (Gui.imageWidth - (Gui.iconPosX + Gui.iconWidth)) + 2) * Gui.scaleFactor;
