@@ -1,0 +1,78 @@
+jTessBoxEditor Change Summary
+
+Version 0.1 (10 April 2011):
+- Support editing box data of both Tesseract 2.0x and 3.0x formats
+- Implement box select & merge/split/insert/delete operations
+- Implement box size change function via spinners
+- Support Unicode conversion for the text field
+- Include box search function
+
+Version 0.2 (14 April 2011):
+- Add a provision to set font for the Box Coordinates table
+- Set table row height to match font
+- Incorporate a pangram into the Font dialog
+
+Version 0.3 (25 April 2011):
+- Provide a close-up view of current box
+
+Version 0.4 (28 May 2011):
+- Add a utility function for merging images into a multi-page TIFF
+
+Version 0.5 (5 September 2011)
+- Display informational tooltip for boxed characters in image pane
+
+Version 0.5.1 (12 September 2011)
+- Correct an issue with (small) image vertically centering in the image pane; align it to top of pane
+
+Version 0.6 (18 October 2011)
+- Add a utility function that creates TIFF/Box pair suitable for training with Tesseract
+- Fix a bug which may clear out a modified box file when loading another image
+- Enhance box search operations
+- Fix font issues in various visual components
+- Merged box will have a character value composed of all the characters of the merging boxes
+
+Version 0.7 (16 June 2012)
+- Fix an issue with opening Help file on OS X
+- For TIFF/Box generation:
+  * increase line spacing
+  * abbreviate bold/italic font style to b/i for filename
+  * add a Prefix (Language Code) textbox
+  * add support for text anti-aliasing
+
+Version 0.8 (16 April 2013)
+- Add row number header
+- Char cell now editable
+- Convert Unicode escape sequences where possible
+- Find box now displays Unicode characters and allows search using Unicode escape sequences
+- Improve Generate TIFF/Box functionality:
+  * automatically combine boxes that have the same coordinates or completely encloses one another
+  * automatically combine boxes that are combining symbols, specified in an external file, with the main, base character
+  * retain last-modified exp number in Generate TIFF/Box window
+
+Version 0.9 (30 April 2013)
+- Enhance Generate TIFF/Box functionality to allow for combining prepending symbols in addition to appending
+- Fix a bug that failed to persist changes to table in edit mode
+- Find function now supports partial matches
+- Fix a problem with table not scrolling along when row header has focus and scrolling
+
+Version 1.0 (16 November 2013)
+- Integrate support for full automation of Tesseract training
+- Bundle Tesseract Windows training executables (r866), English data, and config files
+- Fix an issue with generated TIFF missing metadata
+- Optionally add noise to generated image
+- Bug fixes and improvements
+
+Version 1.1 (15 October 2014)
+- Add training support for Right-to-Left (RTL) text
+- Add horizontal box split using modifier keys
+- Add split multi-page TIFF function
+
+Version 1.2 (7 November 2014)
+- Break up the training process to allow flexible, incremental training
+- Incorporate logging
+
+Version 1.2.1 (19 November 2014)
+- Apply fixing unicharset's Unicode character directionality only when RTL is selected
+
+Version 1.3 (4 January 2015)
+- Implement function to validate generated traineddata
