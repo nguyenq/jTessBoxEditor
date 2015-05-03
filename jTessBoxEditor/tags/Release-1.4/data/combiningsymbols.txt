@@ -1,0 +1,16 @@
+# This UTF-8 encoded text file lets the user specify combining symbols or diacritics
+# in Unicode native or escaped forms, such as U+0CCC or \u0CCC,
+# that need to be combined with the preceding main/base character.
+# Comment lines start with # sign. All the codepoint values should be on one single line, 
+# with no spaces or quotes. A dash "-" character indicates a range of values. A semicolon ";"
+# separates appending and prepending symbol sequences. 
+#Kannada
+#U+0C82U+0C83U+0CBCU+0CBE-U+0CCDU+0CD5U+0CD6U+0CE2U+0CE3
+#Tamil
+#U+0B82U+0B83U+U+0BBE-U+0BC8U+0BCA-U+0BCD
+#Bengali
+#U+0981U+0982U+0983U+09BCU+09BE-U+09C8U+09CB-U+09CDU+09E2U+09E3
+#Gujarati
+#U+0A81U+0A82U+0A83U+0ABCU+0ABE-U+0ACDU+0AE2U+0AE3
+# For example, uncomment the following line to combine specified symbols/diacritics for Devanagari scripts.
+#\u0C82\u0C83\u0CBC\u0CBE-\u0CCD\u0CD5\u0CD6\u0CE2\u0CE3U+093EU+0940U+094BU+094CU+0902U+0901U+0949U+094AU+0944;U+0942
