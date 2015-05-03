@@ -2125,7 +2125,7 @@ public class Gui extends javax.swing.JFrame {
         int index = jTable.getSelectedRow();
         jTable.clearSelection();
         jTable.setRowSelectionInterval(index, index);
-
+        jLabelSubimage.requestFocus();
     }//GEN-LAST:event_jSpinnerMarginStateChanged
 
     private void jSpinnerScaleStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerScaleStateChanged
@@ -2133,7 +2133,7 @@ public class Gui extends javax.swing.JFrame {
         int index = jTable.getSelectedRow();
         jTable.clearSelection();
         jTable.setRowSelectionInterval(index, index);
-
+        jLabelSubimage.requestFocus();
     }//GEN-LAST:event_jSpinnerScaleStateChanged
 
     private void jTextFieldCharacterKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCharacterKeyReleased
