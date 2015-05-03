@@ -94,10 +94,6 @@ public class JImageLabel extends JLabel {
                 g2d.setColor(Color.BLUE);
                 resetColor = false;
             }
-
-//            g2d.setColor(Color.MAGENTA);
-//            g2d.drawString(box.getChrs(), rect.x, rect.y + rect.height + 15);
-//            g2d.setColor(Color.BLUE);
         }
     }
 
