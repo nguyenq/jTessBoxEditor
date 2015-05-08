@@ -907,6 +907,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerMargin.setModel(new javax.swing.SpinnerNumberModel(3, 0, 20, 1));
         jSpinnerMargin.setFocusable(false);
         ((DefaultEditor) jSpinnerMargin.getEditor()).getTextField().setEditable(false);
+        ((DefaultEditor) jSpinnerMargin.getEditor()).getTextField().setFocusable(false);
         jSpinnerMargin.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerMarginStateChanged(evt);
@@ -922,6 +923,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerScale.setModel(new javax.swing.SpinnerNumberModel(4, 1, 10, 1));
         jSpinnerScale.setFocusable(false);
         ((DefaultEditor) jSpinnerScale.getEditor()).getTextField().setEditable(false);
+        ((DefaultEditor) jSpinnerScale.getEditor()).getTextField().setFocusable(false);
         jSpinnerScale.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jSpinnerScaleStateChanged(evt);
