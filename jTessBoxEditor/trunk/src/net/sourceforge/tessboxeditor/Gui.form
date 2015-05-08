@@ -1260,6 +1260,7 @@
                                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                                       <SpinnerModel initial="3" maximum="20" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                     </Property>
+                                    <Property name="focusable" type="boolean" value="false"/>
                                   </Properties>
                                   <Events>
                                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerMarginStateChanged"/>
@@ -1284,6 +1285,7 @@
                                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                                       <SpinnerModel initial="4" maximum="10" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
                                     </Property>
+                                    <Property name="focusable" type="boolean" value="false"/>
                                   </Properties>
                                   <Events>
                                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerScaleStateChanged"/>
