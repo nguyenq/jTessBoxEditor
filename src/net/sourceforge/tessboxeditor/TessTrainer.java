@@ -32,9 +32,11 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
 
+    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font='%s' --fonts_dir=%s";
     private static final String cmdmake_box = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
     private static final String cmdtess_train = "tesseract imageFile boxFile box.train";
     private static final String cmdunicharset_extractor = "unicharset_extractor"; // lang.fontname.exp0.box lang.fontname.exp1.box ...
+    private static final String cmdset_unicharset_properties = "set_unicharset_properties -U unicharset -O unicharset --script_dir=%s";
     private static final String cmdshapeclustering = "shapeclustering -F %s.font_properties -U unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private static final String cmdmftraining = "mftraining -F %1$s.font_properties -U unicharset -O %1$s.unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private static final String cmdcntraining = "cntraining"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
@@ -102,6 +104,13 @@ public class TessTrainer {
             default:
                 break;
         }
+    }
+    
+    void text2image(String inputTextFile, String outputbase, String font, String fontFolder) throws Exception {
+        logger.info("text2image");
+        writeMessage("** text2image **");
+        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font, fontFolder));
+        runCommand(cmd);
     }
 
     /**
@@ -175,6 +184,12 @@ public class TessTrainer {
         });
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
+        
+        //set_unicharset_properties
+        if (new File(this.tessDir, "set_unicharset_properties.exe").exists() || new File(this.tessDir, "set_unicharset_properties.exe").exists()) {
+            cmd = getCommand(String.format(cmdset_unicharset_properties, inputDataDir));
+            runCommand(cmd);            
+        }
 
         if (rtl) {
             //fix Unicode character directionality in unicharset
@@ -414,6 +429,8 @@ public class TessTrainer {
             String msg;
             if (cmd.get(0).contains("shapeclustering")) {
                 msg = "An error has occurred. font_properties could be missing a font entry.";
+            } else if (cmd.get(0).contains("text2image")) {
+                msg = "text2image error; it may be buggy.\nPlease use alternate method to generate TIFF/Box files.";
             } else {
                 msg = outputGobbler.getMessage();
             }

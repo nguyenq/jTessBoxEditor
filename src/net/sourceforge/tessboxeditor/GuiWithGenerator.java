@@ -35,9 +35,13 @@ public class GuiWithGenerator extends GuiWithTools {
     private File inputTextFile;
     private String trainDirectory;
     private Font fontGen;
+    private String fontFolder;
+    protected String tessDirectory;
+    protected String trainDataDirectory;
     private final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
     private JFileChooser jFileChooserInputText;
     private JFileChooser jFileChooserOutputDir;
+    private JFileChooser jFileChooserFontFolder;
 
     private final static Logger logger = Logger.getLogger(GuiWithGenerator.class.getName());
 
@@ -64,6 +68,9 @@ public class GuiWithGenerator extends GuiWithTools {
         trainDirectory = prefs.get("trainDirectory", System.getProperty("user.home"));
         this.jTextFieldOuputDir.setText(trainDirectory);
 
+        fontFolder = prefs.get("fontFolder", getFontFolder());
+        this.jTextFieldFontFolder.setText(fontFolder);
+
         jFileChooserInputText = new JFileChooser();
         FileFilter textFilter = new SimpleFilter("txt", "Text Files");
         jFileChooserInputText.addChoosableFileFilter(textFilter);
@@ -76,6 +83,30 @@ public class GuiWithGenerator extends GuiWithTools {
         jFileChooserOutputDir.setAcceptAllFileFilterUsed(false);
         jFileChooserOutputDir.setCurrentDirectory(new File(trainDirectory));
         jFileChooserOutputDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        jFileChooserFontFolder = new JFileChooser();
+        jFileChooserFontFolder.setApproveButtonText("Set");
+        jFileChooserFontFolder.setDialogTitle("Set Font Folder");
+        jFileChooserFontFolder.setAcceptAllFileFilterUsed(false);
+        jFileChooserFontFolder.setCurrentDirectory(new File(fontFolder));
+        jFileChooserFontFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    }
+
+    /**
+     * Gets default system font folder.
+     *
+     * @return
+     */
+    String getFontFolder() {
+        String folder;
+        if (WINDOWS) {
+            folder = "C:\\Windows\\Fonts";
+        } else if (MAC_OS_X) {
+            folder = "/Library/Fonts/";
+        } else {
+            folder = "/usr/share/fonts"; // assume Linux
+        }
+        return folder;
     }
 
     @Override
@@ -133,6 +164,14 @@ public class GuiWithGenerator extends GuiWithTools {
     }
 
     @Override
+    void jButtonBrowseFontFolderActionPerformed(java.awt.event.ActionEvent evt) {
+        if (jFileChooserFontFolder.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            fontFolder = jFileChooserFontFolder.getSelectedFile().getPath();
+            this.jTextFieldFontFolder.setText(fontFolder);
+        }
+    }
+
+    @Override
     void jButtonFontActionPerformed(java.awt.event.ActionEvent evt) {
         FontDialog dlg = new FontDialog(this);
         dlg.setAttributes(fontGen);
@@ -178,31 +217,51 @@ public class GuiWithGenerator extends GuiWithTools {
     @Override
     void jButtonGenerateActionPerformed(java.awt.event.ActionEvent evt) {
         if (this.jTextAreaInput.getText().trim().length() == 0) {
-            JOptionPane.showMessageDialog(this, "Please load some text.");
+            JOptionPane.showMessageDialog(this, "Please load training text.");
             return;
         }
-
-        TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), this.jTextAreaInput.getFont(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-        generator.setOutputFolder(new File(trainDirectory));
-        String prefix = this.jTextFieldPrefix.getText();
-        if (prefix.trim().length() > 0) {
-            prefix += ".";
-        }
-        generator.setFileName(prefix + this.jTextFieldFileName.getText());
-        generator.setTracking((Float) this.jSpinnerTracking.getValue());
-        generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
-        generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
 
         this.jButtonGenerate.setEnabled(false);
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
         try {
-            generator.create();
-            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.\nBe sure to check the entries in font_properties file for accuracy.", trainDirectory));
+            String prefix = this.jTextFieldPrefix.getText();
+            if (prefix.trim().length() > 0) {
+                prefix += ".";
+            }
+
+            if (this.jCheckBoxText2Image.isSelected()) {
+                // execute Text2Image
+                TessTrainer trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
+                String outputbase = jTextFieldFileName.getText();
+                if (outputbase.endsWith(".tif")) {
+                    outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
+                }
+                trainer.text2image(inputTextFile.getPath(), prefix + outputbase, fontGen.getFontName(), jTextFieldFontFolder.getText());
+            } else {
+                TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), this.jTextAreaInput.getFont(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+                generator.setOutputFolder(new File(trainDirectory));
+
+                generator.setFileName(prefix + this.jTextFieldFileName.getText());
+                generator.setTracking((Float) this.jSpinnerTracking.getValue());
+                generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
+                generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
+                long lastModified = 0;
+                File fontpropFile = new File(trainDirectory, this.jTextFieldPrefix.getText() + ".font_properties");
+                if (fontpropFile.exists()) {
+                    lastModified = fontpropFile.lastModified();
+                }
+                generator.create();
+                String msg = "";
+                if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
+                    msg = "\nBe sure to check the entries in font_properties file for accuracy.";
+                }
+                JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.%s", trainDirectory, msg));
+            }
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
-        } catch (HeadlessException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         } finally {
             jButtonGenerate.setEnabled(true);
@@ -220,6 +279,9 @@ public class GuiWithGenerator extends GuiWithTools {
     void quit() {
         if (trainDirectory != null) {
             prefs.put("trainDirectory", trainDirectory);
+        }
+        if (fontFolder != null) {
+            prefs.put("fontFolder", fontFolder);
         }
 
         prefs.put("trainLanguage", jTextFieldPrefix.getText());

@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.DefaultKeyboardFocusManager;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
@@ -126,18 +127,18 @@ public class Gui extends javax.swing.JFrame {
         this.addWindowListener(
                 new WindowAdapter() {
 
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        quit();
-                    }
+            @Override
+            public void windowClosing(WindowEvent e) {
+                quit();
+            }
 
-                    @Override
-                    public void windowOpened(WindowEvent e) {
-                        updateSave(false);
-                        setExtendedState(prefs.getInt("windowState", Frame.NORMAL));
-                        populateMRUList();
-                    }
-                });
+            @Override
+            public void windowOpened(WindowEvent e) {
+                updateSave(false);
+                setExtendedState(prefs.getInt("windowState", Frame.NORMAL));
+                populateMRUList();
+            }
+        });
 
         setSize(
                 snap(prefs.getInt("frameWidth", 500), 300, screen.width),
@@ -292,6 +293,7 @@ public class Gui extends javax.swing.JFrame {
         jPanelTIFFBox = new javax.swing.JPanel();
         jToolBarGenerator = new javax.swing.JToolBar();
         jPanel3 = new javax.swing.JPanel();
+        jCheckBoxText2Image = new javax.swing.JCheckBox();
         jButtonInput = new javax.swing.JButton();
         jLabelOutput = new javax.swing.JLabel();
         jTextFieldOuputDir = new javax.swing.JTextField();
@@ -300,6 +302,15 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldPrefix.setText(prefs.get("trainLanguage", "eng"));
         jTextFieldFileName = new javax.swing.JTextField();
         jButtonFont = new javax.swing.JButton();
+        jPanelFontFolder = new javax.swing.JPanel();
+        jPanelFontFolder.setVisible(false);
+        FlowLayout layout1 = (FlowLayout) jPanelFontFolder.getLayout();
+        layout1.setVgap(0);
+        jTextFieldFontFolder = new javax.swing.JTextField();
+        jButtonBrowseFontFolder = new javax.swing.JButton();
+        jPanelFontAttrib = new javax.swing.JPanel();
+        FlowLayout layout = (FlowLayout) jPanelFontAttrib.getLayout();
+        layout.setVgap(0);
         jCheckBoxAntiAliasing = new javax.swing.JCheckBox();
         jLabelNoise = new javax.swing.JLabel();
         jSpinnerNoise = new javax.swing.JSpinner();
@@ -1009,6 +1020,18 @@ public class Gui extends javax.swing.JFrame {
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jCheckBoxText2Image.setText("text2image");
+        jCheckBoxText2Image.setToolTipText("Use text2image Command");
+        jCheckBoxText2Image.setContentAreaFilled(false);
+        jCheckBoxText2Image.setSelected(prefs.getBoolean("Text2Image", false));
+        jCheckBoxText2ImageActionPerformed(null);
+        jCheckBoxText2Image.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxText2ImageActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jCheckBoxText2Image);
+
         jButtonInput.setText("Input");
         jButtonInput.setToolTipText("Load Text File");
         jButtonInput.setFocusable(false);
@@ -1059,20 +1082,37 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel3.add(jButtonFont);
 
+        jTextFieldFontFolder.setToolTipText("Font Folder");
+        jTextFieldFontFolder.setEnabled(false);
+        jTextFieldFontFolder.setPreferredSize(new java.awt.Dimension(160, 24));
+        jPanelFontFolder.add(jTextFieldFontFolder);
+
+        jButtonBrowseFontFolder.setText("...");
+        jButtonBrowseFontFolder.setToolTipText("Browse");
+        jButtonBrowseFontFolder.setPreferredSize(new java.awt.Dimension(24, 23));
+        jButtonBrowseFontFolder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowseFontFolderActionPerformed(evt);
+            }
+        });
+        jPanelFontFolder.add(jButtonBrowseFontFolder);
+
+        jPanel3.add(jPanelFontFolder);
+
         jCheckBoxAntiAliasing.setText("Anti-Aliasing");
-        jPanel3.add(jCheckBoxAntiAliasing);
+        jPanelFontAttrib.add(jCheckBoxAntiAliasing);
 
         jLabelNoise.setText("Noise");
-        jPanel3.add(jLabelNoise);
+        jPanelFontAttrib.add(jLabelNoise);
 
         jSpinnerNoise.setModel(new javax.swing.SpinnerNumberModel(0, 0, 5, 1));
         jSpinnerNoise.setToolTipText("Add Noise to Image");
         jSpinnerNoise.setName("Noise"); // NOI18N
         jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 22));
-        jPanel3.add(jSpinnerNoise);
+        jPanelFontAttrib.add(jSpinnerNoise);
 
         jLabelTracking.setText("Letter Tracking");
-        jPanel3.add(jLabelTracking);
+        jPanelFontAttrib.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
         jSpinnerTracking.setToolTipText("Adjust Letter Tracking");
@@ -1082,25 +1122,27 @@ public class Gui extends javax.swing.JFrame {
                 jSpinnerTrackingStateChanged(evt);
             }
         });
-        jPanel3.add(jSpinnerTracking);
+        jPanelFontAttrib.add(jSpinnerTracking);
 
         jLabelW1.setText("W");
-        jPanel3.add(jLabelW1);
+        jPanelFontAttrib.add(jLabelW1);
 
         jSpinnerW1.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 10));
         jSpinnerW1.setToolTipText("Image Width");
         jSpinnerW1.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW1, "#"));
         jSpinnerW1.setPreferredSize(new java.awt.Dimension(63, 22));
-        jPanel3.add(jSpinnerW1);
+        jPanelFontAttrib.add(jSpinnerW1);
 
         jLabelH1.setText("H");
-        jPanel3.add(jLabelH1);
+        jPanelFontAttrib.add(jLabelH1);
 
         jSpinnerH1.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 10));
         jSpinnerH1.setToolTipText("Image Height");
         jSpinnerH1.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH1, "#"));
         jSpinnerH1.setPreferredSize(new java.awt.Dimension(63, 22));
-        jPanel3.add(jSpinnerH1);
+        jPanelFontAttrib.add(jSpinnerH1);
+
+        jPanel3.add(jPanelFontAttrib);
 
         jButtonGenerate.setText("Generate");
         jButtonGenerate.setToolTipText("Generate TIFF/Box");
@@ -1727,6 +1769,7 @@ public class Gui extends javax.swing.JFrame {
         }
 
         prefs.putInt("filterIndex", filterIndex);
+        prefs.putBoolean("Text2Image", jCheckBoxText2Image.isSelected());
 
         System.exit(0);
     }
@@ -2039,7 +2082,7 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemMergeTiffActionPerformed
 
 	void jMenuItemSplitTiffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSplitTiffActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+            JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemSplitTiffActionPerformed
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
@@ -2167,6 +2210,16 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonBrowseOutputDirActionPerformed
 
+    private void jCheckBoxText2ImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxText2ImageActionPerformed
+        this.jPanelFontAttrib.setVisible(!this.jCheckBoxText2Image.isSelected());
+        this.jPanelFontFolder.setVisible(this.jCheckBoxText2Image.isSelected());
+        this.jTextAreaInput.setEnabled(!this.jCheckBoxText2Image.isSelected());
+    }//GEN-LAST:event_jCheckBoxText2ImageActionPerformed
+
+    void jButtonBrowseFontFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseFontFolderActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jButtonBrowseFontFolderActionPerformed
+
     /**
      * Gets a subimage for display in boxview.
      *
@@ -2219,6 +2272,7 @@ public class Gui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler2;
     protected javax.swing.JButton jButtonBrowseData;
+    private javax.swing.JButton jButtonBrowseFontFolder;
     private javax.swing.JButton jButtonBrowseOutputDir;
     protected javax.swing.JButton jButtonBrowseTess;
     protected javax.swing.JButton jButtonCancel;
@@ -2246,6 +2300,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JButton jButtonValidate;
     protected javax.swing.JCheckBox jCheckBoxAntiAliasing;
     protected javax.swing.JCheckBox jCheckBoxRTL;
+    protected javax.swing.JCheckBox jCheckBoxText2Image;
     protected javax.swing.JComboBox jComboBoxOps;
     protected javax.swing.JDialog jDialogValidationResult;
     private javax.swing.JFileChooser jFileChooserInputImage;
@@ -2302,6 +2357,8 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JPanel jPanelCoord;
     private javax.swing.JPanel jPanelEditor;
     private javax.swing.JPanel jPanelFind;
+    private javax.swing.JPanel jPanelFontAttrib;
+    private javax.swing.JPanel jPanelFontFolder;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelNorthContainer;
     private javax.swing.JPanel jPanelSpinner;
@@ -2345,6 +2402,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JTextField jTextFieldDataDir;
     protected javax.swing.JTextField jTextFieldFileName;
     protected javax.swing.JTextField jTextFieldFind;
+    protected javax.swing.JTextField jTextFieldFontFolder;
     protected javax.swing.JTextField jTextFieldLang;
     protected javax.swing.JTextField jTextFieldOuputDir;
     protected javax.swing.JTextField jTextFieldPrefix;
