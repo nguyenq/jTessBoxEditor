@@ -231,6 +231,12 @@ public class GuiWithGenerator extends GuiWithTools {
                 prefix += ".";
             }
 
+            long lastModified = 0;
+            File fontpropFile = new File(trainDirectory, this.jTextFieldPrefix.getText() + ".font_properties");
+            if (fontpropFile.exists()) {
+                lastModified = fontpropFile.lastModified();
+            }
+
             if (this.jCheckBoxText2Image.isSelected()) {
                 // execute Text2Image
                 TessTrainer trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
@@ -238,27 +244,24 @@ public class GuiWithGenerator extends GuiWithTools {
                 if (outputbase.endsWith(".tif")) {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
-                trainer.text2image(inputTextFile.getPath(), prefix + outputbase, fontGen.getFontName(), jTextFieldFontFolder.getText());
+                trainer.text2image(inputTextFile.getPath(), trainDirectory + "/" + prefix + outputbase, fontGen.getFontName(), jTextFieldFontFolder.getText());
             } else {
                 TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), this.jTextAreaInput.getFont(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
                 generator.setOutputFolder(new File(trainDirectory));
-
                 generator.setFileName(prefix + this.jTextFieldFileName.getText());
                 generator.setTracking((Float) this.jSpinnerTracking.getValue());
                 generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
                 generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
-                long lastModified = 0;
-                File fontpropFile = new File(trainDirectory, this.jTextFieldPrefix.getText() + ".font_properties");
-                if (fontpropFile.exists()) {
-                    lastModified = fontpropFile.lastModified();
-                }
                 generator.create();
-                String msg = "";
-                if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
-                    msg = "\nBe sure to check the entries in font_properties file for accuracy.";
-                }
-                JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.%s", trainDirectory, msg));
             }
+            
+            // updates font_properties file
+            FontProperties.updateFile(new File(trainDirectory), prefix + this.jTextFieldFileName.getText(), font);
+            String msg = "";
+            if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
+                msg = "\nBe sure to check the entries in font_properties file for accuracy.";
+            }
+            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.%s", trainDirectory, msg));
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {

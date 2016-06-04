@@ -32,7 +32,7 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
 
-    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font='%s' --fonts_dir=%s";
+    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --fonts_dir=%s";
     private static final String cmdmake_box = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
     private static final String cmdtess_train = "tesseract imageFile boxFile box.train";
     private static final String cmdunicharset_extractor = "unicharset_extractor"; // lang.fontname.exp0.box lang.fontname.exp1.box ...

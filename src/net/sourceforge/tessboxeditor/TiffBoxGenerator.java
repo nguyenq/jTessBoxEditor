@@ -19,10 +19,6 @@ import java.awt.*;
 import java.awt.font.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +81,6 @@ public class TiffBoxGenerator {
         this.drawPages();
         this.saveMultipageTiff();
         this.saveBoxFile();
-        this.updateFontPropertiesFile();
     }
 
     /**
@@ -229,35 +224,6 @@ public class TiffBoxGenerator {
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Creates or updates font_properties file.
-     */
-    void updateFontPropertiesFile() {
-        int index = fileName.indexOf(".");
-        File fontpropFile = new File(outputFolder, fileName.substring(0, index) + ".font_properties");
-        String fontName = fileName.substring(index + 1, fileName.lastIndexOf(".exp"));
-
-        try {
-            if (fontpropFile.exists()) {
-                List<String> lines = Files.readAllLines(Paths.get(fontpropFile.getPath()), Charset.defaultCharset());
-//                boolean fontNameExist = lines.stream().anyMatch((s) -> s.startsWith(fontName + " ")); // Java 8
-                for (String str : lines) {
-                    if (str.startsWith(fontName + " ")) {
-                        return; // font entry already exists, skip
-                    }
-                }
-            } else {
-                fontpropFile.createNewFile();
-            }
-
-            //<fontname> <italic> <bold> <fixed> <serif> <fraktur>
-            String entry = String.format("%s %s %s %s %s %s\n", fontName, font.isItalic() ? "1" : "0", font.isBold() ? "1" : "0", "0", "0", "0");
-            Files.write(Paths.get(fontpropFile.getPath()), entry.getBytes(), StandardOpenOption.APPEND);
-        } catch (Exception e) {
-            logger.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
