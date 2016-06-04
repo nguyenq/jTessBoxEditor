@@ -21,7 +21,7 @@ import javax.imageio.*;
 import javax.imageio.stream.*;
 import java.awt.image.*;
 import javax.imageio.metadata.IIOMetadata;
-import com.sun.media.imageio.plugins.tiff.*;
+import com.github.jaiimageio.plugins.tiff.*;
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadataNode;
 
