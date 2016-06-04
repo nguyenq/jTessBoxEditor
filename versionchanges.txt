@@ -86,4 +86,4 @@ Version 1.5 (8 March 2016)
 
 Version 1.6 (4 June 2016)
 - Upgrade Tesseract training executable 3.05dev (from https://github.com/UB-Mannheim/tesseract/wiki)
-- Incorporate new text2image command (currently not usable on Windows)
+- Incorporate new training commands, including text2image (currently not usable on Windows)
