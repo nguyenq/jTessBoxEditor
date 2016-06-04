@@ -147,10 +147,10 @@ public class TessTrainer {
             makeBox();
         }
 
-        String[] files = getImageFiles();
+        String[] files = getImageFilesWithBox();
 
         if (files.length == 0) {
-            throw new RuntimeException("There are no training images.");
+            throw new RuntimeException("There are no training image/box pairs.");
         }
 
         logger.info("Run Tesseract for Training");
@@ -343,6 +343,23 @@ public class TessTrainer {
         });
 
         return files;
+    }
+
+    /**
+     * Gets training image files with box.
+     *
+     * @return
+     */
+    String[] getImageFilesWithBox() {
+        List<String> filesWithBox = new ArrayList<String>();
+        for (String file : getImageFiles()) {
+            String withoutExt = TextUtilities.stripExtension(file);
+            if (new File(inputDataDir, withoutExt + ".box").exists()) {
+                filesWithBox.add(file);
+            }
+        }
+
+        return filesWithBox.toArray(new String[0]);
     }
 
     /**

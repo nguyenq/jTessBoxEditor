@@ -294,6 +294,8 @@ public class Gui extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jButtonInput = new javax.swing.JButton();
         jLabelOutput = new javax.swing.JLabel();
+        jTextFieldOuputDir = new javax.swing.JTextField();
+        jButtonBrowseOutputDir = new javax.swing.JButton();
         jTextFieldPrefix = new javax.swing.JTextField();
         jTextFieldPrefix.setText(prefs.get("trainLanguage", "eng"));
         jTextFieldFileName = new javax.swing.JTextField();
@@ -1021,6 +1023,21 @@ public class Gui extends javax.swing.JFrame {
 
         jLabelOutput.setText("Output");
         jPanel3.add(jLabelOutput);
+
+        jTextFieldOuputDir.setToolTipText("Ouput Directory");
+        jTextFieldOuputDir.setEnabled(false);
+        jTextFieldOuputDir.setPreferredSize(new java.awt.Dimension(180, 24));
+        jPanel3.add(jTextFieldOuputDir);
+
+        jButtonBrowseOutputDir.setText("...");
+        jButtonBrowseOutputDir.setToolTipText("Browse");
+        jButtonBrowseOutputDir.setPreferredSize(new java.awt.Dimension(24, 23));
+        jButtonBrowseOutputDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowseOutputDirActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonBrowseOutputDir);
 
         jTextFieldPrefix.setToolTipText("Prefix (Language Code)");
         jTextFieldPrefix.setPreferredSize(new java.awt.Dimension(38, 24));
@@ -2146,6 +2163,10 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldCharacterKeyReleased
 
+    void jButtonBrowseOutputDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseOutputDirActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jButtonBrowseOutputDirActionPerformed
+
     /**
      * Gets a subimage for display in boxview.
      *
@@ -2198,6 +2219,7 @@ public class Gui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler2;
     protected javax.swing.JButton jButtonBrowseData;
+    private javax.swing.JButton jButtonBrowseOutputDir;
     protected javax.swing.JButton jButtonBrowseTess;
     protected javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonClear;
@@ -2324,6 +2346,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JTextField jTextFieldFileName;
     protected javax.swing.JTextField jTextFieldFind;
     protected javax.swing.JTextField jTextFieldLang;
+    protected javax.swing.JTextField jTextFieldOuputDir;
     protected javax.swing.JTextField jTextFieldPrefix;
     protected javax.swing.JTextField jTextFieldTessDir;
     private javax.swing.JToolBar jToolBarEditor;

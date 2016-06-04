@@ -32,14 +32,15 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithGenerator extends GuiWithTools {
 
-    private File selectedFile;
+    private File inputTextFile;
     private String trainDirectory;
     private Font fontGen;
     private final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
     private JFileChooser jFileChooserInputText;
+    private JFileChooser jFileChooserOutputDir;
 
     private final static Logger logger = Logger.getLogger(GuiWithGenerator.class.getName());
-    
+
     public GuiWithGenerator() {
         initComponents();
 
@@ -60,35 +61,43 @@ public class GuiWithGenerator extends GuiWithTools {
         this.jButtonFont.setText(fontDesc(fontGen));
         this.jTextFieldFileName.setText(createFileName(fontGen) + ".exp0.tif");
 
+        trainDirectory = prefs.get("trainDirectory", System.getProperty("user.home"));
+        this.jTextFieldOuputDir.setText(trainDirectory);
+
         jFileChooserInputText = new JFileChooser();
         FileFilter textFilter = new SimpleFilter("txt", "Text Files");
         jFileChooserInputText.addChoosableFileFilter(textFilter);
         jFileChooserInputText.setAcceptAllFileFilterUsed(false);
-        trainDirectory = prefs.get("trainDirectory", null);
-        jFileChooserInputText.setCurrentDirectory(trainDirectory == null ? null : new File(trainDirectory));
+        jFileChooserInputText.setCurrentDirectory(new File(trainDirectory));
+
+        jFileChooserOutputDir = new JFileChooser();
+        jFileChooserOutputDir.setApproveButtonText("Set");
+        jFileChooserOutputDir.setDialogTitle("Set Output Directory");
+        jFileChooserOutputDir.setAcceptAllFileFilterUsed(false);
+        jFileChooserOutputDir.setCurrentDirectory(new File(trainDirectory));
+        jFileChooserOutputDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     }
 
     @Override
     void jButtonInputActionPerformed(java.awt.event.ActionEvent evt) {
         if (jFileChooserInputText.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            trainDirectory = jFileChooserInputText.getCurrentDirectory().getPath();
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
 
             try {
-                selectedFile = jFileChooserInputText.getSelectedFile();
-                openTextFile(selectedFile);
+                inputTextFile = jFileChooserInputText.getSelectedFile();
+                openTextFile(inputTextFile);
             } catch (Exception e) {
                 logger.log(Level.WARNING, e.getMessage(), e);
             } finally {
                 SwingUtilities.invokeLater(
                         new Runnable() {
-                            @Override
-                            public void run() {
-                                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                                getGlassPane().setVisible(false);
-                            }
-                        });
+                    @Override
+                    public void run() {
+                        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                        getGlassPane().setVisible(false);
+                    }
+                });
             }
         }
     }
@@ -112,6 +121,14 @@ public class GuiWithGenerator extends GuiWithTools {
             }
         } catch (IOException | BadLocationException e) {
             logger.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+
+    @Override
+    void jButtonBrowseOutputDirActionPerformed(java.awt.event.ActionEvent evt) {
+        if (jFileChooserOutputDir.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            trainDirectory = jFileChooserOutputDir.getSelectedFile().getPath();
+            this.jTextFieldOuputDir.setText(trainDirectory);
         }
     }
 
@@ -142,12 +159,12 @@ public class GuiWithGenerator extends GuiWithTools {
             } finally {
                 SwingUtilities.invokeLater(
                         new Runnable() {
-                            @Override
-                            public void run() {
-                                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                                getGlassPane().setVisible(false);
-                            }
-                        });
+                    @Override
+                    public void run() {
+                        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                        getGlassPane().setVisible(false);
+                    }
+                });
             }
         }
     }
@@ -166,14 +183,7 @@ public class GuiWithGenerator extends GuiWithTools {
         }
 
         TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), this.jTextAreaInput.getFont(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-        File outputFolder;
-
-        if (selectedFile != null) {
-            outputFolder = selectedFile.getParentFile();
-        } else {
-            outputFolder = new File(System.getProperty("user.home"));
-        }
-        generator.setOutputFolder(outputFolder);
+        generator.setOutputFolder(new File(trainDirectory));
         String prefix = this.jTextFieldPrefix.getText();
         if (prefix.trim().length() > 0) {
             prefix += ".";
@@ -189,7 +199,7 @@ public class GuiWithGenerator extends GuiWithTools {
 
         try {
             generator.create();
-            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.", outputFolder.getPath()));
+            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.\nBe sure to check the entries in font_properties file for accuracy.", trainDirectory));
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (HeadlessException e) {

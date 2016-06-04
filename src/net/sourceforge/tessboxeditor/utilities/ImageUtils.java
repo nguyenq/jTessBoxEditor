@@ -24,9 +24,10 @@ public class ImageUtils {
     /**
      * Adds noise to an image. Adapted from an algorithm in
      * http://www.gutgames.com/post/Adding-Noise-to-an-Image-in-C.aspx
+     *
      * @param originalImage
      * @param amount
-     * @return 
+     * @return
      */
     public static BufferedImage addNoise(BufferedImage originalImage, int amount) {
         BufferedImage targetImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY);

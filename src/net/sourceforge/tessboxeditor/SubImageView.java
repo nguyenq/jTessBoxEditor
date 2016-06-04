@@ -1,9 +1,8 @@
 package net.sourceforge.tessboxeditor;
 
-import net.sourceforge.tessboxeditor.components.ImageIconScalable;
-
 import javax.swing.*;
 import java.awt.*;
+import net.sourceforge.tessboxeditor.components.ImageIconScalable;
 
 /**
  * View of individual box.

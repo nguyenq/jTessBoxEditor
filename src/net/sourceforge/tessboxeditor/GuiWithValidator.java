@@ -50,7 +50,6 @@ public class GuiWithValidator extends GuiWithTrainer {
         jFileChooserValidatingImage.setDialogTitle("Select Image File");
         FileFilter allImagesFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff", "All Images");
         jFileChooserValidatingImage.setFileFilter(allImagesFilter);
-        jFileChooserValidatingImage.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
     }
 
     @Override
@@ -63,6 +62,8 @@ public class GuiWithValidator extends GuiWithTrainer {
             JOptionPane.showMessageDialog(this, message, DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        jFileChooserValidatingImage.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
 
         // perform OCR on the training image
         if (jFileChooserValidatingImage.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
