@@ -256,7 +256,7 @@ public class GuiWithGenerator extends GuiWithTools {
             }
             
             // updates font_properties file
-            FontProperties.updateFile(new File(trainDirectory), prefix + this.jTextFieldFileName.getText(), font);
+            FontProperties.updateFile(new File(trainDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
             String msg = "";
             if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
                 msg = "\nBe sure to check the entries in font_properties file for accuracy.";

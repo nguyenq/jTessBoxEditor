@@ -38,7 +38,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
     }
 
     private void initComponents() {
-        tessDirectory = prefs.get("tessDirectory", new File(System.getProperty("user.dir"), "tesseract-ocr").getPath());
+        tessDirectory = prefs.get("tessDirectory", WINDOWS ? new File(System.getProperty("user.dir"), "tesseract-ocr").getPath() : "/usr/bin");
         jTextFieldTessDir.setText(tessDirectory);
 
         jFileChooserTessExecutables = new javax.swing.JFileChooser();
