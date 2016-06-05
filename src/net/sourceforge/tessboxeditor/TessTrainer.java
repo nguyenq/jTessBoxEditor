@@ -109,7 +109,7 @@ public class TessTrainer {
     void text2image(String inputTextFile, String outputbase, String font, String fontFolder) throws Exception {
         logger.info("text2image");
         writeMessage("** text2image **");
-        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.replace(" ", "_"), fontFolder));
+        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.replace(" ", "_").replace("Oblique", "Italic"), fontFolder));
         cmd.set(3, cmd.get(3).replace("_", " ")); // handle spaces in font name
         runCommand(cmd);
     }
