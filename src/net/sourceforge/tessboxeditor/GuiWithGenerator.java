@@ -33,11 +33,10 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 public class GuiWithGenerator extends GuiWithTools {
 
     private File inputTextFile;
-    private String trainDirectory;
+    protected String trainDataDirectory;
     private Font fontGen;
     private String fontFolder;
     protected String tessDirectory;
-    protected String trainDataDirectory;
     private final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
     private JFileChooser jFileChooserInputText;
     private JFileChooser jFileChooserOutputDir;
@@ -65,8 +64,8 @@ public class GuiWithGenerator extends GuiWithTools {
         this.jButtonFont.setText(fontDesc(fontGen));
         this.jTextFieldFileName.setText(createFileName(fontGen) + ".exp0.tif");
 
-        trainDirectory = prefs.get("trainDirectory", System.getProperty("user.home"));
-        this.jTextFieldOuputDir.setText(trainDirectory);
+        trainDataDirectory = prefs.get("trainDataDirectory", System.getProperty("user.home"));
+        this.jTextFieldOuputDir.setText(trainDataDirectory);
 
         fontFolder = prefs.get("fontFolder", getFontFolder());
         this.jTextFieldFontFolder.setText(fontFolder);
@@ -75,13 +74,13 @@ public class GuiWithGenerator extends GuiWithTools {
         FileFilter textFilter = new SimpleFilter("txt", "Text Files");
         jFileChooserInputText.addChoosableFileFilter(textFilter);
         jFileChooserInputText.setAcceptAllFileFilterUsed(false);
-        jFileChooserInputText.setCurrentDirectory(new File(trainDirectory));
+        jFileChooserInputText.setCurrentDirectory(new File(trainDataDirectory));
 
         jFileChooserOutputDir = new JFileChooser();
         jFileChooserOutputDir.setApproveButtonText("Set");
         jFileChooserOutputDir.setDialogTitle("Set Output Directory");
         jFileChooserOutputDir.setAcceptAllFileFilterUsed(false);
-        jFileChooserOutputDir.setCurrentDirectory(new File(trainDirectory));
+        jFileChooserOutputDir.setCurrentDirectory(new File(trainDataDirectory));
         jFileChooserOutputDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         jFileChooserFontFolder = new JFileChooser();
@@ -158,8 +157,8 @@ public class GuiWithGenerator extends GuiWithTools {
     @Override
     void jButtonBrowseOutputDirActionPerformed(java.awt.event.ActionEvent evt) {
         if (jFileChooserOutputDir.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            trainDirectory = jFileChooserOutputDir.getSelectedFile().getPath();
-            this.jTextFieldOuputDir.setText(trainDirectory);
+            trainDataDirectory = jFileChooserOutputDir.getSelectedFile().getPath();
+            this.jTextFieldOuputDir.setText(trainDataDirectory);
         }
     }
 
@@ -232,7 +231,7 @@ public class GuiWithGenerator extends GuiWithTools {
             }
 
             long lastModified = 0;
-            File fontpropFile = new File(trainDirectory, this.jTextFieldPrefix.getText() + ".font_properties");
+            File fontpropFile = new File(trainDataDirectory, prefix + "font_properties");
             if (fontpropFile.exists()) {
                 lastModified = fontpropFile.lastModified();
             }
@@ -244,10 +243,10 @@ public class GuiWithGenerator extends GuiWithTools {
                 if (outputbase.endsWith(".tif")) {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
-                trainer.text2image(inputTextFile.getPath(), trainDirectory + "/" + prefix + outputbase, fontGen.getFontName(), jTextFieldFontFolder.getText());
+                trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen.getFontName(), jTextFieldFontFolder.getText());
             } else {
                 TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), this.jTextAreaInput.getFont(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-                generator.setOutputFolder(new File(trainDirectory));
+                generator.setOutputFolder(new File(trainDataDirectory));
                 generator.setFileName(prefix + this.jTextFieldFileName.getText());
                 generator.setTracking((Float) this.jSpinnerTracking.getValue());
                 generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
@@ -256,12 +255,12 @@ public class GuiWithGenerator extends GuiWithTools {
             }
             
             // updates font_properties file
-            FontProperties.updateFile(new File(trainDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
+            FontProperties.updateFile(new File(trainDataDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
             String msg = "";
             if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
                 msg = "\nBe sure to check the entries in font_properties file for accuracy.";
             }
-            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.%s", trainDirectory, msg));
+            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.%s", trainDataDirectory, msg));
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
@@ -280,8 +279,8 @@ public class GuiWithGenerator extends GuiWithTools {
 
     @Override
     void quit() {
-        if (trainDirectory != null) {
-            prefs.put("trainDirectory", trainDirectory);
+        if (trainDataDirectory != null) {
+            prefs.put("trainDataDirectory", trainDataDirectory);
         }
         if (fontFolder != null) {
             prefs.put("fontFolder", fontFolder);
