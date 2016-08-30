@@ -356,7 +356,7 @@ public class TiffBoxGenerator {
                     images[i] = ImageUtils.addNoise(images[i], noiseAmount);
                 }
             }
-            ImageIOHelper.mergeTiff(images, tiffFile);
+            ImageIOHelper.mergeTiff(images, tiffFile, isAntiAliased ? "LZW" : "CCITT T.6");  // CCITT T.6 for bitonal; LZW for others
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }

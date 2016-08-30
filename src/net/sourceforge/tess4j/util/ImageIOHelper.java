@@ -235,13 +235,25 @@ public class ImageIOHelper {
      * @throws IOException
      */
     public static void mergeTiff(BufferedImage[] inputImages, File outputTiff) throws IOException {
+        mergeTiff(inputImages, outputTiff, null);
+    }
+
+    /**
+     * Merges multiple images into one TIFF image.
+     *
+     * @param inputImages an array of <code>BufferedImage</code>
+     * @param outputTiff the output TIFF file
+     * @param compressionType valid values: LZW, CCITT T.6, PackBits
+     * @throws IOException
+     */
+    public static void mergeTiff(BufferedImage[] inputImages, File outputTiff, String compressionType) throws IOException {
         List<IIOImage> imageList = new ArrayList<IIOImage>();
 
         for (BufferedImage inputImage : inputImages) {
             imageList.add(new IIOImage(inputImage, null, null));
         }
 
-        mergeTiff(imageList, outputTiff);
+        mergeTiff(imageList, outputTiff, compressionType);
     }
 
     /**
@@ -252,6 +264,18 @@ public class ImageIOHelper {
      * @throws IOException
      */
     public static void mergeTiff(List<IIOImage> imageList, File outputTiff) throws IOException {
+        mergeTiff(imageList, outputTiff, null);
+    }
+
+    /**
+     * Merges multiple images into one TIFF image.
+     *
+     * @param imageList a list of <code>IIOImage</code> objects
+     * @param outputTiff the output TIFF file
+     * @param compressionType valid values:  LZW, CCITT T.6, PackBits
+     * @throws IOException
+     */
+    public static void mergeTiff(List<IIOImage> imageList, File outputTiff, String compressionType) throws IOException {
         if (imageList == null || imageList.isEmpty()) {
             // if no image
             return;
@@ -267,6 +291,10 @@ public class ImageIOHelper {
         //Set up the writeParam
         TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
 //        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED); // comment out to preserve original sizes
+        if (compressionType != null) {
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            tiffWriteParam.setCompressionType(compressionType);
+        }
 
         //Get the stream metadata
         IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
