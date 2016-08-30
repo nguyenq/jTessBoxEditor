@@ -308,6 +308,8 @@ public class Gui extends javax.swing.JFrame {
         layout1.setVgap(0);
         jTextFieldFontFolder = new javax.swing.JTextField();
         jButtonBrowseFontFolder = new javax.swing.JButton();
+        jLabelExposure = new javax.swing.JLabel();
+        jSpinnerExposure = new javax.swing.JSpinner();
         jPanelFontAttrib = new javax.swing.JPanel();
         FlowLayout layout = (FlowLayout) jPanelFontAttrib.getLayout();
         layout.setVgap(0);
@@ -1084,7 +1086,7 @@ public class Gui extends javax.swing.JFrame {
 
         jTextFieldFontFolder.setToolTipText("Font Folder");
         jTextFieldFontFolder.setEnabled(false);
-        jTextFieldFontFolder.setPreferredSize(new java.awt.Dimension(160, 24));
+        jTextFieldFontFolder.setPreferredSize(new java.awt.Dimension(120, 24));
         jPanelFontFolder.add(jTextFieldFontFolder);
 
         jButtonBrowseFontFolder.setText("...");
@@ -1096,6 +1098,13 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanelFontFolder.add(jButtonBrowseFontFolder);
+
+        jLabelExposure.setText("Exposure");
+        jPanelFontFolder.add(jLabelExposure);
+
+        jSpinnerExposure.setModel(new javax.swing.SpinnerNumberModel(0, -2, 2, 1));
+        jSpinnerExposure.setToolTipText("Exposure Level");
+        jPanelFontFolder.add(jSpinnerExposure);
 
         jPanel3.add(jPanelFontFolder);
 
@@ -1111,8 +1120,10 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerNoise.setPreferredSize(new java.awt.Dimension(47, 22));
         jPanelFontAttrib.add(jSpinnerNoise);
 
+        jPanel3.add(jPanelFontAttrib);
+
         jLabelTracking.setText("Letter Tracking");
-        jPanelFontAttrib.add(jLabelTracking);
+        jPanel3.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
         jSpinnerTracking.setToolTipText("Adjust Letter Tracking");
@@ -1122,27 +1133,25 @@ public class Gui extends javax.swing.JFrame {
                 jSpinnerTrackingStateChanged(evt);
             }
         });
-        jPanelFontAttrib.add(jSpinnerTracking);
+        jPanel3.add(jSpinnerTracking);
 
         jLabelW1.setText("W");
-        jPanelFontAttrib.add(jLabelW1);
+        jPanel3.add(jLabelW1);
 
         jSpinnerW1.setModel(new javax.swing.SpinnerNumberModel(2550, 600, 2550, 10));
         jSpinnerW1.setToolTipText("Image Width");
         jSpinnerW1.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerW1, "#"));
         jSpinnerW1.setPreferredSize(new java.awt.Dimension(63, 22));
-        jPanelFontAttrib.add(jSpinnerW1);
+        jPanel3.add(jSpinnerW1);
 
         jLabelH1.setText("H");
-        jPanelFontAttrib.add(jLabelH1);
+        jPanel3.add(jLabelH1);
 
         jSpinnerH1.setModel(new javax.swing.SpinnerNumberModel(3300, 400, 3300, 10));
         jSpinnerH1.setToolTipText("Image Height");
         jSpinnerH1.setEditor(new javax.swing.JSpinner.NumberEditor(jSpinnerH1, "#"));
         jSpinnerH1.setPreferredSize(new java.awt.Dimension(63, 22));
-        jPanelFontAttrib.add(jSpinnerH1);
-
-        jPanel3.add(jPanelFontAttrib);
+        jPanel3.add(jSpinnerH1);
 
         jButtonGenerate.setText("Generate");
         jButtonGenerate.setToolTipText("Generate TIFF/Box");
@@ -2310,6 +2319,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelCharacter;
     private javax.swing.JLabel jLabelCodepoint;
+    private javax.swing.JLabel jLabelExposure;
     private javax.swing.JLabel jLabelH;
     private javax.swing.JLabel jLabelH1;
     protected javax.swing.JLabel jLabelImage;
@@ -2377,6 +2387,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
     private javax.swing.JPopupMenu.Separator jSeparatorLAF;
     private javax.swing.JPopupMenu.Separator jSeparatorRecentFiles;
+    protected javax.swing.JSpinner jSpinnerExposure;
     protected javax.swing.JSpinner jSpinnerH;
     protected javax.swing.JSpinner jSpinnerH1;
     private javax.swing.JSpinner jSpinnerMargin;

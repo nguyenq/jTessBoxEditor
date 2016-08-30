@@ -32,13 +32,13 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
 
-    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --fonts_dir=%s";
+    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --ptsize=%d --fonts_dir=%s --exposure=%d --char_spacing=%f --xsize=%d --ysize=%d";
     private static final String cmdmake_box = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
     private static final String cmdtess_train = "tesseract imageFile boxFile box.train";
     private static final String cmdunicharset_extractor = "unicharset_extractor"; // lang.fontname.exp0.box lang.fontname.exp1.box ...
     private static final String cmdset_unicharset_properties = "set_unicharset_properties -U unicharset -O unicharset --script_dir=%s";
     private static final String cmdshapeclustering = "shapeclustering -F %s.font_properties -U unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
-    private static final String cmdmftraining = "mftraining -F %1$s.font_properties -U unicharset -O %1$s.unicharset"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
+    private static final String cmdmftraining = "mftraining -F %1$s.font_properties -U unicharset -O %1$s.unichars%set"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private static final String cmdcntraining = "cntraining"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private static final String cmdwordlist2dawg = "wordlist2dawg %2$s %1$s.frequent_words_list %1$s.freq-dawg %1$s.unicharset";
     private static final String cmdwordlist2dawg2 = "wordlist2dawg %2$s %1$s.words_list %1$s.word-dawg %1$s.unicharset";
@@ -106,10 +106,10 @@ public class TessTrainer {
         }
     }
     
-    void text2image(String inputTextFile, String outputbase, String font, String fontFolder) throws Exception {
+    void text2image(String inputTextFile, String outputbase, String font, int ptsize, String fontFolder, int exposure, float char_spacing, int width, int height) throws Exception {
         logger.info("text2image");
         writeMessage("** text2image **");
-        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.replace(" ", "_").replace("Oblique", "Italic"), fontFolder));
+        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.replace(" ", "_").replace("Oblique", "Italic"), ptsize, fontFolder, exposure, char_spacing, width, height));
         cmd.set(3, cmd.get(3).replace("_", " ")); // handle spaces in font name
         runCommand(cmd);
     }

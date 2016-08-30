@@ -1562,7 +1562,7 @@
                             <Property name="toolTipText" type="java.lang.String" value="Font Folder"/>
                             <Property name="enabled" type="boolean" value="false"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[160, 24]"/>
+                              <Dimension value="[120, 24]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1580,6 +1580,22 @@
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBrowseFontFolderActionPerformed"/>
                           </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabelExposure">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Exposure"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JSpinner" name="jSpinnerExposure">
+                          <Properties>
+                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                              <SpinnerModel initial="0" maximum="2" minimum="-2" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="Exposure Level"/>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+                          </AuxValues>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -1618,74 +1634,74 @@
                             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
                           </AuxValues>
                         </Component>
-                        <Component class="javax.swing.JLabel" name="jLabelTracking">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Letter Tracking"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JSpinner" name="jSpinnerTracking">
-                          <Properties>
-                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                              <SpinnerModel initial="0.0" maximum="0.1" minimum="-0.04" numberType="java.lang.Float" stepSize="0.01" type="number"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Adjust Letter Tracking"/>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[64, 22]"/>
-                            </Property>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerTrackingStateChanged"/>
-                          </Events>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                          </AuxValues>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="jLabelW1">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="W"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JSpinner" name="jSpinnerW1">
-                          <Properties>
-                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                              <SpinnerModel initial="2550" maximum="2550" minimum="600" numberType="java.lang.Integer" stepSize="10" type="number"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Image Width"/>
-                            <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
-                              <SpinnerEditor format="#" type="3"/>
-                            </Property>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[63, 22]"/>
-                            </Property>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                          </AuxValues>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="jLabelH1">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="H"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JSpinner" name="jSpinnerH1">
-                          <Properties>
-                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                              <SpinnerModel initial="3300" maximum="3300" minimum="400" numberType="java.lang.Integer" stepSize="10" type="number"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="Image Height"/>
-                            <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
-                              <SpinnerEditor format="#" type="3"/>
-                            </Property>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[63, 22]"/>
-                            </Property>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-                          </AuxValues>
-                        </Component>
                       </SubComponents>
                     </Container>
+                    <Component class="javax.swing.JLabel" name="jLabelTracking">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Letter Tracking"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="jSpinnerTracking">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="0.0" maximum="0.1" minimum="-0.04" numberType="java.lang.Float" stepSize="0.01" type="number"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Adjust Letter Tracking"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[64, 22]"/>
+                        </Property>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSpinnerTrackingStateChanged"/>
+                      </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+                      </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabelW1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="W"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="jSpinnerW1">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="2550" maximum="2550" minimum="600" numberType="java.lang.Integer" stepSize="10" type="number"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Image Width"/>
+                        <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
+                          <SpinnerEditor format="#" type="3"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[63, 22]"/>
+                        </Property>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+                      </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabelH1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="H"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="jSpinnerH1">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="3300" maximum="3300" minimum="400" numberType="java.lang.Integer" stepSize="10" type="number"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Image Height"/>
+                        <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
+                          <SpinnerEditor format="#" type="3"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[63, 22]"/>
+                        </Property>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+                      </AuxValues>
+                    </Component>
                     <Component class="javax.swing.JButton" name="jButtonGenerate">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Generate"/>
