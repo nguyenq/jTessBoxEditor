@@ -43,6 +43,8 @@ public class TessTrainer {
     private static final String cmdcntraining = "cntraining"; // lang.fontname.exp0.tr lang.fontname.exp1.tr ...";
     private static final String cmdwordlist2dawg = "wordlist2dawg %2$s %1$s.frequent_words_list %1$s.freq-dawg %1$s.unicharset";
     private static final String cmdwordlist2dawg2 = "wordlist2dawg %2$s %1$s.words_list %1$s.word-dawg %1$s.unicharset";
+    private static final String cmdpunc2dawg = "wordlist2dawg %2$s %1$s.punc %1$s.punc-dawg %1$s.unicharset";
+    private static final String cmdnumber2dawg = "wordlist2dawg %2$s %1$s.numbers %1$s.number-dawg %1$s.unicharset";
     private static final String cmdcombine_tessdata = "combine_tessdata %s.";
 
     ProcessBuilder pb;
@@ -106,7 +108,7 @@ public class TessTrainer {
                 break;
         }
     }
-    
+
     void text2image(String inputTextFile, String outputbase, Font font, String fontFolder, int exposure, float char_spacing, int width, int height) throws Exception {
         logger.info("text2image");
         writeMessage("** text2image **");
@@ -186,11 +188,11 @@ public class TessTrainer {
         });
         cmd.addAll(Arrays.asList(files));
         runCommand(cmd);
-        
+
         //set_unicharset_properties
         if (new File(this.tessDir, "set_unicharset_properties.exe").exists() || new File(this.tessDir, "set_unicharset_properties.exe").exists()) {
             cmd = getCommand(String.format(cmdset_unicharset_properties, inputDataDir));
-            runCommand(cmd);            
+            runCommand(cmd);
         }
 
 //        if (rtl) {
@@ -199,7 +201,6 @@ public class TessTrainer {
 //            writeMessage("Fixed unicharset's Unicode character directionality.\n");
 //            fixUniCharDirectionality();
 //        }
-
         runShapeClustering();
     }
 
@@ -270,6 +271,18 @@ public class TessTrainer {
         //cmdwordlist2dawg2
         cmd = getCommand(String.format(cmdwordlist2dawg2, lang, (rtl ? "-r 1" : "")));
         runCommand(cmd);
+
+        //cmdpunc2dawg
+        if (new File(inputDataDir, lang + ".punc").exists()) {
+            cmd = getCommand(String.format(cmdpunc2dawg, lang, (rtl ? "-r 2" : "-r 0")));
+            runCommand(cmd);
+        }
+
+        //cmdnumber2dawg
+        if (new File(inputDataDir, lang + ".numbers").exists()) {
+            cmd = getCommand(String.format(cmdnumber2dawg, lang, "-r 0"));
+            runCommand(cmd);
+        }
 
         logger.info("Combine Data Files");
         writeMessage("** Combine Data Files **");
