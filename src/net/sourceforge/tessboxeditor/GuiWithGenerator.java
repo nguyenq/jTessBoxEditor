@@ -56,11 +56,11 @@ public class GuiWithGenerator extends GuiWithTools {
         fontGen = new Font(
                 prefs.get("trainfontName", this.jTextAreaInput.getFont().getName()),
                 prefs.getInt("trainfontStyle", Font.PLAIN),
-                prefs.getInt("trainfontSize", 36));
+                prefs.getInt("trainfontSize", 12));
 
         attributes.put(TextAttribute.TRACKING, this.jSpinnerTracking.getValue());
         fontGen = fontGen.deriveFont(attributes);
-        this.jTextAreaInput.setFont(fontGen);
+        this.jTextAreaInput.setFont(fontGen.deriveFont(fontGen.getSize2D() * 3)); // adjustment
         this.jButtonFont.setText(fontDesc(fontGen));
         this.jTextFieldFileName.setText(createFileName(fontGen) + ".exp0.tif");
 
@@ -182,7 +182,7 @@ public class GuiWithGenerator extends GuiWithTools {
 
             try {
                 fontGen = dlg.getFont().deriveFont(attributes);
-                this.jTextAreaInput.setFont(fontGen);
+                this.jTextAreaInput.setFont(fontGen.deriveFont(fontGen.getSize2D() * 3));
                 this.jTextAreaInput.validate();
                 this.jButtonFont.setText(fontDesc(fontGen));
                 String curFontName = this.jTextFieldFileName.getText();
@@ -243,9 +243,9 @@ public class GuiWithGenerator extends GuiWithTools {
                 if (outputbase.endsWith(".tif")) {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
-                trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen.getFontName(), 12, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+                trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
             } else {
-                TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), this.jTextAreaInput.getFont(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+                TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
                 generator.setOutputFolder(new File(trainDataDirectory));
                 generator.setFileName(prefix + this.jTextFieldFileName.getText());
                 generator.setTracking((Float) this.jSpinnerTracking.getValue());

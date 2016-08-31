@@ -59,7 +59,7 @@ public class TiffBoxGenerator {
 
     public TiffBoxGenerator(String text, Font font, int width, int height) {
         this.text = text;
-        this.font = font;
+        this.font = font.deriveFont(font.getSize2D() * 4); // adjustment
         this.width = width;
         this.height = height;
     }
@@ -325,7 +325,7 @@ public class TiffBoxGenerator {
                 }
 
                 // Move y-coordinate in preparation for next layout.
-                drawPosY += 2 * line.getDescent() + line.getLeading(); // factor 2 for larger line spacing
+                drawPosY += 2 * line.getDescent() + line.getLeading() + 5; // factor 2 for larger line spacing
 
                 // Reach bottom margin?
                 if (drawPosY > height - margin) { // - line.getAscent() ?

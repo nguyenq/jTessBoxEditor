@@ -15,6 +15,7 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Font;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.*;
@@ -106,10 +107,10 @@ public class TessTrainer {
         }
     }
     
-    void text2image(String inputTextFile, String outputbase, String font, int ptsize, String fontFolder, int exposure, float char_spacing, int width, int height) throws Exception {
+    void text2image(String inputTextFile, String outputbase, Font font, String fontFolder, int exposure, float char_spacing, int width, int height) throws Exception {
         logger.info("text2image");
         writeMessage("** text2image **");
-        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.replace(" ", "_").replace("Oblique", "Italic"), ptsize, fontFolder, exposure, char_spacing, width, height));
+        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.getFontName().replace(" ", "_").replace("Oblique", "Italic"), font.getSize(), fontFolder, exposure, char_spacing, width, height));
         cmd.set(3, cmd.get(3).replace("_", " ")); // handle spaces in font name
         runCommand(cmd);
     }
