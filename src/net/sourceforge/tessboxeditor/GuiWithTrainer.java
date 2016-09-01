@@ -53,7 +53,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         jFileChooserTrainingData.setAcceptAllFileFilterUsed(false);
         jFileChooserTrainingData.setApproveButtonText("Set");
         jFileChooserTrainingData.setDialogTitle("Set Location of Source Training Data");
-        FileFilter allTrainingFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff;box;font_properties;frequent_words_list;words_list;unicharambigs", "Source Training Data");
+        FileFilter allTrainingFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff;box;font_properties;frequent_words_list;words_list;unicharambigs;numbers;punc;word.bigrams", "Source Training Data");
         jFileChooserTrainingData.setFileFilter(allTrainingFilter);
         jFileChooserTrainingData.setCurrentDirectory(trainDataDirectory == null ? null : new File(trainDataDirectory));
 

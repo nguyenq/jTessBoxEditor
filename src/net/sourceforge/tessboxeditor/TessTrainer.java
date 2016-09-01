@@ -45,6 +45,7 @@ public class TessTrainer {
     private static final String cmdwordlist2dawg2 = "wordlist2dawg %2$s %1$s.words_list %1$s.word-dawg %1$s.unicharset";
     private static final String cmdpunc2dawg = "wordlist2dawg %2$s %1$s.punc %1$s.punc-dawg %1$s.unicharset";
     private static final String cmdnumber2dawg = "wordlist2dawg %2$s %1$s.numbers %1$s.number-dawg %1$s.unicharset";
+    private static final String cmdbigrams2dawg = "wordlist2dawg %2$s %1$s.word.bigrams %1$s.bigram-dawg %1$s.unicharset";
     private static final String cmdcombine_tessdata = "combine_tessdata %s.";
 
     ProcessBuilder pb;
@@ -283,7 +284,13 @@ public class TessTrainer {
             cmd = getCommand(String.format(cmdnumber2dawg, lang, "-r 0"));
             runCommand(cmd);
         }
-
+        
+        //cmdbigrams2dawg
+        if (new File(inputDataDir, lang + ".word.bigrams").exists()) {
+            cmd = getCommand(String.format(cmdbigrams2dawg, lang, (rtl ? "-r 1" : "")));
+            runCommand(cmd);
+        }
+        
         logger.info("Combine Data Files");
         writeMessage("** Combine Data Files **");
         //cmdcombine_tessdata
