@@ -112,7 +112,7 @@ public class TessTrainer {
 
     /**
      * Run text2image command to generate Tiff/Box pair.
-     * 
+     *
      * @param inputTextFile
      * @param outputbase
      * @param font
@@ -122,19 +122,22 @@ public class TessTrainer {
      * @param leading
      * @param width
      * @param height
-     * @throws Exception 
+     * @throws Exception
      */
-    void text2image(String inputTextFile, String outputbase, Font font, String fontFolder, int exposure, double char_spacing, int leading, int width, int height) throws Exception {
+    void text2image(String inputTextFile, String outputbase, Font font, String fontFolder, int exposure, float char_spacing, int leading, int width, int height) throws Exception {
         logger.info("text2image");
         writeMessage("** text2image **");
         String fontName = font.getFontName();
-//        String fontFamilyname = font.getFamily();
-//        if (fontName.length() > fontFamilyname.length()) {
-//            fontName = fontName.replace(fontFamilyname, fontFamilyname + ","); // handle 
-//        }
         List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, fontName.replace(" ", "_").replace("Oblique", "Italic"), font.getSize(), fontFolder, exposure, char_spacing, leading, width, height));
         cmd.set(3, cmd.get(3).replace("_", " ")); // handle spaces in font name
-        runCommand(cmd);
+        try {
+            runCommand(cmd);
+        } catch (Exception e) {
+            String fontFamilyname = font.getFamily();
+            // work around comma issue in Pango-originating fontnames
+            cmd.set(3, cmd.get(3).replace(fontFamilyname, fontFamilyname + ","));
+            runCommand(cmd);
+        }
     }
 
     /**
@@ -303,13 +306,13 @@ public class TessTrainer {
             cmd = getCommand(String.format(cmdnumber2dawg, lang, "-r 0"));
             runCommand(cmd);
         }
-        
+
         //cmdbigrams2dawg
         if (new File(inputDataDir, lang + ".word.bigrams").exists()) {
             cmd = getCommand(String.format(cmdbigrams2dawg, lang, (rtl ? "-r 1" : "")));
             runCommand(cmd);
         }
-        
+
         logger.info("Combine Data Files");
         writeMessage("** Combine Data Files **");
         //cmdcombine_tessdata
