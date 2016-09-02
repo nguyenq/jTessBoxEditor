@@ -33,7 +33,7 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
 
-    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --ptsize=%d --fonts_dir=%s --exposure=%d --char_spacing=%f --xsize=%d --ysize=%d";
+    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --ptsize=%d --fonts_dir=%s --exposure=%d --char_spacing=%f --leading=%d --xsize=%d --ysize=%d";
     private static final String cmdmake_box = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
     private static final String cmdtess_train = "tesseract imageFile boxFile box.train";
     private static final String cmdunicharset_extractor = "unicharset_extractor"; // lang.fontname.exp0.box lang.fontname.exp1.box ...
@@ -110,10 +110,29 @@ public class TessTrainer {
         }
     }
 
-    void text2image(String inputTextFile, String outputbase, Font font, String fontFolder, int exposure, float char_spacing, int width, int height) throws Exception {
+    /**
+     * Run text2image command to generate Tiff/Box pair.
+     * 
+     * @param inputTextFile
+     * @param outputbase
+     * @param font
+     * @param fontFolder
+     * @param exposure
+     * @param char_spacing or letter tracking
+     * @param leading
+     * @param width
+     * @param height
+     * @throws Exception 
+     */
+    void text2image(String inputTextFile, String outputbase, Font font, String fontFolder, int exposure, double char_spacing, int leading, int width, int height) throws Exception {
         logger.info("text2image");
         writeMessage("** text2image **");
-        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, font.getFontName().replace(" ", "_").replace("Oblique", "Italic"), font.getSize(), fontFolder, exposure, char_spacing, width, height));
+        String fontName = font.getFontName();
+//        String fontFamilyname = font.getFamily();
+//        if (fontName.length() > fontFamilyname.length()) {
+//            fontName = fontName.replace(fontFamilyname, fontFamilyname + ","); // handle 
+//        }
+        List<String> cmd = getCommand(String.format(cmdtext2image, inputTextFile, outputbase, fontName.replace(" ", "_").replace("Oblique", "Italic"), font.getSize(), fontFolder, exposure, char_spacing, leading, width, height));
         cmd.set(3, cmd.get(3).replace("_", " ")); // handle spaces in font name
         runCommand(cmd);
     }
