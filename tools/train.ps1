@@ -92,13 +92,16 @@ echo "** Box files should be edited before continuing. **"
 echo "Generate .tr Files"
 $trFiles = ""
 Foreach ($entry in $al) {
-      $trainCmd = ".\tesseract {0}.tif {0} nobatch box.train" -f $entry
+      $trainCmd = ".\tesseract {0}.tif {0} box.train" -f $entry
       Invoke-Expression $trainCmd
       $trFiles += $entry + ".tr "
 }
 
 echo "Compute the Character Set"
 Invoke-Expression ".\unicharset_extractor -D $trainDir $boxFiles"
+
+echo "set_unicharset_properties"
+Invoke-Expression ".\set_unicharset_properties -U unicharset -O unicharset --script_dir=$trainDir";
 
 echo "Clustering"
 Invoke-Expression ".\shapeclustering -F $trainDir\$lang.font_properties -U $trainDir\unicharset $trFiles"
@@ -113,8 +116,15 @@ move-item -force -path shapetable -destination $trainDir\$lang.shapetable
 echo "Dictionary Data"
 Invoke-Expression ".\wordlist2dawg $trainDir\$lang.frequent_words_list $trainDir\$lang.freq-dawg $trainDir\$lang.unicharset"
 Invoke-Expression ".\wordlist2dawg $trainDir\$lang.words_list $trainDir\$lang.word-dawg $trainDir\$lang.unicharset"
-#Invoke-Expression ".\wordlist2dawg $trainDir\$lang.wordlist-punc $trainDir\$lang.punc-dawg $trainDir\$lang.unicharset"
-#Invoke-Expression ".\wordlist2dawg $trainDir\$lang.wordlist-number $trainDir\$lang.number-dawg $trainDir\$lang.unicharset"
+if (test-path $trainDir\$lang.punc) {
+    Invoke-Expression ".\wordlist2dawg $trainDir\$lang.punc $trainDir\$lang.punc-dawg $trainDir\$lang.unicharset"
+}
+if (test-path $trainDir\$lang.numbers) {
+    Invoke-Expression ".\wordlist2dawg $trainDir\$lang.numbers $trainDir\$lang.number-dawg $trainDir\$lang.unicharset"
+}
+if (test-path $trainDir\$lang.word.bigrams) {
+    Invoke-Expression ".\wordlist2dawg $trainDir\$lang.word.bigrams $trainDir\$lang.bigram-dawg $trainDir\$lang.unicharset"
+}
 
 echo "The last file (unicharambigs) -- this is to be manually edited"
 if (!(test-path $trainDir\$lang.unicharambigs)) {
