@@ -245,7 +245,7 @@ public class GuiWithGenerator extends GuiWithTools {
                 if (outputbase.endsWith(".tif")) {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
-                trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), 12, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+                trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
                 // Clean up: remove space character and associated line from generated box file
                 File boxFile = new File(trainDataDirectory, prefix + outputbase + ".box");
                 writeTextFile(readTextFile(boxFile).replaceAll("(?m)^\\s+.*\n", ""), boxFile);

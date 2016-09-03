@@ -151,6 +151,6 @@ public class Utils {
      * @throws Exception
      */
     public static void writeTextFile(String str, File textFile) throws Exception {
-        Files.write(textFile.toPath(), str.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE); // Java 7 API
+        Files.write(textFile.toPath(), str.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING); // Java 7 API
     }
 }
