@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package net.sourceforge.tessboxeditor;
+package net.sourceforge.tessboxeditor.utilities;
 
 import java.awt.Font;
 import java.io.File;
@@ -24,15 +24,21 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static net.sourceforge.vietocr.util.Utils.readTextFile;
+import static net.sourceforge.vietocr.util.Utils.writeTextFile;
 
-public class FontProperties {
-    
-    private final static Logger logger = Logger.getLogger(FontProperties.class.getName());
-    
+public class Utils {
+
+    private final static Logger logger = Logger.getLogger(Utils.class.getName());
+
     /**
      * Creates or updates font_properties file.
+     * 
+     * @param outputFolder
+     * @param fileName
+     * @param font
      */
-    static void updateFile(File outputFolder, String fileName, Font font) {
+    public static void updateFontProperties(File outputFolder, String fileName, Font font) {
         int index = fileName.indexOf(".");
         File fontpropFile = new File(outputFolder, fileName.substring(0, index) + ".font_properties");
         String fontName = fileName.substring(index + 1, fileName.lastIndexOf(".exp"));
@@ -53,6 +59,19 @@ public class FontProperties {
             //<fontname> <italic> <bold> <fixed> <serif> <fraktur>
             String entry = String.format("%s %s %s %s %s %s\n", fontName, font.isItalic() ? "1" : "0", font.isBold() ? "1" : "0", "0", "0", "0");
             Files.write(Paths.get(fontpropFile.getPath()), entry.getBytes(), StandardOpenOption.APPEND);
+        } catch (Exception e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Removes empty boxes from box file created by text2image.
+     *
+     * @param boxFile
+     */
+    public static void removeEmptyBoxes(File boxFile) {
+        try {
+            writeTextFile(boxFile, readTextFile(boxFile).replaceAll("(?m)^\\s+.*\n", ""));
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage(), e);
         }

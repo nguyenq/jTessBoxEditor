@@ -146,11 +146,11 @@ public class Utils {
     /**
      * Writes a UTF-8 text file.
      *
-     * @param str
      * @param textFile
+     * @param str
      * @throws Exception
      */
-    public static void writeTextFile(String str, File textFile) throws Exception {
+    public static void writeTextFile(File textFile, String str) throws Exception {
         Files.write(textFile.toPath(), str.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING); // Java 7 API
     }
 }

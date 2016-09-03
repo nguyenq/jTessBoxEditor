@@ -27,8 +27,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import static net.sourceforge.vietocr.util.Utils.readTextFile;
-import static net.sourceforge.vietocr.util.Utils.writeTextFile;
+import net.sourceforge.tessboxeditor.utilities.Utils;
 import net.sourceforge.vietpad.components.FontDialog;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
@@ -66,7 +65,7 @@ public class GuiWithGenerator extends GuiWithTools {
         this.jButtonFont.setText(fontDesc(fontGen));
         this.jTextFieldFileName.setText(createFileName(fontGen) + ".exp0.tif");
 
-        trainDataDirectory = prefs.get("trainDataDirectory", System.getProperty("user.home"));
+        trainDataDirectory = prefs.get("trainDataDirectory", new File(System.getProperty("user.dir"), "samples/vie").getPath());
         this.jTextFieldOuputDir.setText(trainDataDirectory);
 
         fontFolder = prefs.get("fontFolder", getFontFolder());
@@ -245,10 +244,9 @@ public class GuiWithGenerator extends GuiWithTools {
                 if (outputbase.endsWith(".tif")) {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
-                trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-                // Clean up: remove space character and associated line from generated box file
-                File boxFile = new File(trainDataDirectory, prefix + outputbase + ".box");
-                writeTextFile(readTextFile(boxFile).replaceAll("(?m)^\\s+.*\n", ""), boxFile);
+                outputbase = trainDataDirectory + "/" + prefix + outputbase;
+                trainer.text2image(inputTextFile.getPath(), outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+                Utils.removeEmptyBoxes(new File(outputbase + ".box"));
             } else {
                 TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
                 generator.setOutputFolder(new File(trainDataDirectory));
@@ -261,12 +259,13 @@ public class GuiWithGenerator extends GuiWithTools {
             }
             
             // updates font_properties file
-            FontProperties.updateFile(new File(trainDataDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
-            String msg = "";
+            Utils.updateFontProperties(new File(trainDataDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
+            String msg = String.format("TIFF/Box files have been generated and saved in %s folder.", trainDataDirectory);
+            
             if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
-                msg = "\nBe sure to check the entries in font_properties file for accuracy.";
+                msg = msg.concat("\nBe sure to check the entries in font_properties file for accuracy.");
             }
-            JOptionPane.showMessageDialog(this, String.format("TIFF/Box files have been generated and saved in %s folder.%s", trainDataDirectory, msg));
+            JOptionPane.showMessageDialog(this, msg);
         } catch (OutOfMemoryError oome) {
             JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
