@@ -318,6 +318,8 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerNoise = new javax.swing.JSpinner();
         jLabelTracking = new javax.swing.JLabel();
         jSpinnerTracking = new javax.swing.JSpinner();
+        jLabelLeading = new javax.swing.JLabel();
+        jSpinnerLeading = new javax.swing.JSpinner();
         jLabelW1 = new javax.swing.JLabel();
         jSpinnerW1 = new javax.swing.JSpinner();
         jLabelH1 = new javax.swing.JLabel();
@@ -1046,6 +1048,7 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel3.add(jButtonInput);
 
+        jLabelOutput.setLabelFor(jTextFieldOuputDir);
         jLabelOutput.setText("Output");
         jPanel3.add(jLabelOutput);
 
@@ -1099,10 +1102,11 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanelFontFolder.add(jButtonBrowseFontFolder);
 
+        jLabelExposure.setLabelFor(jSpinnerExposure);
         jLabelExposure.setText("Exposure");
         jPanelFontFolder.add(jLabelExposure);
 
-        jSpinnerExposure.setModel(new javax.swing.SpinnerNumberModel(0, -2, 2, 1));
+        jSpinnerExposure.setModel(new javax.swing.SpinnerNumberModel(0, -3, 3, 1));
         jSpinnerExposure.setToolTipText("Exposure Level");
         jPanelFontFolder.add(jSpinnerExposure);
 
@@ -1111,6 +1115,7 @@ public class Gui extends javax.swing.JFrame {
         jCheckBoxAntiAliasing.setText("Anti-Aliasing");
         jPanelFontAttrib.add(jCheckBoxAntiAliasing);
 
+        jLabelNoise.setLabelFor(jSpinnerNoise);
         jLabelNoise.setText("Noise");
         jPanelFontAttrib.add(jLabelNoise);
 
@@ -1122,11 +1127,12 @@ public class Gui extends javax.swing.JFrame {
 
         jPanel3.add(jPanelFontAttrib);
 
-        jLabelTracking.setText("Letter Tracking");
+        jLabelTracking.setLabelFor(jSpinnerTracking);
+        jLabelTracking.setText("Tracking");
         jPanel3.add(jLabelTracking);
 
         jSpinnerTracking.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(-0.04f), Float.valueOf(0.1f), Float.valueOf(0.01f)));
-        jSpinnerTracking.setToolTipText("Adjust Letter Tracking");
+        jSpinnerTracking.setToolTipText("Letter Spacing");
         jSpinnerTracking.setPreferredSize(new java.awt.Dimension(64, 22));
         jSpinnerTracking.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -1135,6 +1141,15 @@ public class Gui extends javax.swing.JFrame {
         });
         jPanel3.add(jSpinnerTracking);
 
+        jLabelLeading.setLabelFor(jSpinnerLeading);
+        jLabelLeading.setText("Leading");
+        jPanel3.add(jLabelLeading);
+
+        jSpinnerLeading.setModel(new javax.swing.SpinnerNumberModel(12, 6, 18, 1));
+        jSpinnerLeading.setToolTipText("Line Spacing");
+        jPanel3.add(jSpinnerLeading);
+
+        jLabelW1.setLabelFor(jSpinnerW1);
         jLabelW1.setText("W");
         jPanel3.add(jLabelW1);
 
@@ -1144,6 +1159,7 @@ public class Gui extends javax.swing.JFrame {
         jSpinnerW1.setPreferredSize(new java.awt.Dimension(63, 22));
         jPanel3.add(jSpinnerW1);
 
+        jLabelH1.setLabelFor(jSpinnerH1);
         jLabelH1.setText("H");
         jPanel3.add(jLabelH1);
 
@@ -2323,6 +2339,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelH;
     private javax.swing.JLabel jLabelH1;
     protected javax.swing.JLabel jLabelImage;
+    private javax.swing.JLabel jLabelLeading;
     private javax.swing.JLabel jLabelNoise;
     private javax.swing.JLabel jLabelOutput;
     private javax.swing.JLabel jLabelPageNbr;
@@ -2390,6 +2407,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JSpinner jSpinnerExposure;
     protected javax.swing.JSpinner jSpinnerH;
     protected javax.swing.JSpinner jSpinnerH1;
+    protected javax.swing.JSpinner jSpinnerLeading;
     private javax.swing.JSpinner jSpinnerMargin;
     protected javax.swing.JSpinner jSpinnerNoise;
     private javax.swing.JSpinner jSpinnerScale;

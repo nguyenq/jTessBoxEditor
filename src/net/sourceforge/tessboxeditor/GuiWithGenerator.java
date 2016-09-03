@@ -249,6 +249,7 @@ public class GuiWithGenerator extends GuiWithTools {
                 generator.setOutputFolder(new File(trainDataDirectory));
                 generator.setFileName(prefix + this.jTextFieldFileName.getText());
                 generator.setTracking((Float) this.jSpinnerTracking.getValue());
+                generator.setLeading((Integer) this.jSpinnerLeading.getValue());
                 generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
                 generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
                 generator.create();

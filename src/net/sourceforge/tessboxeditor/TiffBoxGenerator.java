@@ -51,6 +51,7 @@ public class TiffBoxGenerator {
     private File outputFolder;
     private final int COLOR_WHITE = Color.WHITE.getRGB();
     private float tracking = TextAttribute.TRACKING_LOOSE; // 0.04
+    private int leading = 12;
     private boolean isAntiAliased;
     private final File baseDir = Utils.getBaseDir(TiffBoxGenerator.this);
     private final Pattern pattern = Pattern.compile("chars:\"(.*?)\",");
@@ -325,7 +326,7 @@ public class TiffBoxGenerator {
                 }
 
                 // Move y-coordinate in preparation for next layout.
-                drawPosY += 2 * line.getDescent() + line.getLeading() + 5; // factor 2 for larger line spacing
+                drawPosY += 2 * leading; // line spacing
 
                 // Reach bottom margin?
                 if (drawPosY > height - margin) { // - line.getAscent() ?
@@ -381,6 +382,15 @@ public class TiffBoxGenerator {
      */
     public void setTracking(float tracking) {
         this.tracking = tracking;
+    }
+
+    /**
+     * Sets line spacing.
+     *
+     * @param leading the leading to set
+     */
+    public void setLeading(int leading) {
+        this.leading = leading;
     }
 
     /**
