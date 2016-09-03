@@ -297,13 +297,13 @@ public class TessTrainer {
 
         //cmdpunc2dawg
         if (new File(inputDataDir, lang + ".punc").exists()) {
-            cmd = getCommand(String.format(cmdpunc2dawg, lang, (rtl ? "-r 2" : "-r 0")));
+            cmd = getCommand(String.format(cmdpunc2dawg, lang, (rtl ? "-r 2" : "")));
             runCommand(cmd);
         }
 
         //cmdnumber2dawg
         if (new File(inputDataDir, lang + ".numbers").exists()) {
-            cmd = getCommand(String.format(cmdnumber2dawg, lang, "-r 0"));
+            cmd = getCommand(String.format(cmdnumber2dawg, lang, (rtl ? "" : "")));
             runCommand(cmd);
         }
 
