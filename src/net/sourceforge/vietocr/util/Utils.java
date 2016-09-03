@@ -17,11 +17,11 @@ package net.sourceforge.vietocr.util;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -133,13 +133,24 @@ public class Utils {
     }
 
     /**
-     * Reads a text file.
+     * Reads a UTF-8 text file.
      *
      * @param textFile
      * @return
      * @throws Exception
      */
     public static String readTextFile(File textFile) throws Exception {
-        return new String(Files.readAllBytes(textFile.toPath()), "UTF8"); // Java 7 API
+        return new String(Files.readAllBytes(textFile.toPath()), StandardCharsets.UTF_8); // Java 7 API
+    }
+
+    /**
+     * Writes a UTF-8 text file.
+     *
+     * @param str
+     * @param textFile
+     * @throws Exception
+     */
+    public static void writeTextFile(String str, File textFile) throws Exception {
+        Files.write(textFile.toPath(), str.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE); // Java 7 API
     }
 }

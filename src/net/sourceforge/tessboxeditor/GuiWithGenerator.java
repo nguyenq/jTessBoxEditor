@@ -27,6 +27,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import static net.sourceforge.vietocr.util.Utils.readTextFile;
+import static net.sourceforge.vietocr.util.Utils.writeTextFile;
 import net.sourceforge.vietpad.components.FontDialog;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
@@ -244,6 +246,9 @@ public class GuiWithGenerator extends GuiWithTools {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
                 trainer.text2image(inputTextFile.getPath(), trainDataDirectory + "/" + prefix + outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), 12, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+                // Clean up: remove space character and associated line from generated box file
+                File boxFile = new File(trainDataDirectory, prefix + outputbase + ".box");
+                writeTextFile(readTextFile(boxFile).replaceAll("(?m)^\\s+.*\n", ""), boxFile);
             } else {
                 TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
                 generator.setOutputFolder(new File(trainDataDirectory));
