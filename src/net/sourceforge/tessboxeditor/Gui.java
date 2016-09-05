@@ -359,7 +359,7 @@ public class Gui extends javax.swing.JFrame {
         jFileChooserInputImage.setDialogTitle(bundle.getString("jButtonOpen.ToolTipText")); // NOI18N
 
         currentDirectory = prefs.get("currentDirectory", null);
-        outputDirectory = prefs.get("outputDirectory", null);
+        outputDirectory = currentDirectory;
         jFileChooserInputImage.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));
         filterIndex = prefs.getInt("filterIndex", 0);
         FileFilter allImageFilter = new SimpleFilter("bmp;jpg;jpeg;png;tif;tiff", bundle.getString("All_Image_Files"));
@@ -1779,9 +1779,6 @@ public class Gui extends javax.swing.JFrame {
 
         if (currentDirectory != null) {
             prefs.put("currentDirectory", currentDirectory);
-        }
-        if (outputDirectory != null) {
-            prefs.put("outputDirectory", outputDirectory);
         }
 
         prefs.putInt("windowState", getExtendedState());

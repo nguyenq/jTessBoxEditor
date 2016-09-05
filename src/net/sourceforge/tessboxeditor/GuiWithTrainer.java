@@ -27,7 +27,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
 
     protected static final String DIALOG_TITLE = "Train Tesseract";
 //    protected String tessDirectory;
-//    protected String trainDataDirectory;
+    protected String trainDataDirectory;
     private JFileChooser jFileChooserTrainingData;
     private JFileChooser jFileChooserTessExecutables;
 

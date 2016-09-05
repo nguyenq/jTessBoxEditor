@@ -34,7 +34,7 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 public class GuiWithGenerator extends GuiWithTools {
 
     private File inputTextFile;
-    protected String trainDataDirectory;
+    private String outputDirectory;
     private Font fontGen;
     private String fontFolder;
     protected String tessDirectory;
@@ -65,8 +65,8 @@ public class GuiWithGenerator extends GuiWithTools {
         this.jButtonFont.setText(fontDesc(fontGen));
         this.jTextFieldFileName.setText(createFileName(fontGen) + ".exp0.tif");
 
-        trainDataDirectory = prefs.get("trainDataDirectory", new File(System.getProperty("user.dir"), "samples/vie").getPath());
-        this.jTextFieldOuputDir.setText(trainDataDirectory);
+        outputDirectory = prefs.get("outputDirectory", new File(System.getProperty("user.dir"), "samples/vie").getPath());
+        this.jTextFieldOuputDir.setText(outputDirectory);
 
         fontFolder = prefs.get("fontFolder", getFontFolder());
         this.jTextFieldFontFolder.setText(fontFolder);
@@ -75,13 +75,13 @@ public class GuiWithGenerator extends GuiWithTools {
         FileFilter textFilter = new SimpleFilter("txt", "Text Files");
         jFileChooserInputText.addChoosableFileFilter(textFilter);
         jFileChooserInputText.setAcceptAllFileFilterUsed(false);
-        jFileChooserInputText.setCurrentDirectory(new File(trainDataDirectory));
+        jFileChooserInputText.setCurrentDirectory(new File(outputDirectory));
 
         jFileChooserOutputDir = new JFileChooser();
         jFileChooserOutputDir.setApproveButtonText("Set");
         jFileChooserOutputDir.setDialogTitle("Set Output Directory");
         jFileChooserOutputDir.setAcceptAllFileFilterUsed(false);
-        jFileChooserOutputDir.setCurrentDirectory(new File(trainDataDirectory));
+        jFileChooserOutputDir.setCurrentDirectory(new File(outputDirectory));
         jFileChooserOutputDir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         jFileChooserFontFolder = new JFileChooser();
@@ -158,8 +158,8 @@ public class GuiWithGenerator extends GuiWithTools {
     @Override
     void jButtonBrowseOutputDirActionPerformed(java.awt.event.ActionEvent evt) {
         if (jFileChooserOutputDir.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            trainDataDirectory = jFileChooserOutputDir.getSelectedFile().getPath();
-            this.jTextFieldOuputDir.setText(trainDataDirectory);
+            outputDirectory = jFileChooserOutputDir.getSelectedFile().getPath();
+            this.jTextFieldOuputDir.setText(outputDirectory);
         }
     }
 
@@ -232,24 +232,24 @@ public class GuiWithGenerator extends GuiWithTools {
             }
 
             long lastModified = 0;
-            File fontpropFile = new File(trainDataDirectory, prefix + "font_properties");
+            File fontpropFile = new File(outputDirectory, prefix + "font_properties");
             if (fontpropFile.exists()) {
                 lastModified = fontpropFile.lastModified();
             }
 
             if (this.jCheckBoxText2Image.isSelected()) {
                 // execute Text2Image
-                TessTrainer trainer = new TessTrainer(tessDirectory, trainDataDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
+                TessTrainer trainer = new TessTrainer(tessDirectory, outputDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
                 String outputbase = jTextFieldFileName.getText();
                 if (outputbase.endsWith(".tif")) {
                     outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
                 }
-                outputbase = trainDataDirectory + "/" + prefix + outputbase;
+                outputbase = outputDirectory + "/" + prefix + outputbase;
                 trainer.text2image(inputTextFile.getPath(), outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
                 Utils.removeEmptyBoxes(new File(outputbase + ".box"));
             } else {
                 TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-                generator.setOutputFolder(new File(trainDataDirectory));
+                generator.setOutputFolder(new File(outputDirectory));
                 generator.setFileName(prefix + this.jTextFieldFileName.getText());
                 generator.setTracking((Float) this.jSpinnerTracking.getValue());
                 generator.setLeading((Integer) this.jSpinnerLeading.getValue());
@@ -259,8 +259,8 @@ public class GuiWithGenerator extends GuiWithTools {
             }
             
             // updates font_properties file
-            Utils.updateFontProperties(new File(trainDataDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
-            String msg = String.format("TIFF/Box files have been generated and saved in %s folder.", trainDataDirectory);
+            Utils.updateFontProperties(new File(outputDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
+            String msg = String.format("TIFF/Box files have been generated and saved in %s folder.", outputDirectory);
             
             if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
                 msg = msg.concat("\nBe sure to check the entries in font_properties file for accuracy.");
@@ -284,8 +284,8 @@ public class GuiWithGenerator extends GuiWithTools {
 
     @Override
     void quit() {
-        if (trainDataDirectory != null) {
-            prefs.put("trainDataDirectory", trainDataDirectory);
+        if (outputDirectory != null) {
+            prefs.put("outputDirectory", outputDirectory);
         }
         if (fontFolder != null) {
             prefs.put("fontFolder", fontFolder);
