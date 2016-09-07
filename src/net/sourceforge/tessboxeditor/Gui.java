@@ -1108,6 +1108,11 @@ public class Gui extends javax.swing.JFrame {
 
         jSpinnerExposure.setModel(new javax.swing.SpinnerNumberModel(0, -3, 3, 1));
         jSpinnerExposure.setToolTipText("Exposure Level");
+        jSpinnerExposure.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerExposureStateChanged(evt);
+            }
+        });
         jPanelFontFolder.add(jSpinnerExposure);
 
         jPanel3.add(jPanelFontFolder);
@@ -2241,6 +2246,12 @@ public class Gui extends javax.swing.JFrame {
     void jButtonBrowseFontFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseFontFolderActionPerformed
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jButtonBrowseFontFolderActionPerformed
+
+    private void jSpinnerExposureStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerExposureStateChanged
+        String imageFilename = jTextFieldFileName.getText().trim();
+        int exposureLevel = (int) this.jSpinnerExposure.getValue();
+        jTextFieldFileName.setText(imageFilename.replaceFirst("exp.*?\\.tif$", "exp" + exposureLevel + ".tif"));
+    }//GEN-LAST:event_jSpinnerExposureStateChanged
 
     /**
      * Gets a subimage for display in boxview.
