@@ -35,8 +35,8 @@ public class TessBoxCollection {
 
     /**
      * Adds box to list.
-     * 
-     * @param box 
+     *
+     * @param box
      */
     public void add(TessBox box) {
         list.add(box);
@@ -44,9 +44,9 @@ public class TessBoxCollection {
 
     /**
      * Adds box to list at index.
-     * 
+     *
      * @param index
-     * @param box 
+     * @param box
      */
     public void add(int index, TessBox box) {
         list.add(index, box);
@@ -63,8 +63,8 @@ public class TessBoxCollection {
 
     /**
      * Gets list of boxes.
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<TessBox> toList() {
         return list;
@@ -72,9 +72,9 @@ public class TessBoxCollection {
 
     /**
      * Finds the box that matches a given coordinate.
-     * 
+     *
      * @param findBox
-     * @return 
+     * @return
      */
     public TessBox select(TessBox findBox) {
         for (TessBox box : list) {
@@ -87,9 +87,9 @@ public class TessBoxCollection {
 
     /**
      * Finds the box that matches a given character value.
-     * 
+     *
      * @param findBox
-     * @return 
+     * @return
      */
     public TessBox selectByChars(TessBox findBox) {
         List<TessBox> selectedBoxes = getSelectedBoxes();
@@ -113,9 +113,9 @@ public class TessBoxCollection {
 
     /**
      * Gets the box hit by mouse click.
-     * 
+     *
      * @param p where mouse clicks
-     * @return 
+     * @return
      */
     public TessBox hitObject(Point p) {
         for (TessBox box : list) {
@@ -128,8 +128,8 @@ public class TessBoxCollection {
 
     /**
      * Gets selected boxes.
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<TessBox> getSelectedBoxes() {
         List<TessBox> selected = new ArrayList<TessBox>();
@@ -140,37 +140,30 @@ public class TessBoxCollection {
         }
         return selected;
     }
-    
+
     /**
      * Sets combining symbols.
-     * 
-     * @param combiningSymbols 
+     *
+     * @param appendingSymbols
+     * @param prependingSymbols
      */
-    public void setCombiningSymbols(String combiningSymbols) {
-        if (combiningSymbols == null) {
-            return;
-        }
-        String[] str = combiningSymbols.split(";");
-        if (str.length > 0) {
-            this.appendingSymbols = str[0];
-        }
-        if (str.length > 1) {
-            this.prependingSymbols = str[1];
-        }
+    public void setCombiningSymbols(String appendingSymbols, String prependingSymbols) {
+        this.appendingSymbols = appendingSymbols;
+        this.prependingSymbols = prependingSymbols;
     }
-    
+
     /**
-     * Combines boxes that have the same coordinates or combining symbols with main/base character.
-     * The new resultant value will be the combined values.
+     * Combines boxes that have the same coordinates or combining symbols with
+     * main/base character. The new resultant value will be the combined values.
      */
     public void combineBoxes() {
-        TessBox prev = null; 
+        TessBox prev = null;
         for (TessBox box : list.toArray(new TessBox[list.size()])) {
             if (prev != null && (box.getRect().equals(prev.getRect()) || prev.getRect().contains(box.getRect()))) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
             } else if (prev != null && ((appendingSymbols != null && appendingSymbols.trim().length() > 0 && box.getChrs().matches("[" + appendingSymbols + "]"))
-                                     || (prependingSymbols != null && prependingSymbols.trim().length() > 0 && prev.getChrs().matches("[" + prependingSymbols + "]")))) {
+                    || (prependingSymbols != null && prependingSymbols.trim().length() > 0 && prev.getChrs().matches("[" + prependingSymbols + "]")))) {
                 list.remove(box);
                 prev.setChrs(prev.getChrs() + box.getChrs());
                 Rectangle prevRect = prev.getRect();
@@ -188,9 +181,9 @@ public class TessBoxCollection {
 
     /**
      * Removes a box from list.
-     * 
+     *
      * @param box
-     * @return 
+     * @return
      */
     public boolean remove(TessBox box) {
         return list.remove(box);
@@ -198,9 +191,9 @@ public class TessBoxCollection {
 
     /**
      * Removes a box from list by index.
-     * 
+     *
      * @param index
-     * @return 
+     * @return
      */
     public TessBox remove(int index) {
         return list.remove(index);
@@ -208,7 +201,7 @@ public class TessBoxCollection {
 
     /**
      * Gets coordinate data for each page.
-     * 
+     *
      * @return table data list
      */
     public List<String[]> getTableDataList() {

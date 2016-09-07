@@ -91,10 +91,10 @@ public class TiffBoxGenerator {
      */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
-        String combiningSymbols = readCombiningSymbols();
+        SymbolFileParser parser = new SymbolFileParser();
         for (short i = 0; i < pages.size(); i++) {
             TessBoxCollection boxCol = boxPages.get(i);
-            boxCol.setCombiningSymbols(combiningSymbols);
+            boxCol.setCombiningSymbols(parser.getAppendingSymbols(), parser.getPrependingSymbols());
             boxCol.combineBoxes();
 
             for (TessBox box : boxCol.toList()) {
@@ -106,40 +106,6 @@ public class TiffBoxGenerator {
 //            return sb.toString().replace(" 0" + EOL, EOL); // strip the ending zeroes
 //        }
         return sb.toString();
-    }
-
-    /**
-     * Reads in combining symbols.
-     *
-     * @return
-     */
-    private String readCombiningSymbols() {
-        String str = null;
-        try {
-            File symbolFile = new File(baseDir, "data/combiningsymbols.txt");
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(symbolFile), "UTF8"))) {
-                while ((str = in.readLine()) != null) {
-                    // strip BOM character
-                    if (str.length() > 0 && str.charAt(0) == '\ufeff') {
-                        str = str.substring(1);
-                    }
-                    // skip empty line or line starts with #
-                    if (str.trim().length() > 0 && !str.trim().startsWith("#")) {
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.log(Level.WARNING, e.getMessage(), e);
-        }
-
-        if (str != null) {
-            str = str.replaceAll("[ \\[\\]]", ""); // strip regex special characters
-            str = TextUtilities.convertNCR(str); // convert escaped sequences to Unicode
-        }
-
-        return str;
     }
 
     /**
