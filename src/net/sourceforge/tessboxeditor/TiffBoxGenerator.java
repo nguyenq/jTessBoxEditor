@@ -275,18 +275,15 @@ public class TiffBoxGenerator {
                 
                 breakIterator.setText(lineText.toString());
                 int start = breakIterator.first();
-                int end = breakIterator.next();
 
-                while (end != BreakIterator.DONE) {
+                for (int end = breakIterator.next(); end != BreakIterator.DONE; start = end, end = breakIterator.next()) {
                     String ch = lineText.substring(start, end);
                     // get bounding box for each character on a line
                     Shape shape = line.getBlackBoxBounds(start, end);
-                    
-                    start = end;
-                    end = breakIterator.next();
-                    
                     Rectangle rect = shape.getBounds();
-                    if (rect.width == 0 || rect.height == 0) {
+                    
+                    if (ch.length() == 0 || Character.isWhitespace(ch.charAt(0)) || rect.width == 0 || rect.height == 0) {
+                        // skip adding box for spaces
                         continue;
                     }
                     rect.x += drawPosX;
