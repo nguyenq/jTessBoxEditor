@@ -20,6 +20,7 @@ import java.awt.font.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.AttributedString;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,6 @@ import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 import net.sourceforge.tessboxeditor.utilities.ImageUtils;
 import net.sourceforge.tess4j.util.ImageIOHelper;
 import net.sourceforge.vietocr.util.Utils;
-import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TiffBoxGenerator {
 
@@ -55,6 +55,7 @@ public class TiffBoxGenerator {
     private boolean isAntiAliased;
     private final File baseDir = Utils.getBaseDir(TiffBoxGenerator.this);
     private final Pattern pattern = Pattern.compile("chars:\"(.*?)\",");
+    BreakIterator breakIterator = BreakIterator.getCharacterInstance();
 
     private final static Logger logger = Logger.getLogger(TiffBoxGenerator.class.getName());
 
@@ -91,11 +92,8 @@ public class TiffBoxGenerator {
      */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
-        SymbolFileParser parser = new SymbolFileParser();
         for (short i = 0; i < pages.size(); i++) {
             TessBoxCollection boxCol = boxPages.get(i);
-            boxCol.setCombiningSymbols(parser.getAppendingSymbols(), parser.getPrependingSymbols());
-            boxCol.combineBoxes();
 
             for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();
@@ -270,10 +268,23 @@ public class TiffBoxGenerator {
                 }
                 String[] chars = lineText.toString().split("\\s+");
 
-                // get bounding box for each character on a line
-                int c = line.getCharacterCount();
-                for (int i = 0; i < c; i++) {
-                    Shape shape = line.getBlackBoxBounds(i, i + 1);
+                lineText.setLength(0);
+                for (String ch : chars) {
+                    lineText.append((char) Integer.parseInt(ch, 16));
+                }
+                
+                breakIterator.setText(lineText.toString());
+                int start = breakIterator.first();
+                int end = breakIterator.next();
+
+                while (end != BreakIterator.DONE) {
+                    String ch = lineText.substring(start, end);
+                    // get bounding box for each character on a line
+                    Shape shape = line.getBlackBoxBounds(start, end);
+                    
+                    start = end;
+                    end = breakIterator.next();
+                    
                     Rectangle rect = shape.getBounds();
                     if (rect.width == 0 || rect.height == 0) {
                         continue;
@@ -287,12 +298,11 @@ public class TiffBoxGenerator {
                         logger.log(Level.WARNING, e.getMessage(), e);
                     }
 
-                    char ch = (char) Integer.parseInt(chars[i], 16);
-                    boxCol.add(new TessBox(String.valueOf(ch), rect, pageNum));
+                    boxCol.add(new TessBox(ch, rect, pageNum));
                 }
 
                 // Move y-coordinate in preparation for next layout.
-                drawPosY += 2.5 * leading; // line spacing
+                drawPosY += 2.4 * leading; // line spacing
 
                 // Reach bottom margin?
                 if (drawPosY > height - margin) { // - line.getAscent() ?
