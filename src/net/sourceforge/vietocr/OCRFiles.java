@@ -17,9 +17,7 @@ package net.sourceforge.vietocr;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.sourceforge.vietocr.util.Utils;
+import net.sourceforge.vietocr.util.*;
 
 /**
  * Invokes Tesseract executable via command-line.
@@ -117,40 +115,5 @@ public class OCRFiles extends OCR<File> {
     @Override
     public void processPages(File inputImage, File outputFile) throws Exception {
         // not used
-    }
-}
-
-/**
- * When Runtime.exec() won't.
- * http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html
- */
-class StreamGobbler extends Thread {
-
-    InputStream is;
-    StringBuilder outputMessage = new StringBuilder();
-
-    private final static Logger logger = Logger.getLogger(StreamGobbler.class.getName());
-
-    StreamGobbler(InputStream is) {
-        this.is = is;
-    }
-
-    String getMessage() {
-        return outputMessage.toString();
-    }
-
-    @Override
-    public void run() {
-        try {
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-                outputMessage.append(line).append("\n");
-            }
-        } catch (IOException ioe) {
-            logger.log(Level.SEVERE, ioe.getMessage(), ioe);
-        }
     }
 }

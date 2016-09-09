@@ -27,6 +27,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sourceforge.vietocr.util.StreamGobbler;
 
 import net.sourceforge.vietocr.util.Utils;
 import net.sourceforge.vietpad.utilities.TextUtilities;
@@ -490,39 +491,5 @@ public class TessTrainer {
     void writeMessage(String message) {
         this.pcs.firePropertyChange("value", null, message + "\n");
 //        System.out.println(message);
-    }
-}
-
-/**
- * When Runtime.exec() won't.
- * http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html
- */
-class StreamGobbler extends Thread {
-
-    InputStream is;
-    StringBuilder outputMessage = new StringBuilder();
-
-    private final static Logger logger = Logger.getLogger(StreamGobbler.class.getName());
-
-    StreamGobbler(InputStream is) {
-        this.is = is;
-    }
-
-    String getMessage() {
-        return outputMessage.toString();
-    }
-
-    @Override
-    public void run() {
-        try {
-            InputStreamReader isr = new InputStreamReader(is, "UTF8");
-            BufferedReader br = new BufferedReader(isr);
-            String line;
-            while ((line = br.readLine()) != null) {
-                outputMessage.append(line).append("\n");
-            }
-        } catch (IOException ioe) {
-            logger.log(Level.SEVERE, ioe.getMessage(), ioe);
-        }
     }
 }
