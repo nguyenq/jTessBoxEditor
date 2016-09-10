@@ -225,56 +225,89 @@ public class GuiWithGenerator extends GuiWithTools {
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
-        try {
-            String prefix = this.jTextFieldPrefix.getText();
-            if (prefix.trim().length() > 0) {
-                prefix += ".";
+        SwingWorker generateWorker = new SwingWorker<String, Void>() {
+
+            @Override
+            protected String doInBackground() throws Exception {
+                return generateTiffBox();
             }
 
-            long lastModified = 0;
-            File fontpropFile = new File(outputDirectory, prefix + "font_properties");
-            if (fontpropFile.exists()) {
-                lastModified = fontpropFile.lastModified();
-            }
-
-            if (this.jCheckBoxText2Image.isSelected()) {
-                // execute Text2Image
-                TessTrainer trainer = new TessTrainer(tessDirectory, outputDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
-                String outputbase = jTextFieldFileName.getText();
-                if (outputbase.endsWith(".tif")) {
-                    outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
+            @Override
+            protected void done() {
+                try {
+                    String result = get();
+                    JOptionPane.showMessageDialog(GuiWithGenerator.this, result, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+                } catch (InterruptedException ignore) {
+                    logger.log(Level.WARNING, ignore.getMessage(), ignore);
+                } catch (java.util.concurrent.ExecutionException e) {
+                    String why;
+                    boolean oome = false;
+                    Throwable cause = e.getCause();
+                    if (cause != null) {
+                        if (cause instanceof OutOfMemoryError) {
+                            oome = true;
+                            why = "The input text was probably too large. Please reduce it to a more manageable amount.";
+                        } else {
+                            why = cause.getMessage();
+                        }
+                    } else {
+                        why = e.getMessage();
+                    }
+                    logger.log(Level.SEVERE, e.getMessage(), e);
+                    JOptionPane.showMessageDialog(GuiWithGenerator.this, why, oome ? "Out-Of-Memory Exception" : APP_NAME, JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    jButtonGenerate.setEnabled(true);
+                    getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                    getGlassPane().setVisible(false);
                 }
-                outputbase = outputDirectory + "/" + prefix + outputbase;
-                trainer.text2image(inputTextFile.getPath(), outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-                Utils.removeEmptyBoxes(new File(outputbase + ".box"));
-            } else {
-                TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-                generator.setOutputFolder(new File(outputDirectory));
-                generator.setFileName(prefix + this.jTextFieldFileName.getText());
-                generator.setTracking((Float) this.jSpinnerTracking.getValue());
-                generator.setLeading((Integer) this.jSpinnerLeading.getValue());
-                generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
-                generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
-                generator.create();
             }
-            
-            // updates font_properties file
-            Utils.updateFontProperties(new File(outputDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
-            String msg = String.format("TIFF/Box files have been generated and saved in %s folder.", outputDirectory);
-            
-            if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
-                msg = msg.concat("\nBe sure to check the entries in font_properties file for accuracy.");
-            }
-            JOptionPane.showMessageDialog(this, msg);
-        } catch (OutOfMemoryError oome) {
-            JOptionPane.showMessageDialog(this, "The input text was probably too large. Please reduce it to a more manageable amount.", "Out-Of-Memory Exception", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), APP_NAME, JOptionPane.ERROR_MESSAGE);
-        } finally {
-            jButtonGenerate.setEnabled(true);
-            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            getGlassPane().setVisible(false);
+        };
+
+        generateWorker.execute();
+    }
+
+    String generateTiffBox() throws Exception {
+        String prefix = this.jTextFieldPrefix.getText();
+        if (prefix.trim().length() > 0) {
+            prefix += ".";
         }
+
+        long lastModified = 0;
+        File fontpropFile = new File(outputDirectory, prefix + "font_properties");
+        if (fontpropFile.exists()) {
+            lastModified = fontpropFile.lastModified();
+        }
+
+        if (this.jCheckBoxText2Image.isSelected()) {
+            // execute Text2Image
+            TessTrainer trainer = new TessTrainer(tessDirectory, outputDirectory, jTextFieldLang.getText(), jTextFieldBootstrapLang.getText(), jCheckBoxRTL.isSelected());
+            String outputbase = jTextFieldFileName.getText();
+            if (outputbase.endsWith(".tif")) {
+                outputbase = outputbase.substring(0, outputbase.lastIndexOf(".tif"));
+            }
+            outputbase = outputDirectory + "/" + prefix + outputbase;
+            trainer.text2image(inputTextFile.getPath(), outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+            Utils.removeEmptyBoxes(new File(outputbase + ".box"));
+        } else {
+            TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
+            generator.setOutputFolder(new File(outputDirectory));
+            generator.setFileName(prefix + this.jTextFieldFileName.getText());
+            generator.setTracking((Float) this.jSpinnerTracking.getValue());
+            generator.setLeading((Integer) this.jSpinnerLeading.getValue());
+            generator.setNoiseAmount((Integer) this.jSpinnerNoise.getValue());
+            generator.setAntiAliasing(this.jCheckBoxAntiAliasing.isSelected());
+            generator.create();
+        }
+
+        // updates font_properties file
+        Utils.updateFontProperties(new File(outputDirectory), prefix + this.jTextFieldFileName.getText(), fontGen);
+        String msg = String.format("TIFF/Box files have been generated and saved in %s folder.", outputDirectory);
+
+        if (fontpropFile.exists() && lastModified != fontpropFile.lastModified()) {
+            msg = msg.concat("\nBe sure to check the entries in font_properties file for accuracy.");
+        }
+
+        return msg;
     }
 
     @Override
