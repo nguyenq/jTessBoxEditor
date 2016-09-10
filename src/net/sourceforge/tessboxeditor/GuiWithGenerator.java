@@ -160,6 +160,7 @@ public class GuiWithGenerator extends GuiWithTools {
         if (jFileChooserOutputDir.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             outputDirectory = jFileChooserOutputDir.getSelectedFile().getPath();
             this.jTextFieldOuputDir.setText(outputDirectory);
+            jFileChooserInputText.setCurrentDirectory(new File(outputDirectory));
         }
     }
 
