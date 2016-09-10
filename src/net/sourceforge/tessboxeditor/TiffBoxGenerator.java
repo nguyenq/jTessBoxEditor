@@ -299,7 +299,7 @@ public class TiffBoxGenerator {
                 }
 
                 // Move y-coordinate in preparation for next layout.
-                drawPosY += 2.4 * leading; // line spacing
+                drawPosY += 1.8 * line.getDescent() + line.getLeading() + leading; // factor for larger line spacing
 
                 // Reach bottom margin?
                 if (drawPosY > height - margin) { // - line.getAscent() ?
