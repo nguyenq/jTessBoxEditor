@@ -94,6 +94,7 @@ public class TiffBoxGenerator {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < pages.size(); i++) {
             TessBoxCollection boxCol = boxPages.get(i);
+            boxCol.combineBoxes();
 
             for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();

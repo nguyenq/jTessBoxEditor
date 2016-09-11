@@ -140,6 +140,33 @@ public class TessBoxCollection {
     }
 
     /**
+     * Combines boxes that have the same coordinates or combining symbols with
+     * main/base character. The new resultant value will be the combined values.
+     */
+    public void combineBoxes() {
+        TessBox prev = null;
+        for (TessBox box : list.toArray(new TessBox[list.size()])) {
+            if (prev != null && (box.getRect().equals(prev.getRect()) || prev.getRect().contains(box.getRect()))) {
+                list.remove(box);
+                prev.setChrs(prev.getChrs() + box.getChrs());
+//            } else if (prev != null && ((appendingSymbols != null && appendingSymbols.trim().length() > 0 && box.getChrs().matches("[" + appendingSymbols + "]"))
+//                    || (prependingSymbols != null && prependingSymbols.trim().length() > 0 && prev.getChrs().matches("[" + prependingSymbols + "]")))) {
+//                list.remove(box);
+//                prev.setChrs(prev.getChrs() + box.getChrs());
+//                Rectangle prevRect = prev.getRect();
+//                Rectangle curRect = box.getRect();
+//                int minX = Math.min(prevRect.x, curRect.x);
+//                int minY = Math.min(prevRect.y, curRect.y);
+//                int maxX = Math.max(prevRect.x + prevRect.width, curRect.x + curRect.width);
+//                int maxY = Math.max(prevRect.y + prevRect.height, curRect.y + curRect.height);
+//                prev.setRect(new Rectangle(minX, minY, maxX - minX, maxY - minY));
+            } else {
+                prev = box;
+            }
+        }
+    }
+
+    /**
      * Removes a box from list.
      *
      * @param box
