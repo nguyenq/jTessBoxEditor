@@ -220,6 +220,9 @@ public class GuiWithGenerator extends GuiWithTools {
         if (this.jTextAreaInput.getText().trim().length() == 0) {
             JOptionPane.showMessageDialog(this, "Please load training text.");
             return;
+        } else if (inputTextFile == null && this.jCheckBoxText2Image.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Please select an input file.");
+            return;
         }
 
         this.jButtonGenerate.setEnabled(false);
@@ -249,7 +252,7 @@ public class GuiWithGenerator extends GuiWithTools {
                             oome = true;
                             why = "The input text was probably too large. Please reduce it to a more manageable amount.";
                         } else {
-                            why = cause.getMessage();
+                            why = cause.getMessage() != null ? cause.getMessage() : e.getMessage();
                         }
                     } else {
                         why = e.getMessage();

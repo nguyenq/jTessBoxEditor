@@ -304,7 +304,7 @@ public class TessTrainer {
 
         //cmdnumber2dawg
         if (new File(inputDataDir, lang + ".numbers").exists()) {
-            cmd = getCommand(String.format(cmdnumber2dawg, lang, (rtl ? "" : "")));
+            cmd = getCommand(String.format(cmdnumber2dawg, lang, ""));
             runCommand(cmd);
         }
 
