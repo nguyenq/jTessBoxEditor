@@ -91,7 +91,8 @@ Version 1.6 (4 June 2016)
 Version 1.6.1 (28 August 2016)
 - Upgrade Tesseract training executable 3.05dev (2016-08-28)
 
-Version 1.7 (11 September 2016)
+Version 1.7 (12 September 2016)
 - Upgrade Tesseract training executable 3.05dev (2016-08-31)
 - Generated images are now compressed to reduce file sizes
 - Additional parameters for text2image command
+- Use BreakIterator for character boundary analysis

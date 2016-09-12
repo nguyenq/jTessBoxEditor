@@ -10,7 +10,7 @@
 <project name="jTessBoxEditor" default="default" basedir=".">
     <description>Builds, tests, and runs the project jTessBoxEditor.</description>
     <import file="nbproject/build-impl.xml"/>
-    <property name="version" value="1.7-RC"/>
+    <property name="version" value="1.7"/>
     
      <target name="-post-compile">
         <copy todir="${build.classes.dir}">
@@ -25,6 +25,10 @@
     </target>
     <target name="-post-clean">
         <delete file="${ant.project.name}.jar"/>
+        <delete dir="tesseract-ocr/tmp"/>
+        <delete>
+            <fileset dir="." includes="program.log*"/>
+        </delete>
     </target>
     <target name="dist" depends="clean,jar"
             description="create binary and source distribution archives">
