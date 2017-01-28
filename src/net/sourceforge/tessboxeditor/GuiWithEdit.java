@@ -17,12 +17,24 @@ package net.sourceforge.tessboxeditor;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 import javax.swing.JOptionPane;
+import net.sourceforge.tess4j.ITessAPI;
+import net.sourceforge.tess4j.Tesseract;
+import static net.sourceforge.tessboxeditor.Gui.prefs;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
+import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 
 public class GuiWithEdit extends GuiWithMRU {
 
+    protected String tessDirectory;
+    
+    public GuiWithEdit() {
+        tessDirectory = prefs.get("tessDirectory", WINDOWS ? new File(System.getProperty("user.dir"), "tesseract-ocr").getPath() : "/usr/bin");
+    }
+        
     @Override
     void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {
         if (boxes == null) {
@@ -99,7 +111,7 @@ public class GuiWithEdit extends GuiWithMRU {
             rect.height /= 2;
             tableModel.setValueAt(String.valueOf(rect.height), index, 4);
         }
-        
+
         TessBox newBox = new TessBox(box.getChrs(), new Rectangle(rect), box.getPage());
         newBox.setSelected(true);
         boxes.add(index + 1, newBox);
@@ -109,7 +121,7 @@ public class GuiWithEdit extends GuiWithMRU {
         } else {
             newRect.y += newRect.height;
         }
-        
+
         Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index + 1, newRow);
         jTable.setRowSelectionInterval(index, index + 1);
@@ -167,6 +179,42 @@ public class GuiWithEdit extends GuiWithMRU {
         resetReadout();
         this.jLabelImage.repaint();
         updateSave(true);
+    }
+
+    @Override
+    void jMenuItemMarkEOLActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            // Perform text-line segmentation
+            Tesseract instance = new Tesseract();
+            instance.setDatapath(tessDirectory);
+
+            short pageIndex = 0;
+            for (BufferedImage image : imageList) {
+                List<Rectangle> regions = instance.getSegmentedRegions(image, ITessAPI.TessPageIteratorLevel.RIL_TEXTLINE);
+                TessBoxCollection boxesPerPage = boxPages.get(pageIndex); // boxes per page
+                for (Rectangle rect : regions) { // process each line
+                    TessBox last = boxesPerPage.toList().stream().filter((r) -> {
+                        return rect.contains(r.getRect());
+                    }).reduce((first, second) -> second).orElse(null);
+
+                    if (last == null) {
+                        continue;
+                    }
+
+                    int index = boxesPerPage.toList().indexOf(last);
+                    Rectangle nRect = new Rectangle(last.getRect());
+                    nRect.x += nRect.width + 10;
+                    boxesPerPage.add(index + 1, new TessBox("\t", nRect, pageIndex));
+                }
+                pageIndex++;
+            }
+            resetReadout();
+            loadTable();
+            this.jLabelImage.repaint();
+            updateSave(true);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
     /**

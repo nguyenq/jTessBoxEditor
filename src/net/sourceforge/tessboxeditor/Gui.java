@@ -70,10 +70,10 @@ public class Gui extends javax.swing.JFrame {
     private String currentDirectory, outputDirectory;
     private boolean boxChanged = true;
     protected boolean tableSelectAction;
-    private List<TessBoxCollection> boxPages;
+    protected List<TessBoxCollection> boxPages;
     protected TessBoxCollection boxes; // boxes of current page
     protected short imageIndex;
-    private List<BufferedImage> imageList;
+    protected List<BufferedImage> imageList;
     protected final File baseDir;
     DefaultTableModel tableModel;
     private boolean isTess2_0Format;
@@ -343,6 +343,8 @@ public class Gui extends javax.swing.JFrame {
         jMenuItemSplit = new javax.swing.JMenuItem();
         jMenuItemInsert = new javax.swing.JMenuItem();
         jMenuItemDelete = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemMarkEOL = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
         jSeparatorLAF = new javax.swing.JPopupMenu.Separator();
@@ -1307,6 +1309,16 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuEdit.add(jMenuItemDelete);
+        jMenuEdit.add(jSeparator1);
+
+        jMenuItemMarkEOL.setText("Mark EOL");
+        jMenuItemMarkEOL.setToolTipText("Mark EOL with Tab character");
+        jMenuItemMarkEOL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMarkEOLActionPerformed(evt);
+            }
+        });
+        jMenuEdit.add(jMenuItemMarkEOL);
 
         jMenuBar.add(jMenuEdit);
 
@@ -2253,6 +2265,10 @@ public class Gui extends javax.swing.JFrame {
         jTextFieldFileName.setText(imageFilename.replaceFirst("exp.*?\\.tif$", "exp" + exposureLevel + ".tif"));
     }//GEN-LAST:event_jSpinnerExposureStateChanged
 
+    void jMenuItemMarkEOLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMarkEOLActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);        
+    }//GEN-LAST:event_jMenuItemMarkEOLActionPerformed
+
     /**
      * Gets a subimage for display in boxview.
      *
@@ -2371,6 +2387,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemFont;
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemInsert;
+    private javax.swing.JMenuItem jMenuItemMarkEOL;
     private javax.swing.JMenuItem jMenuItemMerge;
     private javax.swing.JMenuItem jMenuItemMergeTiff;
     private javax.swing.JMenuItem jMenuItemOpen;
@@ -2408,6 +2425,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneCoord;
     private javax.swing.JScrollPane jScrollPaneImage;
     private javax.swing.JScrollPane jScrollPaneText;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparatorAbout;
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
     private javax.swing.JPopupMenu.Separator jSeparatorLAF;

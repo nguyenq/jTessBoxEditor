@@ -26,7 +26,6 @@ import net.sourceforge.vietpad.components.SimpleFilter;
 public class GuiWithTrainer extends GuiWithGenerator {
 
     protected static final String DIALOG_TITLE = "Train Tesseract";
-//    protected String tessDirectory;
     protected String trainDataDirectory;
     private JFileChooser jFileChooserTrainingData;
     private JFileChooser jFileChooserTessExecutables;
@@ -38,7 +37,6 @@ public class GuiWithTrainer extends GuiWithGenerator {
     }
 
     private void initComponents() {
-        tessDirectory = prefs.get("tessDirectory", WINDOWS ? new File(System.getProperty("user.dir"), "tesseract-ocr").getPath() : "/usr/bin");
         jTextFieldTessDir.setText(tessDirectory);
 
         jFileChooserTessExecutables = new javax.swing.JFileChooser();
