@@ -15,12 +15,18 @@
  */
 package net.sourceforge.tessboxeditor;
 
+import java.awt.Cursor;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import net.sourceforge.tess4j.ITessAPI;
 import net.sourceforge.tess4j.Tesseract;
 import static net.sourceforge.tessboxeditor.Gui.prefs;
@@ -30,11 +36,14 @@ import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 public class GuiWithEdit extends GuiWithMRU {
 
     protected String tessDirectory;
-    
+    private OcrSegmentWorker ocrSegmentWorker;
+
+    private final static Logger logger = Logger.getLogger(GuiWithEdit.class.getName());
+
     public GuiWithEdit() {
         tessDirectory = prefs.get("tessDirectory", WINDOWS ? new File(System.getProperty("user.dir"), "tesseract-ocr").getPath() : "/usr/bin");
     }
-        
+
     @Override
     void jMenuItemMergeActionPerformed(java.awt.event.ActionEvent evt) {
         if (boxes == null) {
@@ -183,37 +192,88 @@ public class GuiWithEdit extends GuiWithMRU {
 
     @Override
     void jMenuItemMarkEOLActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            // Perform text-line segmentation
+        getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        getGlassPane().setVisible(true);
+
+        // instantiate SwingWorker for OCR
+        ocrSegmentWorker = new OcrSegmentWorker(imageList);
+        ocrSegmentWorker.execute();
+    }
+
+    /**
+     * A worker class for managing OCR process.
+     */
+    class OcrSegmentWorker extends SwingWorker<Void, Void> {
+
+        List<BufferedImage> imageList;
+
+        OcrSegmentWorker(List<BufferedImage> imageList) {
+            this.imageList = imageList;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
             Tesseract instance = new Tesseract();
             instance.setDatapath(tessDirectory);
 
             short pageIndex = 0;
             for (BufferedImage image : imageList) {
+                // Perform text-line segmentation
                 List<Rectangle> regions = instance.getSegmentedRegions(image, ITessAPI.TessPageIteratorLevel.RIL_TEXTLINE);
                 TessBoxCollection boxesPerPage = boxPages.get(pageIndex); // boxes per page
                 for (Rectangle rect : regions) { // process each line
-                    TessBox last = boxesPerPage.toList().stream().filter((r) -> {
+                    TessBox lastBox = boxesPerPage.toList().stream().filter((r) -> {
                         return rect.contains(r.getRect());
                     }).reduce((first, second) -> second).orElse(null);
 
-                    if (last == null) {
+                    if (lastBox == null) {
                         continue;
                     }
 
-                    int index = boxesPerPage.toList().indexOf(last);
-                    Rectangle nRect = new Rectangle(last.getRect());
+                    int index = boxesPerPage.toList().indexOf(lastBox);
+                    Rectangle nRect = new Rectangle(lastBox.getRect());
                     nRect.x += nRect.width + 10;
                     boxesPerPage.add(index + 1, new TessBox("\t", nRect, pageIndex));
                 }
                 pageIndex++;
             }
-            resetReadout();
-            loadTable();
-            this.jLabelImage.repaint();
-            updateSave(true);
-        } catch (Exception e) {
-            // ignore
+
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                get(); // dummy method
+                resetReadout();
+                loadTable();
+                jLabelImage.repaint();
+                updateSave(true);
+            } catch (InterruptedException ignore) {
+                logger.log(Level.WARNING, ignore.getMessage(), ignore);
+            } catch (java.util.concurrent.ExecutionException e) {
+                String why;
+                Throwable cause = e.getCause();
+                if (cause != null) {
+                    if (cause instanceof IOException) {
+                        why = bundle.getString("Cannot_find_Tesseract._Please_set_its_path.");
+                    } else if (cause instanceof FileNotFoundException) {
+                        why = bundle.getString("An_exception_occurred_in_Tesseract_engine_while_recognizing_this_image.");
+                    } else {
+                        why = cause.getMessage();
+                    }
+                } else {
+                    why = e.getMessage();
+                }
+
+                logger.log(Level.SEVERE, why, e);
+                JOptionPane.showMessageDialog(null, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
+            } catch (java.util.concurrent.CancellationException e) {
+                logger.log(Level.WARNING, e.getMessage(), e);
+            } finally {
+                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                getGlassPane().setVisible(false);
+            }
         }
     }
 

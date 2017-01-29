@@ -37,7 +37,6 @@ public class GuiWithGenerator extends GuiWithTools {
     private String outputDirectory;
     private Font fontGen;
     private String fontFolder;
-    protected String tessDirectory;
     private final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
     private JFileChooser jFileChooserInputText;
     private JFileChooser jFileChooserOutputDir;
