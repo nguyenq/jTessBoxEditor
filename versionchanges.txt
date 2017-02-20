@@ -100,6 +100,6 @@ Version 1.7 (12 September 2016)
 Version 1.7.1 (19 December 2016)
 - Update Tesseract training executable 3.05dev (2016-11-11)
 
-Version 2.0 Beta (31 January 2017)
-- Upgrade Tesseract training executable 4.0dev (2017-01-30)
+Version 2.0 Beta (20 February 2017)
+- Upgrade Tesseract training executable 4.0dev (2017-02-16)
 - Implement Add EOL with Tab character
