@@ -99,3 +99,6 @@ Version 1.7 (12 September 2016)
 
 Version 1.7.1 (19 December 2016)
 - Update Tesseract training executable 3.05dev (2016-11-11)
+
+Version 1.7.2 (21 February 2017)
+- Create stub empty files for font_properties, frequent_words_list, and words_list, as needed
