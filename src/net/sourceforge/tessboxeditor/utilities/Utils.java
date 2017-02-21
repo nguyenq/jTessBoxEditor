@@ -17,6 +17,7 @@ package net.sourceforge.tessboxeditor.utilities;
 
 import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -61,6 +62,20 @@ public class Utils {
             Files.write(Paths.get(fontpropFile.getPath()), entry.getBytes(), StandardOpenOption.APPEND);
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Creates stub empty file, as needed.
+     * 
+     * @param file
+     * @return 
+     */
+    public static boolean createFile(File file) {
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            return false;
         }
     }
 

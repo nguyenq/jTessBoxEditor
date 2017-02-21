@@ -21,6 +21,7 @@ import java.io.*;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import net.sourceforge.tessboxeditor.utilities.Utils;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTrainer extends GuiWithGenerator {
@@ -98,8 +99,15 @@ public class GuiWithTrainer extends GuiWithGenerator {
         // make sure all required data files exist before training
         if (selectedMode == TrainingMode.Train_with_Existing_Box || selectedMode == TrainingMode.Dictionary || selectedMode == TrainingMode.Train_from_Scratch) {
             final String lang = jTextFieldLang.getText();
-            boolean otherFilesExist = new File(trainDataDirectory, lang + ".font_properties").exists() && new File(trainDataDirectory, lang + ".frequent_words_list").exists() && new File(trainDataDirectory, lang + ".words_list").exists();
 
+            File font_propertiesFile = new File(trainDataDirectory, lang + ".font_properties");
+            Utils.createFile(font_propertiesFile);
+            File frequent_words_listFile = new File(trainDataDirectory, lang + ".frequent_words_list");
+            Utils.createFile(frequent_words_listFile);
+            File words_listFile = new File(trainDataDirectory, lang + ".words_list");
+            Utils.createFile(words_listFile);
+            
+            boolean otherFilesExist = font_propertiesFile.exists() && frequent_words_listFile.exists() && words_listFile.exists();
             if (!otherFilesExist) {
                 msg = String.format("The required file %1$s.font_properties, %1$s.frequent_words_list, or %1$s.words_list does not exist.", lang);
                 JOptionPane.showMessageDialog(this, msg, DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
