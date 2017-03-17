@@ -18,6 +18,7 @@ package net.sourceforge.tessboxeditor;
 import java.awt.Cursor;
 import java.beans.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -169,7 +170,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
 
         try {
             File outFile = new File(trainDataDirectory, "training.log");
-            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), UTF8))) {
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), StandardCharsets.UTF_8))) {
                 jTextAreaOutput.write(out);
             }
             JOptionPane.showMessageDialog(this, String.format("Log has been saved as \"%s\".", outFile.getPath()), DIALOG_TITLE, JOptionPane.INFORMATION_MESSAGE);

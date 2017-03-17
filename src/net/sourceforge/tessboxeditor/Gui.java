@@ -63,7 +63,6 @@ public class Gui extends javax.swing.JFrame {
     static final boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
     static final String EOL = System.getProperty("line.separator");
-    static final String UTF8 = "UTF-8";
     protected ResourceBundle bundle;
     static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/tessboxeditor");
     private final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -1752,7 +1751,7 @@ public class Gui extends javax.swing.JFrame {
         getGlassPane().setVisible(true);
 
         try {
-            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8))) {
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), StandardCharsets.UTF_8))) {
                 out.write(formatOutputString(imageList, boxPages));
             }
 //            updateMRUList(boxFile.getPath());
@@ -1778,13 +1777,13 @@ public class Gui extends javax.swing.JFrame {
         return true;
     }
 
-    String formatOutputString(List<BufferedImage> imageList, List<TessBoxCollection> boxPages) {
+    String formatOutputString(List<BufferedImage> imgList, List<TessBoxCollection> bxPages) {
         StringBuilder sb = new StringBuilder();
-        for (short i = 0; i < imageList.size(); i++) {
-            int pageHeight = ((BufferedImage) imageList.get(i)).getHeight(); // each page (in an image) can have different height
-            for (TessBox box : boxPages.get(i).toList()) {
+        for (short pageIndex = 0; pageIndex < imgList.size(); pageIndex++) {
+            int pageHeight = ((BufferedImage) imgList.get(pageIndex)).getHeight(); // each page (in an image) can have different height
+            for (TessBox box : bxPages.get(pageIndex).toList()) {
                 Rectangle rect = box.getRect();
-                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
+                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, pageIndex)).append(EOL);
             }
         }
         if (isTess2_0Format) {

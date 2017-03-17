@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.dnd.DropTarget;
 import java.awt.font.TextAttribute;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -142,7 +143,7 @@ public class GuiWithGenerator extends GuiWithTools {
             return; // not text file
         }
         try {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), "UTF8"))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile), StandardCharsets.UTF_8))) {
                 this.jTextAreaInput.read(in, null);
             }
             Document doc = jTextAreaInput.getDocument();

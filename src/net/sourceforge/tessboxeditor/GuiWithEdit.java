@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import net.sourceforge.tess4j.ITessAPI;
+import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.util.ImageIOHelper;
 import static net.sourceforge.tessboxeditor.Gui.APP_NAME;
@@ -278,7 +280,7 @@ public class GuiWithEdit extends GuiWithMRU {
         }
     }
 
-    void performSegment(final List<BufferedImage> imageList, List<TessBoxCollection> boxPages, final Tesseract instance) throws Exception {
+    void performSegment(final List<BufferedImage> imageList, final List<TessBoxCollection> boxPages, final ITesseract instance) throws Exception {
         short pageIndex = 0;
         for (BufferedImage image : imageList) {
             // Perform text-line segmentation
@@ -306,10 +308,7 @@ public class GuiWithEdit extends GuiWithMRU {
      * A worker class for managing OCR process.
      */
     class OcrSegmentBulkWorker extends SwingWorker<Void, Void> {
-
         File[] files;
-        List<BufferedImage> imageList;
-        List<TessBoxCollection> boxPages;
 
         OcrSegmentBulkWorker(File[] files) {
             this.files = files;
@@ -321,15 +320,19 @@ public class GuiWithEdit extends GuiWithMRU {
             instance.setDatapath(tessDirectory);
 
             for (File imageFile : files) {
-                List<BufferedImage> imageList = ImageIOHelper.getImageList(imageFile);
                 int lastDot = imageFile.getName().lastIndexOf(".");
                 File boxFile = new File(imageFile.getParentFile(), imageFile.getName().substring(0, lastDot) + ".box");
+                if (!boxFile.exists()) {
+                    continue;
+                }
+                
+                List<BufferedImage> imageList = ImageIOHelper.getImageList(imageFile);
                 String str = readBoxFile(boxFile);
                 List<TessBoxCollection> boxPages = parseBoxString(str, imageList);
                 performSegment(imageList, boxPages, instance);
 
                 // save boxes
-                try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8))) {
+                try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), StandardCharsets.UTF_8))) {
                     out.write(formatOutputString(imageList, boxPages));
                 }
             }
