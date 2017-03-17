@@ -9,6 +9,7 @@
         </Property>
       </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
         <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xa;        currentDirectory = prefs.get(&quot;currentDirectory&quot;, null);&#xa;        outputDirectory = currentDirectory;&#xa;        jFileChooserInputImage.setCurrentDirectory(currentDirectory == null ? null : new File(currentDirectory));&#xa;        filterIndex = prefs.getInt(&quot;filterIndex&quot;, 0);&#xa;        FileFilter allImageFilter = new SimpleFilter(&quot;bmp;jpg;jpeg;png;tif;tiff&quot;, bundle.getString(&quot;All_Image_Files&quot;));&#xa;        FileFilter pngFilter = new SimpleFilter(&quot;png&quot;, &quot;PNG&quot;);&#xa;        FileFilter tiffFilter = new SimpleFilter(&quot;tif;tiff&quot;, &quot;TIFF&quot;);&#xa;        //FileFilter textFilter = new SimpleFilter(&quot;box;txt&quot;, &quot;Box Files&quot;);&#xa;&#xa;        jFileChooserInputImage.setAcceptAllFileFilterUsed(false);&#xa;        jFileChooserInputImage.addChoosableFileFilter(allImageFilter);&#xa;        jFileChooserInputImage.addChoosableFileFilter(pngFilter);&#xa;        jFileChooserInputImage.addChoosableFileFilter(tiffFilter);&#xa;        //jFileChooser.addChoosableFileFilter(textFilter);&#xa;        fileFilters = jFileChooserInputImage.getChoosableFileFilters();&#xa;        if (filterIndex &lt; fileFilters.length) {&#xa;            jFileChooserInputImage.setFileFilter(fileFilters[filterIndex]);&#xa;        }&#xa;"/>
       </AuxValues>
     </Component>
@@ -263,6 +264,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemMarkEOLActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemMarkEOLBulk">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Mark EOL Bulk..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemMarkEOLBulkActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

@@ -34,6 +34,9 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -345,6 +348,7 @@ public class Gui extends javax.swing.JFrame {
         jMenuItemDelete = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemMarkEOL = new javax.swing.JMenuItem();
+        jMenuItemMarkEOLBulk = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
         jSeparatorLAF = new javax.swing.JPopupMenu.Separator();
@@ -1320,6 +1324,14 @@ public class Gui extends javax.swing.JFrame {
         });
         jMenuEdit.add(jMenuItemMarkEOL);
 
+        jMenuItemMarkEOLBulk.setText("Mark EOL Bulk...");
+        jMenuItemMarkEOLBulk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMarkEOLBulkActionPerformed(evt);
+            }
+        });
+        jMenuEdit.add(jMenuItemMarkEOLBulk);
+
         jMenuBar.add(jMenuEdit);
 
         jMenuSettings.setMnemonic(java.util.ResourceBundle.getBundle("net/sourceforge/tessboxeditor/Gui").getString("jMenuSettings.Mnemonic").charAt(0));
@@ -1523,7 +1535,7 @@ public class Gui extends javax.swing.JFrame {
                 updateMRUList(selectedFile.getPath());
                 int lastDot = selectedFile.getName().lastIndexOf(".");
                 boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
-                readBoxFile(boxFile);
+                loadBoxes(boxFile);
                 return null;
             }
 
@@ -1559,59 +1571,15 @@ public class Gui extends javax.swing.JFrame {
         }
     }
 
-    void readBoxFile(final File boxFile) {
+    void loadBoxes(File boxFile) {
         if (boxFile.exists()) {
             try {
                 boxPages.clear();
-
-                // load into textarea first
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"))) {
-                    this.jTextAreaBoxData.read(in, null);
-                }
-
-                // load into coordinate tab
-                String[] boxdata = this.jTextAreaBoxData.getText().split("\\n");
-                if (boxdata.length > 0) {
-                    // if only 5 fields, it's Tess 2.0x format
-                    isTess2_0Format = boxdata[0].split("\\s+").length == 5;
-                }
-
-                int startBoxIndex = 0;
-
-                for (int curPage = 0; curPage < imageList.size(); curPage++) {
-                    TessBoxCollection boxCol = new TessBoxCollection();
-                    // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
-                    // On computer graphics device, (0,0) is defined as top-left.
-                    int pageHeight = imageList.get(curPage).getHeight();
-                    for (int i = startBoxIndex; i < boxdata.length; i++) {
-                        String[] items = boxdata[i].split("\\s+");
-
-                        // skip invalid data
-                        if (items.length < 5 || items.length > 6) {
-                            continue;
-                        }
-
-                        String chrs = items[0];
-                        int x = Integer.parseInt(items[1]);
-                        int y = Integer.parseInt(items[2]);
-                        int w = Integer.parseInt(items[3]) - x;
-                        int h = Integer.parseInt(items[4]) - y;
-                        y = pageHeight - y - h; // flip the y-coordinate
-
-                        short page;
-                        if (items.length == 6) {
-                            page = Short.parseShort(items[5]); // Tess 3.0x format
-                        } else {
-                            page = 0; // Tess 2.0x format
-                        }
-                        if (page > curPage) {
-                            startBoxIndex = i; // mark begin of next page
-                            break;
-                        }
-                        boxCol.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
-                    }
-                    boxPages.add(boxCol); // add the last page
-                }
+                
+                String str = readBoxFile(boxFile);
+                // load into textarea
+                this.jTextAreaBoxData.setText(str);
+                boxPages = parseBoxString(str, imageList);
                 loadTable();
                 updateSave(false);
             } catch (OutOfMemoryError oome) {
@@ -1629,6 +1597,59 @@ public class Gui extends javax.swing.JFrame {
             ((JImageLabel) this.jLabelImage).setBoxes(null);
             jTextAreaBoxData.setText(null);
         }
+    }
+
+    String readBoxFile(File boxFile) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(boxFile.getPath())), StandardCharsets.UTF_8);
+    }
+
+    List<TessBoxCollection> parseBoxString(String boxStr, List<BufferedImage> imageList) throws IOException {
+        List<TessBoxCollection> allBoxPages = new ArrayList<TessBoxCollection>();
+        
+        String[] boxdata = boxStr.split("\\n");
+        if (boxdata.length > 0) {
+            // if only 5 fields, it's Tess 2.0x format
+            isTess2_0Format = boxdata[0].split("\\s+").length == 5;
+        }
+
+        int startBoxIndex = 0;
+
+        for (int curPage = 0; curPage < imageList.size(); curPage++) {
+            TessBoxCollection boxCol = new TessBoxCollection();
+            // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
+            // On computer graphics device, (0,0) is defined as top-left.
+            int pageHeight = imageList.get(curPage).getHeight();
+            for (int i = startBoxIndex; i < boxdata.length; i++) {
+                String[] items = boxdata[i].split("\\s+");
+
+                // skip invalid data
+                if (items.length < 5 || items.length > 6) {
+                    continue;
+                }
+
+                String chrs = items[0];
+                int x = Integer.parseInt(items[1]);
+                int y = Integer.parseInt(items[2]);
+                int w = Integer.parseInt(items[3]) - x;
+                int h = Integer.parseInt(items[4]) - y;
+                y = pageHeight - y - h; // flip the y-coordinate
+
+                short page;
+                if (items.length == 6) {
+                    page = Short.parseShort(items[5]); // Tess 3.0x format
+                } else {
+                    page = 0; // Tess 2.0x format
+                }
+                if (page > curPage) {
+                    startBoxIndex = i; // mark begin of next page
+                    break;
+                }
+                boxCol.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
+            }
+            allBoxPages.add(boxCol); // add the last page
+        }
+
+        return allBoxPages;
     }
 
     void loadTable() {
@@ -1732,7 +1753,7 @@ public class Gui extends javax.swing.JFrame {
 
         try {
             try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8))) {
-                out.write(formatOutputString());
+                out.write(formatOutputString(imageList, boxPages));
             }
 //            updateMRUList(boxFile.getPath());
             updateSave(false);
@@ -1757,7 +1778,7 @@ public class Gui extends javax.swing.JFrame {
         return true;
     }
 
-    String formatOutputString() {
+    String formatOutputString(List<BufferedImage> imageList, List<TessBoxCollection> boxPages) {
         StringBuilder sb = new StringBuilder();
         for (short i = 0; i < imageList.size(); i++) {
             int pageHeight = ((BufferedImage) imageList.get(i)).getHeight(); // each page (in an image) can have different height
@@ -1932,7 +1953,7 @@ public class Gui extends javax.swing.JFrame {
 
                 @Override
                 protected Void doInBackground() throws Exception {
-                    readBoxFile(boxFile);
+                    loadBoxes(boxFile);
                     return null;
                 }
 
@@ -2266,8 +2287,12 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jSpinnerExposureStateChanged
 
     void jMenuItemMarkEOLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMarkEOLActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);        
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMarkEOLActionPerformed
+
+    void jMenuItemMarkEOLBulkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMarkEOLBulkActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jMenuItemMarkEOLBulkActionPerformed
 
     /**
      * Gets a subimage for display in boxview.
@@ -2352,7 +2377,7 @@ public class Gui extends javax.swing.JFrame {
     protected javax.swing.JCheckBox jCheckBoxText2Image;
     protected javax.swing.JComboBox jComboBoxOps;
     protected javax.swing.JDialog jDialogValidationResult;
-    private javax.swing.JFileChooser jFileChooserInputImage;
+    protected javax.swing.JFileChooser jFileChooserInputImage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2388,6 +2413,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemInsert;
     private javax.swing.JMenuItem jMenuItemMarkEOL;
+    private javax.swing.JMenuItem jMenuItemMarkEOLBulk;
     private javax.swing.JMenuItem jMenuItemMerge;
     private javax.swing.JMenuItem jMenuItemMergeTiff;
     private javax.swing.JMenuItem jMenuItemOpen;

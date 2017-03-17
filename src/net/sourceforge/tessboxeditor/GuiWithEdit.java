@@ -19,16 +19,22 @@ import java.awt.Cursor;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import net.sourceforge.tess4j.ITessAPI;
 import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.util.ImageIOHelper;
+import static net.sourceforge.tessboxeditor.Gui.APP_NAME;
 import static net.sourceforge.tessboxeditor.Gui.prefs;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
@@ -37,6 +43,7 @@ public class GuiWithEdit extends GuiWithMRU {
 
     protected String tessDirectory;
     private OcrSegmentWorker ocrSegmentWorker;
+    private OcrSegmentBulkWorker ocrSegmentBulkWorker;
 
     private final static Logger logger = Logger.getLogger(GuiWithEdit.class.getName());
 
@@ -196,8 +203,22 @@ public class GuiWithEdit extends GuiWithMRU {
         getGlassPane().setVisible(true);
 
         // instantiate SwingWorker for OCR
-        ocrSegmentWorker = new OcrSegmentWorker(imageList);
+        ocrSegmentWorker = new OcrSegmentWorker(imageList, boxPages);
         ocrSegmentWorker.execute();
+    }
+
+    @Override
+    void jMenuItemMarkEOLBulkActionPerformed(java.awt.event.ActionEvent evt) {
+        jFileChooserInputImage.setMultiSelectionEnabled(true);
+        if (jFileChooserInputImage.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            getGlassPane().setVisible(true);
+
+            // instantiate SwingWorker for OCR
+            ocrSegmentBulkWorker = new OcrSegmentBulkWorker(jFileChooserInputImage.getSelectedFiles());
+            ocrSegmentBulkWorker.execute();
+        }
+        jFileChooserInputImage.setMultiSelectionEnabled(false);
     }
 
     /**
@@ -206,38 +227,18 @@ public class GuiWithEdit extends GuiWithMRU {
     class OcrSegmentWorker extends SwingWorker<Void, Void> {
 
         List<BufferedImage> imageList;
+        List<TessBoxCollection> boxPages;
 
-        OcrSegmentWorker(List<BufferedImage> imageList) {
+        OcrSegmentWorker(List<BufferedImage> imageList, List<TessBoxCollection> boxPages) {
             this.imageList = imageList;
+            this.boxPages = boxPages;
         }
 
         @Override
         protected Void doInBackground() throws Exception {
             Tesseract instance = new Tesseract();
             instance.setDatapath(tessDirectory);
-
-            short pageIndex = 0;
-            for (BufferedImage image : imageList) {
-                // Perform text-line segmentation
-                List<Rectangle> regions = instance.getSegmentedRegions(image, ITessAPI.TessPageIteratorLevel.RIL_TEXTLINE);
-                TessBoxCollection boxesPerPage = boxPages.get(pageIndex); // boxes per page
-                for (Rectangle rect : regions) { // process each line
-                    TessBox lastBox = boxesPerPage.toList().stream().filter((r) -> {
-                        return rect.contains(r.getRect());
-                    }).reduce((first, second) -> second).orElse(null);
-
-                    if (lastBox == null) {
-                        continue;
-                    }
-
-                    int index = boxesPerPage.toList().indexOf(lastBox);
-                    Rectangle nRect = new Rectangle(lastBox.getRect());
-                    nRect.x += nRect.width + 10;
-                    boxesPerPage.add(index + 1, new TessBox("\t", nRect, pageIndex));
-                }
-                pageIndex++;
-            }
-
+            performSegment(imageList, boxPages, instance);
             return null;
         }
 
@@ -249,6 +250,98 @@ public class GuiWithEdit extends GuiWithMRU {
                 loadTable();
                 jLabelImage.repaint();
                 updateSave(true);
+            } catch (InterruptedException ignore) {
+                logger.log(Level.WARNING, ignore.getMessage(), ignore);
+            } catch (java.util.concurrent.ExecutionException e) {
+                String why;
+                Throwable cause = e.getCause();
+                if (cause != null) {
+                    if (cause instanceof IOException) {
+                        why = bundle.getString("Cannot_find_Tesseract._Please_set_its_path.");
+                    } else if (cause instanceof FileNotFoundException) {
+                        why = bundle.getString("An_exception_occurred_in_Tesseract_engine_while_recognizing_this_image.");
+                    } else {
+                        why = cause.getMessage();
+                    }
+                } else {
+                    why = e.getMessage();
+                }
+
+                logger.log(Level.SEVERE, why, e);
+                JOptionPane.showMessageDialog(null, why, APP_NAME, JOptionPane.ERROR_MESSAGE);
+            } catch (java.util.concurrent.CancellationException e) {
+                logger.log(Level.WARNING, e.getMessage(), e);
+            } finally {
+                getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                getGlassPane().setVisible(false);
+            }
+        }
+    }
+
+    void performSegment(final List<BufferedImage> imageList, List<TessBoxCollection> boxPages, final Tesseract instance) throws Exception {
+        short pageIndex = 0;
+        for (BufferedImage image : imageList) {
+            // Perform text-line segmentation
+            List<Rectangle> regions = instance.getSegmentedRegions(image, ITessAPI.TessPageIteratorLevel.RIL_TEXTLINE);
+            TessBoxCollection boxesPerPage = boxPages.get(pageIndex); // boxes per page
+            for (Rectangle rect : regions) { // process each line
+                TessBox lastBox = boxesPerPage.toList().stream().filter((r) -> {
+                    return rect.contains(r.getRect());
+                }).reduce((first, second) -> second).orElse(null);
+
+                if (lastBox == null) {
+                    continue;
+                }
+
+                int index = boxesPerPage.toList().indexOf(lastBox);
+                Rectangle nRect = new Rectangle(lastBox.getRect());
+                nRect.x += nRect.width + 10;
+                boxesPerPage.add(index + 1, new TessBox("\t", nRect, pageIndex));
+            }
+            pageIndex++;
+        }
+    }
+
+    /**
+     * A worker class for managing OCR process.
+     */
+    class OcrSegmentBulkWorker extends SwingWorker<Void, Void> {
+
+        File[] files;
+        List<BufferedImage> imageList;
+        List<TessBoxCollection> boxPages;
+
+        OcrSegmentBulkWorker(File[] files) {
+            this.files = files;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            Tesseract instance = new Tesseract();
+            instance.setDatapath(tessDirectory);
+
+            for (File imageFile : files) {
+                List<BufferedImage> imageList = ImageIOHelper.getImageList(imageFile);
+                int lastDot = imageFile.getName().lastIndexOf(".");
+                File boxFile = new File(imageFile.getParentFile(), imageFile.getName().substring(0, lastDot) + ".box");
+                String str = readBoxFile(boxFile);
+                List<TessBoxCollection> boxPages = parseBoxString(str, imageList);
+                performSegment(imageList, boxPages, instance);
+
+                // save boxes
+                try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8))) {
+                    out.write(formatOutputString(imageList, boxPages));
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            try {
+                get(); // dummy method
+                JOptionPane.showMessageDialog(null, "EOL tab characters have been inserted in selected box files.", APP_NAME, JOptionPane.INFORMATION_MESSAGE);
             } catch (InterruptedException ignore) {
                 logger.log(Level.WARNING, ignore.getMessage(), ignore);
             } catch (java.util.concurrent.ExecutionException e) {

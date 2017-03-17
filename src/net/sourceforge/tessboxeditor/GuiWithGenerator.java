@@ -290,7 +290,7 @@ public class GuiWithGenerator extends GuiWithTools {
             }
             outputbase = outputDirectory + "/" + prefix + outputbase;
             trainer.text2image(inputTextFile.getPath(), outputbase, fontGen, jTextFieldFontFolder.getText(), (Integer) jSpinnerExposure.getValue(), (Float) this.jSpinnerTracking.getValue(), (Integer) this.jSpinnerLeading.getValue(), (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
-            Utils.removeEmptyBoxes(new File(outputbase + ".box"));
+//            Utils.removeEmptyBoxes(new File(outputbase + ".box"));
         } else {
             TiffBoxGenerator generator = new TiffBoxGenerator(this.jTextAreaInput.getText(), fontGen, (Integer) this.jSpinnerW1.getValue(), (Integer) this.jSpinnerH1.getValue());
             generator.setOutputFolder(new File(outputDirectory));
