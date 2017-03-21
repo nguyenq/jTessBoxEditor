@@ -28,8 +28,8 @@ import javax.swing.text.*;
 /**
  * @author: Quan Nguyen
  * @version: 1.4, 19 May 2004
- * @see: http://vietpad.sourceforge.net
- * @note: Modified to open external html links with default browser
+ * See <a href="http://vietpad.sourceforge.net">http://vietpad.sourceforge.net</a>
+ * Note: Modified to open external html links with default browser
  */
 public class HtmlPane extends JScrollPane implements HyperlinkListener {
     private JEditorPane html;
