@@ -220,7 +220,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
 
-            progressMonitor = new ProgressMonitor(GuiWithEdit.this, "Operation in progress...", "", 0, 100);
+            progressMonitor = new ProgressMonitor(GuiWithEdit.this, "Marking EOL with tab...", "", 0, 100);
             progressMonitor.setMillisToDecideToPopup(0);
             progressMonitor.setProgress(0);
 
@@ -349,7 +349,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
             Tesseract instance = new Tesseract();
             instance.setDatapath(tessDirectory);
 
-            int tick = Math.round(100f / files.length);
+            int tick = (int) Math.ceil(100f / files.length);
 
             for (File imageFile : files) {
                 int lastDot = imageFile.getName().lastIndexOf(".");
