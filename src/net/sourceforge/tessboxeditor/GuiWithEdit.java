@@ -19,6 +19,8 @@ import java.awt.Cursor;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 import net.sourceforge.tess4j.ITessAPI;
 import net.sourceforge.tess4j.ITesseract;
@@ -41,11 +44,12 @@ import static net.sourceforge.tessboxeditor.Gui.prefs;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 
-public class GuiWithEdit extends GuiWithMRU {
+public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
 
     protected String tessDirectory;
     private OcrSegmentWorker ocrSegmentWorker;
     private OcrSegmentBulkWorker ocrSegmentBulkWorker;
+    private ProgressMonitor progressMonitor;
 
     private final static Logger logger = Logger.getLogger(GuiWithEdit.class.getName());
 
@@ -216,11 +220,34 @@ public class GuiWithEdit extends GuiWithMRU {
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
 
+            progressMonitor = new ProgressMonitor(GuiWithEdit.this, "Operation in progress...", "", 0, 100);
+            progressMonitor.setMillisToDecideToPopup(0);
+            progressMonitor.setProgress(0);
+
             // instantiate SwingWorker for OCR
             ocrSegmentBulkWorker = new OcrSegmentBulkWorker(jFileChooserInputImage.getSelectedFiles());
+            ocrSegmentBulkWorker.addPropertyChangeListener(this);
             ocrSegmentBulkWorker.execute();
+            jMenuItemMarkEOLBulk.setEnabled(false);
         }
         jFileChooserInputImage.setMultiSelectionEnabled(false);
+    }
+
+    /**
+     * Invoked when task's progress property changes.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressMonitor.setProgress(progress);
+            if (progressMonitor.isCanceled() || ocrSegmentBulkWorker.isDone()) {
+                if (progressMonitor.isCanceled()) {
+                    ocrSegmentBulkWorker.cancel(true);
+                }
+                jMenuItemMarkEOLBulk.setEnabled(true);
+            }
+        }
     }
 
     /**
@@ -307,7 +334,8 @@ public class GuiWithEdit extends GuiWithMRU {
     /**
      * A worker class for managing OCR process.
      */
-    class OcrSegmentBulkWorker extends SwingWorker<Void, Void> {
+    class OcrSegmentBulkWorker extends SwingWorker<Void, String> {
+
         File[] files;
 
         OcrSegmentBulkWorker(File[] files) {
@@ -316,8 +344,12 @@ public class GuiWithEdit extends GuiWithMRU {
 
         @Override
         protected Void doInBackground() throws Exception {
+            int progress = 0;
+            setProgress(0);
             Tesseract instance = new Tesseract();
             instance.setDatapath(tessDirectory);
+
+            int tick = Math.round(100f / files.length);
 
             for (File imageFile : files) {
                 int lastDot = imageFile.getName().lastIndexOf(".");
@@ -325,7 +357,7 @@ public class GuiWithEdit extends GuiWithMRU {
                 if (!boxFile.exists()) {
                     continue;
                 }
-                
+
                 List<BufferedImage> imageList = ImageIOHelper.getImageList(imageFile);
                 String str = readBoxFile(boxFile);
                 List<TessBoxCollection> boxPages = parseBoxString(str, imageList);
@@ -335,9 +367,24 @@ public class GuiWithEdit extends GuiWithMRU {
                 try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), StandardCharsets.UTF_8))) {
                     out.write(formatOutputString(imageList, boxPages));
                 }
+
+                progress += tick;
+                setProgress(Math.min(progress, 100));
+                publish(imageFile.getName());
             }
 
             return null;
+        }
+
+        @Override
+        protected void process(List<String> chunks) {
+            if (isCancelled()) {
+                return;
+            }
+
+            for (String message : chunks) {
+                progressMonitor.setNote(message);
+            }
         }
 
         @Override

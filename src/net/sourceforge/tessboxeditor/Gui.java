@@ -2412,7 +2412,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JMenuItem jMenuItemInsert;
     private javax.swing.JMenuItem jMenuItemMarkEOL;
-    private javax.swing.JMenuItem jMenuItemMarkEOLBulk;
+    protected javax.swing.JMenuItem jMenuItemMarkEOLBulk;
     private javax.swing.JMenuItem jMenuItemMerge;
     private javax.swing.JMenuItem jMenuItemMergeTiff;
     private javax.swing.JMenuItem jMenuItemOpen;
