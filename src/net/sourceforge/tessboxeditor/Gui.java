@@ -1605,7 +1605,7 @@ public class Gui extends javax.swing.JFrame {
     List<TessBoxCollection> parseBoxString(String boxStr, List<BufferedImage> imageList) throws IOException {
         List<TessBoxCollection> allBoxPages = new ArrayList<TessBoxCollection>();
         
-        String[] boxdata = boxStr.split("\\n");
+        String[] boxdata = boxStr.split("\\R"); // or "\\r?\\n"
         if (boxdata.length > 0) {
             // if only 5 fields, it's Tess 2.0x format
             isTess2_0Format = boxdata[0].split("\\s+").length == 5;
@@ -1619,7 +1619,7 @@ public class Gui extends javax.swing.JFrame {
             // On computer graphics device, (0,0) is defined as top-left.
             int pageHeight = imageList.get(curPage).getHeight();
             for (int i = startBoxIndex; i < boxdata.length; i++) {
-                String[] items = boxdata[i].split("\\s+");
+                String[] items = boxdata[i].split(" ");
 
                 // skip invalid data
                 if (items.length < 5 || items.length > 6) {
