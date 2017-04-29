@@ -1626,7 +1626,7 @@ public class Gui extends javax.swing.JFrame {
                     continue;
                 }
 
-                String chrs = items[0].length() > 0 ? items[0] : " ";
+                String chrs = items[0].isEmpty() ? " " : items[0];
                 int x = Integer.parseInt(items[1]);
                 int y = Integer.parseInt(items[2]);
                 int w = Integer.parseInt(items[3]) - x;
