@@ -1619,7 +1619,7 @@ public class Gui extends javax.swing.JFrame {
             // On computer graphics device, (0,0) is defined as top-left.
             int pageHeight = imageList.get(curPage).getHeight();
             for (int i = startBoxIndex; i < boxdata.length; i++) {
-                String[] items = boxdata[i].split(" ");
+                String[] items = boxdata[i].split(" +", -1);
 
                 // skip invalid data
                 if (items.length < 5 || items.length > 6) {
