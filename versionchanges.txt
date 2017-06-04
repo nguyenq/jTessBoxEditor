@@ -102,3 +102,8 @@ Version 1.7.1 (19 December 2016)
 
 Version 1.7.2 (21 February 2017)
 - Create stub empty files for font_properties, frequent_words_list, and words_list, as needed
+
+Version 1.7.3 (4 June 2017)
+- Upgrade Tesseract training executable 3.05.01
+- Insert with a space
+- Fix reading box file containing space characters

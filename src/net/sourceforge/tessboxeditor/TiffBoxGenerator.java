@@ -92,13 +92,13 @@ public class TiffBoxGenerator {
      */
     private String formatOutputString() {
         StringBuilder sb = new StringBuilder();
-        for (short i = 0; i < pages.size(); i++) {
-            TessBoxCollection boxCol = boxPages.get(i);
+        for (short pageIndex = 0; pageIndex < pages.size(); pageIndex++) {
+            TessBoxCollection boxCol = boxPages.get(pageIndex);
             boxCol.combineBoxes();
 
             for (TessBox box : boxCol.toList()) {
                 Rectangle rect = box.getRect();
-                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, height - rect.y - rect.height, rect.x + rect.width, height - rect.y, i)).append(EOL);
+                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, height - rect.y - rect.height, rect.x + rect.width, height - rect.y, pageIndex)).append(EOL);
             }
         }
 //        if (isTess2_0Format) {

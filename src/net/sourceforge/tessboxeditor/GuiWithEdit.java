@@ -135,7 +135,7 @@ public class GuiWithEdit extends GuiWithMRU {
         TessBox box = selected.get(0);
         int index = this.boxes.toList().indexOf(box);
         index++;
-        TessBox newBox = new TessBox(box.getChrs(), new Rectangle(box.getRect()), box.getPage());
+        TessBox newBox = new TessBox(" ", new Rectangle(box.getRect()), box.getPage());
         newBox.setSelected(true);
         boxes.add(index, newBox);
         Rectangle newRect = newBox.getRect();

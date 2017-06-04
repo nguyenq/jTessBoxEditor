@@ -34,6 +34,9 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -60,7 +63,6 @@ public class Gui extends javax.swing.JFrame {
     static final boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
     static final String EOL = System.getProperty("line.separator");
-    static final String UTF8 = "UTF-8";
     protected ResourceBundle bundle;
     static final Preferences prefs = Preferences.userRoot().node("/net/sourceforge/tessboxeditor");
     private final Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -1511,7 +1513,7 @@ public class Gui extends javax.swing.JFrame {
                 updateMRUList(selectedFile.getPath());
                 int lastDot = selectedFile.getName().lastIndexOf(".");
                 boxFile = new File(selectedFile.getParentFile(), selectedFile.getName().substring(0, lastDot) + ".box");
-                readBoxFile(boxFile);
+                loadBoxes(boxFile);
                 return null;
             }
 
@@ -1547,59 +1549,15 @@ public class Gui extends javax.swing.JFrame {
         }
     }
 
-    void readBoxFile(final File boxFile) {
+    void loadBoxes(File boxFile) {
         if (boxFile.exists()) {
             try {
                 boxPages.clear();
 
-                // load into textarea first
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(boxFile), "UTF8"))) {
-                    this.jTextAreaBoxData.read(in, null);
-                }
-
-                // load into coordinate tab
-                String[] boxdata = this.jTextAreaBoxData.getText().split("\\n");
-                if (boxdata.length > 0) {
-                    // if only 5 fields, it's Tess 2.0x format
-                    isTess2_0Format = boxdata[0].split("\\s+").length == 5;
-                }
-
-                int startBoxIndex = 0;
-
-                for (int curPage = 0; curPage < imageList.size(); curPage++) {
-                    TessBoxCollection boxCol = new TessBoxCollection();
-                    // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
-                    // On computer graphics device, (0,0) is defined as top-left.
-                    int pageHeight = imageList.get(curPage).getHeight();
-                    for (int i = startBoxIndex; i < boxdata.length; i++) {
-                        String[] items = boxdata[i].split("\\s+");
-
-                        // skip invalid data
-                        if (items.length < 5 || items.length > 6) {
-                            continue;
-                        }
-
-                        String chrs = items[0];
-                        int x = Integer.parseInt(items[1]);
-                        int y = Integer.parseInt(items[2]);
-                        int w = Integer.parseInt(items[3]) - x;
-                        int h = Integer.parseInt(items[4]) - y;
-                        y = pageHeight - y - h; // flip the y-coordinate
-
-                        short page;
-                        if (items.length == 6) {
-                            page = Short.parseShort(items[5]); // Tess 3.0x format
-                        } else {
-                            page = 0; // Tess 2.0x format
-                        }
-                        if (page > curPage) {
-                            startBoxIndex = i; // mark begin of next page
-                            break;
-                        }
-                        boxCol.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
-                    }
-                    boxPages.add(boxCol); // add the last page
-                }
+                String str = readBoxFile(boxFile);
+                // load into textarea
+                this.jTextAreaBoxData.setText(str);
+                boxPages = parseBoxString(str, imageList);
                 loadTable();
                 updateSave(false);
             } catch (OutOfMemoryError oome) {
@@ -1617,6 +1575,59 @@ public class Gui extends javax.swing.JFrame {
             ((JImageLabel) this.jLabelImage).setBoxes(null);
             jTextAreaBoxData.setText(null);
         }
+    }
+    
+    String readBoxFile(File boxFile) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(boxFile.getPath())), StandardCharsets.UTF_8);
+    }
+    
+    List<TessBoxCollection> parseBoxString(String boxStr, List<BufferedImage> imageList) throws IOException {
+        List<TessBoxCollection> allBoxPages = new ArrayList<TessBoxCollection>();
+        
+        String[] boxdata = boxStr.split("\\R"); // or "\\r?\\n"
+        if (boxdata.length > 0) {
+            // if only 5 fields, it's Tess 2.0x format
+            isTess2_0Format = boxdata[0].split("\\s+").length == 5;
+        }
+
+        int startBoxIndex = 0;
+
+        for (int curPage = 0; curPage < imageList.size(); curPage++) {
+            TessBoxCollection boxCol = new TessBoxCollection();
+            // Note that the coordinate system used in the box file has (0,0) at the bottom-left.
+            // On computer graphics device, (0,0) is defined as top-left.
+            int pageHeight = imageList.get(curPage).getHeight();
+            for (int i = startBoxIndex; i < boxdata.length; i++) {
+                String[] items = boxdata[i].split("(?<!^) +");
+
+                // skip invalid data
+                if (items.length < 5 || items.length > 6) {
+                    continue;
+                }
+
+                String chrs = items[0];
+                int x = Integer.parseInt(items[1]);
+                int y = Integer.parseInt(items[2]);
+                int w = Integer.parseInt(items[3]) - x;
+                int h = Integer.parseInt(items[4]) - y;
+                y = pageHeight - y - h; // flip the y-coordinate
+
+                short page;
+                if (items.length == 6) {
+                    page = Short.parseShort(items[5]); // Tess 3.0x format
+                } else {
+                    page = 0; // Tess 2.0x format
+                }
+                if (page > curPage) {
+                    startBoxIndex = i; // mark begin of next page
+                    break;
+                }
+                boxCol.add(new TessBox(chrs, new Rectangle(x, y, w, h), page));
+            }
+            allBoxPages.add(boxCol); // add the last page
+        }
+
+        return allBoxPages;
     }
 
     void loadTable() {
@@ -1719,8 +1730,8 @@ public class Gui extends javax.swing.JFrame {
         getGlassPane().setVisible(true);
 
         try {
-            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), UTF8))) {
-                out.write(formatOutputString());
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), StandardCharsets.UTF_8))) {
+                out.write(formatOutputString(imageList, boxPages));
             }
 //            updateMRUList(boxFile.getPath());
             updateSave(false);
@@ -1745,13 +1756,13 @@ public class Gui extends javax.swing.JFrame {
         return true;
     }
 
-    String formatOutputString() {
+    String formatOutputString(List<BufferedImage> imgList, List<TessBoxCollection> bxPages) {
         StringBuilder sb = new StringBuilder();
-        for (short i = 0; i < imageList.size(); i++) {
-            int pageHeight = ((BufferedImage) imageList.get(i)).getHeight(); // each page (in an image) can have different height
-            for (TessBox box : boxPages.get(i).toList()) {
+        for (short pageIndex = 0; pageIndex < imgList.size(); pageIndex++) {
+            int pageHeight = ((BufferedImage) imgList.get(pageIndex)).getHeight(); // each page (in an image) can have different height
+            for (TessBox box : bxPages.get(pageIndex).toList()) {
                 Rectangle rect = box.getRect();
-                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, i)).append(EOL);
+                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, pageIndex)).append(EOL);
             }
         }
         if (isTess2_0Format) {
@@ -1920,7 +1931,7 @@ public class Gui extends javax.swing.JFrame {
 
                 @Override
                 protected Void doInBackground() throws Exception {
-                    readBoxFile(boxFile);
+                    loadBoxes(boxFile);
                     return null;
                 }
 
