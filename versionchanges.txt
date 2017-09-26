@@ -107,3 +107,6 @@ Version 1.7.3 (4 June 2017)
 - Upgrade Tesseract training executable 3.05.01
 - Insert with a space
 - Fix reading box file containing space characters
+
+Version 1.7.4 Beta (25 September 2017)
+- Replace deprecated key modifier constant
