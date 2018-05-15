@@ -103,6 +103,6 @@ Version 1.7.1 (19 December 2016)
 Version 1.7.2 (21 February 2017)
 - Create stub empty files for font_properties, frequent_words_list, and words_list, as needed
 
-Version 2.0 Beta (4 March 2018)
-- Upgrade Tesseract training executable 4.0alpha (2018-01-09)
+Version 2.0 Beta (14 May 2018)
+- Upgrade Tesseract training executable 4.0.0-beta.1 (2018-04-14)
 - Implement Add EOL with Tab character
