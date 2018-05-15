@@ -47,6 +47,7 @@ import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
 public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
 
     protected String tessDirectory;
+    protected String tessdataPath;
     private OcrSegmentWorker ocrSegmentWorker;
     private OcrSegmentBulkWorker ocrSegmentBulkWorker;
     private ProgressMonitor progressMonitor;
@@ -55,6 +56,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
 
     public GuiWithEdit() {
         tessDirectory = prefs.get("tessDirectory", WINDOWS ? new File(System.getProperty("user.dir"), "tesseract-ocr").getPath() : "/usr/bin");
+        tessdataPath = WINDOWS ? tessDirectory + "/tessdata" : "/usr/share/tesseract-ocr/4.00/tessdata";
     }
 
     @Override
@@ -266,7 +268,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
         @Override
         protected Void doInBackground() throws Exception {
             Tesseract instance = new Tesseract();
-            instance.setDatapath(tessDirectory);
+            instance.setDatapath(tessdataPath);
             performSegment(imageList, boxPages, instance);
             return null;
         }
@@ -347,7 +349,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
             int progress = 0;
             setProgress(0);
             Tesseract instance = new Tesseract();
-            instance.setDatapath(tessDirectory);
+            instance.setDatapath(tessdataPath);
 
             int tick = (int) Math.ceil(100f / files.length);
 

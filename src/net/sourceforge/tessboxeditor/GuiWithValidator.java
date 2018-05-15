@@ -105,7 +105,7 @@ public class GuiWithValidator extends GuiWithTrainer {
         @Override
         protected Void doInBackground() throws Exception {
             OCR<File> ocrEngine = new OCRFiles(tessDirectory);
-            ocrEngine.setDatapath(trainDataDirectory);
+            ocrEngine.setDatapath(trainDataDirectory + "/tessdata");
             ocrEngine.setLanguage(jTextFieldLang.getText());
 
             for (int i = 0; i < files.size(); i++) {
