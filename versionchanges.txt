@@ -108,7 +108,7 @@ Version 1.7.3 (4 June 2017)
 - Insert with a space
 - Fix reading box file containing space characters
 
-Version 2.0 Beta (15 May 2018)
+Version 2.0 Beta (20 May 2018)
 - Upgrade Tesseract training executable 4.0.0-beta.1 (2018-04-14)
 - Use Tess4J 4.0.2 library
 - Implement Add EOL with Tab character

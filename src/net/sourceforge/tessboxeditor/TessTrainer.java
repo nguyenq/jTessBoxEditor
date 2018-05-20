@@ -475,7 +475,7 @@ public class TessTrainer {
             if (cmd.get(0).contains("shapeclustering")) {
                 msg = "An error has occurred. font_properties could be missing a font entry.";
             } else if (cmd.get(0).contains("text2image")) {
-                msg = "text2image error. Please use alternate methods or try a different font.";
+                msg = "text2image error.\n" + outputGobbler.getMessage().replace(",.", ".") + "Try a different font or use alternate methods.";
             } else {
                 msg = outputGobbler.getMessage();
             }
