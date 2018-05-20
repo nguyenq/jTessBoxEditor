@@ -56,7 +56,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
 
     public GuiWithEdit() {
         tessDirectory = prefs.get("tessDirectory", WINDOWS ? new File(System.getProperty("user.dir"), "tesseract-ocr").getPath() : "/usr/bin");
-        tessdataPath = tessDirectory + "/tessdata";
+        tessdataPath = WINDOWS ? tessDirectory + "/tessdata" : "/usr/share/tesseract-ocr/4.00/tessdata";
     }
 
     @Override
