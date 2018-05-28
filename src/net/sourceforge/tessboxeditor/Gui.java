@@ -1705,15 +1705,16 @@ public class Gui extends javax.swing.JFrame {
         if (boxFile == null || !boxFile.exists()) {
             return saveFileDlg();
         } else {
-            return saveBoxFile();
+            return saveBoxFile(boxFile);
         }
     }
 
     boolean saveFileDlg() {
-        JFileChooser saveChooser = new JFileChooser(outputDirectory);
-        FileFilter textFilter = new SimpleFilter("box", "Box Files");
-        saveChooser.addChoosableFileFilter(textFilter);
-        saveChooser.setFileFilter(textFilter);
+        JFileChooser saveChooser = new JFileChooserWithConfirm(outputDirectory);
+        FileFilter boxFilter = new SimpleFilter("box", "Box Files");
+        saveChooser.addChoosableFileFilter(boxFilter);
+        saveChooser.setFileFilter(boxFilter);
+        saveChooser.setAcceptAllFileFilterUsed(false);
         saveChooser.setDialogTitle(bundle.getString("Save_As"));
         if (boxFile != null) {
             saveChooser.setSelectedFile(boxFile);
@@ -1721,37 +1722,19 @@ public class Gui extends javax.swing.JFrame {
 
         if (saveChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             outputDirectory = saveChooser.getCurrentDirectory().getPath();
-            File f = saveChooser.getSelectedFile();
-            if (saveChooser.getFileFilter() == textFilter) {
-                if (!f.getName().endsWith(".box")) {
-                    f = new File(f.getPath() + ".box");
-                }
-                if (boxFile != null && boxFile.getPath().equals(f.getPath())) {
-                    if (JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(
-                            Gui.this,
-                            boxFile.getName() + bundle.getString("file_already_exist"),
-                            bundle.getString("Confirm_Save_As"), JOptionPane.YES_NO_OPTION,
-                            JOptionPane.WARNING_MESSAGE)) {
-                        return false;
-                    }
-                } else {
-                    boxFile = f;
-                }
-            } else {
-                boxFile = f;
-            }
-            return saveBoxFile();
+            boxFile = saveChooser.getSelectedFile();
+            return saveBoxFile(boxFile);
         } else {
             return false;
         }
     }
 
-    boolean saveBoxFile() {
+    boolean saveBoxFile(File file) {
         getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getGlassPane().setVisible(true);
 
         try {
-            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(boxFile), StandardCharsets.UTF_8))) {
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
                 out.write(formatOutputString(imageList, boxPages));
             }
 //            updateMRUList(boxFile.getPath());
