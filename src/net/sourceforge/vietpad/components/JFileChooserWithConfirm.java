@@ -59,7 +59,7 @@ public class JFileChooserWithConfirm extends JFileChooser {
         }
 
         if (selectedFile.exists() && getDialogType() == JFileChooser.SAVE_DIALOG) {
-            int dialogResult = JOptionPane.showConfirmDialog(this, String.format(getLocalizedMessage(), selectedFile.getPath()), this.getDialogTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            int dialogResult = JOptionPane.showConfirmDialog(this, String.format(getLocalizedMessage(), selectedFile.getName()), "Confirm " + this.getDialogTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             switch (dialogResult) {
                 case JOptionPane.YES_OPTION:
                     super.approveSelection();
