@@ -108,6 +108,6 @@ Version 1.7.3 (4 June 2017)
 - Insert with a space
 - Fix reading box file containing space characters
 
-Version 1.7.4 (27 May 2018)
-- Replace deprecated key modifier constant
+Version 1.7.4 (28 May 2018)
+- Replace deprecated key modifier constants
 - Update dependencies for Java 9 fixes
