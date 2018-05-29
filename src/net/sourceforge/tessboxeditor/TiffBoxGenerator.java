@@ -67,7 +67,7 @@ public class TiffBoxGenerator {
         this.height = height;
     }
 
-    public void create() {
+    public void create() throws IOException {
         map.put(TextAttribute.FAMILY, font.getName());
         map.put(TextAttribute.SIZE, font.getSize());
         if (font.getStyle() == (Font.BOLD | Font.ITALIC)) {
@@ -322,7 +322,7 @@ public class TiffBoxGenerator {
     /**
      * Creates a multi-page TIFF image.
      */
-    private void saveMultipageTiff() {
+    private void saveMultipageTiff() throws IOException {
         try {
             File tiffFile = new File(outputFolder, fileName + ".tif");
             tiffFile.delete();
@@ -335,6 +335,7 @@ public class TiffBoxGenerator {
             ImageIOHelper.mergeTiff(images, tiffFile, isAntiAliased ? "LZW" : "CCITT T.6");  // CCITT T.6 for bitonal; LZW for others
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
+            throw e;
         }
     }
 
