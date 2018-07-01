@@ -24,6 +24,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import net.sourceforge.tess4j.util.ImageIOHelper;
 import net.sourceforge.vietocr.util.Utils;
+import net.sourceforge.vietpad.components.JFileChooserWithConfirm;
 import net.sourceforge.vietpad.components.SimpleFilter;
 
 public class GuiWithTools extends GuiWithLaF {
@@ -67,18 +68,14 @@ public class GuiWithTools extends GuiWithLaF {
             final File[] inputs = jf.getSelectedFiles();
             imageFolder = jf.getCurrentDirectory();
 
-            jf = new JFileChooser();
+            jf = new JFileChooserWithConfirm();
+            ((JFileChooserWithConfirm) jf).setLocalizedMessage(bundle.getString("file_already_exist"));
             jf.setDialogTitle(bundle.getString("Save_Multi-page_TIFF_Image"));
             jf.setCurrentDirectory(imageFolder);
             jf.setFileFilter(tiffFilter);
             jf.setAcceptAllFileFilterUsed(false);
             if (jf.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = jf.getSelectedFile();
-                if (!(selectedFile.getName().endsWith(".tif") || selectedFile.getName().endsWith(".tiff"))) {
-                    selectedFile = new File(selectedFile.getParent(), selectedFile.getName() + ".tif");
-                }
-
-                final File outputTiff = selectedFile;
+                final File outputTiff = jf.getSelectedFile();
                 if (outputTiff.exists()) {
                     outputTiff.delete();
                 }
