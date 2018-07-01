@@ -111,3 +111,6 @@ Version 1.7.3 (4 June 2017)
 Version 1.7.4 (28 May 2018)
 - Replace deprecated key modifier constants
 - Update dependencies for Java 9 fixes
+
+Version 1.8.0 (1 July 2018)
+- Upgrade Tesseract training executable 3.05.02
