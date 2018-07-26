@@ -308,7 +308,8 @@ public class ImageIOHelper {
         for (IIOImage iioImage : imageList) {
             // Get the default image metadata.
             ImageTypeSpecifier imageType = ImageTypeSpecifier.createFromRenderedImage(iioImage.getRenderedImage());
-            IIOMetadata imageMetadata = writer.getDefaultImageMetadata(imageType, null);
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            IIOMetadata imageMetadata = writer.getDefaultImageMetadata(imageType, param);
             imageMetadata = setDPIViaAPI(imageMetadata, dpiX, dpiY);
             iioImage.setMetadata(imageMetadata);
         }

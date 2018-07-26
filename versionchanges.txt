@@ -114,3 +114,6 @@ Version 1.7.4 (28 May 2018)
 
 Version 1.8.0 (1 July 2018)
 - Upgrade Tesseract training executable 3.05.02
+
+Version 1.8.1 (25 July 2018)
+- Fix NPE in Java 10
