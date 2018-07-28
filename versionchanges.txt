@@ -118,5 +118,6 @@ Version 2.0 (28 May 2018)
 - Implement Add EOL with Tab character
 NOTE: LSTM Training not supported
 
-Version 2.0.1 (25 July 2018)
+Version 2.0.1 (28 July 2018)
 - Fix "I/O error writing TIFF file!" when add noise
+- Update dependencies
