@@ -25,7 +25,7 @@ import net.sourceforge.vietocr.util.*;
 public class OCRFiles extends OCR<File> {
 
     private final String LANG_OPTION = "-l";
-    private final String PSM_OPTION = "-psm";
+    private final String PSM_OPTION = "--psm";
 //    private final String TESSDATA_DIR = "--tessdata-dir"; // Tess 3.04
     private final String tessPath;
     final static String OUTPUT_FILE_NAME = "TessOutput";

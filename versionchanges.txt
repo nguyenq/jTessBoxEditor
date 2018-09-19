@@ -122,5 +122,5 @@ Version 2.0.1 (28 July 2018)
 - Fix "I/O error writing TIFF file!" when add noise
 - Update dependencies
 
-Version 2.1.0 (18 September 2018)
+Version 2.1.0 (19 September 2018)
 - Upgrade Tesseract training executable 4.0.0-beta.4 (2018-09-12)
