@@ -22,10 +22,10 @@ public class JTessBoxEditor {
 
     public static void main(String[] args) throws IOException {
         String jreVersion = System.getProperty("java.version");
-        if (jreVersion.compareTo("1.7") < 0) {
+        if (jreVersion.compareTo("1.8") < 0) {
             JOptionPane.showMessageDialog(null,
                     "Could not launch the application because\n"
-                    + "it requires Java 7 (1.7) or later.\n"
+                    + "it requires Java 8 (1.8) or later.\n"
                     + "The current Java version is " + jreVersion + ".",
                     "Insufficient Java Version", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
