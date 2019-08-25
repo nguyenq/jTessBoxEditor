@@ -33,7 +33,6 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.channels.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -108,18 +107,6 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
-
-        if (MAC_OS_X) {
-            new MacOSXApplication(Gui.this);
-
-            // remove Exit menuitem
-            this.jMenuFile.remove(this.jSeparatorExit);
-            this.jMenuFile.remove(this.jMenuItemExit);
-
-            // remove About menuitem
-            this.jMenuHelp.remove(this.jSeparatorAbout);
-            this.jMenuHelp.remove(this.jMenuItemAbout);
-        }
 
         boxPages = new ArrayList<TessBoxCollection>();
 
@@ -1957,40 +1944,18 @@ public class Gui extends javax.swing.JFrame {
 
     private void jMenuItemHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHelpActionPerformed
         final String readme = bundle.getString("readme");
-        if (MAC_OS_X) {
-            try {
-                final File supportDir = new File(System.getProperty("user.home") + "/Library/Application Support/" + APP_NAME);
-                if (!supportDir.exists()) {
-                    supportDir.mkdirs();
-                }
-                File helpFile = new File(supportDir, "readme.html");
-                copyFileFromJarToSupportDir(helpFile);
-                Runtime.getRuntime().exec(new String[]{"open", "-b", "com.apple.helpviewer", readme}, null, supportDir);
-            } catch (IOException e) {
-                logger.log(Level.SEVERE, e.getMessage(), e);
-            }
-        } else {
-            if (helptopicsFrame == null) {
-                helptopicsFrame = new JFrame(jMenuItemHelp.getText());
-                helptopicsFrame.getContentPane().setLayout(new BorderLayout());
-                HtmlPane helpPane = new HtmlPane(readme);
-                helptopicsFrame.getContentPane().add(helpPane, BorderLayout.CENTER);
-                helptopicsFrame.getContentPane().add(helpPane.getStatusBar(), BorderLayout.SOUTH);
-                helptopicsFrame.pack();
-                helptopicsFrame.setLocation((screen.width - helptopicsFrame.getWidth()) / 2, 40);
-            }
-            helptopicsFrame.setVisible(true);
-        }
-    }//GEN-LAST:event_jMenuItemHelpActionPerformed
 
-    private void copyFileFromJarToSupportDir(File helpFile) throws IOException {
-        if (!helpFile.exists()) {
-            try (ReadableByteChannel input = Channels.newChannel(ClassLoader.getSystemResourceAsStream(helpFile.getName()));
-                    FileChannel output = new FileOutputStream(helpFile).getChannel()) {
-                output.transferFrom(input, 0, 1000000L);
-            }
+        if (helptopicsFrame == null) {
+            helptopicsFrame = new JFrame(jMenuItemHelp.getText());
+            helptopicsFrame.getContentPane().setLayout(new BorderLayout());
+            HtmlPane helpPane = new HtmlPane(readme);
+            helptopicsFrame.getContentPane().add(helpPane, BorderLayout.CENTER);
+            helptopicsFrame.getContentPane().add(helpPane.getStatusBar(), BorderLayout.SOUTH);
+            helptopicsFrame.pack();
+            helptopicsFrame.setLocation((screen.width - helptopicsFrame.getWidth()) / 2, 40);
         }
-    }
+        helptopicsFrame.setVisible(true);
+    }//GEN-LAST:event_jMenuItemHelpActionPerformed
 
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
         saveFileDlg();
