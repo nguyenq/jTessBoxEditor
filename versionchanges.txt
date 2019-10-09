@@ -131,3 +131,6 @@ Version 2.2.0 (30 October 2018)
 Version 2.2.1 (25 August 2019)
 - Remove AppleJavaExtensions (deprecated in Java 9)
 - Update dependencies
+
+Version 2.2.2 (8 October 2019)
+- Update dependencies
