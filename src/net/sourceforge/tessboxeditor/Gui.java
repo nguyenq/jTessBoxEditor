@@ -58,6 +58,7 @@ public class Gui extends javax.swing.JFrame {
 
     public static final String APP_NAME = "jTessBoxEditor";
     public static final String TO_BE_IMPLEMENTED = "To be implemented in subclass";
+    public static final String WORDSTR = "WordStr";
     final String[] headers = {"Char", "X", "Y", "Width", "Height"};
     static final boolean MAC_OS_X = System.getProperty("os.name").startsWith("Mac");
     static final boolean WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
@@ -78,6 +79,7 @@ public class Gui extends javax.swing.JFrame {
     protected final File baseDir;
     DefaultTableModel tableModel;
     private boolean isTess2_0Format;
+    private boolean isWordStrFormat;
     protected RowHeaderList rowHeader;
     protected Font font;
 
@@ -224,7 +226,6 @@ public class Gui extends javax.swing.JFrame {
         jPanelSpinner = new javax.swing.JPanel();
         jLabelCharacter = new javax.swing.JLabel();
         jTextFieldCharacter = new javax.swing.JTextField();
-        jTextFieldCharacter.setDocument(new LimitedLengthDocument(12));
         jButtonConvert = new javax.swing.JButton();
         jLabelX = new javax.swing.JLabel();
         jSpinnerX = new javax.swing.JSpinner();
@@ -1561,7 +1562,7 @@ public class Gui extends javax.swing.JFrame {
         if (boxFile.exists()) {
             try {
                 boxPages.clear();
-                
+
                 String str = readBoxFile(boxFile);
                 // load into textarea
                 this.jTextAreaBoxData.setText(str);
@@ -1591,7 +1592,7 @@ public class Gui extends javax.swing.JFrame {
 
     List<TessBoxCollection> parseBoxString(String boxStr, List<BufferedImage> imageList) throws IOException {
         List<TessBoxCollection> allBoxPages = new ArrayList<TessBoxCollection>();
-        
+        isWordStrFormat = false;
         String[] boxdata = boxStr.split("\\R"); // or "\\r?\\n"
         if (boxdata.length > 0) {
             // if only 5 fields, it's Tess 2.0x format
@@ -1609,7 +1610,7 @@ public class Gui extends javax.swing.JFrame {
                 String[] items = boxdata[i].split("(?<!^) +");
 
                 // skip invalid data
-                if (items.length < 5 || items.length > 6) {
+                if (items.length < 5 || (items.length > 6 && !items[0].equals(WORDSTR))) {
                     continue;
                 }
 
@@ -1621,11 +1622,17 @@ public class Gui extends javax.swing.JFrame {
                 y = pageHeight - y - h; // flip the y-coordinate
 
                 short page;
-                if (items.length == 6) {
+                if (items.length == 6 || (chrs.equals(WORDSTR) && items.length >= 7)) {
                     page = Short.parseShort(items[5]); // Tess 3.0x format
                 } else {
                     page = 0; // Tess 2.0x format
                 }
+
+                if (chrs.equals(WORDSTR) && items.length >= 7 && items[6].startsWith("#")) {
+                    chrs = boxdata[i].substring(boxdata[i].indexOf("#") + 1);
+                    isWordStrFormat = true;
+                }
+
                 if (page > curPage) {
                     startBoxIndex = i; // mark begin of next page
                     break;
@@ -1753,7 +1760,11 @@ public class Gui extends javax.swing.JFrame {
             int pageHeight = ((BufferedImage) imgList.get(pageIndex)).getHeight(); // each page (in an image) can have different height
             for (TessBox box : bxPages.get(pageIndex).toList()) {
                 Rectangle rect = box.getRect();
-                sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, pageIndex)).append(EOL);
+                if (isWordStrFormat && !box.getChrs().equals("\t")) {
+                    sb.append(String.format("%s %d %d %d %d %d #%s", WORDSTR, rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, pageIndex, box.getChrs())).append(EOL);
+                } else {
+                    sb.append(String.format("%s %d %d %d %d %d", box.getChrs(), rect.x, pageHeight - rect.y - rect.height, rect.x + rect.width, pageHeight - rect.y, pageIndex)).append(EOL);
+                }
             }
         }
         if (isTess2_0Format) {
