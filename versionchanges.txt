@@ -137,3 +137,4 @@ Version 2.2.2 (8 October 2019)
 
 Version 2.3.0 (29 February 2020)
 - Support parsing WordStr box format
+- Update dependencies
