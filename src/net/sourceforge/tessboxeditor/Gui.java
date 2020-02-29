@@ -639,10 +639,9 @@ public class Gui extends javax.swing.JFrame {
         jLabelCharacter.setText("Character");
         jPanelSpinner.add(jLabelCharacter);
 
-        jTextFieldCharacter.setColumns(4);
+        jTextFieldCharacter.setColumns(8);
         jTextFieldCharacter.setEnabled(false);
         jTextFieldCharacter.setMargin(new java.awt.Insets(0, 2, 0, 2));
-        jTextFieldCharacter.setPreferredSize(new java.awt.Dimension(40, 24));
         jTextFieldCharacter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCharacterActionPerformed(evt);
