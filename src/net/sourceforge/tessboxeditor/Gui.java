@@ -743,7 +743,7 @@ public class Gui extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 true, false, false, false, false
@@ -840,9 +840,6 @@ public class Gui extends javax.swing.JFrame {
             }
         });
 
-        TableCellRenderer tcr = this.jTable.getDefaultRenderer(String.class);
-        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
-        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         ((JLabel) jTable.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         ((JImageLabel) this.jLabelImage).setTable(jTable);
         jTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("control C"), "none");
