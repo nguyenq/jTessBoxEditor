@@ -29,6 +29,10 @@ public enum TrainingMode {
      */
     Make_Box_File_Only("Make Box File Only"),
     /**
+     * Make WordStr box.
+     */
+    Make_WordStr_Box_File("Make WordStr Box File"),
+    /**
      * Train with Existing Box.
      */
     Train_with_Existing_Box("Train with Existing Box"),

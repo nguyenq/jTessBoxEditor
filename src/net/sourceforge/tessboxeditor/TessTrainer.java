@@ -36,6 +36,7 @@ public class TessTrainer {
 
     private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --ptsize=%d --fonts_dir=%s --exposure=%d --char_spacing=%f --leading=%d --xsize=%d --ysize=%d";
     private static final String cmdmake_box = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
+    private static final String cmdmake_wordstr_box = "tesseract imageFile boxFile -l bootstrapLang wordstrbox";
     private static final String cmdtess_train = "tesseract imageFile boxFile box.train";
     private static final String cmdunicharset_extractor = "unicharset_extractor"; // lang.fontname.exp0.box lang.fontname.exp1.box ...
     private static final String cmdset_unicharset_properties = "set_unicharset_properties -U unicharset -O unicharset --script_dir=%s";
@@ -94,7 +95,10 @@ public class TessTrainer {
             case Make_Box_File_Only:
                 makeBox();
                 break;
-            case Train_with_Existing_Box:
+             case Make_WordStr_Box_File:
+                makeWordStrBox();
+                break;
+             case Train_with_Existing_Box:
                 generateTraineddata(true);
                 break;
             case Shape_Clustering:
@@ -166,6 +170,38 @@ public class TessTrainer {
 
         logger.info("Make Box Files");
         writeMessage("** Make Box Files **");
+        for (String file : files) {
+            cmd.set(1, file);
+            cmd.set(2, TextUtilities.stripExtension(file));
+            runCommand(cmd);
+        }
+    }
+    
+        /**
+     * Makes box files.
+     *
+     * @throws Exception
+     */
+    void makeWordStrBox() throws Exception {
+        //cmdmake_box
+        List<String> cmd = getCommand(cmdmake_wordstr_box);
+
+        // if no bootstrap
+        if (bootstrapLang.length() == 0) {
+            cmd.remove(4);
+            cmd.remove(3);
+        } else {
+            cmd.set(4, bootstrapLang);
+        }
+
+        String[] files = getImageFiles();
+
+        if (files.length == 0) {
+            throw new RuntimeException("There are no training images.");
+        }
+
+        logger.info("Make WordStr Box Files");
+        writeMessage("** Make WordStr Box Files **");
         for (String file : files) {
             cmd.set(1, file);
             cmd.set(2, TextUtilities.stripExtension(file));
