@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -203,6 +204,48 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
         resetReadout();
         this.jLabelImage.repaint();
         updateSave(true);
+    }
+
+    @Override
+    void jButtonMoveUpActionPerformed(java.awt.event.ActionEvent evt) {
+        int currentSelectedRow = jTable.getSelectedRow();
+
+        if (currentSelectedRow > 0) {
+            if (boxes == null) {
+                return;
+            }
+
+            List<TessBox> selected = boxes.getSelectedBoxes();
+            if (selected.size() > 1) {
+                JOptionPane.showMessageDialog(this, "Please select only one box for Move operation.");
+                return;
+            }
+            
+            Collections.swap(boxes.toList(), currentSelectedRow, currentSelectedRow - 1);
+            tableModel.moveRow(currentSelectedRow, currentSelectedRow, currentSelectedRow - 1);
+            jTable.getSelectionModel().setSelectionInterval(currentSelectedRow - 1, currentSelectedRow - 1);
+        }
+    }
+
+    @Override
+    void jButtonMoveDownActionPerformed(java.awt.event.ActionEvent evt) {
+        int currentSelectedRow = jTable.getSelectedRow();
+
+        if (currentSelectedRow != -1 && currentSelectedRow < jTable.getRowCount() - 1) {
+            if (boxes == null) {
+                return;
+            }
+
+            List<TessBox> selected = boxes.getSelectedBoxes();
+            if (selected.size() > 1) {
+                JOptionPane.showMessageDialog(this, "Please select only one box for Move operation.");
+                return;
+            }
+            
+            Collections.swap(boxes.toList(), currentSelectedRow, currentSelectedRow + 1);
+            tableModel.moveRow(currentSelectedRow, currentSelectedRow, currentSelectedRow + 1);
+            jTable.getSelectionModel().setSelectionInterval(currentSelectedRow + 1, currentSelectedRow + 1);
+        }
     }
 
     @Override

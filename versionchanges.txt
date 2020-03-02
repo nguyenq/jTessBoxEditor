@@ -137,5 +137,6 @@ Version 2.2.2 (8 October 2019)
 
 Version 2.3.0 (1 March 2020)
 - Support parsing WordStr box format
+- Support reordering boxes
 - Upgrade Tesseract training executable 5.0.0-alpha (2020-02-23)
 - Update dependencies
