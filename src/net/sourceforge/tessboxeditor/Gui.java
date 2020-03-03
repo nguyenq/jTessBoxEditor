@@ -108,7 +108,7 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
-
+        
         boxPages = new ArrayList<TessBoxCollection>();
 
         // DnD support
@@ -249,6 +249,9 @@ public class Gui extends javax.swing.JFrame {
                 return c;
             }
         };
+        jTable.setDragEnabled(true);
+        jTable.setDropMode(DropMode.INSERT_ROWS);
+        jTable.setTransferHandler(new TableRowTransferHandler(jTable)); ;
         jPanelFind = new javax.swing.JPanel();
         jTextFieldFind = new javax.swing.JTextField();
         jButtonFind = new javax.swing.JButton();
@@ -751,7 +754,7 @@ public class Gui extends javax.swing.JFrame {
 
         jScrollPaneCoord.setPreferredSize(new java.awt.Dimension(200, 275));
 
-        jTable.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new ReorderableTableModel(
             new Object [][] {
 
             },
