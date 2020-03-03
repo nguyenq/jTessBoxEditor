@@ -816,7 +816,7 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonReloadActionPerformed"/>
                       </Events>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jPanel4.add(Box.createHorizontalStrut(90));"/>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jPanel4.add(Box.createHorizontalStrut(100));"/>
                       </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="jButtonMerge">
@@ -881,22 +881,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="jButtonMoveUp">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Move Up"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMoveUpActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="jButtonMoveDown">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Move Down"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonMoveDownActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

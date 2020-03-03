@@ -177,8 +177,8 @@ public class TessTrainer {
         }
     }
     
-        /**
-     * Makes box files.
+    /**
+     * Makes WordStr box files.
      *
      * @throws Exception
      */

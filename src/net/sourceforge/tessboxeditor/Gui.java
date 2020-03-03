@@ -222,8 +222,6 @@ public class Gui extends javax.swing.JFrame {
         jButtonSplit = new javax.swing.JButton();
         jButtonInsert = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
-        jButtonMoveUp = new javax.swing.JButton();
-        jButtonMoveDown = new javax.swing.JButton();
         jPanelSpinner = new javax.swing.JPanel();
         jLabelCharacter = new javax.swing.JLabel();
         jTextFieldCharacter = new javax.swing.JTextField();
@@ -587,7 +585,7 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jButtonReload);
-        jPanel4.add(Box.createHorizontalStrut(90));
+        jPanel4.add(Box.createHorizontalStrut(100));
 
         jButtonMerge.setText(bundle.getString("jButtonMerge.Text")); // NOI18N
         jButtonMerge.setToolTipText(bundle.getString("jButtonMerge.ToolTipText")); // NOI18N
@@ -636,22 +634,6 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jPanel4.add(jButtonDelete);
-
-        jButtonMoveUp.setText("Move Up");
-        jButtonMoveUp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonMoveUpActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jButtonMoveUp);
-
-        jButtonMoveDown.setText("Move Down");
-        jButtonMoveDown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonMoveDownActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jButtonMoveDown);
 
         jToolBarEditor.add(jPanel4);
 
@@ -2268,14 +2250,6 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMarkEOLBulkActionPerformed
 
-    void jButtonMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveUpActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }//GEN-LAST:event_jButtonMoveUpActionPerformed
-
-    void jButtonMoveDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveDownActionPerformed
-        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
-    }//GEN-LAST:event_jButtonMoveDownActionPerformed
-
     /**
      * Gets a subimage for display in boxview.
      *
@@ -2343,8 +2317,6 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton jButtonInput;
     private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonMerge;
-    private javax.swing.JButton jButtonMoveDown;
-    private javax.swing.JButton jButtonMoveUp;
     private javax.swing.JButton jButtonNext;
     private javax.swing.JButton jButtonNextPage;
     private javax.swing.JButton jButtonOpen;
