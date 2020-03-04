@@ -26,7 +26,7 @@ public class TableRowTransferHandler extends TransferHandler {
     @Override
     protected Transferable createTransferable(JComponent c) {
         assert (c == table);
-        return new DataHandler(new Integer(table.getSelectedRow()), localObjectFlavor.getMimeType());
+        return new DataHandler(table.getSelectedRow(), localObjectFlavor.getMimeType());
     }
 
     @Override
