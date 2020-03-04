@@ -92,6 +92,7 @@ public class Gui extends javax.swing.JFrame {
     protected static int imageWidth = 0;
     protected static int imageHeight = 0;
     protected static int movementMultiplier = 1;
+    protected static int minColWidth = 43;
 
     private final static Logger logger = Logger.getLogger(Gui.class.getName());
 
@@ -108,7 +109,7 @@ public class Gui extends javax.swing.JFrame {
         }
         bundle = ResourceBundle.getBundle("net.sourceforge.tessboxeditor.Gui"); // NOI18N
         initComponents();
-        
+
         boxPages = new ArrayList<TessBoxCollection>();
 
         // DnD support
@@ -247,6 +248,9 @@ public class Gui extends javax.swing.JFrame {
                 return c;
             }
         };
+        TableCellRenderer tcr = this.jTable.getDefaultRenderer(Integer.class);
+        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
+        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         jTable.setDragEnabled(true);
         jTable.setDropMode(DropMode.INSERT_ROWS);
         jTable.setTransferHandler(new TableRowTransferHandler(jTable)); ;
@@ -1566,6 +1570,7 @@ public class Gui extends javax.swing.JFrame {
                 this.jTextAreaBoxData.setText(str);
                 boxPages = parseBoxString(str, imageList);
                 loadTable();
+                setColumnWidth();
                 updateSave(false);
             } catch (OutOfMemoryError oome) {
                 logger.log(Level.SEVERE, oome.getMessage(), oome);
@@ -2285,6 +2290,15 @@ public class Gui extends javax.swing.JFrame {
         );
 
         return subImage;
+    }
+    
+    void setColumnWidth() {
+        TableColumnModel columnModel = jTable.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(minColWidth);
+        columnModel.getColumn(1).setMinWidth(minColWidth);
+        columnModel.getColumn(2).setMinWidth(minColWidth);
+        columnModel.getColumn(3).setMinWidth(minColWidth);
+        columnModel.getColumn(4).setMinWidth(minColWidth);
     }
 
     /**
