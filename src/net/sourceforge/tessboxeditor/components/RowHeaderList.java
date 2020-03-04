@@ -44,7 +44,7 @@ public class RowHeaderList extends JList {
                 }
             }
         });
-        
+
         ListModel lm = new AbstractListModel() {
             @Override
             public int getSize() {
@@ -77,13 +77,21 @@ public class RowHeaderList extends JList {
 
         public RowHeaderRenderer() {
             this.setOpaque(true);
-            this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
             this.setHorizontalAlignment(CENTER);
         }
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             setText((value == null) ? "" : value.toString());
+            if (isSelected) {
+                this.setBorder(null);
+                this.setBackground(UIManager.getColor("Table.selectionBackground"));
+                this.setForeground(UIManager.getColor("Table.selectionForeground"));
+            } else {
+                this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+                this.setBackground(UIManager.getColor("Label.background"));
+                this.setForeground(UIManager.getColor("Label.foreground"));
+            }
             return this;
         }
     }
