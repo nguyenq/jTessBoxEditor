@@ -17,6 +17,8 @@ public class ReorderableTableModel extends DefaultTableModel implements Reordera
     public void reorder(int from, int to) {
         Object obj = getDataVector().remove(from);
         getDataVector().add(from > to ? to : to - 1, (Vector) obj);
-        fireTableDataChanged();
+        fireTableRowsDeleted(from, from);
+        fireTableRowsInserted(to, to);
+//        fireTableDataChanged();
     }
 }

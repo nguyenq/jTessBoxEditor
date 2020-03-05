@@ -25,7 +25,7 @@ public class RowHeaderList extends JList {
 
     JTable table;
     RowHeaderRenderer render;
-
+    
     @SuppressWarnings("unchecked")
     public RowHeaderList(final JTable table) {
         this.table = table;
@@ -77,6 +77,7 @@ public class RowHeaderList extends JList {
 
         public RowHeaderRenderer() {
             this.setOpaque(true);
+            this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
             this.setHorizontalAlignment(CENTER);
         }
 
@@ -84,13 +85,13 @@ public class RowHeaderList extends JList {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             setText((value == null) ? "" : value.toString());
             if (isSelected) {
-                this.setBorder(null);
-                this.setBackground(UIManager.getColor("Table.selectionBackground"));
-                this.setForeground(UIManager.getColor("Table.selectionForeground"));
+                this.setBackground(UIManager.getColor("Table.focusCellBackground"));
+                this.setForeground(UIManager.getColor("Table.focusCellForeground"));
+//                this.setFont(this.getFont().deriveFont(Font.BOLD));
             } else {
-                this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
                 this.setBackground(UIManager.getColor("Label.background"));
                 this.setForeground(UIManager.getColor("Label.foreground"));
+//                this.setFont(this.getFont().deriveFont(Font.PLAIN));
             }
             return this;
         }
