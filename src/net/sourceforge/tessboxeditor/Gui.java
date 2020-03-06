@@ -1749,7 +1749,10 @@ public class Gui extends javax.swing.JFrame {
 
         try {
             try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
-                out.write(formatOutputString(imageList, boxPages));
+                String str = formatOutputString(imageList, boxPages);
+                out.write(str);
+                this.jTextAreaBoxData.setText(str);
+                this.jTextAreaBoxData.setCaretPosition(0);
             }
 //            updateMRUList(boxFile.getPath());
             updateSave(false);
