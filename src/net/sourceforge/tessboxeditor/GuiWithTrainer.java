@@ -124,7 +124,7 @@ public class GuiWithTrainer extends GuiWithGenerator {
         });
 
         // warn about potential box overwrite
-        if (selectedMode == TrainingMode.Make_Box_File || selectedMode == TrainingMode.Make_WordStr_Box_File || selectedMode == TrainingMode.Train_from_Scratch) {
+        if (selectedMode == TrainingMode.Make_Box_File || selectedMode == TrainingMode.Make_LSTM_Box_File || selectedMode == TrainingMode.Make_WordStr_Box_File || selectedMode == TrainingMode.Train_from_Scratch) {
             if (boxFiles.length > 0) {
                 int option = JOptionPane.showConfirmDialog(this,
                         "There are existing box files. Continuing may overwrite them.\nDo you want to proceed?",

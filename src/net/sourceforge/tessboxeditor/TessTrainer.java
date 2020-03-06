@@ -94,8 +94,8 @@ public class TessTrainer {
     public void generate(TrainingMode mode) throws Exception {
         switch (mode) {
             case Make_Box_File:
-            case Make_WordStr_Box_File:
             case Make_LSTM_Box_File:
+            case Make_WordStr_Box_File:
                 makeBox(mode);
                 break;
             case Train_with_Existing_Box:
@@ -152,12 +152,12 @@ public class TessTrainer {
      */
     void makeBox(TrainingMode boxType) throws Exception {
         String makeBoxCommand;
-        switch (boxType) {             
-            case Make_WordStr_Box_File:
-                 makeBoxCommand = cmdmake_wordstr_box;
-                break;               
+        switch (boxType) {
             case Make_LSTM_Box_File:
                 makeBoxCommand = cmdmake_lstm_box;
+                break;
+            case Make_WordStr_Box_File:
+                makeBoxCommand = cmdmake_wordstr_box;
                 break;
             default:
                 makeBoxCommand = cmdmake_box;
