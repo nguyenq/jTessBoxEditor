@@ -80,6 +80,7 @@ public class GuiWithFont extends GuiWithSpinner {
         jTable.setRowHeight(metrics.getHeight()); // set row height to match font
         rowHeader.setFont(tableFont);
         ((MyTableCellEditor)jTable.getDefaultEditor(String.class)).setFont(font);
+        setColumnWidth();
         jTable.revalidate();
         jPanelCoord.revalidate();
         jLabelImage.setFont(font);

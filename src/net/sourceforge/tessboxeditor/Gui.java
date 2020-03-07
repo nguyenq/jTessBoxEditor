@@ -93,7 +93,8 @@ public class Gui extends javax.swing.JFrame {
     protected static int imageWidth = 0;
     protected static int imageHeight = 0;
     protected static int movementMultiplier = 1;
-    protected static int minColWidth = 43;
+    protected static int fixedMinColWidth = 43;
+    protected static int fixedMaxColWidth = 50;
 
     private final static Logger logger = Logger.getLogger(Gui.class.getName());
 
@@ -2311,14 +2312,30 @@ public class Gui extends javax.swing.JFrame {
 
         return subImage;
     }
-    
+
     void setColumnWidth() {
         TableColumnModel columnModel = jTable.getColumnModel();
+        float factor;
+        if (this.jTable.getFont().getSize() >= 36) {
+            factor = 2.3f;
+        } else if (this.jTable.getFont().getSize() >= 24) {
+            factor = 1.6f;
+        } else {
+            factor = this.jTable.getFont().getSize() / 12f;
+        }
+
+        int minColWidth = (int) (fixedMinColWidth * factor);
         columnModel.getColumn(0).setMinWidth(minColWidth);
         columnModel.getColumn(1).setMinWidth(minColWidth);
         columnModel.getColumn(2).setMinWidth(minColWidth);
         columnModel.getColumn(3).setMinWidth(minColWidth);
         columnModel.getColumn(4).setMinWidth(minColWidth);
+
+        int maxColWidth = (int) (fixedMaxColWidth * factor);
+        columnModel.getColumn(1).setMaxWidth(maxColWidth);
+        columnModel.getColumn(2).setMaxWidth(maxColWidth);
+        columnModel.getColumn(3).setMaxWidth(maxColWidth);
+        columnModel.getColumn(4).setMaxWidth(maxColWidth);
     }
 
     /**
