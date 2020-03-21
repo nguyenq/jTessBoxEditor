@@ -135,7 +135,7 @@ Version 2.2.1 (25 August 2019)
 Version 2.2.2 (8 October 2019)
 - Update dependencies
 
-Version 2.3.0 (6 March 2020)
+Version 2.3.0 (21 March 2020)
 - Support LSTM & WordStr box format
 - Support reordering boxes through table row drag-and-drop
 - Fix column alignment

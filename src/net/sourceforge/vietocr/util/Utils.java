@@ -137,9 +137,9 @@ public class Utils {
      *
      * @param textFile
      * @return
-     * @throws Exception
+     * @throws IOException
      */
-    public static String readTextFile(File textFile) throws Exception {
+    public static String readTextFile(File textFile) throws IOException {
         return new String(Files.readAllBytes(textFile.toPath()), StandardCharsets.UTF_8); // Java 7 API
     }
 

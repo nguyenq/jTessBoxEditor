@@ -43,6 +43,7 @@ import static net.sourceforge.tessboxeditor.Gui.APP_NAME;
 import static net.sourceforge.tessboxeditor.Gui.prefs;
 import net.sourceforge.tessboxeditor.datamodel.TessBox;
 import net.sourceforge.tessboxeditor.datamodel.TessBoxCollection;
+import net.sourceforge.vietocr.util.Utils;
 
 public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
 
@@ -361,7 +362,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
                 }
 
                 List<BufferedImage> imageList = ImageIOHelper.getImageList(imageFile);
-                String str = readBoxFile(boxFile);
+                String str = Utils.readTextFile(boxFile);
                 List<TessBoxCollection> boxPages = parseBoxString(str, imageList);
                 performSegment(imageList, boxPages, instance);
 

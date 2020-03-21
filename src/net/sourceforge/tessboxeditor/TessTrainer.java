@@ -426,11 +426,16 @@ public class TessTrainer {
      *
      * @return
      */
-    String[] getImageFilesWithBox() {
+    String[] getImageFilesWithBox() throws IOException {
         List<String> filesWithBox = new ArrayList<String>();
         for (String file : getImageFiles()) {
             String withoutExt = TextUtilities.stripExtension(file);
-            if (new File(inputDataDir, withoutExt + ".box").exists()) {
+            File boxFile = new File(inputDataDir, withoutExt + ".box");
+            if (boxFile.exists()) {
+                String str = Utils.readTextFile(boxFile);
+                if (str.contains("WordStr") || str.contains("\t")) {
+                    throw new RuntimeException("Cannot train with LSTM or WordStr box files.\nTraining for Tesseract 4.0x is not supported.");
+                }
                 filesWithBox.add(file);
             }
         }

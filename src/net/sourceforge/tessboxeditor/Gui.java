@@ -34,8 +34,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -1583,7 +1581,7 @@ public class Gui extends javax.swing.JFrame {
             try {
                 boxPages.clear();
 
-                String str = readBoxFile(boxFile);
+                String str = Utils.readTextFile(boxFile);
                 // load into textarea
                 this.jTextAreaBoxData.setText(str);
                 boxPages = parseBoxString(str, imageList);
@@ -1605,10 +1603,6 @@ public class Gui extends javax.swing.JFrame {
             ((JImageLabel) this.jLabelImage).setBoxes(null);
             jTextAreaBoxData.setText(null);
         }
-    }
-
-    String readBoxFile(File boxFile) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(boxFile.getPath())), StandardCharsets.UTF_8);
     }
 
     List<TessBoxCollection> parseBoxString(String boxStr, List<BufferedImage> imageList) throws IOException {
