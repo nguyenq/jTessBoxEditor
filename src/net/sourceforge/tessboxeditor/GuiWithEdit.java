@@ -209,8 +209,8 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
 
         for (TessBox box : selected) {
             int index = this.boxes.toList().indexOf(box);
-            this.boxes.remove(box);
             tableModel.removeRow(index);
+            this.boxes.remove(box);
         }
 
         resetReadout();
