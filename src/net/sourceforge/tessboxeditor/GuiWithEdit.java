@@ -160,23 +160,35 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
         if (boxes == null) {
             return;
         }
-        List<TessBox> selected = boxes.getSelectedBoxes();
-        if (selected.size() <= 0) {
-            JOptionPane.showMessageDialog(this, "Please select the box to insert after.");
-            return;
-        } else if (selected.size() > 1) {
-            JOptionPane.showMessageDialog(this, "Please select only one box for Insert operation.");
-            return;
+        TessBox newBox;
+        Rectangle newRect;
+        int index;
+
+        if (boxes.toList().isEmpty()) {
+            newRect = new Rectangle(0, 0, 20, 30);
+            newBox = new TessBox(" ", newRect, (short) 0);
+            boxes.add(newBox);
+            index = 0;
+        } else {
+            List<TessBox> selected = boxes.getSelectedBoxes();
+            if (selected.size() <= 0) {
+                JOptionPane.showMessageDialog(this, "Please select the box to insert after.");
+                return;
+            } else if (selected.size() > 1) {
+                JOptionPane.showMessageDialog(this, "Please select only one box for Insert operation.");
+                return;
+            }
+
+            TessBox box = selected.get(0);
+            index = this.boxes.toList().indexOf(box);
+            index++;
+            newBox = new TessBox(" ", new Rectangle(box.getRect()), box.getPage());
+            newBox.setSelected(true);
+            boxes.add(index, newBox);
+            newRect = newBox.getRect();
+            newRect.x += 15; // offset the new box 15 pixel from the base one
         }
 
-        TessBox box = selected.get(0);
-        int index = this.boxes.toList().indexOf(box);
-        index++;
-        TessBox newBox = new TessBox(" ", new Rectangle(box.getRect()), box.getPage());
-        newBox.setSelected(true);
-        boxes.add(index, newBox);
-        Rectangle newRect = newBox.getRect();
-        newRect.x += 15; // offset the new box 15 pixel from the base one
         Object[] newRow = {newBox.getChrs(), newRect.x, newRect.y, newRect.width, newRect.height};
         tableModel.insertRow(index, newRow);
         jTable.setRowSelectionInterval(index, index);
