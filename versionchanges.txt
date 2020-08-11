@@ -146,3 +146,6 @@ Version 2.3.1 (17 June 2020)
 - Allow box insert into empty box file
 - Add Python script to merge all box files
 - Update Tesseract training executable 5.0.0-alpha (2020-03-28)
+
+Version 2.3.2 (10 August 2020)
+- Update dependencies
