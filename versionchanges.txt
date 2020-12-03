@@ -147,9 +147,6 @@ Version 2.3.1 (17 June 2020)
 - Add Python script to merge all box files
 - Update Tesseract training executable 5.0.0-alpha (2020-03-28)
 
-Version 2.3.2 (10 August 2020)
-- Update dependencies
-
-Version 2.3.3 (2 December 2020)
+Version 2.3.2 (2 December 2020)
 - Upgrade Tesseract training executable 5.0.0-alpha (2020-11-27)
 - Update dependencies
