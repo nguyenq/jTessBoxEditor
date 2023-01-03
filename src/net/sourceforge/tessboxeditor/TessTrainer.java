@@ -34,7 +34,7 @@ import net.sourceforge.vietpad.utilities.TextUtilities;
 
 public class TessTrainer {
 
-    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --ptsize=%d --fonts_dir=%s --exposure=%d --char_spacing=%f --leading=%d --xsize=%d --ysize=%d";
+    private static final String cmdtext2image = "text2image --text=%s --outputbase=%s --font=%s --ptsize=%d --fonts_dir=%s --fontconfig_tmpdir=. --exposure=%d --char_spacing=%f --leading=%d --xsize=%d --ysize=%d";
     private static final String cmdmake_box = "tesseract imageFile boxFile -l bootstrapLang batch.nochop makebox";
     private static final String cmdmake_wordstr_box = "tesseract imageFile boxFile -l bootstrapLang wordstrbox";
     private static final String cmdmake_lstm_box = "tesseract imageFile boxFile -l bootstrapLang lstmbox";
