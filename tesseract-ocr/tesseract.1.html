@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="AsciiDoc 8.6.10">
+<meta name="generator" content="AsciiDoc 10.2.0">
 <title>TESSERACT(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -434,7 +434,7 @@ thead, p.table.header {
 p.table {
   margin-top: 0;
 }
-/* Because the table frame attribute is overriden by CSS in most browsers. */
+/* Because the table frame attribute is overridden by CSS in most browsers. */
 div.tableblock > table[frame="void"] {
   border-style: none;
 }
@@ -934,7 +934,7 @@ at Google since then.</p></div>
 </li>
 <li>
 <p>
-<strong>get.images</strong>&#8201;&#8212;&#8201;Write processed input images to file (<span class="monospaced">tessinput.tif</span>).
+<strong>get.images</strong>&#8201;&#8212;&#8201;Write processed input images to file (<em>OUTPUTBASE</em><span class="monospaced">.processedPAGENUMBER.tif</span>).
 </p>
 </li>
 <li>
@@ -1069,9 +1069,11 @@ following languages:</p></div>
 <strong>chi_sim</strong> (Chinese simplified),
 <strong>chi_tra</strong> (Chinese traditional),
 <strong>chr</strong> (Cherokee),
+<strong>cos</strong> (Corsican),
 <strong>cym</strong> (Welsh),
 <strong>dan</strong> (Danish),
 <strong>deu</strong> (German),
+<strong>div</strong> (Dhivehi),
 <strong>dzo</strong> (Dzongkha),
 <strong>ell</strong> (Greek, Modern, 1453-),
 <strong>eng</strong> (English),
@@ -1081,10 +1083,14 @@ following languages:</p></div>
 <strong>est</strong> (Estonian),
 <strong>eus</strong> (Basque),
 <strong>fas</strong> (Persian),
+<strong>fao</strong> (Faroese),
+<strong>fil</strong> (Filipino),
 <strong>fin</strong> (Finnish),
 <strong>fra</strong> (French),
 <strong>frk</strong> (Frankish),
 <strong>frm</strong> (French, Middle, ca.1400-1600),
+<strong>fry</strong> (West Frisian),
+<strong>gla</strong> (Scottish Gaelic),
 <strong>gle</strong> (Irish),
 <strong>glg</strong> (Galician),
 <strong>grc</strong> (Greek, Ancient, to 1453),
@@ -1094,6 +1100,7 @@ following languages:</p></div>
 <strong>hin</strong> (Hindi),
 <strong>hrv</strong> (Croatian),
 <strong>hun</strong> (Hungarian),
+<strong>hye</strong> (Armenian),
 <strong>iku</strong> (Inuktitut),
 <strong>ind</strong> (Indonesian),
 <strong>isl</strong> (Icelandic),
@@ -1110,7 +1117,6 @@ following languages:</p></div>
 <strong>kmr</strong> (Kurdish Kurmanji),
 <strong>kor</strong> (Korean),
 <strong>kor_vert</strong> (Korean vertical),
-<strong>kur</strong> (Kurdish),
 <strong>lao</strong> (Lao),
 <strong>lat</strong> (Latin),
 <strong>lav</strong> (Latvian),
@@ -1155,7 +1161,6 @@ following languages:</p></div>
 <strong>tat</strong> (Tatar),
 <strong>tel</strong> (Telugu),
 <strong>tgk</strong> (Tajik),
-<strong>tgl</strong> (Tagalog),
 <strong>tha</strong> (Thai),
 <strong>tir</strong> (Tigrinya),
 <strong>ton</strong> (Tonga),
@@ -1312,7 +1317,7 @@ debug.</p></div>
 <div class="paragraph"><p>Version 2.00 brought Unicode (UTF-8) support, six languages, and the ability
 to train Tesseract.</p></div>
 <div class="paragraph"><p>Tesseract was included in UNLV&#8217;s Fourth Annual Test of OCR Accuracy.
-See <a href="https://github.com/tesseract-ocr/docs/blob/master/AT-1995.pdf">https://github.com/tesseract-ocr/docs/blob/master/AT-1995.pdf</a>.
+See <a href="https://github.com/tesseract-ocr/docs/blob/main/AT-1995.pdf">https://github.com/tesseract-ocr/docs/blob/main/AT-1995.pdf</a>.
 Since Tesseract 2.00,
 scripts are now included to allow anyone to reproduce some of these tests.
 See <a href="https://tesseract-ocr.github.io/tessdoc/TestingTesseract.html">https://tesseract-ocr.github.io/tessdoc/TestingTesseract.html</a> for more
@@ -1336,7 +1341,7 @@ support the legacy engine, for example those from the tessdata repository
 <h2 id="_resources">RESOURCES</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Main web site: <a href="https://github.com/tesseract-ocr">https://github.com/tesseract-ocr</a><br>
-User forum: <a href="http://groups.google.com/group/tesseract-ocr">http://groups.google.com/group/tesseract-ocr</a><br>
+User forum: <a href="https://groups.google.com/g/tesseract-ocr">https://groups.google.com/g/tesseract-ocr</a><br>
 Documentation: <a href="https://tesseract-ocr.github.io/">https://tesseract-ocr.github.io/</a><br>
 Information on training: <a href="https://tesseract-ocr.github.io/tessdoc/Training-Tesseract.html">https://tesseract-ocr.github.io/tessdoc/Training-Tesseract.html</a></p></div>
 </div>
@@ -1361,7 +1366,7 @@ Pingping Xiu, Pong Eksombatchai (Chantat), Ranjith Unnikrishnan, Raquel
 Romano, Ray Smith, Rika Antonova, Robert Moss, Samuel Charron, Sheelagh
 Lloyd, Shobhit Saxena, and Thomas Kielbus.</p></div>
 <div class="paragraph"><p>For a list of contributors see
-<a href="https://github.com/tesseract-ocr/tesseract/blob/master/AUTHORS">https://github.com/tesseract-ocr/tesseract/blob/master/AUTHORS</a>.</p></div>
+<a href="https://github.com/tesseract-ocr/tesseract/blob/main/AUTHORS">https://github.com/tesseract-ocr/tesseract/blob/main/AUTHORS</a>.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -1375,7 +1380,7 @@ Lloyd, Shobhit Saxena, and Thomas Kielbus.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-06-25 16:24:43 CEST
+ 2022-01-22 13:50:22 CET
 </div>
 </div>
 </body>

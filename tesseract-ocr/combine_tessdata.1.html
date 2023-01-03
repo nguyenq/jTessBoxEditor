@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="AsciiDoc 8.6.10">
+<meta name="generator" content="AsciiDoc 10.2.0">
 <title>COMBINE_TESSDATA(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -434,7 +434,7 @@ thead, p.table.header {
 p.table {
   margin-top: 0;
 }
-/* Because the table frame attribute is overriden by CSS in most browsers. */
+/* Because the table frame attribute is overridden by CSS in most browsers. */
 div.tableblock > table[frame="void"] {
   border-style: none;
 }
@@ -802,6 +802,8 @@ components from tessdata/eng.traineddata.</p></div>
     Lists directory of components from the .traineddata file.</p></div>
 <div class="paragraph"><p><strong>-e</strong> <em>.traineddata</em> <em>FILE</em>&#8230;:
     Extracts the specified components from the .traineddata file</p></div>
+<div class="paragraph"><p><strong>-l</strong> <em>.traineddata</em> <em>FILE</em>&#8230;:
+   List the network information.</p></div>
 <div class="paragraph"><p><strong>-o</strong> <em>.traineddata</em> <em>FILE</em>&#8230;:
     Overwrites the specified components of the .traineddata file
     with those provided on the command line.</p></div>
@@ -1021,7 +1023,7 @@ lang.version
 <p>
   (Optional) Version string for the traineddata file.
   First appeared in version 4.0 of Tesseract.
-  Old version of traineddata files will report Version string:Pre-4.0.0.
+  Old version of traineddata files will report Version:Pre-4.0.0.
   4.0 version of traineddata files may include the network spec
   used for LSTM training as part of version string.
 </p>
@@ -1061,7 +1063,7 @@ at Hewlett Packard (1985-1995) and Google (2006-present).</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-06-25 16:24:43 CEST
+ 2022-01-22 13:50:22 CET
 </div>
 </div>
 </body>
