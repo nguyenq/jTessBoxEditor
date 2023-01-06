@@ -277,6 +277,16 @@
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
               </AuxValues>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRemoveEmptyBoxes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Remove Empty Boxes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemRemoveEmptyBoxesActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenuSettings">
@@ -1231,7 +1241,6 @@
                                 <Component class="javax.swing.JTextField" name="jTextFieldChar">
                                   <Properties>
                                     <Property name="editable" type="boolean" value="false"/>
-                                    <Property name="opaque" type="boolean" value="false"/>
                                   </Properties>
                                   <AuxValues>
                                     <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldChar.setFont(jTextFieldChar.getFont().deriveFont(14.0f));"/>
@@ -1241,7 +1250,6 @@
                                 <Component class="javax.swing.JTextField" name="jTextFieldCodepointValue">
                                   <Properties>
                                     <Property name="editable" type="boolean" value="false"/>
-                                    <Property name="opaque" type="boolean" value="false"/>
                                   </Properties>
                                   <AuxValues>
                                     <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="jTextFieldCodepointValue.setFont(jTextFieldCodepointValue.getFont().deriveFont(14.0f));"/>

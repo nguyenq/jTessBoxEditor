@@ -247,13 +247,19 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
         }
         jFileChooserInputImage.setMultiSelectionEnabled(false);
     }
+    
+    @Override
+    void jMenuItemRemoveEmptyBoxesActionPerformed(java.awt.event.ActionEvent evt) {                                                          
+        this.boxPages.forEach(p -> p.toList().removeIf(b -> b.getChrs().equals(" ")));
+        loadTable();
+    }   
 
     /**
      * Invoked when task's progress property changes.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName()) {
+        if ("progress".equals(evt.getPropertyName())) {
             int progress = (Integer) evt.getNewValue();
             progressMonitor.setProgress(progress);
             if (progressMonitor.isCanceled() || ocrSegmentBulkWorker.isDone()) {

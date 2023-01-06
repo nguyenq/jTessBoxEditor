@@ -342,6 +342,8 @@ public class Gui extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemMarkEOL = new javax.swing.JMenuItem();
         jMenuItemMarkEOLBulk = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItemRemoveEmptyBoxes = new javax.swing.JMenuItem();
         jMenuSettings = new javax.swing.JMenu();
         jMenuItemFont = new javax.swing.JMenuItem();
         jSeparatorLAF = new javax.swing.JPopupMenu.Separator();
@@ -916,11 +918,9 @@ public class Gui extends javax.swing.JFrame {
         jPanelChar.add(jLabelCodepoint);
 
         jTextFieldChar.setEditable(false);
-        jTextFieldChar.setOpaque(false);
         jPanelChar.add(jTextFieldChar);
 
         jTextFieldCodepointValue.setEditable(false);
-        jTextFieldCodepointValue.setOpaque(false);
         jPanelChar.add(jTextFieldCodepointValue);
 
         jPanelNorthContainer.add(jPanelChar);
@@ -1336,6 +1336,15 @@ public class Gui extends javax.swing.JFrame {
             }
         });
         jMenuEdit.add(jMenuItemMarkEOLBulk);
+        jMenuEdit.add(jSeparator2);
+
+        jMenuItemRemoveEmptyBoxes.setText("Remove Empty Boxes");
+        jMenuItemRemoveEmptyBoxes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRemoveEmptyBoxesActionPerformed(evt);
+            }
+        });
+        jMenuEdit.add(jMenuItemRemoveEmptyBoxes);
 
         jMenuBar.add(jMenuEdit);
 
@@ -2270,6 +2279,10 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
     }//GEN-LAST:event_jMenuItemMarkEOLBulkActionPerformed
 
+    void jMenuItemRemoveEmptyBoxesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRemoveEmptyBoxesActionPerformed
+        JOptionPane.showMessageDialog(this, TO_BE_IMPLEMENTED);
+    }//GEN-LAST:event_jMenuItemRemoveEmptyBoxesActionPerformed
+
     /**
      * Gets a subimage for display in boxview.
      *
@@ -2418,6 +2431,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemMerge;
     private javax.swing.JMenuItem jMenuItemMergeTiff;
     private javax.swing.JMenuItem jMenuItemOpen;
+    private javax.swing.JMenuItem jMenuItemRemoveEmptyBoxes;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenuItem jMenuItemSplit;
@@ -2453,6 +2467,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneImage;
     private javax.swing.JScrollPane jScrollPaneText;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparatorAbout;
     private javax.swing.JPopupMenu.Separator jSeparatorExit;
     private javax.swing.JPopupMenu.Separator jSeparatorLAF;
