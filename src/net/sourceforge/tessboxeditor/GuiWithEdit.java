@@ -252,6 +252,7 @@ public class GuiWithEdit extends GuiWithMRU implements PropertyChangeListener {
     void jMenuItemRemoveEmptyBoxesActionPerformed(java.awt.event.ActionEvent evt) {                                                          
         this.boxPages.forEach(p -> p.toList().removeIf(b -> b.getChrs().equals(" ")));
         loadTable();
+        updateSave(true);
     }   
 
     /**
