@@ -156,3 +156,6 @@ Version 2.4.0 (5 January 2023)
 - Add fontconfig_tmpdir command option for text2image
 - Implement Remove empty boxes function
 - Update dependencies
+
+Version 2.4.1 (1 February 2023)
+- Update dependencies
