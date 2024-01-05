@@ -8,4 +8,4 @@ jTessBoxEditor is released and distributed under the [Apache License, v2.0](http
 
 ## Features
 
-- Tesseract Windows training executable 5.0.0 bundled
+- Tesseract Windows training executable 5.3.3 bundled
