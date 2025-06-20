@@ -167,3 +167,6 @@ Version 2.5.0 (5 January 2024)
 Version 2.6.0 (29 June 2024)
 - Upgrade Tesseract training Windows executable 5.4.0
 - Update tess4j and other dependencies
+
+Version 2.7.0 (9 June 2025)
+- Update tess4j, lept4j, and other dependencies
